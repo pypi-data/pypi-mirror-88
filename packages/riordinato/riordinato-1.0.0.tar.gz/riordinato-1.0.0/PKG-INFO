@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: riordinato
+Version: 1.0.0
+Summary: organize your files with prefixes
+Home-page: https://github.com/DAN-pix/Riordinato
+License: MIT
+Keywords: organize,riordinato,prefixes,dir
+Author: Dan-
+Author-email: misternutel@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Project-URL: Repository, https://github.com/DAN-pix/Riordinato
+Description-Content-Type: text/markdown
+
+# Riordinato
+
+Riordinato is a python library for organizing files with prefixes.
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install riordinato.
+
+```bash
+pip install riordinato 
+```
+
+## Usage
+
+```python
+from riordinato.files import Organize
+
+# Example
+# Prefix: 'python'
+# destination folder: '/home/user/documents/pythonfiles'
+prefixes = [('<prefix>', '<destination folder>'),
+            ('<prefix>', '<destination folder>')]
+
+# this variable represents the location of the folder that riordinato is going to organize
+dir = '/home/user/any folder'
+
+organize = Organize(prefixes, dir)
+
+# Organize all files in the folder
+organize.organize_all()
+
+# organizes only files containing the specified prefix
+organize.organize_specific_files('<prefix>')
+
+
+```
+
+## Contributing
+Any pull request is welcome.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
+
