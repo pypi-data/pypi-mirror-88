@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "test-pypi-poetry"
+version = "0.2.8"
+description = "The Description"
+license = "The License"
+authors = ["Christopher Farrenden <cfarrend@gmail.com>"]
+maintainers = ["A. Maintainer <amaintainer@example.com>"]
+
+readme = "README_PUBLIC.md"
+homepage = "https://cfarrend.com"
+repository = "https://github.com/cfarrend/test-pypi-poetry"
+documentation = "https://github.com/cfarrend/test-pypi-poetry/blob/master/README.md"
+
+keywords = ["example", "Example", "Hyphen-word", "Underscore_word", "$1234@"]
+
+packages = [
+    { include = "test-pypi-poetry" },
+]
+
+include = ["LOGO.png"]
+exclude = ["test-pypi-poetry/README.md"]
+
+# URL Icons come from here: https://github.com/pypa/warehouse/blob/master/warehouse/templates/packaging/detail.html
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/cfarrend/test-pypi-poetry"
+"License" = "https://github.com/cfarrend/test-pypi-poetry/blob/master/LICENSE"
+"Twitter" = "https://twitter.com/cfarrend"
+"Generic Icon" = "https://example.com"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
