@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: viewdom-wired
+Version: 0.1.0
+Summary: Injectable and plugabble components and services for viewdom
+Home-page: https://viewdom_wired.readthedocs.io
+Author: Paul Everitt
+Author-email: pauleveritt@me.com
+License: UNKNOWN
+Keywords: web,html,components,templates
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+Requires-Dist: tagged
+Requires-Dist: htm
+Requires-Dist: viewdom
+Requires-Dist: MarkupSafe
+Requires-Dist: wired
+Requires-Dist: wired-injector
+Requires-Dist: venusian
+Requires-Dist: typing-extensions (>=3.7.4) ; python_version < "3.8"
+Provides-Extra: dev
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: coverage ; extra == 'dev'
+Requires-Dist: pytest-coverage ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: check-manifest ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: Sphinx ; extra == 'docs'
+Requires-Dist: sphinx-book-theme ; extra == 'docs'
+Requires-Dist: myst-parser ; extra == 'docs'
+Provides-Extra: tests
+Requires-Dist: pytest ; extra == 'tests'
+
+viewdom_wired
+=============
+
+*Injectable and plugabble components and services for viewdom*
+
+`Docs <https://viewdom_wired.readthedocs.io/en/latest/>`_ and `Code <https://github.com/pauleveritt/viewdom_wired>`_
+
+
+Changelog
+=========
+
+Unreleased
+==========
+
+- The ``Component`` protocol now indicates it returns a ``VDOM``
+
+- Tolerate usage of generics such as `Optional[str]`
+
+- Switch to ``wired_injector``
+
+0.1.0
+=====
+
+First release.
+
+
