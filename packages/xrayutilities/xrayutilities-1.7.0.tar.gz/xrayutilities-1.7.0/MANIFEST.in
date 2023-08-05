@@ -1,0 +1,24 @@
+include LICENSE.txt
+include CHANGES.txt
+
+# documentation files
+include README.md
+include xrayutilities.pdf
+recursive-include doc/source *
+
+# examples
+recursive-include examples *.py
+graft examples/data
+
+# C source files and tests
+graft src
+recursive-include tests *.py
+
+# include database files
+graft lib/xrayutilities/materials/data
+
+# exclude development files
+global-exclude .gitignore
+exclude .coveragerc
+exclude tox.ini
+exclude release.txt
