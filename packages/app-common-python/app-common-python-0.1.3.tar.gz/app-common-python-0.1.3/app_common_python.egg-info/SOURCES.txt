@@ -1,0 +1,16 @@
+.gitignore
+README.md
+schema.json
+setup.cfg
+setup.py
+sync_config.sh
+test.json
+.github/workflows/package.yml
+app_common_python/__init__.py
+app_common_python/types.py
+app_common_python.egg-info/PKG-INFO
+app_common_python.egg-info/SOURCES.txt
+app_common_python.egg-info/dependency_links.txt
+app_common_python.egg-info/not-zip-safe
+app_common_python.egg-info/top_level.txt
+tests/test_config.py
