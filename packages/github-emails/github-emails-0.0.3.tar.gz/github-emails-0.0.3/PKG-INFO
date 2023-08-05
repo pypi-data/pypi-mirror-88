@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: github-emails
+Version: 0.0.3
+Summary: 📫 A tool to get email addresses by action types such as `starred`, `watching` or `fork` on GitHub repositories
+Home-page: https://github.com/wj-Mcat/github-emails
+Author: wj-Mcat
+Author-email: wjmcater@gmail.com
+License: Apache-2.0
+Description: # github-emails [![PyPI Version](https://img.shields.io/pypi/v/github-emails?color=blue)](https://pypi.org/project/github-emails/)  ![auto-publish-to-pypi](https://github.com/wj-Mcat/github-emails/workflows/auto-publish-to-pypi/badge.svg)
+        
+        ## Quick start
+        
+        - Installation
+        
+        ```shell script
+        pip install github-emails
+        ```
+        
+        - Simple Code
+        
+        ```python
+        from github_emails import GithubApi
+        github = GithubApi(token='')
+        stargazers = github.stargazers('wechaty', 'python-wechaty')
+        for stargazer in stargazers:
+            github.emails(stargazer)
+        ```
+        
+        And you will find that your final email info is stored in `.github_info/user-email.txt` file.
+        
+        - Command
+        
+        ```shell script
+        
+        ```
+        
+        ## History
+        
+        ### v0.0.2 (Jun 19, 2020)
+        
+        - works with token, and everything works well for me
+        
+        ### v0.0.1 (Jun 19, 2020)
+        
+        - works with username/password & token authentication
+        
+        ## Copyright & License
+        
+        - Code & Docs © 2020 wj-Mcat <https://github.com/wj-Mcat>
+        - Code released under the Apache-2.0 License
+        - Docs released under Creative Commons
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
