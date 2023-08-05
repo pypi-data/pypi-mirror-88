@@ -1,0 +1,179 @@
+.gitignore
+.gitreview
+.pylintrc
+.readthedocs.yml
+.travis.yml
+Contributing.rst
+LICENSE-3RD-PARTY.txt
+LICENSE.txt
+README.rst
+setup.py
+tox.ini
+docs/Makefile
+docs/source/api.rst
+docs/source/archetypes.rst
+docs/source/architecture.rst
+docs/source/conf.py
+docs/source/contributing.rst
+docs/source/index.rst
+docs/source/interaction.rst
+docs/source/releasesfile.rst
+docs/source/specializations.rst
+docs/source/tutorials.rst
+docs/source/assets/bbnforge
+docs/source/assets/nexus-forge-architecture.png
+docs/source/releases/v0.3-release-notes.rst
+docs/source/releases/v0.3.3-release-notes.rst
+docs/source/releases/v0.4.0-release-notes.rst
+docs/source/releases/v0.5.0-release-notes.rst
+examples/configurations/demo-resolver/entity-to-resource-mapping.hjson
+examples/configurations/demo-resolver/term-to-resource-mapping.hjson
+examples/configurations/demo-store/file-to-resource-mapping.hjson
+examples/configurations/nexus-resolver/agent-to-resource-mapping.hjson
+examples/configurations/nexus-resolver/term-to-resource-mapping.hjson
+examples/configurations/nexus-store/file-to-resource-mapping.hjson
+examples/data/associations.tsv
+examples/data/my_data.xwz
+examples/data/persons.csv
+examples/data/scientists-database/albert_einstein.txt
+examples/data/scientists-database/marie_curie.txt
+examples/mappings/README.md
+examples/models/neuroshapes_context.json
+examples/notebooks/getting-started/00 - Initialization.ipynb
+examples/notebooks/getting-started/01 - Resources.ipynb
+examples/notebooks/getting-started/02 - Datasets.ipynb
+examples/notebooks/getting-started/03 - Storing.ipynb
+examples/notebooks/getting-started/04 - Querying.ipynb
+examples/notebooks/getting-started/05 - Versioning.ipynb
+examples/notebooks/getting-started/06 - JSON IO.ipynb
+examples/notebooks/getting-started/07 - DataFrame IO.ipynb
+examples/notebooks/getting-started/08 - Formatting.ipynb
+examples/notebooks/getting-started/09 - Resolving.ipynb
+examples/notebooks/getting-started/10 - Reshaping.ipynb
+examples/notebooks/getting-started/11 - Modeling.ipynb
+examples/notebooks/getting-started/12 - Mapping.ipynb
+examples/notebooks/getting-started/13 - JSON-LD IO.ipynb
+examples/notebooks/getting-started/14 - RDF IO.ipynb
+examples/notebooks/getting-started/15 - SQL IO.ipynb
+examples/notebooks/getting-started/16 - Debugging.ipynb
+examples/notebooks/getting-started/README.md
+examples/notebooks/use-cases/BBP KG Search and Download.ipynb
+examples/notebooks/use-cases/Blue Brain Knowledge Graph.ipynb
+examples/notebooks/use-cases/bbp-staging-forge.yml
+examples/notebooks/use-cases/copy-token.png
+examples/notebooks/use-cases/login-ui.png
+examples/notebooks/use-cases/prod-forge-nexus.yml
+kgforge/__init__.py
+kgforge/version.py
+kgforge/core/__init__.py
+kgforge/core/forge.py
+kgforge/core/reshaping.py
+kgforge/core/resource.py
+kgforge/core/archetypes/__init__.py
+kgforge/core/archetypes/mapper.py
+kgforge/core/archetypes/mapping.py
+kgforge/core/archetypes/model.py
+kgforge/core/archetypes/resolver.py
+kgforge/core/archetypes/store.py
+kgforge/core/commons/__init__.py
+kgforge/core/commons/actions.py
+kgforge/core/commons/attributes.py
+kgforge/core/commons/context.py
+kgforge/core/commons/dictionaries.py
+kgforge/core/commons/exceptions.py
+kgforge/core/commons/execution.py
+kgforge/core/commons/files.py
+kgforge/core/commons/imports.py
+kgforge/core/commons/strategies.py
+kgforge/core/conversions/__init__.py
+kgforge/core/conversions/dataframe.py
+kgforge/core/conversions/json.py
+kgforge/core/conversions/rdf.py
+kgforge/core/wrappings/__init__.py
+kgforge/core/wrappings/dict.py
+kgforge/core/wrappings/paths.py
+kgforge/specializations/__init__.py
+kgforge/specializations/mappers/__init__.py
+kgforge/specializations/mappers/dictionaries.py
+kgforge/specializations/mappers/r2rml.py
+kgforge/specializations/mappers/resources.py
+kgforge/specializations/mappers/tables.py
+kgforge/specializations/mappings/__init__.py
+kgforge/specializations/mappings/dictionaries.py
+kgforge/specializations/models/__init__.py
+kgforge/specializations/models/demo_model.py
+kgforge/specializations/models/rdf_model.py
+kgforge/specializations/models/rdf/__init__.py
+kgforge/specializations/models/rdf/collectors.py
+kgforge/specializations/models/rdf/directory_service.py
+kgforge/specializations/models/rdf/node_properties.py
+kgforge/specializations/models/rdf/service.py
+kgforge/specializations/models/rdf/store_service.py
+kgforge/specializations/models/rdf/utils.py
+kgforge/specializations/resolvers/__init__.py
+kgforge/specializations/resolvers/agent_resolver.py
+kgforge/specializations/resolvers/demo_resolver.py
+kgforge/specializations/resolvers/ontology_resolver.py
+kgforge/specializations/resolvers/store_service.py
+kgforge/specializations/resources/__init__.py
+kgforge/specializations/resources/datasets.py
+kgforge/specializations/stores/__init__.py
+kgforge/specializations/stores/bluebrain_nexus.py
+kgforge/specializations/stores/demo_store.py
+kgforge/specializations/stores/rdflib_graph.py
+kgforge/specializations/stores/nexus/__init__.py
+kgforge/specializations/stores/nexus/service.py
+nexusforge.egg-info/PKG-INFO
+nexusforge.egg-info/SOURCES.txt
+nexusforge.egg-info/dependency_links.txt
+nexusforge.egg-info/requires.txt
+nexusforge.egg-info/top_level.txt
+tests/KGForge Setup.ipynb
+tests/__init__.py
+tests/conftest.py
+tests/core/resource.feature
+tests/core/test_forge.py
+tests/core/test_reshaping.py
+tests/core/test_resolving.py
+tests/core/test_resource.py
+tests/core/archetypes/test_store.py
+tests/core/commons/test_actions.py
+tests/core/commons/test_attributes.py
+tests/core/commons/test_context.py
+tests/core/commons/test_dictionaries.py
+tests/core/commons/test_execution.py
+tests/core/conversions/conftest.py
+tests/core/conversions/test_dataframe.py
+tests/core/conversions/test_json.py
+tests/core/conversions/test_rdf.py
+tests/core/wrappings/test_dict.py
+tests/core/wrappings/test_paths.py
+tests/data/demo-model/namespaces.json
+tests/data/demo-model/schemas.json
+tests/data/demo-model/vocabulary.json
+tests/data/demo-model/mappings/allen-cell-types-database/DictionaryMapping/NeuronMorphology.hjson
+tests/data/demo-model/mappings/allen-cell-types-database/DictionaryMapping/PatchedCell.hjson
+tests/data/demo-model/mappings/allen-cell-types-database/DictionaryMapping/Subject.hjson
+tests/data/demo-model/mappings/scientists-database/DictionaryMapping/Association.hjson
+tests/data/demo-resolver/agents.json
+tests/data/demo-resolver/sex.json
+tests/data/demo-resolver/species.json
+tests/data/demo-resolver/structure_layer.json
+tests/data/shacl-model/context.json
+tests/data/shacl-model/commons/shapes-1.json
+tests/data/shacl-model/commons/shapes-2.json
+tests/data/shacl-model/commons/shapes-3.json
+tests/specializations/mappers/test_mappers.py
+tests/specializations/mappings/test_mappings.py
+tests/specializations/models/data.py
+tests/specializations/models/demo_model.feature
+tests/specializations/models/test_demo_model.py
+tests/specializations/models/test_models.py
+tests/specializations/models/test_rdf_model.py
+tests/specializations/resolvers/test_resolvers.py
+tests/specializations/resources/test_datasets.py
+tests/specializations/resources/test_resources.py
+tests/specializations/stores/demo_store.feature
+tests/specializations/stores/test_bluebrain_nexus.py
+tests/specializations/stores/test_demo_store.py
+tests/specializations/stores/test_stores.py

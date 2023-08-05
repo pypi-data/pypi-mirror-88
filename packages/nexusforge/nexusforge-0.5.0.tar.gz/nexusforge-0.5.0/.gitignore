@@ -1,0 +1,16 @@
+*.pyc
+*.swp
+coverage.xml
+*.egg-info
+.coverage
+docs/build
+.tox
+.idea/*
+.DS_Store
+**/.ipynb_checkpoints/*
+version.py
+examples/notebooks/getting-started/mappings/
+examples/notebooks/getting-started/downloaded/
+.gitreview
+examples/configurations/forge.yml
+examples/models/neuroshapes/
