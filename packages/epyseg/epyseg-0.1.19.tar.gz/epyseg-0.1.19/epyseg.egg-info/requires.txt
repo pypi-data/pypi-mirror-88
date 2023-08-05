@@ -1,0 +1,22 @@
+tensorflow>=2.3.1
+segmentation-models==1.0.1
+czifile
+h5py
+Markdown
+matplotlib
+numpy
+numpydoc
+Pillow
+PyQt5
+PyQtWebEngine
+read-lif
+scikit-image
+scipy
+tifffile
+tqdm
+natsort
+numexpr
+urllib3
+
+[:platform_system != "Darwin"]
+tensorflow-gpu>=2.3.1
