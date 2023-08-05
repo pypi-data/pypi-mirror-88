@@ -1,0 +1,14 @@
+icevision[all]>=0.2.0b4
+fire<1,>=0.3.1
+
+[dev]
+black<21,>=20.8b1
+pytest<7,>=6
+keras-autodoc==0.6.0
+mkdocs<2,>=1.1.2
+mkdocs-material<6,>=5.5.12
+jupyter<2,>=1.0.0
+pymdown-extensions<9,>=8.0
+Sphinx<4,>=3.1.0
+pytest-cov<3,>=2.10.1
+flake8<4,>=3.8.3
