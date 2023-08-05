@@ -1,0 +1,25 @@
+#para_container {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-gap: 10px;
+    position: relative;
+}
+
+.para2 {
+    float: left;
+    padding: 2px;
+}
+
+#content {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#result {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.leaflet-container {
+    height: 400px;
+}
