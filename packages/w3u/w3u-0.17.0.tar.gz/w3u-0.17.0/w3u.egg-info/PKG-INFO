@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: w3u
+Version: 0.17.0
+Summary: My short description for my project.
+Home-page: https://github.com/thegismar/w3u
+Author: thegismar
+Author-email: thegismar@thegismar.com
+License: MIT
+Description: 
+        # W3U - web3 utils
+        
+        Some convenience functions for web3 python developing.
+        
+        Such as:
+        
+        * Getting token address given token symbol and decimals
+        * Getting token symbol given token address and decimals 
+        * Getting all transactions involving a certain account from Etherscan
+        * Getting the abi for a certain address from Etherscan
+        
+        
+        
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6.0
+Description-Content-Type: text/markdown
