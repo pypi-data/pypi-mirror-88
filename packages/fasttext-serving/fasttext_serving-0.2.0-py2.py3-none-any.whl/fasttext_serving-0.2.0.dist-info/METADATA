@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: fasttext-serving
+Version: 0.2.0
+Summary: fasttext-serving gRPC client
+Home-page: https://github.com/messense/fasttext-serving
+Author: messense
+Author-email: messense@icloud.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Description-Content-Type: text/markdown
+Requires-Dist: grpcio
+Requires-Dist: protobuf
+
+# fasttext-serving
+
+fasttext-serving gRPC client
+
+## Installation
+
+```bash
+pip install fasttext-serving
+```
+
+## Usage
+
+
+```python
+from fasttext_serving import FasttextServing
+
+
+client = FasttextServing('127.0.0.1:8000')
+predictions = list(client.predict(['abc def']))
+```
+
+
