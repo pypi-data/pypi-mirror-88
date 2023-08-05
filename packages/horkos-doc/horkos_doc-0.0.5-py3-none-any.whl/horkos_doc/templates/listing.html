@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block contents %}
+<h1>Browse Schemas</h1>
+{% for schema in schemas %}
+  <a href={{('schemas/' + schema.name) | relative_url }} class='undecorated'>
+    <div class='card' id='{{schema.name}}'>
+      <div class='card_header'>
+        <div class='card_title'>
+          {{ schema.name }}
+        </div>
+      </div>
+      <div class='card_body'>
+        {{ schema.description | first_paragraph | safe }}
+      </div>
+    </div>
+  </a>
+{% endfor %}
+{% endblock %}
