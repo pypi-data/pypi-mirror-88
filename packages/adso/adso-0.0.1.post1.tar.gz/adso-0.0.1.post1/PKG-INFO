@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: adso
+Version: 0.0.1.post1
+Summary: A topic-modelling library
+Home-page: https://github.com/TnTo/adso
+License: MIT
+Author: Michele 'TnTo' Ciruzzi
+Author-email: tnto@hotmail.it
+Requires-Python: >=3.7,<3.9
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: matplotlib (>=3.3.3,<4.0.0)
+Requires-Dist: nltk (>=3.5,<4.0)
+Requires-Dist: pathlib (>=1.0.1,<2.0.0)
+Requires-Dist: requests (>=2.25.0,<3.0.0)
+Requires-Dist: scipy (>=1.5.4,<2.0.0)
+Requires-Dist: sparse (>=0.11.2,<0.12.0)
+Project-URL: Repository, https://github.com/TnTo/adso
+Description-Content-Type: text/x-rst
+
+adso
+====
+
+**A topic modelling library built on top of scipy/numpy and nltk.**
+
+install
+^^^^^^^
+
+To install::
+
+    pip install adso
+
+config
+^^^^^^
+
+adso need to write some files to disk.
+As default adso uses the ``~/.adso`` folder, but it can be change setting the enviromental variable ``ADSODIR``.
+
+documentation
+^^^^^^^^^^^^^
+
+Documentation with examples is hosted on [GitHub Pages](https://tnto.github.io/adso/index.html)
+
+Some examples on how to use adso are also available in ``tests`` and ``examples`` folders.
+
+
+
