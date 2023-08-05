@@ -1,0 +1,13 @@
+<div class='link_sidebar'>
+{% for link in links %}
+  <div>
+    <a
+      class="undecorated {% if not link.bold %}subdued_link{% endif %}"
+      href={{ link.to | relative_url }}
+      style="{% if link.bold %}font-weight: bold;{% endif %}"
+    >
+      {{ link.text }}
+    </a>
+  </div>
+{% endfor %}
+</div>

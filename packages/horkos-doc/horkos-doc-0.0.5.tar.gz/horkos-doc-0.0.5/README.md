@@ -1,0 +1,60 @@
+# Horkos Doc
+
+A command-line tool for generating HTML documentation from `horkos` schemas
+
+## Install
+
+```
+pip3 install horkos-doc
+```
+
+## Usage
+
+```
+> horkos-doc --help
+usage: horkos-doc [-h] [--config CONFIG] [--author AUTHOR]
+                  [--home-page HOME_PAGE] [--output OUTPUT]
+                  [input]
+
+positional arguments:
+  input                 A directory of schema files from which to build the
+                        html documentation. This is not required if a value is
+                        set within the given config file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --config CONFIG, -c CONFIG
+                        The path to a configuration file for horkos-doc. This
+                        file can be used to override the built-in default for
+                        command-line arguments. By default this is
+                        `.horkos-doc`.
+  --author AUTHOR, -a AUTHOR
+                        The author of the documentation. This is used to
+                        create copyright statements within the generated
+                        documentation.
+  --home-page HOME_PAGE, --hp HOME_PAGE
+                        The name to use for the home page of the generated
+                        documentation. By default this is "Horkos Doc".
+  --output OUTPUT, -o OUTPUT
+                        The directory in which to store built html. By default
+                        this is ./build
+```
+
+If all the schema files are in `./schemas` to build the docs run:
+
+```
+horkos-doc ./schemas
+```
+
+## Configuration
+
+All options available on the command-line can also be set in an optional
+configuration file. By default this file is expected to be `.horkos-doc`.
+
+```
+[default]
+input = ./schemas
+output = ./docs
+author = Mr. Foobar
+home_page = The Docs!
+```
