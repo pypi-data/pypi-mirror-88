@@ -1,0 +1,13 @@
+graft docs
+graft src
+
+include README.md
+include LICENSE
+include CHANGELOG.rst
+
+recursive-exclude tests *
+recursive-exclude docs/build *
+recursive-exclude docs/figures/texsrc *
+
+
+global-exclude *.py[cod] __pycache__/* *.so *.dylib
