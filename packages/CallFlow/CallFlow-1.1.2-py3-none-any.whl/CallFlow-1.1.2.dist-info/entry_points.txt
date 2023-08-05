@@ -1,0 +1,4 @@
+[console_scripts]
+callflow_app = app.app:main
+callflow_server = callflow.server.callflow_server:main
+
