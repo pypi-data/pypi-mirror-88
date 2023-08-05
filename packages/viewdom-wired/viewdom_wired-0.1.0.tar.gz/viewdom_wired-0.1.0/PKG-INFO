@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: viewdom_wired
+Version: 0.1.0
+Summary: Injectable and plugabble components and services for viewdom
+Home-page: https://viewdom_wired.readthedocs.io
+Author: Paul Everitt
+Author-email: pauleveritt@me.com
+License: UNKNOWN
+Description: viewdom_wired
+        =============
+        
+        *Injectable and plugabble components and services for viewdom*
+        
+        `Docs <https://viewdom_wired.readthedocs.io/en/latest/>`_ and `Code <https://github.com/pauleveritt/viewdom_wired>`_
+        
+        
+        Changelog
+        =========
+        
+        Unreleased
+        ==========
+        
+        - The ``Component`` protocol now indicates it returns a ``VDOM``
+        
+        - Tolerate usage of generics such as `Optional[str]`
+        
+        - Switch to ``wired_injector``
+        
+        0.1.0
+        =====
+        
+        First release.
+        
+Keywords: web,html,components,templates
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+Provides-Extra: docs
+Provides-Extra: tests
+Provides-Extra: dev

@@ -1,0 +1,12 @@
+[run]
+source =
+    viewdom_wired
+
+[paths]
+source =
+    src/viewdom_wired
+    */site-packages/viewdom_wired
+
+[report]
+show_missing = true
+precision = 2
