@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "DNA_analyser_IBP"
+version = "3.3.2"
+description = "DNA analyser API wrapper tool for Jupiter notebooks."
+authors = ["Patrik Kaura <patrikkaura@gmail.com>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+homepage = "http://bioinformatics.ibp.cz/"
+repository = "https://gitlab.com/PatrikKaura/DNA_analyser_IBP/"
+documentation = "https://patrikkaura.gitlab.io/DNA_analyser_IBP/"
+keywords = ["DNA", "g4hunter", "g4killer", "p53"]
+classifiers=[
+        "Intended Audience :: Education",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+packages = [
+    { include = "DNA_analyser_IBP" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.6.9"
+requests = "^2.20.0"
+pandas = "^1.0.0"
+tqdm = "^4.28"
+pyjwt = "^1.7.1"
+matplotlib = "^3.0.3"
+requests-toolbelt = "^0.9.1"
+tenacity = "^6.1.0"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.0.2"
+pdoc3 = "^0.9.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
