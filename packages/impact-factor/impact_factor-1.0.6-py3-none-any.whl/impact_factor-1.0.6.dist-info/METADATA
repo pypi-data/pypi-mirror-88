@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: impact-factor
+Version: 1.0.6
+Summary: Impact Factor Toolkits for NCBI Journals
+Home-page: https://github.com/suqingdong/impact_factor
+Author: suqingdong
+Author-email: 1078595229@qq.com
+License: BSD License
+Project-URL: Documentation, https://impact_factor.readthedocs.io
+Project-URL: Tracker, https://github.com/suqingdong/impact_factor/issues
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Software Development :: Libraries
+Description-Content-Type: text/markdown
+Requires-Dist: bs4
+Requires-Dist: requests
+Requires-Dist: colorama
+Requires-Dist: sqlalchemy
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4005636.svg)](https://doi.org/10.5281/zenodo.4005636)
+[![Downloads](https://pepy.tech/badge/impact-factor)](https://pepy.tech/project/impact-factor)
+![PyPI - License](https://img.shields.io/pypi/l/mi?style=plastic)
+![PyPI](https://img.shields.io/pypi/v/impact_factor)
+![PyPI - Status](https://img.shields.io/pypi/status/impact_factor)
+
+
+# Impact Factor Toolkits
+
+## Installation
+```base
+pip install impact_factor
+```
+
+## Usage
+```bash
+IF -h
+
+impact_factor -h
+```
+
+## Documents
+https://impact-factor.readthedocs.io
+
+
