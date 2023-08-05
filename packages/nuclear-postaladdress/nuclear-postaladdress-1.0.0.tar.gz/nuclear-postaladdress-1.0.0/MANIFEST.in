@@ -1,0 +1,11 @@
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include postaladdress/locale *
+recursive-include postaladdress/fixtures *
+recursive-include postaladdress/templates *
+recursive-include postaladdress/static *
+recursive-include postaladdress/docs *
+recursive-exclude example_site *
+recursive-exclude person *
+recursive-exclude postaladdress/tests *
