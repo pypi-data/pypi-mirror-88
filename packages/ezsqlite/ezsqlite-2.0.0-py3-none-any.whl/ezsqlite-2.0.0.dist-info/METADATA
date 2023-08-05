@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: ezsqlite
+Version: 2.0.0
+Summary: A module changing string to seconds.
+Home-page: https://github.com/Tim232/ezsqlite
+Author: Tim232
+Author-email: endbot4023@gmail.com
+License: GNU General Public License v3.0
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+# EZSQLITE
+
+Use SQLite3 without knowing SQL
+
+How to Install : 
+```shell
+$ pip install ezsqlite
+```
+
+How to Use : 
+```python
+from ezsqlite import Database
+db = Database('File.db', 'users')
+
+users = db.slctall()
+user = db.select(id = 'test')
+db.update({'id': 'test'}, {'id': 'example'})
+db.insert('text', 'ex', 'ample')
+db.delete(id = 'test')
+```
+
+
