@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: proofdock-chaos-cli
+Version: 0.0.1.dev0
+Summary: Chaos command line tool for the Proofdock Chaos Platform
+Home-page: https://proofdock.io
+Author: Proofdock
+Author-email: hello@proofdock.io
+License: Apache License Version 2.0
+Project-URL: Documentation, https://docs.proofdock.io/
+Project-URL: Support, https://github.com/proofdock/chaos-support
+Description: # Proofdock Chaos CLI
+        The Proofdock Chaos CLI is a command line tool to execute attacks and scenarios defined in the Azure DevOps. 
+        
+        
+        ## Project description
+        
+        This project is part of the Proofdock Chaos Platform that helps you to write, run, store and analyze chaos attacks in your Azure DevOps environment.
+        
+        For more information visit our official [website][proofdock] or [documentation][proofdock_docs]. Feel free to ask for support for this package on [GitHub][proofdock_support].
+        
+        
+        ## Getting started
+        
+        To get started check out our official [guide][proofdock_docs_get_started].
+        
+        
+        ## Install
+        
+        This package requires Python 3.5+
+        
+        ```
+        $ pip install -U proofdock-chaos-cli
+        ```
+        
+        
+        ## Configuration
+        
+        The Proofdock Chaos CLI expects that you have a proper API token that allows you to authenticate against the Proofdock cloud. Learn more about the API token generation [here][proofdock_docs_project_settings].
+        
+        Set the API token using an environment variable ``PROOFDOCK_API_TOKEN``.
+        
+        ``` bash
+        export PROOFDOCK_API_TOKEN=<API token>
+        ```
+        
+        ### Run
+        You use the `pd run` command to run an attack and upload its results to the Proofdock cloud.
+        
+        ``` bash
+        pd run [OPTIONS] <attack ID>
+        ```
+        
+        [proofdock]: https://proofdock.io/
+        [proofdock_docs]: https://docs.proofdock.io/
+        [proofdock_support]: https://github.com/proofdock/chaos-support/
+        
+        
+        [chaosengineeringplatform]: https://proofdock.io
+        [chaostoolkit]: https://chaostoolkit.org
+        [proofdock_docs_get_started]: https://docs.proofdock.io/chaos/guide
+        [proofdock_docs_project_settings]: https://docs.proofdock.io/chaos/devops/settings/#project-settings
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: Freely Distributable
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.5.*
+Description-Content-Type: text/markdown
