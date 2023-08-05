@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "fuchar"
+version = "2020.11.0a1"
+description = "Simple Python Text Renderer"
+authors = ["Shane R. Spencer <305301+whardier@users.noreply.github.com>"]
+homepage = "https://github.com/whardier/fuchar"
+repository = "https://github.com/whardier/fuchar"
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.urls]
+"Funding" = "https://github.com/sponsors/whardier"
+
+[tool.poetry.scripts]
+fuchar = 'fuchar.__main__:main'
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+autoflake = "*"
+bandit = "*"
+black = {version = "*", allow-prereleases = true}
+flake8 = "*"
+hypothesis = "*"
+isort = "*"
+mypy = "*"
+pre-commit = "*"
+pytest = "*"
+rope = "*"
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
