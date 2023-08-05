@@ -1,0 +1,25 @@
+<div class='navbar_container'>
+  <a class='navbar_title undecorated' href={{ 'index' | relative_url }}>{{ context.home_page }}</a>
+  <div class='navbar_search'>
+    <input id='navbar_input' class='navbar_search_input' placeholder='Search'></input>
+    <button id='navbar_search_button' class='navbar_search_button'>Go</button>
+    <script>
+      function searchNav() {
+        let target = document.getElementById('navbar_input');
+        let encoded = encodeURIComponent(target.value)
+        window.location.href = "{{ 'search' | relative_url }}?query=" + encoded;
+      }
+      let element = document.getElementById('navbar_search_button');
+      element.addEventListener("click", searchNav);
+      element = document.getElementById('navbar_input');
+      element.addEventListener("keyup", function(event) {
+          // Number 13 is the "Enter" key
+          if (event.keyCode !== 13) {
+            return;
+          }
+          searchNav();
+        }
+      );
+    </script>
+  </div>
+</div>
