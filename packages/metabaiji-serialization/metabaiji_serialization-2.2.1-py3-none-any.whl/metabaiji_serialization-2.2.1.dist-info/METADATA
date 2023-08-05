@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: metabaiji-serialization
+Version: 2.2.1
+Summary: Read and write common file formats to Amazon S3 and local files
+Home-page: https://github.com/metabolize/baiji-serialization
+Author: Body Labs
+Author-email: github@paulmelnikow.com
+License: Apache
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Requires-Dist: six
+Requires-Dist: metabaiji
+Requires-Dist: simplejson (>=3.8.2)
+Requires-Dist: pyyaml (>=3.11)
+
+UNKNOWN
+
+
