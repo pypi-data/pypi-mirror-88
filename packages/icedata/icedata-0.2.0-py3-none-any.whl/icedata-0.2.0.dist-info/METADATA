@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: icedata
+Version: 0.2.0
+Summary: Datasets Collection
+Home-page: UNKNOWN
+Author: Lucas Goulart Vazquez, Farid Hassainia
+Author-email: lgvaz42@gmail.com, farid@airctic.com
+License: Apache-2.0
+Keywords: object detection,machine learning
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Requires-Python: <4,>=3.6.1
+Requires-Dist: icevision[all] (>=0.2.0b4)
+Requires-Dist: fire (<1,>=0.3.1)
+Provides-Extra: dev
+Requires-Dist: black (<21,>=20.8b1) ; extra == 'dev'
+Requires-Dist: pytest (<7,>=6) ; extra == 'dev'
+Requires-Dist: keras-autodoc (==0.6.0) ; extra == 'dev'
+Requires-Dist: mkdocs (<2,>=1.1.2) ; extra == 'dev'
+Requires-Dist: mkdocs-material (<6,>=5.5.12) ; extra == 'dev'
+Requires-Dist: jupyter (<2,>=1.0.0) ; extra == 'dev'
+Requires-Dist: pymdown-extensions (<9,>=8.0) ; extra == 'dev'
+Requires-Dist: Sphinx (<4,>=3.1.0) ; extra == 'dev'
+Requires-Dist: pytest-cov (<3,>=2.10.1) ; extra == 'dev'
+Requires-Dist: flake8 (<4,>=3.8.3) ; extra == 'dev'
+
+UNKNOWN
+
+
