@@ -1,0 +1,28 @@
+{
+    "name": "{{confname}}",
+    "description": "{{description}}",
+    "customer_root": "%(enrich_customers_dir)s/{{customer}}/{{division}}", 
+    "data_root": "%(enrich_data_dir)s/{{customer}}/{{division}}",
+    "runid": "{{taskname}}-%Y%m%d-%H%M%S",
+    "output": "%(data_root)s/output/tasks/%(name)s", 
+    "log": "%(output)s/%(runid)s/log.json", 
+    "paths": { 
+	"libraries": ["%(customer_root)s/tasks/lib"]
+    },
+    "notification": {
+	"enable": true, 
+	"email": []
+    },
+    "tasks": [
+	{
+	    "name": "{{taskname}}",
+	    "args": { 
+		"aws": {
+		    "credentials": "datalake", 
+		    "bucket": "bucketname",
+		    "path": "/path/to/raw"
+		}
+	    }
+	}
+    ]
+}

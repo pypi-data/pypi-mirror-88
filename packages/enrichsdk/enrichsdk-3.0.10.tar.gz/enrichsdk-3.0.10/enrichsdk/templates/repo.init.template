@@ -1,0 +1,12 @@
+import os, sys 
+
+from enrich.customers import get_customers_in_dir
+
+def get_customers(): 
+    """
+    Load the workspace
+    """
+    thisdir = os.path.abspath(os.path.dirname(__file__))
+    return get_customers_in_dir(thisdir)
+
+
