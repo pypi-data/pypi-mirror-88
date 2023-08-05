@@ -1,0 +1,105 @@
+<script>
+import { Tabs, Tab, DataTable, Image } from 'pipen-smelte'
+</script>
+
+{% python %}
+import json
+
+alldata = {}
+# outcome => {modelname => [{id, text, plot, table, type}, {...}, ...]}
+
+outcomes = args['outcome']
+
+tabid = 0
+for modeldir in glob(joinpath(job['out']['outdir'], '*')):
+    if not is_dir(modeldir):
+        continue
+    modname = basename(modeldir).replace('_', ' ')
+    for outcome in outcomes:
+        alldata.setdefault(outcome, {})
+        alldata[outcome].setdefault(modname, [])
+
+        outcome_dir = joinpath(modeldir, 'outcome-' + outcome)
+        alldata[outcome][modname].append({
+            'id': "X"+str(tabid),
+            'text': 'ROC/PRC Plot',
+            'type': 'plot',
+            'plot': joinpath(outcome_dir, 'roc.png'),
+            'table': None
+        })
+        tabid += 1
+
+        viplot = joinpath(outcome_dir, 'varimp.png')
+        if path_exists(viplot):
+            alldata[outcome][modname].append({
+                'id': "X"+str(tabid),
+                'text': 'Variable Importance',
+                'type': 'table+plot',
+                'plot': viplot,
+                'table': joinpath(outcome_dir, 'varimp.txt')
+            })
+            tabid += 1
+
+        alldata[outcome][modname].append({
+            'id': "X"+str(tabid),
+            'text': 'Metrics',
+            'type': 'table',
+            'plot': None,
+            'table': joinpath(outcome_dir, 'metrics.txt'),
+        })
+        tabid += 1
+
+        alldata[outcome][modname].append({
+            'id': "X"+str(tabid),
+            'text': 'Meta Information',
+            'type': 'table',
+            'plot': None,
+            'table': joinpath(outcome_dir, 'meta.txt'),
+        })
+        tabid += 1
+
+{% endpython %}
+
+{% for outcome, outcome_data in alldata.items() %}
+# Outcome: {{outcome}}
+
+{% assign global_roc = job.out.outdir | joinpath: "roc-" + outcome + ".png" %}
+{% if path_exists(global_roc) %}
+## ROC/PRC of all models
+
+<Image alt="global_roc" src="{{global_roc}}" class="w-3/4" />
+{% endif %}
+
+{% for modelname, modeldata in outcome_data.items() %}
+
+## Model: {{modelname}}
+
+<Tabs
+    selected="{{modeldata[0].id}}"
+    class="bg-gray-800 elevation-4 text-white"
+    tabButtonClasses="p-2"
+    color="yellow-a200"
+    let:selected={selected}
+    items={ {{ modeldata | @json.dumps }} }>
+    <div
+        slot="content"
+        class="items-center content-center overflow-hidden p-5 w-full h-full border-2 border-gray-600 border-t-0 mb-8">
+
+    {% for mdata in modeldata %}
+    <Tab id="{{mdata.id}}" {selected}>
+        {% if 'plot' in mdata.type %}
+        <Image alt="{{mdata.text}}" src="{{mdata.plot}}" class="w-2/3" />
+        {% endif %}
+        {% if 'table' in mdata.type %}
+        <DataTable
+            data="{{mdata.table | @report.datatable: delimiter='\t'}}" />
+        {% endif %}
+    </Tab>
+    {% endfor %}
+
+    </div>
+</Tabs>
+
+{% endfor %}
+
+{% endfor %}

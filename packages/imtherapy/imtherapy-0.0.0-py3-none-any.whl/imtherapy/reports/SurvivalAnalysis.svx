@@ -1,0 +1,130 @@
+<script>
+import { Tabs, Tab, DataTable, Image } from 'pipen-smelte'
+</script>
+
+{% python %}
+import json
+unidata = {}
+multidata = {}
+has_multi_surv = isinstance(args['survs'][0], list)
+
+# unidata: {var => {
+#    has_cut: True/False,
+#    data: { surv1: [{id: ..., text: .cut., plot: ..., table: ...}, ...], ... }
+# }}
+
+# multidata: {var => {surv1: datafile, surv2: ...}}
+# mdata: datafile
+
+for unidir in glob(joinpath(job['out'].unidir, '*')):
+    var = basename(unidir)
+    has_cut = is_dir(joinpath(unidir, 'maxstat'))
+    unidata[var] = {'has_cut': has_cut, 'data': {}}
+    if has_cut:
+        survs = [stem(png).split('@', 1)[1]
+                 for png in glob(joinpath(unidir, 'maxstat', '*.png'))]
+        for surv in survs:
+            unidata[var]['data'][surv] = []
+            for i, cutdir in enumerate(glob(joinpath(unidir, '*'))):
+                cut = basename(cutdir)
+                unidata[var]['data'][surv].append({
+                    'id': f'uni-{surv}-{var}-{cut}',
+                    'text': f'Cut by {cut}' if i == 0 else cut,
+                    'table': joinpath(unidir, cut, f'Kaplan_Meier@{surv}.txt'),
+                    'plot': joinpath(unidir, cut, f'Kaplan_Meier@{surv}.png')
+                })
+    else:
+        survs = [stem(png).split('@', 1)[1]
+                 for png in glob(joinpath(unidir, '*.png'))]
+        for surv in survs:
+            unidata[var]['data'][surv] = [{
+                'id': f'uni-{surv}-{var}',
+                'text': '',
+                'table': joinpath(unidir, f'Kaplan_Meier@{survs[0]}.txt'),
+                'plot': joinpath(unidir, f'Kaplan_Meier@{survs[0]}.png')
+            }]
+
+for mdir in glob(joinpath(job['out'].multidir, '*')):
+    var = basename(mdir)
+    survs = [stem(txt).split('@', 1)[1]
+             for txt in glob(joinpath(mdir, '*.txt'))]
+    multidata[var] = {}
+    for surv in survs:
+        multidata[var][surv] = joinpath(mdir, f'Cox@{survs[0]}.txt')
+
+
+{% endpython %}
+
+# Univariate Analysis (Kaplan Meier)
+{% for var, data in unidata.items() %}
+## {{var}}
+
+    {% if data.has_cut %}
+
+        {% for surv, dat in data.data.items() %}
+            {% if len(data.data) > 1 %}
+### {{surv}}
+            {% endif %}
+            <Tabs
+                selected="{{dat[0].id}}"
+                class="bg-gray-800 elevation-4 text-white"
+                tabButtonClasses="p-2"
+                color="yellow-a200"
+                let:selected={selected}
+                items={ {{ dat | @json.dumps }} }>
+                <div
+                    slot="content"
+                    class="items-center content-center overflow-hidden p-5 w-full h-full border-2 border-gray-600 border-t-0 mb-8">
+
+                {% for da in dat %}
+                <Tab id="{{da.id}}" {selected}>
+                    <Image alt="SurvivalAnalysis" src="{{da.plot}}" class="w-2/3" />
+
+                    <DataTable
+                        data="{{da.table | @report.datatable: delimiter='\t'}}"
+                        datafile="{{da.table}}" />
+                </Tab>
+                {% endfor %}
+
+                </div>
+            </Tabs>
+
+        {% endfor %}
+
+    {% else %}
+
+        {% for surv, dat in data.data.items() %}
+            {% if len(data.data) > 1 %}
+
+### {{surv}}
+
+            {% endif %}
+            <Image alt="SurvivalAnalysis" src="{{dat[0].plot}}" class="w-2/3" />
+
+            <DataTable
+                class="mb-8"
+                data="{{dat[0].table | @report.datatable: delimiter='\t'}}"
+                datafile="{{dat[0].table}}" />
+        {% endfor %}
+    {% endif %}
+
+{% endfor %}
+
+# Multivariate Analysis (Cox)
+{% for var, data in multidata.items() %}
+## {{ var | lambda x: x == '__all__' ? 'All Features' ! replace: ',', ', ' }}
+
+    {% for surv, datafile in data.items() %}
+
+        {% if len(data) > 1 %}
+
+### {{surv}}
+
+        {% endif %}
+
+    <DataTable
+        class="mb-8"
+        data="{{datafile | @report.datatable: delimiter='\t'}}"
+        datafile="{{datafile}}" />
+
+{% endfor %}

@@ -1,0 +1,130 @@
+<script>
+import { Tabs, Tab, DataTable, Image } from 'pipen-smelte'
+
+</script>
+
+{% python %}
+import json
+
+def sort_items(item):
+    if ext(item['file']) == '.png' or basename(item['file']) == 'Contingency_Table.txt':
+        return ' '
+    return item['text']
+
+tabdatas = {}
+for pair_dir in glob(joinpath(job['out'].outdir, '*--*')):
+    feat1, feat2 = basename(pair_dir).split('--', 1)
+    tabdatas.setdefault(feat1, {}).setdefault(feat2, [])
+    tabdata = tabdatas[feat1][feat2]
+    for datafile in glob(joinpath(pair_dir, '*')):
+        tabdata.append({
+            'id': f'{feat1}-{feat2}-{len(tabdata)}',
+            'text': stem(datafile).replace('_', ' '),
+            'type': 'figure' if ext(datafile) == '.png' else 'table',
+            'file': datafile
+        })
+
+for feat1, outcome_tabdata in tabdatas.items():
+    for outcome, tabdata in outcome_tabdata.items():
+        outcome_tabdata[outcome] = list(sorted(tabdata, key=sort_items))
+
+if len(args['outcome']) == 1:
+    tabitems = {
+        feat: outcome_tabdata[args['outcome'][0]]
+        for feat, outcome_tabdata in tabdatas.items()
+    }
+else:
+    tabitems = [{
+        'feat': feat,
+        'item': [{
+            'id': f'{feat}-{outcome}',
+            'text': f'Against {outcome}',
+            'outcome': outcome
+        } for outcome in outcome_tabdata]
+    } for feat, outcome_tabdata in tabdatas.items()]
+
+{% endpython %}
+
+{% if len(args.outcome) == 1 %}
+
+    {% for feat, tabitem in tabitems.items() %}
+
+# {{feat}}
+
+        <Tabs
+            selected="{{tabitem[0].id}}"
+            class="bg-gray-800 elevation-4 text-white "
+            tabButtonClasses="p-2"
+            color="yellow-a200"
+            let:selected={selected}
+            items={ {{tabitem | @json.dumps}} }>
+            <div
+                slot="content"
+                class="flex items-center content-center overflow-hidden p-5 w-full h-full border-2 border-gray-600 border-t-0"
+            >
+            <Tab id="{{tabitem[0].id}}" {selected}>
+                {% if tabitem[0].type == 'table' %}
+                    <DataTable
+                        data="{{tabitem[0].file | @report.datatable: delimiter='\t'}}"
+                        datafile="{{tabitem[0].file}}" />
+                {% else %}
+                    <Image
+                        alt="{{tabitem[0].text}}"
+                        src="{{tabitem[0].file}}"
+                        class="w-2/3"
+                        />
+                {% endif %}
+            </Tab>
+            {% for tab in tabitem[1:] %}
+            <Tab id="{{tab.id}}" {selected}>
+                <DataTable
+                    data="{{tab.file | @report.datatable: delimiter='\t'}}"
+                    datafile="{{tab.file}}" />
+            </Tab>
+            {% endfor %}
+            </div>
+        </Tabs>
+    {% endfor %}
+
+{% else %}
+
+    {% for tabitem in tabitems  %}
+
+# {{tabitem.feat}}
+        <Tabs
+            selected="{{tabitem.item[0].id}}"
+            class="bg-gray-800 elevation-4 text-white "
+            tabButtonClasses="p-2"
+            color="yellow-a200"
+            let:selected={selected}
+            items={ {{ tabitem.item | @json.dumps }} }>
+            <div
+            slot="content"
+            class="items-center content-center overflow-hidden p-5 w-full h-full border-2 border-gray-600 border-t-0"
+            >
+            {% for item in tabitem.item %}
+            <Tab id="{{tabitem.feat}}-{{item.outcome}}" {selected}>
+                {% for tabdata in tabdatas[tabitem.feat][item.outcome] %}
+                    <h4>{{tabdata.text}}</h4>
+                    {% if tabdata.type == 'table' %}
+                    <DataTable
+                        class="mb-6"
+                        data="{{tabdata.file | @report.datatable: delimiter='\t'}}"
+                        datafile="{{tabdata.file}}" />
+                    {% else %}
+                    <Image
+                        alt="{{tabdata.text}}"
+                        src="{{tabdata.file}}"
+                        class="w-2/3"
+                        />
+                    {% endif %}
+                {% endfor %}
+            </Tab>
+            {% endfor %}
+            </div>
+        </Tabs>
+
+    {% endfor %}
+
+{% endif %}
+

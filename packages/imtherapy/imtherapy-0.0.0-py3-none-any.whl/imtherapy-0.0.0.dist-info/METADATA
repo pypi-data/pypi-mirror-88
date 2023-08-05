@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: imtherapy
+Version: 0.0.0
+Summary: A framework to explore, select and discover predictive markers for cancer immunotherapy
+License: MIT
+Author: pwwang
+Author-email: pwwang@pwwang.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: pipen
+Requires-Dist: pipen-args
+Requires-Dist: pipen-report
+Requires-Dist: pipen-verbose
+Requires-Dist: pyparam
+Requires-Dist: rich (>=9.0.0,<10.0.0)
+Requires-Dist: simplug
