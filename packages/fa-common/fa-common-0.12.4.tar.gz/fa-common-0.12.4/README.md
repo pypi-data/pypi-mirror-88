@@ -1,0 +1,16 @@
+# FastAPI Common Framework
+
+[![PyPI version](https://badge.fury.io/py/fa-common.svg)](https://badge.fury.io/py/fa-common)
+[![coverage report](https://gitlab.com/csiro-geoanalytics/python-shared/fastapi-common-framework/badges/master/coverage.svg)](https://gitlab.com/csiro-geoanalytics/python-shared/fastapi-common-framework/-/commits/master)
+
+## Version: 0.12.4
+
+This is the common API framework used by the CSIRO geoanalytics software team. Not currently designed for use outside of the CSIRO geoanalytics team.
+
+Code and concepts borrow heavily from [FastAPI Contrib](https://pypi.org/project/fastapi-contrib/) I suggest you check them out if you are looking for a user friendly open source FastAPI Utility framework.
+
+## Testing
+
+To run tests locally you will need to rename tests/.env.secret.template to tests/.env.secret and replace the blank values with your own. For CSIRO users, values can be found in the CI/CD Variables for the project.
+
+Note: If you wish to change any of the .env values you can replace them in your own .env.secret file and they will take priority over the .env values without removing them.
