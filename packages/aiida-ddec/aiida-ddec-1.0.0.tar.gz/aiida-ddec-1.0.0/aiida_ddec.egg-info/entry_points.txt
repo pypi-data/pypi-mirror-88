@@ -1,0 +1,9 @@
+[aiida.calculations]
+ddec = aiida_ddec.calculations:DdecCalculation
+
+[aiida.parsers]
+ddec = aiida_ddec.parsers:DdecParser
+
+[aiida.workflows]
+ddec.cp2k_ddec = aiida_ddec.workchains:Cp2kDdecWorkChain
+
