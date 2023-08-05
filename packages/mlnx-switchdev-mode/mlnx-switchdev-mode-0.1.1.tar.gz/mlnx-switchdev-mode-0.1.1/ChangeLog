@@ -1,0 +1,36 @@
+CHANGES
+=======
+
+0.1.1
+-----
+
+* Don't rebind VFs by default, run earlier
+* Detect and warn about card not in SR-IOV mode
+* ci: Drop Python3.5 gate
+
+0.1.0
+-----
+
+* Add unit tests for switch function
+* Add tests for show command
+* Tidy tests
+* Add PCIDevice unit tests
+* Add py3 unit testing to travis CI
+* Tidy lint
+* Add unit tests for netdev helpers
+* Fix minor typo
+* Complete docstrings
+* Add pydoc
+* General tidy
+* Add Travis build status, detail long description format
+* Add After for sriov-netplan-shim
+* Add travis configuration
+* Misc fixes and improvements
+* Drop Environment from setup
+* Update project information
+* Update systemd unit to run after charmed openstack sriov configuration
+* Comments and help
+* Misc tidy
+* more py3 typing
+* py3 typing
+* Baseline commit
