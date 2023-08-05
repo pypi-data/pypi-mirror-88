@@ -1,0 +1,48 @@
+<!-- object start -->
+<strong style="font-size:1.5em; margin-bottom: 1em; display:block;">{{ schema.title }}</strong>
+<div style="">
+{% if "propertyOrder" not in schema %}
+  {% for property_name, property_schema in schema.properties.items() %}
+    {% set is_required = ('required' in schema and property_name in schema['required']) %}
+    {% set name = property_name %}
+    {% set schema = property_schema %}
+    {% set id_prefix = id_prefix + '_' + name + '_' %}
+    {% if data is not none and property_name in data %}
+    {% set data = data[property_name] %}
+    {% else %}
+    {% set data = none %}
+    {% endif %}
+    {% include "objects/forms/form_any.html" %}
+  {% endfor %}
+{% else %}
+  {% for property_name in schema.propertyOrder %}
+    {% if property_name in schema.properties %}
+      {% set is_required = ('required' in schema and property_name in schema['required']) %}
+      {% set name = property_name %}
+      {% set schema = schema.properties[property_name] %}
+      {% set id_prefix = id_prefix + '_' + name + '_' %}
+      {% if data is not none and property_name in data %}
+      {% set data = data[property_name] %}
+      {% else %}
+      {% set data = none %}
+      {% endif %}
+      {% include "objects/forms/form_any.html" %}
+    {% endif %}
+  {% endfor %}
+  {% for property_name, property_schema in schema.properties.items() %}
+    {% if property_name not in schema.propertyOrder %}
+      {% set is_required = ('required' in schema and property_name in schema['required']) %}
+      {% set name = property_name %}
+      {% set schema = property_schema %}
+      {% set id_prefix = id_prefix + '_' + name + '_' %}
+      {% if data is not none and property_name in data %}
+      {% set data = data[property_name] %}
+      {% else %}
+      {% set data = none %}
+      {% endif %}
+      {% include "objects/forms/form_any.html" %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+</div>
+<!-- object end -->

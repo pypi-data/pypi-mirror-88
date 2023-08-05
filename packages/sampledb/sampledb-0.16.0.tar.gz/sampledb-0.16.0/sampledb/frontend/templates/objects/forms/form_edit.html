@@ -1,0 +1,20 @@
+{% extends "objects/forms/form_base.html" %}
+
+{% block title %}Object #{{ object_id }} — {{ service_name }}{% endblock %}
+
+{% block content %}
+  <form class="form-horizontal" method="post" action="{{ url_for('.object', object_id=object_id, mode=mode) }}">
+    {{ form.csrf_token() }}
+    <input type="hidden" name="previous_actions" value="{{ previous_actions }}">
+    {% set id_prefix = "object_" %}
+    {% include "objects/forms/form_any.html" %}
+    <div class="form-group row clearfix" style="padding-right:0.75em">
+      <div class="col-md-3 col-md-offset-6">
+        <a href="{{ url_for('.object', object_id=object_id) }}" class="btn btn-default pull-right" style="width:20em">Cancel</a>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" name="action_submit" class="btn btn-primary pull-right" style="width:20em">Save</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
