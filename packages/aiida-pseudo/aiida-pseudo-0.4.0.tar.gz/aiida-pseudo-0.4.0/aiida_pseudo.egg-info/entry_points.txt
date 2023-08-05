@@ -1,0 +1,16 @@
+[aiida.data]
+pseudo = aiida_pseudo.data.pseudo.pseudo:PseudoPotentialData
+pseudo.jthxml = aiida_pseudo.data.pseudo.jthxml:JthXmlData
+pseudo.psf = aiida_pseudo.data.pseudo.psf:PsfData
+pseudo.psml = aiida_pseudo.data.pseudo.psml:PsmlData
+pseudo.psp8 = aiida_pseudo.data.pseudo.psp8:Psp8Data
+pseudo.upf = aiida_pseudo.data.pseudo.upf:UpfData
+
+[aiida.groups]
+pseudo.family = aiida_pseudo.groups.family.pseudo:PseudoPotentialFamily
+pseudo.family.pseudo_dojo = aiida_pseudo.groups.family.pseudo_dojo:PseudoDojoFamily
+pseudo.family.sssp = aiida_pseudo.groups.family.sssp:SsspFamily
+
+[console_scripts]
+aiida-pseudo = aiida_pseudo.cli:cmd_root
+
