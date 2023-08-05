@@ -1,0 +1,92 @@
+<script>
+import { Tabs, Tab, DataTable, Image } from 'pipen-smelte'
+
+</script>
+# Global view of the feature relationships
+
+<Image
+    alt="Global view"
+    src="{{ job.out.outdir }}/global.png"
+    class="w-3/4"
+    />
+
+{% for pair_dir in job.out.outdir | joinpath: '*--*' | glob %}
+
+{%- assign pair = pair_dir | basename -%}
+{%- assign feat1 = pair | split: '--' | getitem: 0 -%}
+{%- assign feat2 = pair | split: '--' | getitem: 1 -%}
+
+# {{feat1}} v.s. {{feat2}}
+
+{% python %}
+import json
+# compose the tab data
+tabdata = []
+# first see if there is png file for the plot, otherwise check the contingencyTable
+figures = list(glob(joinpath(pair_dir, '*.png')))
+if len(figures) == 0:
+    conttable = joinpath(pair_dir, 'Contingency_Table.txt')
+    tabdata.append({
+        'id': f'{feat1}-{feat2}-0',
+        'text': stem(conttable).replace('_', ' '),
+        'type': 'table',
+        'file': conttable
+    })
+else:
+    tabdata.append({
+        'id': f'{feat1}-{feat2}-0',
+        'text': stem(figures[0]).replace('_', ' '),
+        'type': 'figure',
+        'file': figures[0]
+    })
+# Add other files
+files = list(glob(joinpath(pair_dir, '*.txt')))
+for file in files:
+    if basename(file) == 'Contingency_Table.txt':
+        continue
+
+    tabdata.append({
+        'id': f'{feat1}-{feat2}-{len(tabdata)}',
+        'text': stem(file).replace('_', ' '),
+        'type': 'table',
+        'file': file
+    })
+
+{% endpython %}
+
+<Tabs
+    selected="{{tabdata[0].id}}"
+    class="bg-gray-800 elevation-4 text-white "
+    tabButtonClasses="p-2"
+    color="yellow-a200"
+    let:selected={selected}
+    items={ {{tabdata | @json.dumps}} }>
+    <div
+      slot="content"
+      class="flex items-center content-center overflow-hidden p-5 w-full h-full border-2 border-gray-600 border-t-0"
+    >
+      <Tab id="{{tabdata[0].id}}" {selected}>
+        {% if tabdata[0].type == 'table' %}
+            <DataTable
+                data="{{tabdata[0].file | @report.datatable: delimiter='\t'}}"
+                datafile="{{tabdata[0].file}}" />
+        {% else %}
+            <Image
+                alt="{{tabdata[0].text}}"
+                src="{{tabdata[0].file}}"
+                class="w-2/3"
+                />
+        {% endif %}
+      </Tab>
+      {% for tab in tabdata[1:] %}
+      <Tab id="{{tab.id}}" {selected}>
+        <DataTable
+            data="{{tab.file | @report.datatable: delimiter='\t'}}"
+            datafile="{{tab.file}}" />
+      </Tab>
+      {% endfor %}
+    </div>
+  </Tabs>
+
+
+{% endfor %}

@@ -1,0 +1,14 @@
+<script>
+import { DataTable, Image } from 'pipen-smelte'
+</script>
+
+
+# Missing patterns
+
+<Image alt="missing pattern" src="{{job.outdir | abspath | joinpath: 'missing.png'}}" class="w-2/3" />
+
+# Imputation methods
+
+<DataTable
+    data="{{job.outdir | joinpath: 'impute-methods.txt' | @report.datatable: delimiter='\t'}}"
+/>
