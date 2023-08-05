@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: xml-to-dict
+Version: 0.1.6
+Summary: A simple Python XML to Dictionary parser
+Home-page: https://github.com/xthehatterx/xml_to_dict
+Author: Ezequiel M. Iglesias
+Author-email: ezequiel.m.iglesias@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# xml_to_dict
+
+A simple Python XML to Dictionary parser.
+
+The package is based on [this answer](https://stackoverflow.com/a/10077069) from Stack Overflow. It parses entities as well as attributes following [this XML-to-JSON "specification"](https://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html).
+
+I just added the *from_nest* function, which lets you retrieve a value from the nested dictionaries.
+
+## Install
+
+```bash
+pip3 install xml_to_dict --user
+```
+
+## Usage
+
+```python
+from xml_to_dict import XMLtoDict
+
+sample_xml = (
+    '<response>'
+        '<results>'
+            '<user>'
+                '<name>Ezequiel</name>'
+                '<age>33</age>'
+                '<city>San Isidro</city>'
+            '</user>'
+            '<user>'
+                '<name>Belén</name>'
+                '<age>30</age>'
+                '<city>San Isidro</city>'
+            '</user>'
+        '</results>'
+    '</response>'
+)
+
+parser = XMLtoDict()
+
+print(parser.parse(sample_xml)) # {'response': {'results': {'user': [{'name': 'Ezequiel', 'age': '33', 'city': 'San Isidro'}, {'name': 'Belén', 'age': '30', 'city': 'San Isidro'}]}}}
+
+print(parser.value_from_nest('.*ser', sample_xml)) # [{'name': 'Ezequiel', 'age': '33', 'city': 'San Isidro'}, {'name': 'Belén', 'age': '30', 'city': 'San Isidro'}]
+```
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch
+3. Commit your Changes
+4. Push to the Branch
+5. Open a Pull Request
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
