@@ -1,0 +1,11 @@
+# File-Wizard
+[![pipeline status](https://gitlab.com/file-wizard/file-wizard/badges/master/pipeline.svg)](https://gitlab.com/file-wizard/file-wizard/-/commits/master)
+
+[![coverage report](https://gitlab.com/file-wizard/file-wizard/badges/master/coverage.svg)](https://gitlab.com/file-wizard/file-wizard/-/commits/master)
+
+FIle manipulation for python programs made simple. Need a standalone directory that can be used for your python program to hold temporary data? Need to automatically delete the directory after use? Verify a particular file's hash? File Wizard can help you out, featuring automated creation and deletion of directories as required, and can verify hash values on the go. More features for helping you program comfortably without worrying about file objects and data, coming soon
+
+<h2> Testing Reports </h2>
+See [unit testing report](https://file-wizard.gitlab.io/unit)<br>
+See testing [coverage report](https://file-wizard.gitlab.io/cov/)<br>
+See [documentation](https://file-wizard.gitlab.io/doc/)
