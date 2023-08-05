@@ -1,0 +1,240 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Available commands &#8212; Python MPD Module 0.4.5 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contribute.html" />
+    <link rel="prev" title="MPD client class" href="doc.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="contribute.html" title="Contributing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="doc.html" title="MPD client class"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python MPD Module 0.4.5 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="available-commands">
+<span id="commands"></span><h1>Available commands<a class="headerlink" href="#available-commands" title="Permalink to this headline">¶</a></h1>
+<p>Get current available commands:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">musicpd</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">cmd</span> <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">musicpd</span><span class="o">.</span><span class="n">MPDClient</span><span class="p">()</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">keys</span><span class="p">()]))</span>
+</pre></div>
+</div>
+<p>List, last updated for v0.4.4:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">==</span> <span class="n">Status</span> <span class="n">Commands</span>
+<span class="n">clearerror</span>                                 <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">currentsong</span>                                <span class="o">-&gt;</span> <span class="n">fetch_object</span>
+<span class="n">idle</span>               <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>                 <span class="o">-&gt;</span> <span class="n">fetch_list</span>
+<span class="n">noidle</span>                                     <span class="o">-&gt;</span> <span class="kc">None</span>
+<span class="n">status</span>                                     <span class="o">-&gt;</span> <span class="n">fetch_object</span>
+<span class="n">stats</span>                                      <span class="o">-&gt;</span> <span class="n">fetch_object</span>
+
+<span class="o">==</span> <span class="n">Playback</span> <span class="n">Option</span> <span class="n">Commands</span>
+<span class="n">consume</span>            <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span>                  <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">crossfade</span>          <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">mixrampdb</span>          <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">mixrampdelay</span>       <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">random</span>             <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span>                  <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">repeat</span>             <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span>                  <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">setvol</span>             <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">single</span>             <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span>                  <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">replay_gain_mode</span>   <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">replay_gain_status</span>                         <span class="o">-&gt;</span> <span class="n">fetch_item</span>
+<span class="n">volume</span>             <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+
+<span class="o">==</span> <span class="n">Playback</span> <span class="n">Control</span> <span class="n">Commands</span>
+<span class="nb">next</span>                                       <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">pause</span>              <span class="p">[</span><span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">]</span>                <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">play</span>               <span class="p">[</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">]</span>                 <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">playid</span>             <span class="p">[</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">]</span>                 <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">previous</span>                                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">seek</span>               <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">seekid</span>             <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">seekcur</span>            <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">stop</span>                                       <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+
+<span class="o">==</span> <span class="n">Queue</span> <span class="n">Commands</span>
+<span class="n">add</span>                <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">addid</span>              <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">]</span>           <span class="o">-&gt;</span> <span class="n">fetch_item</span>
+<span class="n">clear</span>                                      <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">delete</span>             <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;|&lt;</span><span class="nb">range</span><span class="o">&gt;</span>           <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">deleteid</span>           <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">move</span>               <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;|&lt;</span><span class="nb">range</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>     <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">moveid</span>             <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">playlist</span>                                   <span class="o">-&gt;</span> <span class="n">fetch_playlist</span>
+<span class="n">playlistfind</span>       <span class="o">&lt;</span><span class="n">locate</span><span class="o">&gt;</span>                <span class="o">-&gt;</span> <span class="n">fetch_songs</span>
+<span class="n">playlistid</span>         <span class="p">[</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">]</span>                 <span class="o">-&gt;</span> <span class="n">fetch_songs</span>
+<span class="n">playlistinfo</span>       <span class="p">[</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;|&lt;</span><span class="nb">range</span><span class="o">&gt;</span><span class="p">]</span>         <span class="o">-&gt;</span> <span class="n">fetch_songs</span>
+<span class="n">playlistsearch</span>     <span class="o">&lt;</span><span class="n">locate</span><span class="o">&gt;</span>                <span class="o">-&gt;</span> <span class="n">fetch_songs</span>
+<span class="n">plchanges</span>          <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_songs</span>
+<span class="n">plchangesposid</span>     <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_changes</span>
+<span class="n">prio</span>               <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;|&lt;</span><span class="nb">range</span><span class="o">&gt;</span>     <span class="o">-&gt;</span> <span class="n">fetch_nothing</span><span class="p">,</span>
+<span class="n">prioid</span>             <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span><span class="p">,</span>
+<span class="n">rangeid</span>            <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">range</span><span class="o">&gt;</span>           <span class="o">-&gt;</span> <span class="n">fetch_nothing</span><span class="p">,</span>
+<span class="n">shuffle</span>            <span class="p">[</span><span class="o">&lt;</span><span class="nb">range</span><span class="o">&gt;</span><span class="p">]</span>               <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">swap</span>               <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">swapid</span>             <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">addtagid</span>           <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>       <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">cleartagid</span>         <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>           <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+
+<span class="o">==</span> <span class="n">Stored</span> <span class="n">Playlist</span> <span class="n">Commands</span>
+<span class="n">listplaylist</span>       <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_list</span>
+<span class="n">listplaylistinfo</span>   <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_songs</span>
+<span class="n">listplaylists</span>                              <span class="o">-&gt;</span> <span class="n">fetch_playlists</span>
+<span class="n">load</span>               <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">range</span><span class="o">&gt;</span><span class="p">]</span>         <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">playlistadd</span>        <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">playlistclear</span>      <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">playlistdelete</span>     <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">playlistmove</span>       <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>       <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">rename</span>             <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">rm</span>                 <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">save</span>               <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+
+<span class="o">==</span> <span class="n">Database</span> <span class="n">Commands</span>
+<span class="n">albumart</span>           <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>                              <span class="o">-&gt;</span> <span class="n">fetch_object</span>
+<span class="n">count</span>              <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                              <span class="o">-&gt;</span> <span class="n">fetch_object</span>
+<span class="n">count</span>              <span class="n">group</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                              <span class="o">-&gt;</span> <span class="n">fetch_object</span>
+<span class="n">find</span>               <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span><span class="o">...</span>             <span class="o">-&gt;</span> <span class="n">fetch_songs</span>
+<span class="n">findadd</span>            <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>                <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="nb">list</span>               <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span><span class="o">...</span><span class="p">[</span><span class="n">group</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span><span class="o">...</span>   <span class="o">-&gt;</span> <span class="n">fetch_list</span>
+<span class="n">listall</span>            <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>                                  <span class="o">-&gt;</span> <span class="n">fetch_database</span>
+<span class="n">listallinfo</span>        <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>                                  <span class="o">-&gt;</span> <span class="n">fetch_database</span>
+<span class="n">listfiles</span>          <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>                                    <span class="o">-&gt;</span> <span class="n">fetch_database</span>
+<span class="n">lsinfo</span>             <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>                                  <span class="o">-&gt;</span> <span class="n">fetch_database</span>
+<span class="n">readcomments</span>       <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>                                  <span class="o">-&gt;</span> <span class="n">fetch_object</span>
+<span class="n">search</span>             <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span><span class="o">...</span>             <span class="o">-&gt;</span> <span class="n">fetch_song</span>
+<span class="n">searchadd</span>          <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span><span class="o">...</span>             <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">searchaddpl</span>        <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span><span class="o">...</span>       <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">update</span>             <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>                                  <span class="o">-&gt;</span> <span class="n">fetch_item</span>
+<span class="n">rescan</span>             <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>                                  <span class="o">-&gt;</span> <span class="n">fetch_item</span>
+
+<span class="o">==</span> <span class="n">Mounts</span> <span class="ow">and</span> <span class="n">neighbors</span> <span class="o">==</span>
+<span class="n">mount</span>              <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>     <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">unmount</span>            <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>           <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">listmounts</span>                         <span class="o">-&gt;</span> <span class="n">fetch_mounts</span>
+<span class="n">listneighbors</span>                      <span class="o">-&gt;</span> <span class="n">fetch_neighbors</span>
+
+<span class="o">==</span> <span class="n">Sticker</span> <span class="n">Commands</span>
+<span class="n">sticker</span>   <span class="n">get</span>      <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>       <span class="o">-&gt;</span> <span class="n">fetch_item</span>
+<span class="n">sticker</span>   <span class="nb">set</span>      <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">sticker</span>   <span class="n">delete</span>   <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span>     <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">sticker</span>   <span class="nb">list</span>     <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>             <span class="o">-&gt;</span> <span class="n">fetch_list</span>
+<span class="n">sticker</span>   <span class="n">find</span>     <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>       <span class="o">-&gt;</span> <span class="n">fetch_songs</span>
+
+<span class="o">==</span> <span class="n">Connection</span> <span class="n">Commands</span>
+<span class="n">close</span>                               <span class="o">-&gt;</span> <span class="kc">None</span>
+<span class="n">kill</span>                                <span class="o">-&gt;</span> <span class="kc">None</span>
+<span class="n">password</span>           <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>            <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">ping</span>                                <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">tagtypes</span>                            <span class="o">-&gt;</span> <span class="n">fetch_list</span>
+<span class="n">tagtypes</span> <span class="n">disable</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span><span class="o">...</span>  <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">tagtypes</span> <span class="n">enable</span><span class="p">:</span>  <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">]</span><span class="o">...</span>  <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">tagtypes</span> <span class="n">clear</span><span class="p">:</span>                     <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">tagtypes</span> <span class="nb">all</span><span class="p">:</span>                       <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+
+<span class="o">==</span> <span class="n">Partition</span> <span class="n">Commands</span>
+<span class="n">partition</span>          <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>    <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">listpartitions</span>              <span class="o">-&gt;</span> <span class="n">fetch_list</span>
+<span class="n">newpartition</span>       <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>    <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+
+<span class="o">==</span> <span class="n">Audio</span> <span class="n">Output</span> <span class="n">Commands</span>
+<span class="n">disableoutput</span>      <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>       <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">enableoutput</span>       <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>       <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">toggleoutput</span>       <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span>       <span class="o">-&gt;</span> <span class="n">fetch_nothing</span>
+<span class="n">outputs</span>                        <span class="o">-&gt;</span> <span class="n">fetch_outputs</span>
+<span class="n">outputset</span>  <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span>   <span class="o">-&gt;</span> <span class="n">fetch_nothing</span> 
+
+<span class="o">==</span> <span class="n">Reflection</span> <span class="n">Commands</span>
+<span class="n">config</span>           <span class="o">-&gt;</span> <span class="n">fetch_object</span>
+<span class="n">commands</span>         <span class="o">-&gt;</span> <span class="n">fetch_list</span>
+<span class="n">notcommands</span>      <span class="o">-&gt;</span> <span class="n">fetch_list</span>
+<span class="n">urlhandlers</span>      <span class="o">-&gt;</span> <span class="n">fetch_list</span>
+<span class="n">decoders</span>         <span class="o">-&gt;</span> <span class="n">fetch_plugins</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="doc.html"
+                        title="previous chapter">MPD client class</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="contribute.html"
+                        title="next chapter">Contributing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/commands.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="contribute.html" title="Contributing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="doc.html" title="MPD client class"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python MPD Module 0.4.5 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, kaliko.
+    </div>
+  </body>
+</html>

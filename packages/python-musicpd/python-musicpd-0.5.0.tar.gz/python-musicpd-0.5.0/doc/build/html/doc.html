@@ -1,0 +1,193 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MPD client class &#8212; Python MPD Module 0.4.5 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Available commands" href="commands.html" />
+    <link rel="prev" title="Using the client library" href="use.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="commands.html" title="Available commands"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="use.html" title="Using the client library"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python MPD Module 0.4.5 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mpd-client-class">
+<h1>MPD client class<a class="headerlink" href="#mpd-client-class" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">musicpd.</code><code class="descname">MPDClient</code><a class="reference internal" href="_modules/musicpd.html#MPDClient"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>MPDClient instance will look for <code class="docutils literal notranslate"><span class="pre">MPD_HOST</span></code>/<code class="docutils literal notranslate"><span class="pre">MPD_PORT</span></code>/<code class="docutils literal notranslate"><span class="pre">XDG_RUNTIME_DIR</span></code> environment
+variables and set instance attribute <code class="docutils literal notranslate"><span class="pre">host</span></code>, <code class="docutils literal notranslate"><span class="pre">port</span></code> and <code class="docutils literal notranslate"><span class="pre">pwd</span></code>
+accordingly.</p>
+<p>Then <code class="xref py py-obj docutils literal notranslate"><span class="pre">musicpd.MPDClient.connect</span></code> will use <code class="docutils literal notranslate"><span class="pre">host</span></code> and <code class="docutils literal notranslate"><span class="pre">port</span></code> as defaults if not provided as args.</p>
+<p>Cf. <code class="xref py py-obj docutils literal notranslate"><span class="pre">musicpd.MPDClient.connect</span></code> for details.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">environ</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MPD_HOST&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pass@mpdhost&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli</span> <span class="o">=</span> <span class="n">musicpd</span><span class="o">.</span><span class="n">MPDClient</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli</span><span class="o">.</span><span class="n">pwd</span> <span class="o">==</span> <span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MPD_HOST&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MPD_HOST&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># cli.connect() will use host/port as set in MPD_HOST/MPD_PORT</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – host used with the current connection</li>
+<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – port used with the current connection</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/pwd.html#module-pwd" title="(in Python v3.8)"><strong>pwd</strong></a> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – <p>password detected in <code class="docutils literal notranslate"><span class="pre">MPD_HOST</span></code> environment variable</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Instance attribute host/port/pwd</p>
+<p>While <code class="xref py py-attr docutils literal notranslate"><span class="pre">musicpd.MPDClient().host</span></code> and
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">musicpd.MPDClient().port</span></code> keep track of current connection
+host and port, <code class="xref py py-attr docutils literal notranslate"><span class="pre">musicpd.MPDClient().pwd</span></code> in only holding the
+password as extracted from <code class="docutils literal notranslate"><span class="pre">MPD_HOST</span></code> environment variable.</p>
+<p class="last">Calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">musicpd.MPDClient().password()</span></code> with a new password
+won’t update <code class="xref py py-attr docutils literal notranslate"><span class="pre">musicpd.MPDClient().pwd</span></code> value.</p>
+</div>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt>
+<code class="descname">connect</code><span class="sig-paren">(</span><em>host=None</em>, <em>port=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/musicpd.html#MPDClient.connect"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Connects the MPD server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – hostname, IP or FQDN (defaults to <cite>localhost</cite> or socket, see below for details)</li>
+<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – port number (defaults to 6600)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The connect method honors MPD_HOST/MPD_PORT environment variables.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Default host/port</p>
+<dl class="last docutils">
+<dt>If host evaluate to <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></dt>
+<dd><ul class="first last simple">
+<li>use <code class="docutils literal notranslate"><span class="pre">MPD_HOST</span></code> environment variable if set, extract password if present,</li>
+<li>else looks for a existing file in <code class="docutils literal notranslate"><span class="pre">${XDG_RUNTIME_DIR:-/run/}/mpd/socket</span></code></li>
+<li>else set host to <code class="docutils literal notranslate"><span class="pre">localhost</span></code></li>
+</ul>
+</dd>
+<dt>If port evaluate to <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></dt>
+<dd><ul class="first last simple">
+<li>if <code class="docutils literal notranslate"><span class="pre">MPD_PORT</span></code> environment variable is set, use it for port</li>
+<li>else use <code class="docutils literal notranslate"><span class="pre">6600</span></code></li>
+</ul>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/musicpd.html#MPDClient.disconnect"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Closes the MPD connection.
+The client closes the actual socket, it does not use the
+‘close’ request from MPD protocol (as suggested in documentation).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="use.html"
+                        title="previous chapter">Using the client library</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="commands.html"
+                        title="next chapter">Available commands</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/doc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="commands.html" title="Available commands"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="use.html" title="Using the client library"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python MPD Module 0.4.5 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, kaliko.
+    </div>
+  </body>
+</html>
