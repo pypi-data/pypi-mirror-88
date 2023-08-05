@@ -1,0 +1,4 @@
+include requirements.txt
+include setupbase.py
+include README.md
+recursive-include luxwidget/nbextension/static *.js *.js.map *.d.ts
