@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: epic_mace
+Version: 0.2
+Summary: Python library and command-line tool for generation of 3D coordinates for complexes of d-/f-elements
+Home-page: http://github.com/EPiCs-group/mace
+Author: Ivan Yu. Chernyshov
+Author-email: ivan.chernyshoff@gmail.com
+License: GPLv3+
+Description: # MACE: MetAl Complexes Embedding
+        
+        Python library and command-line tool for generation of 3D coordinates for complexes of d-/f-elements.
+        
+        ## Installation
+        
+        Create new conda environment with [RDKit](http://anaconda.org/rdkit/rdkit) 2020.03.1 or later:
+        
+        ```
+        > conda create -n mace
+        > conda install -c rdkit rdkit=2020.09.1
+        ```
+        
+        Next activate the environment install mace package using pip:
+        
+        ```
+        > conda activate mace
+        > pip install mace=0.2
+        ```
+        
+        Enjoy!
+        
+        ## Usage
+        
+        See the *tests/demo.py* for the representative examples. Command-line interface is under development.
+        
+Keywords: 3D embedding geometry complex
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
