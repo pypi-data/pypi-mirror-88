@@ -1,0 +1,18 @@
+<script type="text/javascript">
+// Sorry for this but I am waiting for this: https://github.com/plone/Products.CMFPlone/issues/1674
+if (ploneFormTabbing) {
+  ploneFormTabbing.max_tabs = 10;
+}
+</script>
+<div i18n:domain="cpskin" id="portal-footer">
+    <p>
+      <span tal:condition="context/@@is_gdpr"><a href=""
+                tal:attributes="href string:${view/navigation_root_url}/gdpr-view"
+                i18n:translate="">Legal notice</a> - </span>
+        <span i18n:translate="" omit-tag="">Site created in collaboration with</span>&nbsp;<a href="http://www.imio.be" target="_blank" i18n:translate="">IMIO</a>&nbsp;<tal:block i18n:translate="">under</tal:block>
+        <a href="http://fr.wikipedia.org/wiki/Free_Software_Foundation"
+           target="_blank"
+           i18n:attributes="href string:http://fr.wikipedia.org/wiki/Free_Software_Foundation"
+           i18n:translate="">free license</a> - &copy; <abbr tal:content="view/year" />
+    </p>
+</div>
