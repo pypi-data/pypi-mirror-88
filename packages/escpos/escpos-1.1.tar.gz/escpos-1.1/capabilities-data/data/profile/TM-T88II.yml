@@ -1,0 +1,19 @@
+---
+TM-T88II:
+  name: TM-T88II
+  vendor: "Epson"
+  inherits: default
+  notes: >
+      Epson TM-T88II profile. This printer is discontinued by the Vendor,
+      and has similar feature support to the TM-T88III. The code page mapping
+      is documented in the "TM-T88II/T88III Technical Reference Guide".
+  codePages:
+    0: CP437
+    1: CP932
+    2: CP850
+    3: CP860
+    4: CP863
+    5: CP865
+    19: CP858
+    255: Unknown
+...
