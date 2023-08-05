@@ -1,0 +1,45 @@
+// Copyright 2020 Artificial Intelligence Redefined <dev+cogment@ai-r.com>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package cogment;
+
+import "cogment/api/common.proto";
+import "cogment/api/agent.proto";
+import "cogment/api/environment.proto";
+
+// Expected headers: None
+service LogExporter {
+  rpc OnLogSample(stream LogExporterSampleRequest) returns (LogExporterSampleReply) {}
+  rpc Version(VersionRequest) returns (VersionInfo) {}
+}
+
+message LogExporterSampleRequest {
+  oneof msg {
+    TrialParams trial_params = 1;
+    DatalogSample sample = 2;
+  }
+}
+
+message DatalogSample {
+  string user_id = 1;
+  
+  ObservationSet observations = 2;
+  repeated Action actions = 3;
+  repeated Reward rewards = 4;
+  repeated Message messages = 5;
+}
+
+message LogExporterSampleReply {}

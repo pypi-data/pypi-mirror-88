@@ -1,0 +1,178 @@
+// Copyright 2020 Artificial Intelligence Redefined <dev+cogment@ai-r.com>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package cogment;
+
+import "cogment/api/common.proto";
+import "cogment/api/agent.proto";
+import "cogment/api/environment.proto";
+import "cogment/api/message.proto";
+
+// This service is used to manage Trial lifecycle.
+service TrialLifecycle {
+
+  // Begin a new trial.
+  // Expected headers: None
+  rpc StartTrial(TrialStartRequest) returns (TrialStartReply) {}
+
+  // Terminate an existing trial.
+  // Expected headers: 
+  // - trial-id
+  rpc TerminateTrial(TerminateTrialRequest) returns (TerminateTrialReply) {}
+
+  // Broadcast a message to the members of a trial.
+  // Expected headers: 
+  // - trial-id
+  rpc SendMessage(MasterMessageDispatchRequest) returns (MessageDispatchReply) {}
+
+  // Get extra information about a specific trial.
+  // Expected headers: 
+  // - trial-id <optional>
+  rpc GetTrialInfo(TrialInfoRequest) returns (TrialInfoReply) {}
+
+  // Expected headers: None
+  rpc Version(VersionRequest) returns (VersionInfo) {}
+
+}
+
+// Encodes a request from a master to start a new trial.
+message TrialStartRequest {
+  // If the env has client-specified config associated with a startup request.
+  TrialConfig config = 1;
+
+  // Bookeeping identifier
+  string user_id = 2;
+}
+
+// Encodes information about the environment as
+message TrialStartReply {
+  // This trial identifier is used to match requests to trials
+  string trial_id = 1;
+
+  repeated TrialActor actors_in_trial = 2;
+}
+
+message TerminateTrialRequest {}
+message TerminateTrialReply {}
+
+message TrialInfoRequest {
+  // Request that the latest observations for that trial be provided.
+  bool get_latest_observation = 1;
+}
+
+enum TrialState {
+  UNKNOWN = 0;
+  INITIALIZING = 1;
+  PENDING = 2;
+  RUNNING = 3;
+  TERMINATING = 4;
+  ENDED = 5;
+}
+
+message TrialInfo {
+  string trial_id = 1;
+  TrialState state = 2;
+
+  // Only present if get_latest_observation is specified in the request.
+  ObservationSet latest_observation = 3;
+}
+
+message TrialInfoReply {
+  repeated TrialInfo trial = 1;
+}
+
+
+// This service is used by an actor within a trial, using the "client" API.
+service ActorEndpoint {
+
+  // Expected headers: None
+  rpc JoinTrial(TrialJoinRequest) returns (TrialJoinReply) {}
+
+  // Expected headers: 
+  // - trial-id
+  // - actor-name
+  rpc ActionStream(stream TrialActionRequest) returns (stream TrialActionReply) {}
+  
+  // Expected headers: 
+  // - trial-id
+  // - actor-name
+  rpc Heartbeat(TrialHeartbeatRequest) returns (TrialHeartbeatReply) {}
+
+  // Expected headers: 
+  // - trial-id
+  // - actor-name
+  rpc GiveFeedback(TrialFeedbackRequest) returns (TrialFeedbackReply) {}
+
+  // Expected headers: 
+  // - trial-id
+  rpc SendMessage(TrialMessageRequest) returns (TrialMessageReply) {}
+  
+  // Expected headers: None
+  rpc Version(VersionRequest) returns (VersionInfo) {}
+}
+
+message TrialJoinRequest {
+  // This trial identifier is used to match requests to trials
+  string trial_id = 1;
+
+  oneof slot_selection {
+    // Join at any available actor slot for that actor class
+    string actor_class = 2;
+
+    // Join at a specific actor_slot
+    string actor_name = 3;
+  }
+}
+
+message TrialJoinReply {
+  // The actor name that was assigned to us.
+  string actor_name = 1;
+
+  // The trial we have joined.
+  string trial_id = 2;
+
+  // Project-specific actor configuration. The content has to match the
+  // actor's class config_type.
+  ActorConfig config = 3;
+
+  // All the actors present in the trial.
+  repeated TrialActor actors_in_trial = 4;
+}
+
+message TrialHeartbeatRequest {}
+
+message TrialHeartbeatReply {}
+
+message TrialActionRequest {
+  Action action = 1;
+}
+
+message TrialActionReply {
+  AgentPeriodData data = 1;
+  bool final_data = 2;
+}
+
+message TrialFeedbackRequest {
+  repeated Feedback feedbacks = 1;
+}
+
+message TrialFeedbackReply {}
+
+message TrialMessageRequest {
+  repeated Message messages = 1;
+}
+
+message TrialMessageReply {}

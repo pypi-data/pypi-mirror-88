@@ -1,0 +1,102 @@
+// Copyright 2020 Artificial Intelligence Redefined <dev+cogment@ai-r.com>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package cogment;
+
+import "cogment/api/common.proto";
+
+// This is the connection between the orchestrator and the Env backend.
+// This service is hosted on the backend executable, and contacted by the
+// orchestrator.
+// Expected metadata for all calls except `Version`:
+//   - trial-id: The id of the trial
+service EnvironmentEndpoint {
+  rpc OnStart(EnvStartRequest) returns (EnvStartReply) {}
+
+  rpc OnAction(stream EnvActionRequest) returns (stream EnvActionReply) {}
+  rpc OnMessage(EnvMessageRequest) returns (EnvMessageReply) {}
+
+  rpc OnEnd(EnvActionRequest) returns (EnvActionReply) {}
+
+  rpc Version(VersionRequest) returns (VersionInfo) {}
+}
+
+
+// An observation set encodes the observations of ALL actors connected to
+// an environment.
+message ObservationSet {
+  uint64 tick_id = 1;
+  fixed64 timestamp = 2;
+
+  repeated ObservationData observations = 3;
+
+  // Maps actors to observations.  This list has the same number and order
+  // of items as the EnvActionRequest.actors_in_trial received on start.
+  // The values are indexes into the `observations` list.
+  // It is assumed that actors are only ever assigned observations that are
+  // members of their observation space.
+  repeated int32 actors_map = 4;
+}
+
+// One action per actor within the environment
+message ActionSet {
+  // Must match the type in the config's actor_classes->[i]->action_space
+  repeated bytes actions = 1;
+}
+
+// **************** START ***************** //
+message EnvStartRequest {
+  // Name of the environment implementation to use.
+  // This can be useful if there are multiple environment implementations
+  // being served from the same service.
+  string impl_name = 1;
+
+  // Project-specific environment configuration. The content has to match the
+  // environment's config_type.
+  EnvironmentConfig config = 2;
+
+  // Actors present in the trial.
+  repeated TrialActor actors_in_trial = 3;
+}
+
+message EnvStartReply {
+  ObservationSet observation_set = 1;
+}
+
+// **************** UPDATE ***************** //
+message EnvActionRequest {
+  ActionSet action_set = 1;
+
+  // Prevent the creation of Observation Deltas
+  bool reply_with_snapshot = 2;
+}
+
+message EnvActionReply {
+  ObservationSet observation_set = 1;
+
+  repeated Feedback feedbacks = 2;  // Feedback accumulated so far
+  repeated Message messages = 3;
+
+  bool final_update = 4;  // This should normally end the trial
+}
+
+// **************** MESSAGE ***************** //
+message EnvMessageRequest {
+  string actor_name = 1;
+  repeated Message messages = 2;
+}
+
+message EnvMessageReply {}

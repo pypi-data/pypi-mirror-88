@@ -1,0 +1,133 @@
+// Copyright 2020 Artificial Intelligence Redefined <dev+cogment@ai-r.com>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package cogment;
+
+import "google/protobuf/any.proto";
+
+// **************** VERSIONING ***************** //
+message VersionRequest {}
+
+message VersionInfo {
+  message Version {
+    string name = 1;
+    string version = 2;
+  }
+
+  repeated Version versions = 1;
+}
+
+// **************** CONFIGURATION ***************** //
+
+message TrialConfig {
+  bytes content = 1;
+}
+
+message ActorConfig {
+  bytes content = 1;
+}
+
+message EnvironmentConfig {
+  bytes content = 1;
+}
+
+message EnvironmentParams {
+  string endpoint = 1;
+  EnvironmentConfig config = 2;
+}
+
+message ActorParams {
+  string name = 1;
+  string actor_class = 2;
+  string endpoint = 3;  
+
+  // Specifies an implementation name to use. This is used to distinguish
+  // Between multiple implementations of the same actor class running on the same endpoint.
+  string implementation = 4;
+  ActorConfig config = 5;
+}
+
+message TrialParams {
+  // Client-provided configuration
+  TrialConfig trial_config = 1;
+  
+  // Environment data
+  EnvironmentParams environment = 2;
+
+  // Actor Data
+  repeated ActorParams actors = 3;
+
+
+  // After that many steps happen, the trial is automatically ended.
+  uint32 max_steps = 4;
+
+  // After this amount of time (in seconds) has elapsed without any activity
+  // on a trial, that trial is elligible for garbage collection 
+  uint32 max_inactivity = 5;
+}
+
+// Represents the presence of an actor within a trial
+message TrialActor {
+  // Which actor class this actor belongs to. This has to match
+  // an entry in the project's cogment.yaml
+  string actor_class = 1;
+
+  // The name of the actor.
+  string name = 2;
+}
+
+// **************** OBSERVATIONS ***************** //
+
+message ObservationData {
+  // Must match the type in the config's actor_classes->[i]->observation_space (snapshot = true)
+  // Must match the type in the config's actor_classes->[i]->observation_space_delta (snapshot = false)
+  bytes content = 1;
+  bool snapshot = 2;
+}
+
+// A single observation, as perceived by a single actor.
+message Observation {
+  uint64 tick_id = 1;
+  fixed64 timestamp = 2;
+
+  ObservationData data = 3;
+}
+
+
+// **************** ACTIONS ***************** //
+message Action {
+  // Must match the type in the config's actor_classes->[i]->action_space
+  bytes content = 1;
+}
+
+// **************** FEEDBACK ***************** //
+message Feedback {
+  string actor_name = 1;
+  int32 tick_id = 2;
+
+  float value = 3;
+  float confidence = 4;
+
+  google.protobuf.Any user_data = 5;
+}
+
+// **************** MESSAGES ****************** //
+message Message {
+  int32 tick_id = 1;
+  string sender_name = 2;
+  string receiver_name = 3;
+  google.protobuf.Any payload = 4;
+}
