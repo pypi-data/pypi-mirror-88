@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: nuregi
+Version: 0.1.0.dev1
+Summary: A basic Python-based API client library for registrar.nu.edu.kz
+Home-page: https://github.com/aldan/nuregi
+Author: aldan
+Author-email: gitaldan@gmail.com
+License: UNKNOWN
+Project-URL: Source, https://github.com/aldan/nuregi
+Project-URL: Tracker, https://github.com/aldan/nuregi/issues
+Keywords: api library registrar.nu.edu.kz scraper
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Java
+Classifier: Natural Language :: English
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: tabula-py
+
+# Nuregi
+
+A basic Python-based API client library for registrar.nu.edu.kz
+
