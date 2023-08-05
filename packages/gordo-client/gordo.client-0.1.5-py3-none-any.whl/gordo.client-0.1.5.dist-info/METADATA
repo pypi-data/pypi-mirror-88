@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: gordo.client
+Version: 0.1.5
+Summary: Gordo client
+Home-page: https://github.com/equinor/gordo-client
+License: AGPL-3.0
+Keywords: gordo-client
+Author: Equinor ASA
+Author-email: fg_gpl@equinor.com
+Requires-Python: >=3.7,<4.0
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Project-URL: Repository, https://github.com/equinor/gordo-client
+Description-Content-Type: text/markdown
+
+# Gordo client
+Separete client for [Gordo](https://github.com/equinor/gordo) project.
+
+# Install
+`pip install gordo-client`
+
+# Uninstall
+`pip uninstall gordo-client`
+
