@@ -1,0 +1,27 @@
+wired
+venusian
+
+[:python_version < "3.8"]
+typing_utils
+
+[:python_version < "3.9"]
+typing_extensions
+
+[dev]
+mypy
+coverage
+pytest-coverage
+tox
+black
+flake8
+twine
+pre-commit
+check-manifest
+
+[docs]
+Sphinx
+sphinx-book-theme
+myst-parser
+
+[tests]
+pytest
