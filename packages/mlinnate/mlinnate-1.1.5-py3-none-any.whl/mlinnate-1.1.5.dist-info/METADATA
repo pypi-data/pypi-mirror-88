@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: mlinnate
+Version: 1.1.5
+Summary: Innate stands for Integrated Neural Network Automatic Trainer and Evaluator
+Home-page: https://llrgit.in2p3.fr/online/innate
+Author: Frederic Magniette
+Author-email: magniette@llr.in2p3.fr
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: tensorflow (>2)
+Requires-Dist: keras
+Requires-Dist: numpy (<1.19.0)
+Requires-Dist: matplotlib
+Requires-Dist: dill
+Requires-Dist: rpyc
+Requires-Dist: IPython
+Requires-Dist: h5py
+
+Innate stands for Integrated Neural Network Automatic Trainer and Evaluator. It is a framework for training neural networks and optimizing their hyperparameters. The base concept is to provide, at the user level, a complete abstraction of the training of a neural network on a cluster. The user can use the interface to launch tasks and get results as if they were executed on its own machine. The runtime provided by the framework simplify also the necessary code for training.
+
+This package is the interface library to connect to an innate server and execute training.
+
+
