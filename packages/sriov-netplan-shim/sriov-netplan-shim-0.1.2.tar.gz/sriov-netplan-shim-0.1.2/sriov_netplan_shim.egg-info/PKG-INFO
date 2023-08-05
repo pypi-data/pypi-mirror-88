@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: sriov-netplan-shim
+Version: 0.1.2
+Summary: Utility to configure SR-IOV VF's (until netplan can do it)
+Home-page: http://github.com/openstack-charmers/sriov-netplan-shim
+Author: OpenStack Charmers Team
+Author-email: james.page@ubuntu.com
+License: UNKNOWN
+Description: [![Build Status](https://travis-ci.org/openstack-charmers/sriov-netplan-shim.svg?branch=master)](https://travis-ci.org/openstack-charmers/sriov-netplan-shim)
+        
+        # SR-IOV VF device configuration
+        
+        A simple utility that configures SR-IOV VF devices on network adapters
+        on boot.
+        
+        Configuration is read from ``/etc/sriov-netplan-shim/interfaces.yaml``
+        using the following format:
+        
+        ```yaml
+        interfaces:
+            enp3s0f0:
+                num_vfs: 64
+            enp3s0f1:
+                num_vfs: 64
+        ```
+        
+        Interfaces will be configured with the supplied number or the maximum
+        number of VF's that the device can support (if num\_vfs exceeds the
+        device maximum value).
+        
+        Devices not found on the installed system will be skipped.
+        
+        
+Platform: UNKNOWN
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown

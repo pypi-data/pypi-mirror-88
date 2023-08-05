@@ -1,0 +1,34 @@
+CHANGES
+=======
+
+0.1.2
+-----
+
+* Set up VFs prior to system network initialization
+* ci: Drop Python 3.5 gate
+
+0.1.1
+-----
+
+* Improve handling of invalid configration file
+
+0.1.0
+-----
+
+* Lift upper cap on hacking
+* Update functional tox targets
+* Sortout long description handling
+* Drop build status from readme
+* Revert "Drop description file from setup"
+* Drop description file from setup
+* Drop Py3.8 for now
+* Add travis build status
+* Add Python 3.8
+* Add travis configuration
+* More lint tidy
+* Add unit tests for PCI module
+* Add note about device skipping
+* Tidy README
+* Misc tidy and pydoc
+* Misc lint tidy
+* Baseline commit
