@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" style="width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0;">
+<head>
+  <meta charset="utf-8">
+  <script src="JS"></script>
+  <script type="text/javascript" src="qrc:///qtwebchannel/qwebchannel.js"></script>
+  <script>
+        var stage;
+        var backend;
+
+        function loadStage(){
+          stage = new NGL.Stage("viewport");
+          stage.mouseObserver.signals.scrolled.add(getOrientMsg);
+          stage.mouseObserver.signals.dragged.add(getOrientMsg);
+          stage.mouseObserver.signals.clicked.add(getOrientMsg);
+          stage.mouseObserver.signals.doubleClicked.add(getOrientMsg);
+          ADDINPUT            
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          new QWebChannel(qt.webChannelTransport, function (channel) {
+            backend = channel.objects.backend;
+            backend.setOrientation(function(result) {setOrientMsg(result)});
+            loadStage();
+          });
+        });
+
+        window.addEventListener("resize", function( event ){
+          stage.handleResize();
+        }, false );
+
+        function setOrientMsg(result)
+        {
+          val = result.split(",");
+          sm = new Float32Array(16);
+          for (j=0; j<16; j++)
+          {
+            sm[j] = parseFloat(val[j]);
+            if (isNaN( sm[j] ))
+              return; // do nothing just in case
+          }
+          var m = new NGL.Matrix4();
+          m.fromArray(sm);
+          stage.viewerControls.orient(m);
+          //stage.autoView();
+        }
+
+        function getOrientMsg()
+        {
+          cvorientmx = stage.viewerControls.getOrientation();
+          if (cvorientmx.determinant() == 0)
+            return oldmsg; // don't return invalid matrix
+
+          cvorient = cvorientmx.elements;
+          for (j=0; j<16; j++)
+          {
+            if (Number.isNaN( cvorient[j]) )
+              return oldmsg; // don't return invalid matrix
+          }
+
+          if (stage.viewer.cDist != 0
+                && stage.viewer.parameters.clipFar > stage.viewer.cDist
+                && stage.viewer.cDist > stage.viewer.parameters.clipNear)
+            cameradist = stage.viewer.cDist;
+          else if (stage.viewer.camera.position.z != 0
+                && stage.viewer.parameters.clipFar > -stage.viewer.camera.position.z
+                && -stage.viewer.camera.position.z > stage.viewer.parameters.clipNear)
+            cameradist = -stage.viewer.camera.position.z;
+          else
+            cameradist = cvorient[14]; // fall back if stage.viewer.camera.position.z is corrupted
+          cvorient.push( cameradist );
+          msg = String(cvorient);
+          oldmsg = msg;
+          backend.getOrientation(msg);
+        }
+
+  </script>
+</head>
+<body style="width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0;">
+  <div id="viewport" style="width:100%; height:100%;" >
+  </div>
+</body>
+</html>
