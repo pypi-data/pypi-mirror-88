@@ -1,0 +1,13 @@
+bokeh
+dagster
+dask[dataframe]<=2.30.0,>=1.2.2
+distributed<=2.30.1,>=1.28.1
+
+[kube]
+dask-kubernetes
+
+[pbs]
+dask-jobqueue
+
+[yarn]
+dask-yarn
