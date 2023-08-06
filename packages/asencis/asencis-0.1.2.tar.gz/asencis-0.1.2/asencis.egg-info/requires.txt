@@ -1,0 +1,12 @@
+requests
+
+[doc]
+sphinx
+sphinx_rtd_theme
+
+[lint]
+pylint
+
+[test]
+nose2
+nose2[coverage_plugin]
