@@ -1,0 +1,4 @@
+[console_scripts]
+appdata_binit=gidappdata.cli.pack_and_bin_and_py_data:cli_generate_user_data_binfile
+appdata_provide=gidappdata.cli.create_datapack_skeleton:cli
+

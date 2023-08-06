@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: gidappdata
+Version: 0.1.1
+Summary: GidAppData provides an Userdata deployment, with appdirs as backendend, but easy access to files saved there. Also provides an option to 'fake' deploy it while still developing
+Home-page: https://github.com/Giddius/GidAppData
+License: UNKNOWN
+Author: Giddius
+Description-Content-Type: text/markdown
+Classifier: License :: OSI Approved :: MIT License
+Requires-Dist: click>=7.1.2
+Requires-Dist: appdirs>=1.4.4
+Requires-Dist: gidconfig>=0.1.4
+Requires-Dist: gidlogger>=0.1.3
+Requires-Dist: python-dotenv>=0.15.0
+
+# GidAppData
+
+WiP
+
