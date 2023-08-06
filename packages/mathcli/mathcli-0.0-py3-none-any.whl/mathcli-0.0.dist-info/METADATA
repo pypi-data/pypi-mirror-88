@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: mathcli
+Version: 0.0
+Summary: Numerical and symbolic maths in your terminal
+Home-page: https://github.com/FedeClaudi/mathcli
+Author: Federico Claudi
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: sympy
+Requires-Dist: rich
+Requires-Dist: pyinspect
+Requires-Dist: typer
+Requires-Dist: myterial
+Requires-Dist: unicodeit
+
+# python_package_template
+A template to create repos supporting a python package
+
+
