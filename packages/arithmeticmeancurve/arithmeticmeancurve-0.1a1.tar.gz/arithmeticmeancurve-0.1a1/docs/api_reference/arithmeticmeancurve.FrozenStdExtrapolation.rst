@@ -1,0 +1,4 @@
+﻿FrozenStdExtrapolation
+==========================================
+
+.. autoclass:: arithmeticmeancurve.FrozenStdExtrapolation

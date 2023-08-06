@@ -1,0 +1,4 @@
+﻿ArithmeticMeanCurve
+=======================================
+
+.. autoclass:: arithmeticmeancurve.ArithmeticMeanCurve
