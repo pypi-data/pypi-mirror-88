@@ -1,0 +1,4 @@
+[console_scripts]
+cpotp = cpotp.command_line:main
+cpotp-setup = cpotp.command_line:login
+
