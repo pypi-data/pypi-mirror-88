@@ -1,0 +1,94 @@
+Metadata-Version: 2.1
+Name: cardea
+Version: 0.1.1
+Summary: Cardea
+Home-page: https://github.com/DAI-Lab/Cardea
+Author: MIT Data To AI Lab
+Author-email: dailabmit@gmail.com
+License: MIT license
+Description: <p align="center"> 
+        <img width=20% src="https://dai.lids.mit.edu/wp-content/uploads/2018/08/cardea.png" alt=“Cardea” />
+        </p>
+        
+        <p align="left"> 
+        <i>Cardea is a machine learning library built on top of FHIR schema. </I>
+        </p>
+        
+        <p align="left"> 
+        <i>An open source project from Data to AI Lab at MIT </I>
+        </p>
+        
+        
+        
+        [![Development Status](https://img.shields.io/badge/Development%20Status-2%20--%20Pre--Alpha-yellow)](https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha)
+        [![PyPi Shield](https://img.shields.io/pypi/v/cardea.svg)](https://pypi.python.org/pypi/cardea)
+        [![Travis CI Shield](https://travis-ci.org/DAI-Lab/Cardea.svg?branch=master)](https://travis-ci.org/DAI-Lab/Cardea)
+        [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/DAI-Lab/Cardea/)
+        [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/DAI-Lab/Cardea/master?filepath=notebooks)
+        
+        # Cardea
+        
+        This library is under development. Please contact dai-lab@mit.edu or any of the contributors for more information. We will announce our first release soon. 
+        
+        Cardea is a machine learning library built on top of the FHIR data schema. The library uses a number of automl tools developed under ["The Human Data Interaction Project"](https://github.com/HDI-Project) at [Data to AI lab at MIT](https://dai.lids.mit.edu/). Our goal is to provide an easy to use library to develop machine learning models from electronic health records. A typical usage of this library will involve:
+        
+        * Installing the library available via pypi
+        * Integrating their data in FHIR schema (whatever subset of data is available)
+        * Following the API develop some pre specified prediction models (or specify new ones using our API) The model building process is parameterized but automatically does:
+            * data cleaning, auditing
+            * preprocessing
+            * feature engineering
+            * machine learning model search and tuning 
+            * model evaluation 
+            * model auditing 
+        * Testing the models using our API
+        * Preparing and deploying the models 
+        
+        ## License 
+        - Free software: MIT license
+        
+        ## Documentation
+        - Documentation: https://dai-lab.github.io/Cardea
+        
+        
+        # History
+        
+        ## 0.1.1 - 2020-12-11
+        
+        Benchmark framework
+        
+        * Link google colab to Cardea and add badge README.md - [Issue #67](https://github.com/DAI-Lab/Cardea/issues/67) by @sarahmish
+        
+        * Modeler load pipelines instead of lists of primitives enhancement - [Issue #65](https://github.com/DAI-Lab/Cardea/issues/65) by @ChengFR
+        
+        * Benchmark testing apis enhancement - [Issue #64](https://github.com/DAI-Lab/Cardea/issues/64) by @ChengFR
+        
+        * Update documentation theme enhancement - [Issue #62](https://github.com/DAI-Lab/Cardea/issues/62) by @sarahmish
+        
+        * Primitive setup enhancement - [Issue #61](https://github.com/DAI-Lab/Cardea/issues/61) by @sarahmish & @ChengFR
+        
+        
+        ## 0.1.0 - 2020-09-15
+        
+        Release on PyPI: https://pypi.org/project/cardea/
+        
+        * Analysis notebooks enhancement - [Issue #58](https://github.com/DAI-Lab/Cardea/issues/58) by @sarahmish 
+        
+        * MIMIC III data loader enhancement - [Issue #57](https://github.com/DAI-Lab/Cardea/issues/57) by @sarahmish
+        
+        * Freeze package on analysis compatibility - [Issue #55](https://github.com/DAI-Lab/Cardea/issues/55) by @sarahmish
+        
+Keywords: cardea
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Requires-Python: >=3.4
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Provides-Extra: test
