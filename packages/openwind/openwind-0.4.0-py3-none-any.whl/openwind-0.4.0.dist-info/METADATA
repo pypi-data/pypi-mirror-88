@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: openwind
+Version: 0.4.0
+Summary: Open source library to design wind instruments
+Home-page: https://openwind.gitlabpages.inria.fr/web/documentation.html
+Author: Magique3D
+Author-email: openwind-contact@inria.fr
+License: GPLv3
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: plotly
+Requires-Dist: scipy
+
+# Open Wind Instrument Design
+
+This is the official repository of the  OpenWInD toolbox, a tool for modelization
+of wind musical instruments, using one-dimensional Finite Elements Methods.
+Our webpage is [here](https://openwind.gitlabpages.inria.fr/web/).
+
+## Installation
+
+In your python [environment](https://docs.python.org/3/library/venv.html) :
+
+```sh
+pip install openwind
+```
+
+
+## Documentation
+
+You can read the official documentation [here](https://openwind.gitlabpages.inria.fr/web/docs).
+
+## Website
+
+Our website is [here](https://openwind.gitlabpages.inria.fr/web/).
+
+## About
+
+This toolbox stems from the work of team MAGIQUE-3D at [Inria](https://www.inria.fr/).
+
+Feel free to contact the team at [openwind-contact@inria.fr](mailto:openwind-contact@inria.fr)!
+
+
