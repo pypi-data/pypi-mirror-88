@@ -1,0 +1,71 @@
+Metadata-Version: 1.1
+Name: pimsampas
+Version: 0.3
+Summary: Touch Typing Software by Uncle Engineer
+Home-page: https://github.com/UncleEngineer/pimsampas
+Author: Loong Wissawakorn
+Author-email: loong.wissawakorn@gmail.com
+License: MIT
+Download-URL: https://github.com/UncleEngineer/pimsampas/archive/v_01.tar.gz
+Description: # โปรแกรมฝึกพิมพ์ " Pimsampas" version 0.1 (pimsampas)
+        
+        ### วิธีติดตั้ง
+        
+        เปิด CMD / Terminal
+        
+        ```sh
+        pip install pimsampas
+        ```
+        
+        ### วิธีเล่น
+        
+        เปิด IDLE ขึ้นมาแล้วพิมพ์...
+        
+        ```sh
+        >>> import pimsampas
+        ```
+        
+        โปรแกรมฝึกพิมพ์ "Pimsampas" version 0.1
+        
+        <<< วิธีเล่น>>>>
+        - หลังจากเปิดเตรียมตัวพิมพ์ภายใน 5 วินาที
+        - พิมพ์ตามคำศัพท์สีเขียว พิมพ์ผิดไม่ได้ ต้องพิมพ์ให้ถูกเท่านั้น (ยากไหม 55)
+        - โปรแกรมจะนับ 1-60 แล้วจะหยุดเกมทันที
+        - โปรแกรมรอให้ผู้เล่นหยุดหายใจอีก 10 วินาทีแล้วเริ่มใหม่ 555
+        - ถ้าอยากดูแป้นพิมพ์ภาษาอังกฤษให้กด F1 ภาษาไทยกด F2
+        - สามารถเพิ่มคำศัพท์ได้ในไฟล์ data.csv ให้กด F5 เพื่อเปิดโฟลเดอร์ที่เก็บไฟล์ CSV
+        - แก้ไขไฟล์ CSV โดยใช้ Notepad (คลิกขวา Edit) 
+        
+        (รอลุงอัพเดต version ใหม่จะทำให้ง่ายกว่านี้ 555)
+        
+        <<< ปุ่มลัดต่างๆ >>>
+        - กดปุ่ม F1 เพื่อดูคีย์บอร์ดภาษาอังกฤษ 
+        - กดปุ่ม F2 เพื่อดูคีย์บอร์ดภาษาภาษาไทย
+        - กดปุ่ม F5 เพื่อเปิดโฟลเดอร์เก็บไฟล์ csv
+        - กดปุ่ม F10 เพื่อดูวิธีการเล่น
+        - กดปุ่ม F12 เล่นใหม่
+        
+        พัฒนาโดย: ลุงวิศวกร สอนคำนวณ
+        FB: https://www.facebook.com/UncleEngineer
+        YouTube: https://www.youtube.com/UncleEngineer
+        
+        ปล. ขออภัย version 0.1 ลุงใช้เวลาพัฒนาแค่คืนเดียว เลยไม่ได้สมบูรณ์จ้าาาา
+        ปล2. ใน Mac เล่นได้ แต่ฟังชั่นคีย์บอร์ดยังติดปัญหา ไฟล์ data.csv อยู่ใน /Users/ชื่อusername
+        ปล3. Windows จะเก็บไฟล์ data.csv ไว้ในโฟลเดอร์ที่ติดตั้ง Python เช่น C:\Python38\data.csv หรือ แนะนำให้สร้างไฟล์ test.py แล้วพิมพ์ว่า import pimsampas แล้วรัน ไฟล์ data.csv จะอยู่ในโฟลเดอร์เดียวกับที่เซฟ
+        
+        
+        | เพจ "ลุงวิศวกร สอนคำนวณ"  | https://www.facebook.com/UncleEngineer] |
+        
+Keywords: Touch Typing,Touch,Uncle Engineer
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
