@@ -1,0 +1,4 @@
+# Detection Arabic Quotation
+
+
+This package detects texts copied from the Holy Quran or books of hadith written in the Arabic language, how much it supports the discovery of poems and other texts
