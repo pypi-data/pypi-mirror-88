@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: mattermost-post-utils
+Version: 0.0.1
+Summary: A small example package
+Home-page: https://gitlab.tech.orange/dtrs-security/devops/mattermost-utils
+Author: Example Author
+Author-email: author@example.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# mattermost-utils  [![Pipeline status](https://gitlab.tech.orange/dtrs-security/devops/mattermost-utils/badges/master/pipeline.svg)](https://gitlab.tech.orange/dtrs-security/devops/mattermost-utils/commits/master) [![Coverage report](https://gitlab.tech.orange/dtrs-security/devops/mattermost-utils/badges/master/coverage.svg)](https://gitlab.tech.orange/dtrs-security/devops/mattermost-utils/commits/master)
+
+### Requirements
+
+- pip package manager
+- python version 3.8
+
+### Deployment on Linux
+- Clone project on your local machine
+```
+git clone https://gitlab.tech.orange/dtrs-security/devops/mattermost-utils.git
+```
+
+
