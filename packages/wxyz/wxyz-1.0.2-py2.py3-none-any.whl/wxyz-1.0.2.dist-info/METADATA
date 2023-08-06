@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: wxyz
+Version: 1.0.2
+Summary: a weather cli 
+Home-page: https://gitlab.com/raiyanyahya/python-cli-github-action
+Author: Raiyan Yahya
+Author-email: raiyanyahyadeveloper@gmail.com
+License: UNKNOWN
+Keywords: cli
+Platform: UNKNOWN
+Requires-Dist: click
+Requires-Dist: pytest
+Provides-Extra: test
+Requires-Dist: coverage ; extra == 'test'
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+
+this test cli was built, testes, packaged and uploaded using github actions
+
+
