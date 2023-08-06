@@ -1,0 +1,2 @@
+class PyCTYError(Exception):
+    pass
