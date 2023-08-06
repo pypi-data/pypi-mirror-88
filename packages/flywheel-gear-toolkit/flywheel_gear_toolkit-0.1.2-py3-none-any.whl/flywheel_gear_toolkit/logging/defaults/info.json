@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "filters": {
+        "out_filter": {
+            "()": "PlaceHolder",
+            "param": "noshow"
+        },
+        "err_filter": {
+            "()": "PlaceHolder",
+            "param": "noshow"
+        }
+    },
+    "formatters": {
+        "gear": {
+            "format": "[ %(asctime)3s %(levelname)8s %(name)s] %(message)s",
+            "datefmt": "%Y%m%d %H:%M:%S"
+        }
+    },
+    "handlers": {
+        "gear": {
+            "level": "INFO",
+            "formatter": "gear",
+            "filters": [
+                "out_filter"
+            ],
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout"
+        },
+        "gear_err": {
+            "level": "INFO",
+            "formatter": "gear",
+            "filters": [
+                "err_filter"
+            ],
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stderr"
+        }
+    },
+    "loggers": {
+        "": {
+            "handlers": [
+                "gear",
+                "gear_err"
+            ],
+            "level": "INFO"
+        }
+    },
+    "disable_existing_loggers": false
+}
