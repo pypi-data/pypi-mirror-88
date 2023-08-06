@@ -1,0 +1,77 @@
+Metadata-Version: 2.1
+Name: djanyolo
+Version: 2020.1.0
+Summary: Manage content for YOLO model.
+Home-page: https://robomx.com
+Author: RoboMx Team
+Author-email: ask@robomx.tech
+License: MIT
+Keywords: yolo,djanyolo,django
+Platform: UNKNOWN
+Requires-Dist: asgiref (==3.2.5)
+Requires-Dist: autocorrect (==0.4.4)
+Requires-Dist: Django (>=2.0.7)
+Requires-Dist: opencv-python (==4.2.0.32)
+Requires-Dist: pytz (==2019.3)
+Requires-Dist: sqlparse (==0.3.1)
+
+DjanYolo
+=============
+
+.. image:: https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRoboMx%2Fdjanyolo&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false
+
+Manage yolo images efficiently. A django app template that can be loaded to any existing app.
+
+Features
+---------
+* Supports Django models
+* Admin panel
+* Image annotation
+* Image cropping
+
+
+Note
+--------
+This pypi is a part of #100DaysOfCode challenge. I needed to learn how packing are pushed and managed on pypi. So came up with simple module that was already cooked up. Check `original repo <https://github.com/MexsonFernandes/DjanYolo/>`__.
+
+How to install?
+----------------
+
+
+.. code:: python
+
+    INSTALLED_APPS = (
+        # ...
+        'djanyolo',
+    )
+
+Register route
+----------------
+
+.. code:: python
+
+  from django.urls import include
+
+  urlpatterns = [
+        # ...
+        url(r'^djanyolo$', include('djanyolo.urls')),
+  ]
+
+Have fun!
+
+
+News
+====
+
+2020.1.0
+---
+
+*Release date: 15-December-2020*
+
+* Supports Django models
+* Admin panel
+* Image annotation
+* Image cropping
+
+
+
