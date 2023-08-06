@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: django-huey-monitor
+Version: 0.0.1rc1
+Summary: Django based tool for monitoring huey task queue: https://github.com/coleifer/huey
+Keywords: huey,django
+Author: JensDiemer
+Author-email: git@jensdiemer.de
+Requires-Python: >=3.7,<4.0.0
+Classifier: Development Status :: 1 - Planning
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Database :: Front-Ends
+Classifier: Topic :: Documentation
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Internet :: WWW/HTTP :: Site Management
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI :: Application
+Provides-Extra: docker
+Provides-Extra: postgres
+Requires-Dist: bx_py_utils (==0.0.4)
+Requires-Dist: django (>=2.2.0,<2.3.0)
+Requires-Dist: django-debug-toolbar
+Requires-Dist: django-redis
+Requires-Dist: huey
+Description-Content-Type: text/markdown
+
+# django-huey-monitor
+
+Django based tool for monitoring huey task queue: https://github.com/coleifer/huey
+
+
+Project state: planing/pre-alpha ;)
+
+
+## developing
+
+To start developing e.g.:
+
+```bash
+~$ git clone https://github.com/boxine/django-huey-monitor.git
+~$ cd django-huey-monitor
+~/django-huey-monitor$ make
+help                 List all commands
+install-poetry       install or update poetry via pip
+install              install via poetry
+update               Update the dependencies as according to the pyproject.toml file
+lint                 Run code formatters and linter
+fix-code-style       Fix code formatting
+tox-listenvs         List all tox test environments
+tox                  Run pytest via tox with all environments
+tox-py36             Run pytest via tox with *python v3.6*
+tox-py37             Run pytest via tox with *python v3.7*
+tox-py38             Run pytest via tox with *python v3.8*
+tox-py39             Run pytest via tox with *python v3.9*
+pytest               Run pytest
+pytest-ci            Run pytest with CI settings
+publish              Release new version to PyPi
+makemessages         Make and compile locales message files
+start-dev-server     Start Django dev. server with the test project
+clean                Remove created files from the test project (e.g.: SQlite, static files)
+build                Update/Build docker services
+up                   Start docker containers
+down                 Stop all containers
+logs                 Display and follow docker logs
+```
+
+
+## License
+
+[GPL](LICENSE). Patches welcome!
+
