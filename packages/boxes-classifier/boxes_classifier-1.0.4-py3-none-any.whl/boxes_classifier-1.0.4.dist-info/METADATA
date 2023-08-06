@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: boxes-classifier
+Version: 1.0.4
+Summary: SF Core processing data library
+Home-page: UNKNOWN
+Author: duongpd
+Author-email: duongpd@bap.jp
+License: UNKNOWN
+Keywords: sample,setuptools,development
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.6, <4
+Description-Content-Type: text/markdown
+Requires-Dist: opencv-python
+Requires-Dist: pillow
+Requires-Dist: tensorflow-cpu
+Requires-Dist: image-embeddings
+Provides-Extra: dev
+Requires-Dist: check-manifest ; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: coverage ; extra == 'test'
+
+Check is valid boxes answer
+
+
