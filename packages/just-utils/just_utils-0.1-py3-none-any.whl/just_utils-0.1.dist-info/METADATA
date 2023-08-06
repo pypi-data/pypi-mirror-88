@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: just-utils
+Version: 0.1
+Summary: A series of convenience functions to help training large image dataset with CNN
+Home-page: https://github.com/Hansoluo/cvutils.git
+Author: Hansoluo
+Author-email: hansoluo757@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Description-Content-Type: text/markdown
+Requires-Dist: pathlib
+Requires-Dist: numpy
+
+<!--
+ * @Author: shy
+ * @Description: 
+ * @LastEditTime: 2020-12-11 17:07:52
+-->
+# cvutils
+A series of convenience functions to help training large image dataset with CNN
+
+## install
+
+1. from source
+
+```python
+git clone https://github.com/hansoluo/cvutils.git
+cd cvutils
+python install setup.py
+```
+
+2. from pypi
+
+```python
+pip install cv_utils
+```
+
