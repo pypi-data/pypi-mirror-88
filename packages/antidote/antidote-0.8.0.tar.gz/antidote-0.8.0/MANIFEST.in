@@ -1,0 +1,31 @@
+include LICENSE *.rst *.md benchmark.ipynb pyproject.toml
+
+# Sources
+recursive-include src *.py
+recursive-include src *.pxd
+recursive-include src *.pyx
+recursive-include src *.pyi
+
+# Don't package GitHub-specific files.
+exclude .travis.yml .readthedocs.yml
+
+# Tests
+include tox.ini .coveragerc conftest.py
+recursive-include tests *.py
+
+# Requirements
+recursive-include requirements *.txt
+
+# Documentation
+include docs/Makefile
+recursive-include docs *.png
+recursive-include docs *.svg
+recursive-include docs *.css
+recursive-include docs *.gitkeep
+recursive-include docs *.py
+recursive-include docs *.rst
+prune docs/_build
+
+# bin
+recursive-include bin *.sh
+
