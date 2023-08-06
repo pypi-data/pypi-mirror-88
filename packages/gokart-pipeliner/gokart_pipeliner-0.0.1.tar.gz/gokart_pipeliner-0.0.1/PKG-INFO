@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: gokart-pipeliner
+Version: 0.0.1
+Summary: gokart pipeline
+Home-page: https://github.com/vaaaaanquish/gokart-pipeliner
+License: MIT
+Author: vaaaaanquish
+Author-email: 6syun9@gmail.com
+Requires-Python: >=3.6,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: gokart (==0.3.20)
+Project-URL: Repository, https://github.com/vaaaaanquish/gokart-pipeliner
+Description-Content-Type: text/markdown
+
+# gokart-pipeliner
+gokart pipeline project
+
+
+```python
+from gokart_pipeliner import GokartPipeliner
+from ExampleTasks import *
+
+# make pipeline
+preprocess = [TaskA, {'task_b': TaskB, 'task_c': TaskC}, TaskD]
+modeling = [preprocess, TaskE, {'task_f': TaskF}, TaskF]
+predict = [{'model': modeling, 'task_a': TaskA}, TaskG]
+
+# instantiation (setting static params)
+params = {'TaskA': {'param1':0.1, 'param2': 'sample'}, 'TaskD': {'param1': 'foo'}}
+config_path_list = ['./conf/param.ini']
+gp = GokartPipeliner(
+    params=params,
+    config_path_list=config_path_list)
+
+# run (setting dynamic params)
+running_params = {'TaskB': {'param1':'bar'}}
+gp.run(predict, params=running_params)
+```
+
+
+```
+pip install poetry
+pip install poetry-dynamic-versioning
+
+# poetry install
+poetry build
+# poetry lock
+```
+
