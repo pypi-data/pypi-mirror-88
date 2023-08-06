@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: nvsmpy
+Version: 0.2.2
+Summary: Find unoccupied GPUs on multi-user systems
+Home-page: https://github.com/lorenz-h/nvsmpy
+Author: lorenz-h
+Author-email: lorenz.hetzel@yahoo.de
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Requires-Python: >:3.5
+Description-Content-Type: text/markdown
+Requires-Dist: psutil
+Requires-Dist: pynvml
+
+# nvsmpy
+This package automatically manages your `CUDA_VISIBLE_DEVICES` environment variable to avoid using GPUs that are currently being used by other users on a multi-user, multi-gpu system. A RuntimeError will be raised if all GPUs are busy. If you pass the `max_n_processes` argument to `available_devices()` you may run multiple processes under your system username on a given GPU at the same time.
+
+## Installation
+```shell
+pip install nvsmpy
+```
+## Usage
+```python
+import os
+from nvsmpy import CudaCluster
+
+cluster = CudaCluster()
+print(cluster)
+
+# To limit access to any two unused GPUs:
+with cluster.available_devices(n_devices=2):
+    print(os.environ["CUDA_VISIBLE_DEVICES"])
+    # your code goes here
+
+# Alternatively limit access to GPUs 0 and 7, regardless of availability:
+with cluster.visible_devices(0, 3, 7):
+    print(os.environ["CUDA_VISIBLE_DEVICES"])
+    # your code goes here
+
+```
+
+
