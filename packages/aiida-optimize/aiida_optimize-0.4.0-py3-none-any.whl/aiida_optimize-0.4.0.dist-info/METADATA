@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: aiida-optimize
+Version: 0.4.0
+Summary: AiiDA Plugin for running optimization algorithms.
+Home-page: https://aiida-optimize.readthedocs.io/
+Author: Dominik Gresch
+Author-email: greschd@gmx.ch
+License: Apache 2.0
+Keywords: AiiDA,workflows,optimization
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Plugins
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Framework :: AiiDA
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: aiida-core (>=1.3.0<2.0.0)
+Requires-Dist: aiida-tools (>=0.3.0)
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: decorator
+Requires-Dist: pyyaml
+Provides-Extra: dev
+Requires-Dist: yapf (==0.30) ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: pylint (==2.5.0) ; extra == 'dev'
+Requires-Dist: mypy (==0.780) ; extra == 'dev'
+Requires-Dist: sphinx ; extra == 'dev'
+Requires-Dist: sphinx-rtd-theme ; extra == 'dev'
+Requires-Dist: sphinxcontrib-details-directive ; extra == 'dev'
+Requires-Dist: pytest (>=3.6) ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: aiida-pytest (>=0.1.0a8) ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme ; extra == 'docs'
+Requires-Dist: sphinxcontrib-details-directive ; extra == 'docs'
+Provides-Extra: testing
+Requires-Dist: pytest (>=3.6) ; extra == 'testing'
+Requires-Dist: pytest-cov ; extra == 'testing'
+Requires-Dist: aiida-pytest (>=0.1.0a8) ; extra == 'testing'
+
+# aiida-optimize
+
+Defines AiiDA workchains that simplify running optimization workflows.
+
+Documentation: http://aiida-optimize.readthedocs.io
+
+[![Build Status](https://travis-ci.org/greschd/aiida-optimize.svg?branch=develop)](https://travis-ci.org/greschd/aiida-optimize) [![Documentation Status](https://readthedocs.org/projects/aiida-optimize/badge/?version=latest)](https://aiida-optimize.readthedocs.io/en/latest/?badge=latest)
+
+
