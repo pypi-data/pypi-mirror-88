@@ -1,0 +1,11 @@
+include *.py
+include */*.py
+recursive-include cubicweb_s3storage *.py
+recursive-include cubicweb_s3storage/data *.gif *.png *.ico *.css *.js
+recursive-include cubicweb_s3storage/i18n *.po
+recursive-include cubicweb_s3storage/wdoc *
+recursive-include test/data bootstrap_cubes *.py
+include tox.ini
+recursive-include debian changelog compat control copyright rules
+include cubicweb-s3storage.spec
+exclude .gitlab-ci.yml
