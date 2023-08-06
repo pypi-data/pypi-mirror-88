@@ -1,0 +1,14 @@
+icalendar
+pytz
+recurring_ical_events
+toml
+
+[dev]
+black
+mypy
+flake8
+flake8-import-order
+pytest
+
+[test]
+pytest
