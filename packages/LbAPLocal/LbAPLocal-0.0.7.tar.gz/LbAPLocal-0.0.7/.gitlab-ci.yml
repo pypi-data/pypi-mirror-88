@@ -1,0 +1,65 @@
+stages:
+  - test
+  - deploy
+
+check-copyright:
+  stage: test
+  image: gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
+  variables:
+    GIT_DEPTH: 0
+  script:
+    - curl -o lb-check-copyright "https://gitlab.cern.ch/lhcb-core/LbDevTools/raw/master/LbDevTools/SourceTools.py?inline=false"
+    - python lb-check-copyright origin/master --exclude tests/data/data-pkg-repo
+
+check_black:
+  stage: test
+  image: registry.cern.ch/docker.io/condaforge/miniforge3:latest
+  before_script:
+    - eval "$(python -m conda shell.bash hook)"
+    - conda env create --name ci-env --file environment.yaml
+    - conda activate ci-env
+  script:
+    - black --check --diff .
+
+check_flake8:
+  stage: test
+  image: registry.cern.ch/docker.io/condaforge/miniforge3:latest
+  before_script:
+    - eval "$(python -m conda shell.bash hook)"
+    - conda env create --name ci-env --file environment.yaml
+    - conda activate ci-env
+  script:
+    - flake8 .
+
+run_pytest:
+  stage: test
+  image: gitlab-registry.cern.ch/lhcb-docker/os-base/centos7-hepos
+  tags:
+    - cvmfs
+  before_script:
+    - curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+    - bash Miniforge3-Linux-x86_64.sh -b -p $PWD/miniforge3
+    - eval "$($PWD/miniforge3/bin/python -m conda shell.bash hook)"
+    - conda env create --name ci-env --file environment.yaml
+    - conda activate ci-env
+  script:
+    - pip install '.[testing]'
+    - pytest -vvv --runslow --cov-report xml
+  artifacts:
+    reports:
+      cobertura: coverage.xml
+
+# Packaging step
+deploy-packages:
+  stage: deploy
+  only:
+    - tags
+  dependencies: []
+  image: gitlab-registry.cern.ch/lhcb-docker/python-deployment:python-3.7
+  script:
+    - python setup.py sdist --dist-dir public/
+    - python setup.py bdist_wheel --dist-dir public/
+    - if [ -z "$TWINE_PASSWORD" ] ; then echo "Set TWINE_PASSWORD in CI variables" ; exit 1 ; fi
+    - twine upload -u __token__ public/*
+  before_script: []
+  after_script: []
