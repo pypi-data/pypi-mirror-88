@@ -1,0 +1,22 @@
+Metadata-Version: 1.1
+Name: mavenn
+Version: 0.24
+Summary: MAVE-NN: genotype-phenotype maps from multiplex assays of variant effect
+Home-page: http://mavenn.readthedocs.io
+Author: Ammar Tareen, Justin B. Kinney
+Author-email: tareen@cshl.edu
+License: MIT
+Description: MAVENN
+        ------
+        
+        MAVENN is a Python package for inferring quantitative models of sequence-function
+        relationships from multiplexed assays of variant effects. 
+        MAVENN currently implements global epistasis regression and noise agnostic regression.
+        Please see 'https://mavenn.readthedocs.io' 
+        for additional details.
+Keywords: mave,mpa,global epistasis
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
