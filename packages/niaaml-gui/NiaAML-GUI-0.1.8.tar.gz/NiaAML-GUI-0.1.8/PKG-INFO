@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: niaaml-gui
+Version: 0.1.8
+Summary: 
+Author: Luka Pečnik
+Author-email: lukapecnik96@gmail.com
+Requires-Python: >=3.6.1,<4.0.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: NiaPy (>=2.0.0rc12,<3.0.0)
+Requires-Dist: PyQt5 (>=5.15.2,<6.0.0)
+Requires-Dist: QtAwesome (>=1.0.2,<2.0.0)
+Requires-Dist: niaaml (>=1.1.0,<2.0.0)
