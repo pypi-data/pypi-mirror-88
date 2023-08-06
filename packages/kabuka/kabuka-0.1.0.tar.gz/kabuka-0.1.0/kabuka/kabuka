@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [[ ! $@ ]];
+then
+    python -m kabuka -h
+else
+    python -m kabuka $@
+fi

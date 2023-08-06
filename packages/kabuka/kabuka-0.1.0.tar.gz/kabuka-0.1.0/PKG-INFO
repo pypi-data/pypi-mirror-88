@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: kabuka
+Version: 0.1.0
+Summary: get latest stock price from Yahoo! Finance
+Home-page: https://github.com/sdanaipat/kabuka
+Author: Danaipat Sodkomkham
+Author-email: sdanaipat@gmail.com
+License: MIT
+Download-URL: https://github.com/sdanaipat/kabuka/archive/v0.1.0.tar.gz
+Description: # ㊑ KABUKA
+        ![](https://github.com/sdanaipat/kabuka/.github/workflows/main.yml/badge.svg)
+        
+        A simple Python library to get latest stock price from Yahoo! Finance.
+        
+        ## Installation
+        ---
+        ```bash
+        pip install kabuka
+        ```
+        
+        ## Usage
+        ---
+        ### Python
+        ```python
+        from kabuka import get_latest_price
+        
+        latest_price = get_latest_price("AAPL")
+        ```
+        ### CLI
+        ----
+        ```bash
+        kabuka AAPL
+        ```
+        
+        ## License
+        ----
+        MIT
+Keywords: stock price,yahoo finance,market price,get latest stock price
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Office/Business :: Financial
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
