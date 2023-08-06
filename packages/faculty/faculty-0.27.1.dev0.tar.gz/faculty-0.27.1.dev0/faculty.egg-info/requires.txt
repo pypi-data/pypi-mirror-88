@@ -1,0 +1,14 @@
+requests
+pytz
+six
+attrs
+marshmallow_enum
+
+[:python_version < "3.4"]
+enum34
+
+[:python_version < "3.5"]
+marshmallow[reco]==3.0.0rc3
+
+[:python_version >= "3.5"]
+marshmallow
