@@ -1,0 +1,28 @@
+trigger:
+
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - databricks/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      addToPath: true
+      architecture: 'x64'
+
+  - task: configuredatabricks@0
+    inputs:
+      url: '$(DatabricksHost)'
+      token: '$(DatabricksToken)'
+
+  - task: deploynotebooks@0
+    inputs:
+      notebooksFolderPath: '$(DatabricksNotebookFolder)'
+      workspaceFolder: '$(DatabricksWorkspaceFolder)'

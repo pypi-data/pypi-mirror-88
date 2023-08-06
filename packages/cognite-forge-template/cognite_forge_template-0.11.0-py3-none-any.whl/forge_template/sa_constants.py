@@ -1,0 +1,10 @@
+GCP_PROJECT_NAME = "cognite-sa-sandbox"
+COMPOSER_BUCKET = "europe-west1-composer-ccb9555e-bucket"
+JOB_DEFINITIONS_BUCKET = "sa-sandbox-training"
+JOB_CONFIGS_BUCKET = "sa-forge-replicator"
+SCHEDULE_OPTIONS = ["@once", "@hourly", "@daily", "@weekly", "@monthly"]
+DATA_TYPE_OPTIONS = ["assets", "ts", "events"]
+GS_SERVICE_ACCOUNTS = ["serviceAccount:719303257135-compute@developer.gserviceaccount.com"]
+DEFAULT_CDF_API_HOST = "https://api.cognitedata.com"
+CDF_API_HOST_REGEX = r"https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]+[.]cognitedata[.]com$"
+DOC_URL = "https://cognitedata.atlassian.net/wiki/spaces/FORGE/pages/1720156342/Extractor+workflow+data" "+replication "
