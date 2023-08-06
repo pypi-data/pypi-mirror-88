@@ -1,0 +1,198 @@
+Metadata-Version: 2.1
+Name: csvviz
+Version: 0.4.9.1
+Summary: Create visualizations from CSV files and the command line
+Home-page: https://github.com/dannguyen/csvviz
+Author: Dan Nguyen
+Author-email: dansonguyen@gmail.com
+License: MIT license
+Description: ======
+        csvviz
+        ======
+        
+        
+        .. .. image:: https://img.shields.io/pypi/v/csvviz.svg
+        ..         :target: https://pypi.python.org/pypi/csvviz
+        
+        .. .. image:: https://img.shields.io/travis/dannguyen/csvviz.svg
+        ..         :target: https://travis-ci.com/dannguyen/csvviz
+        
+        .. .. image:: https://readthedocs.org/projects/csvviz/badge/?version=latest
+        ..         :target: https://csvviz.readthedocs.io/en/latest/?badge=latest
+        ..         :alt: Documentation Status
+        
+        
+        Create visualizations from CSV files and the command line
+        
+        
+        Current status
+        --------------
+        
+        Pretty usable::
+        
+            $ csvviz bar -x name -y amount examples/tings.csv
+        
+            $ csvviz line -x date -y price -c company examples/stocks.csv
+        
+        
+        
+        But undocumented so far, other than running ``$ csvviz --help``
+        
+        
+        .. * Documentation: https://csvviz.readthedocs.io.
+        
+        
+        Features
+        --------
+        
+        * Can do the standard chart types
+        * Produces validated Vega-lite JSON output that can be reused
+        * Free software: MIT license
+        
+        
+        Credits
+        -------
+        
+        This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+        
+        .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+        .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+        
+        
+        
+        Dev instructions
+        ----------------
+        
+        To install on your own machine for development::
+        
+            $ make install
+        
+        Note: setup.py/requirements.txt is not correctly set up yet...
+        
+        
+        (note to self) To publish on pypi::
+        
+            $ make release
+        
+        
+        =======
+        History
+        =======
+        
+        
+        0.4.0-alpha (ongoing)
+        ---------------------
+        - Can specify var titles with pipe-delimited syntax, e.g. ``-x 'fieldname|The field name'``
+        
+        0.3.1 (2020-09-30)
+        ------------------
+        
+        - Removed (non-existent) Python 3.5 compat, fixed 3.6 & 3.7 compat
+        - Normalized area and bar charts with ``-N/--normalize``
+        - removed '-alpha' tag
+        
+        
+        0.3.0-alpha (2020-09-28)
+        ------------------------
+        
+        New chart types
+        ^^^^^^^^^^^^^^^
+        
+        - area
+        - hist (like bar charts, but for frequency count only)
+        - line
+        - scatter, which can act as bubble chart if ``--sizevar`` param is set
+        
+        
+        Grid (i.e. trellis/small multiples)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        
+        For any chart type, use ``-g/--grid`` to specify variable to map chart multiples
+        
+        
+        0.2.1-alpha (2020-09-23)
+        ------------------------
+        
+        
+        General
+        ^^^^^^^
+        - Fixed total breakage
+        
+        
+        0.2.0-alpha (2020-09-23)
+        ------------------------
+        
+        General
+        ^^^^^^^
+        
+        - ``csvviz --version`` prints out version
+        - viz options
+            - --theme to set chart theme
+            - --json to output Vegalite chart specification in JSON
+            - --no-preview to not preview chart in browser (useful for testing)
+            - --interactive/--static to show an interactive chart or not (default is 'static')
+        
+        cli.info
+        ^^^^^^^^
+        
+        - a command for general help and listing
+        - Show list of colors, colorschemes, themes, etc
+        
+        
+        cli.bar
+        ^^^^^^^
+        
+        - arguments and options
+            - x,y options accept integers (as strings)
+            - --fill/-s
+            - -H/--horizontal for horizontal bars (vertical columns is default)
+        
+        - --colors/-c to set colors
+        - --color-scheme/-C to specify a color scheme
+        
+        
+        
+        
+        0.1.1-alpha (2020-09-15 16:30)
+        ------------------------------
+        
+        cli.bar
+        ^^^^^^^
+        
+        - Minimally functional: ``$ csvviz bars -x name -y things examples/tings.csv``
+        
+        
+        
+        0.1.0-alpha (2020-09-15)
+        ------------------------
+        
+        First release on PyPI. Just a cookiecutter-pypackage skeleton stub.
+        
+        
+        
+Keywords: csvviz
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Framework :: Pytest
+Classifier: Framework :: tox
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Provides-Extra: dev
+Provides-Extra: docs
+Provides-Extra: tests
