@@ -1,0 +1,51 @@
+# Busie Consumer
+
+A base consumer package for Busie projects. Abstracts polling and configuration setup away from the end user and exposes basic api for starting the poll process.
+
+## Installation
+
+`pip install busie-consumer`
+
+## Usage
+```python
+from busie_consumer import BaseConsumer
+
+CONFIG = {
+    'bootstrap.servers': 'localhost:9092',
+    # Other Config as necessary
+}
+
+consumer = BaseConsumer(topics=['some-topic', 'another'], config=CONFIG)
+
+for message in consumer.start():
+    handle_message(message)
+
+# It may also be helpful to extend this base class and provide helper methods
+
+class HigherLevelConsumer(Consumer):
+    def handle_message(self, message):
+        # process the message
+        reply_topic, reply = determine_reply(message)
+        self.send_reply(topic=reply_topic, message=reply, key=message.key())
+consumer = HigherLevelConsumer(topics=['topic'], config=CONFIG)
+
+for msg in consumer.start():
+    consumer.handle_message(msg)
+
+```
+
+## API
+
+### BaseConsumer
+
+#### Public Methods
+* `BaseConsumer(topics=None, config=None)`: Constructor
+    * **required** param `topics`: An iterable of strings containing topic names
+    * **required** param `config`: A `dict` containing Kafka config **Note** `config` must have `bootstrap.servers` and `group.id` entries
+* `start()`: Generator methods. initiates polling. returns a generator
+* `close()`: Closes the consumer
+* `send_reply(topic=None, message=None, key=None)`: Invokes a producer and uses it to send a reply to the desired topic. Especially helpful for the `Saga Orchestrator` Pattern
+**Note** The producer assumes the same config as the consumer class
+    * **required** param `topic`: A string representing the desired topic name
+    * **required** param `message`: The data to send to the desired topic.
+    * **required** param `key`: The desired key for the message
