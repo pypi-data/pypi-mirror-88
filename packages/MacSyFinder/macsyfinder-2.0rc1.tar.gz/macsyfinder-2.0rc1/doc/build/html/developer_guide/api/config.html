@@ -1,0 +1,640 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>configuration &mdash; MacSyFinder 2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="registries" href="registries.html" />
+    <link rel="prev" title="MacSyFinder API documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> MacSyFinder
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User Guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview.html">MacSyFinder implementation overview</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">MacSyFinder API documentation</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#config-api">Config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="registries.html">registries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="definition_parser.html">definition_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gene.html">gene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html">profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hit.html">hit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cluster.html">cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system.html">system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="report.html">report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="search_genes.html">search_genes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solution.html">solution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="serialization.html">serialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="error.html">errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html">utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="package.html">package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MacSyFinder</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Developer Guide</a> &raquo;</li>
+        
+          <li><a href="index.html">MacSyFinder API documentation</a> &raquo;</li>
+        
+      <li>configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer_guide/api/config.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuration">
+<span id="config"></span><h1>configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>Options to run MacSyFinder can be specified in a <a class="reference internal" href="../../user_guide/input.html#config-definition-label"><span class="std std-ref">Configuration file</span></a>.
+The API described below handles all configuration options for MacSyFinder.</p>
+<p>The <a class="reference internal" href="#macsypy.config.MacsyDefaults" title="macsypy.config.MacsyDefaults"><code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.config.MacsyDefaults</span></code></a> hold the default values for <cite>macsyfinder</cite> whereas
+the <a class="reference internal" href="#macsypy.config.Config" title="macsypy.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.config.Config</span></code></a> hold the values for a <cite>macsyfinder</cite> run.</p>
+<div class="section" id="config-api">
+<span id="id1"></span><h2>Config<a class="headerlink" href="#config-api" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-macsypy.config"></span><dl class="py class">
+<dt id="macsypy.config.Config">
+<em class="property">class </em><code class="sig-prename descclassname">macsypy.config.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">defaults</span></em>, <em class="sig-param"><span class="n">parsed_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle configuration values for macsyfinder.
+This values come from default and ar superseded by the configuration files, then the command line settings.</p>
+<dl class="py method">
+<dt id="macsypy.config.Config.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">defaults</span></em>, <em class="sig-param"><span class="n">parsed_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store macsyfinder configuration options and propose an interface to access
+to them.</p>
+<p>The config object is populated with the defaults then superseded with the
+value specified in configuration files and finally by the options set on the
+command line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>defaults</strong> (a <a class="reference internal" href="#macsypy.config.MacsyDefaults" title="macsypy.config.MacsyDefaults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MacsyDefaults</span></code></a> object) – </p></li>
+<li><p><strong>parsed_args</strong> (a <code class="xref py py-class docutils literal notranslate"><span class="pre">argspace.Namescape</span></code> object) – the command line arguments parsed</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="macsypy.config.Config.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#macsypy.config.Config.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._config_file_2_dict">
+<code class="sig-name descname">_config_file_2_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">defaults</span></em>, <em class="sig-param"><span class="n">files</span></em>, <em class="sig-param"><span class="n">previous_run</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._config_file_2_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._config_file_2_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse config files files, the last one have precedence on the previous on so on, and return a dict
+with properties, values.
+The defaults is just used to know the type of the properties and cast them. It is not used to fill
+the dict with default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>defaults</strong> (a <a class="reference internal" href="#macsypy.config.MacsyDefaults" title="macsypy.config.MacsyDefaults"><code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.config.MacsyDefaults</span></code></a> object) – the macsyfinder defaults value</p></li>
+<li><p><strong>files</strong> (<em>list of string</em>) – the configuration files to parse</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_db_type">
+<code class="sig-name descname">_set_db_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_db_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_db_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>set value for ‘db_type’ option</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the value for db_type, allowed values are :
+‘ordered_replicon’, ‘gembase’, ‘unordered’</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if value is not allowed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_inter_gene_max_space">
+<code class="sig-name descname">_set_inter_gene_max_space</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_inter_gene_max_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_inter_gene_max_space" title="Permalink to this definition">¶</a></dt>
+<dd><p>set value for ‘inter_gene_max_space’ option</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the string parse representing the model fully qualified name
+and it’s associated value and so on
+the model_fqn is a string, the associated value must be cast in int</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if value is not well formed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_max_nb_genes">
+<code class="sig-name descname">_set_max_nb_genes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_max_nb_genes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_max_nb_genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>set value for ‘max_nb_genes’ option</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the string parse representing the model fully qualified name
+and it’s associated value and so on
+the model_fqn is a string, the associated value must be cast in int</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if value is not well formed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_min_genes_required">
+<code class="sig-name descname">_set_min_genes_required</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_min_genes_required"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_min_genes_required" title="Permalink to this definition">¶</a></dt>
+<dd><p>set value for ‘min_genes_required’ option</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the string parse representing the model fully qualified name
+and it’s associated value and so on
+the model_fqn is a string, the associated value must be cast in int</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if value is not well formed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_min_mandatory_genes_required">
+<code class="sig-name descname">_set_min_mandatory_genes_required</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_min_mandatory_genes_required"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_min_mandatory_genes_required" title="Permalink to this definition">¶</a></dt>
+<dd><p>set value for ‘min_mandatory_genes_required’ option</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the string parse representing the model fully qualified name
+and it’s associated value and so on
+the model_fqn is a string, the associated value must be cast in int</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if value is not well formed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_models">
+<code class="sig-name descname">_set_models</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_models" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – <p>The models to search as return by the command line parsing or
+the configuration files</p>
+<dl class="simple">
+<dt>if value come from command_line</dt><dd><p>[[‘model1’, ‘def1’, ‘def2’, ‘def3’], [‘model2’, ‘def4’], …]</p>
+</dd>
+<dt>if value come from config file</dt><dd><p>[(‘set_1’, ‘T9SS, T3SS, T4SS_typeI’), (‘set_2’, ‘T4P’)]
+[(model_family, [def_name1, …]), … ]</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_models_dir">
+<code class="sig-name descname">_set_models_dir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_models_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_models_dir" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – the path to the models (definitions + profiles) are stored.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_multi_loci">
+<code class="sig-name descname">_set_multi_loci</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_multi_loci"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_multi_loci" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the models fqn list separated by comma of multi loc models</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_replicon_topology">
+<code class="sig-name descname">_set_replicon_topology</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_replicon_topology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_replicon_topology" title="Permalink to this definition">¶</a></dt>
+<dd><p>set the default replicon topology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – ‘circular’ or ‘linear’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_sequence_db">
+<code class="sig-name descname">_set_sequence_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_sequence_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_sequence_db" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – set the path to the sequence file (in fasta format) to analysed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._set_topology_file">
+<code class="sig-name descname">_set_topology_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._set_topology_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._set_topology_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>test if the path exists and set it in config</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – the path to the topology file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config._str_2_tuple">
+<code class="sig-name descname">_str_2_tuple</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config._str_2_tuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._str_2_tuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>transform a string with syntax {model_fqn int} in list of tuple</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the string to parse</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(model_fqn, int), ..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.hmmer_dir">
+<code class="sig-name descname">hmmer_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.hmmer_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.hmmer_dir" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the directory containing the hmmsearch results (output, error, parsing)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.inter_gene_max_space">
+<code class="sig-name descname">inter_gene_max_space</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_fqn</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.inter_gene_max_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.inter_gene_max_space" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_fqn</strong> (<em>str</em>) – the model fully qualifed name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the gene_max_space for the model_fqn or None if it’s does not specify</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.log_level">
+<code class="sig-name descname">log_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.log_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.log_level" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the verbosity output level</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.max_nb_genes">
+<code class="sig-name descname">max_nb_genes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_fqn</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.max_nb_genes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.max_nb_genes" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_fqn</strong> (<em>str</em>) – the model fully qualifed name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the max_nb_genes for the model_fqn or None if it’s does not specify</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.min_genes_required">
+<code class="sig-name descname">min_genes_required</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_fqn</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.min_genes_required"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.min_genes_required" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_fqn</strong> (<em>str</em>) – the model fully qualifed name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the min_genes_required for the model_fqn or None if it’s does not specify</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.min_mandatory_genes_required">
+<code class="sig-name descname">min_mandatory_genes_required</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_fqn</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.min_mandatory_genes_required"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.min_mandatory_genes_required" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_fqn</strong> (<em>str</em>) – the model fully qualifed name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the min_mandatory_genes_required for the model_fqn or None if it’s does not specify</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.multi_loci">
+<code class="sig-name descname">multi_loci</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_fqn</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.multi_loci"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.multi_loci" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_fqn</strong> (<em>str</em>) – the model fully qualified name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the model is multi loci, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.out_dir">
+<code class="sig-name descname">out_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.out_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.out_dir" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the path to the directory where the results are stored</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path_or_buf</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>save itself in a file in ini format.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the undefined options (set to None) are omitted</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path_or_buf</strong> (<em>str</em><em> or </em><em>file like object</em>) – where to serialize itself.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.config.Config.working_dir">
+<code class="sig-name descname">working_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#Config.working_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.working_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias to <code class="xref py py-meth docutils literal notranslate"><span class="pre">config.Config.out_dir()</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="macsypy.config.MacsyDefaults">
+<em class="property">class </em><code class="sig-prename descclassname">macsypy.config.</code><code class="sig-name descname">MacsyDefaults</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#MacsyDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.MacsyDefaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle all default values for macsyfinder.
+the default values must be defined here, <strong>NOT</strong> in argument parser nor in config
+the argument parser or config must use a MacsyDefaults object</p>
+<dl class="py method">
+<dt id="macsypy.config.MacsyDefaults.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/config.html#MacsyDefaults.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.MacsyDefaults.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – allow to overwrite a default value.
+It mainly used in unit tests</p>
+</dd>
+</dl>
+<p>To define a new default value just add an attribute with the default value</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="macsypy.config.MacsyDefaults.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#macsypy.config.MacsyDefaults.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="registries.html" class="btn btn-neutral float-right" title="registries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="MacSyFinder API documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2014-2020, &#39;Institut Pasteur (Paris), CNRS&#39;
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+<a href="https://github.com/gem-pasteur/macsyfinder">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+         alt="Fork me on GitHub"
+         data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+</a>
+
+
+
+</body>
+</html>

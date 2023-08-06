@@ -1,0 +1,502 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>hit &mdash; MacSyFinder 2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="cluster" href="cluster.html" />
+    <link rel="prev" title="profile" href="profile.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> MacSyFinder
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User Guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview.html">MacSyFinder implementation overview</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">MacSyFinder API documentation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="config.html">configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registries.html">registries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="definition_parser.html">definition_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gene.html">gene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html">profile</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">hit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hit-api">hit</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cluster.html">cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system.html">system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="report.html">report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="search_genes.html">search_genes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solution.html">solution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="serialization.html">serialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="error.html">errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html">utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="package.html">package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MacSyFinder</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Developer Guide</a> &raquo;</li>
+        
+          <li><a href="index.html">MacSyFinder API documentation</a> &raquo;</li>
+        
+      <li>hit</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer_guide/api/hit.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hit">
+<span id="id1"></span><h1>hit<a class="headerlink" href="#hit" title="Permalink to this headline">¶</a></h1>
+<p>A Hit is created when <cite>hmmsearch</cite> find similarities between a profile and protein of the input dataset</p>
+<div class="figure align-default" id="id3">
+<img alt="../../_images/gene_obj_interaction.svg" src="../../_images/gene_obj_interaction.svg" /><p class="caption"><span class="caption-text">A diagram showing the interaction between CoreGene, ModelGene, Model, HIt, ValidHit interactions
+The diagram above represents the models, genes and hit generated from the definitions below.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<div class="legend">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">model</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;A&quot;</span> <span class="n">inter_gene_max_space</span><span class="o">=</span><span class="s2">&quot;2&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;abc&quot;</span> <span class="n">presence</span><span class="o">=</span><span class="s2">&quot;mandatory&quot;</span><span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;def&quot;</span> <span class="n">presence</span><span class="o">=</span><span class="s2">&quot;accessory&quot;</span><span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">model</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">model</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;B&quot;</span> <span class="n">inter_gene_max_space</span><span class="o">=</span><span class="s2">&quot;5&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;def&quot;</span> <span class="n">presence</span><span class="o">=</span><span class="s2">&quot;mandatory&quot;</span><span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="n">exchangeables</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;abc&quot;</span><span class="o">/&gt;</span>
+        <span class="o">&lt;/</span><span class="n">exchangeables</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ghj&quot;</span> <span class="n">presence</span><span class="o">=</span><span class="s2">&quot;accessory&quot;</span>
+<span class="o">&lt;/</span><span class="n">model</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="hit-api">
+<span id="id2"></span><h2>hit<a class="headerlink" href="#hit-api" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-macsypy.hit"></span><dl class="py class">
+<dt id="macsypy.hit.Hit">
+<em class="property">class </em><code class="sig-prename descclassname">macsypy.hit.</code><code class="sig-name descname">Hit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gene</span></em>, <em class="sig-param"><span class="n">hit_id</span></em>, <em class="sig-param"><span class="n">hit_seq_length</span></em>, <em class="sig-param"><span class="n">replicon_name</span></em>, <em class="sig-param"><span class="n">position_hit</span></em>, <em class="sig-param"><span class="n">i_eval</span></em>, <em class="sig-param"><span class="n">score</span></em>, <em class="sig-param"><span class="n">profile_coverage</span></em>, <em class="sig-param"><span class="n">sequence_coverage</span></em>, <em class="sig-param"><span class="n">begin_match</span></em>, <em class="sig-param"><span class="n">end_match</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#Hit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.Hit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the hits filtered from the Hmmer search. The hits are instanciated by <code class="xref py py-meth docutils literal notranslate"><span class="pre">HMMReport.extract()</span></code> method</p>
+<dl class="py method">
+<dt id="macsypy.hit.Hit.__eq__">
+<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#Hit.__eq__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.Hit.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if two hits are totally equivalent, False otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.report.Hit</span></code> object) – the hit to compare to the current object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the result of the comparison</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.hit.Hit.__gt__">
+<code class="sig-name descname">__gt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#Hit.__gt__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.Hit.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>compare two Hits. If the sequence identifier is the same, do the comparison on the score.
+Otherwise, do it on alphabetical comparison of the sequence identifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.report.Hit</span></code> object) – the hit to compare to the current object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if self is &gt; other, False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.hit.Hit.__hash__">
+<code class="sig-name descname">__hash__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#Hit.__hash__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.Hit.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>To be hashable, it’s needed to be put in a set or used as dict key</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.hit.Hit.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gene</span></em>, <em class="sig-param"><span class="n">hit_id</span></em>, <em class="sig-param"><span class="n">hit_seq_length</span></em>, <em class="sig-param"><span class="n">replicon_name</span></em>, <em class="sig-param"><span class="n">position_hit</span></em>, <em class="sig-param"><span class="n">i_eval</span></em>, <em class="sig-param"><span class="n">score</span></em>, <em class="sig-param"><span class="n">profile_coverage</span></em>, <em class="sig-param"><span class="n">sequence_coverage</span></em>, <em class="sig-param"><span class="n">begin_match</span></em>, <em class="sig-param"><span class="n">end_match</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#Hit.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.Hit.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gene</strong> (<a class="reference internal" href="gene.html#macsypy.gene.CoreGene" title="macsypy.gene.CoreGene"><code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.gene.CoreGene</span></code></a> object) – the gene corresponding to this profile</p></li>
+<li><p><strong>hit_id</strong> (<em>str</em>) – the identifier of the hit</p></li>
+<li><p><strong>hit_seq_length</strong> (<em>int</em>) – the length of the hit sequence</p></li>
+<li><p><strong>replicon_name</strong> (<em>str</em>) – the name of the replicon</p></li>
+<li><p><strong>position_hit</strong> (<em>int</em>) – the rank of the sequence matched in the input dataset file</p></li>
+<li><p><strong>i_eval</strong> (<em>float</em>) – the best-domain evalue (i-evalue, “independent evalue”)</p></li>
+<li><p><strong>score</strong> (<em>float</em>) – the score of the hit</p></li>
+<li><p><strong>profile_coverage</strong> (<em>float</em>) – percentage of the profile that matches the hit sequence</p></li>
+<li><p><strong>sequence_coverage</strong> (<em>float</em>) – percentage of the hit sequence that matches the profile</p></li>
+<li><p><strong>begin_match</strong> (<em>int</em>) – where the hit with the profile starts in the sequence</p></li>
+<li><p><strong>end_match</strong> (<em>int</em>) – where the hit with the profile ends in the sequence</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.hit.Hit.__lt__">
+<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#Hit.__lt__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.Hit.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two Hits. If the sequence identifier is the same, do the comparison on the score.
+Otherwise, do it on alphabetical comparison of the sequence identifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.report.Hit</span></code> object) – the hit to compare to the current object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if self is &lt; other, False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.hit.Hit.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#Hit.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.Hit.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Useful information on the Hit: regarding Hmmer statistics, and sequence information</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="macsypy.hit.Hit.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#macsypy.hit.Hit.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.hit.Hit.get_position">
+<code class="sig-name descname">get_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#Hit.get_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.Hit.get_position" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the position of the hit (rank in the input dataset file)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="macsypy.hit.HitWeight">
+<em class="property">class </em><code class="sig-prename descclassname">macsypy.hit.</code><code class="sig-name descname">HitWeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">itself</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">exchangeable</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.8</span></em>, <em class="sig-param"><span class="n">mandatory</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">accessory</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">neutral</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">loner_multi_system</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#HitWeight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.HitWeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>The weight to compute the cluster and system score
+see user documentation macsyfinder functionning for further details
+by default</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>itself = 1</p></li>
+<li><p>exchangeable = 0.8</p></li>
+<li><p>mandatory = 1</p></li>
+<li><p>accessory = 0.5</p></li>
+<li><p>neutral = 0</p></li>
+<li><p>loner_multi_system = 0.7</p></li>
+</ul>
+</div></blockquote>
+<dl class="py attribute">
+<dt id="macsypy.hit.HitWeight.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#macsypy.hit.HitWeight.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="macsypy.hit.ValidHit">
+<em class="property">class </em><code class="sig-prename descclassname">macsypy.hit.</code><code class="sig-name descname">ValidHit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hit</span></em>, <em class="sig-param"><span class="n">gene_ref</span></em>, <em class="sig-param"><span class="n">gene_status</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#ValidHit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.ValidHit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encapsulates a <code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.report.Hit</span></code>
+This class stores a Hit that has been attributed to a putative system.
+Thus, it also stores:</p>
+<ul class="simple">
+<li><p>the system,</p></li>
+<li><p>the status of the gene in this system, (‘mandatory’, ‘accessory’, …</p></li>
+<li><p>the gene in the model for which it’s an occurrence</p></li>
+</ul>
+<dl class="py method">
+<dt id="macsypy.hit.ValidHit.__eq__">
+<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#ValidHit.__eq__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.ValidHit.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self==value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.hit.ValidHit.__gt__">
+<code class="sig-name descname">__gt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#ValidHit.__gt__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.ValidHit.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&gt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.hit.ValidHit.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hit</span></em>, <em class="sig-param"><span class="n">gene_ref</span></em>, <em class="sig-param"><span class="n">gene_status</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#ValidHit.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.ValidHit.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hit</strong> (<a class="reference internal" href="#macsypy.hit.Hit" title="macsypy.hit.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.hit.Hit</span></code></a> object) – a match between a hmm profile and a replicon</p></li>
+<li><p><strong>gene_ref</strong> (<a class="reference internal" href="gene.html#macsypy.gene.ModelGene" title="macsypy.gene.ModelGene"><code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.gene.ModelGene</span></code></a> object) – <p>The ModelGene link to this hit
+The ModeleGene have the same name than the CoreGene
+But one hit can be link to several ModelGene (several Model)
+To know for what gene this hit play role use the
+<a class="reference internal" href="gene.html#macsypy.gene.ModelGene.alternate_of" title="macsypy.gene.ModelGene.alternate_of"><code class="xref py py-meth docutils literal notranslate"><span class="pre">macsypy.gene.ModelGene.alternate_of()</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hit</span><span class="o">.</span><span class="n">gene_ref</span><span class="o">.</span><span class="n">alternate_of</span><span class="p">()</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>gene_status</strong> (<a class="reference internal" href="gene.html#macsypy.gene.GeneStatus" title="macsypy.gene.GeneStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.gene.GeneStatus</span></code></a> object) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="macsypy.hit.ValidHit.__lt__">
+<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#ValidHit.__lt__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.ValidHit.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&lt;value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="macsypy.hit.ValidHit.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#macsypy.hit.ValidHit.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="macsypy.hit.get_best_hits">
+<code class="sig-prename descclassname">macsypy.hit.</code><code class="sig-name descname">get_best_hits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hits</span></em>, <em class="sig-param"><span class="n">key</span><span class="o">=</span><span class="default_value">'score'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/macsypy/hit.html#get_best_hits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.hit.get_best_hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>If several hits match the same protein, keep only the best match based either on</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>score</p></li>
+<li><p>i_evalue</p></li>
+<li><p>profile_coverage</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hits</strong> ([ <a class="reference internal" href="#macsypy.hit.Hit" title="macsypy.hit.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.hit.Hit</span></code></a> object, …]) – the hits to filter, all hits must match the same protein.</p></li>
+<li><p><strong>key</strong> (<em>str</em>) – The criterion used to select the best hit ‘score’, i_evalue’, ‘profile_coverage’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the list of the best hits</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[ <a class="reference internal" href="#macsypy.hit.Hit" title="macsypy.hit.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">macsypy.hit.Hit</span></code></a> object, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cluster.html" class="btn btn-neutral float-right" title="cluster" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="profile.html" class="btn btn-neutral float-left" title="profile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2014-2020, &#39;Institut Pasteur (Paris), CNRS&#39;
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+<a href="https://github.com/gem-pasteur/macsyfinder">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+         alt="Fork me on GitHub"
+         data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+</a>
+
+
+
+</body>
+</html>

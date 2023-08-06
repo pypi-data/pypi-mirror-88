@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>macsypy.solution &mdash; MacSyFinder 2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> MacSyFinder
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/index.html">Developer Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MacSyFinder</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>macsypy.solution</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for macsypy.solution</h1><div class="highlight"><pre>
+<span></span><span class="c1">#########################################################################</span>
+<span class="c1"># MacSyFinder - Detection of macromolecular systems in protein dataset  #</span>
+<span class="c1">#               using systems modelling and similarity search.          #</span>
+<span class="c1"># Authors: Sophie Abby, Bertrand Neron                                  #</span>
+<span class="c1"># Copyright (c) 2014-2020  Institut Pasteur (Paris) and CNRS.           #</span>
+<span class="c1"># See the COPYRIGHT file for details                                    #</span>
+<span class="c1">#                                                                       #</span>
+<span class="c1"># This file is part of MacSyFinder package.                             #</span>
+<span class="c1">#                                                                       #</span>
+<span class="c1"># MacSyFinder is free software: you can redistribute it and/or modify   #</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by  #</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or     #</span>
+<span class="c1"># (at your option) any later version.                                   #</span>
+<span class="c1">#                                                                       #</span>
+<span class="c1"># MacSyFinder is distributed in the hope that it will be useful,        #</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of        #</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the          #</span>
+<span class="c1"># GNU General Public License for more details .                         #</span>
+<span class="c1">#                                                                       #</span>
+<span class="c1"># You should have received a copy of the GNU General Public License     #</span>
+<span class="c1"># along with MacSyFinder (COPYING).                                     #</span>
+<span class="c1"># If not, see &lt;https://www.gnu.org/licenses/&gt;.                          #</span>
+<span class="c1">#########################################################################</span>
+
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+
+<div class="viewcode-block" id="find_best_solutions"><a class="viewcode-back" href="../../developer_guide/api/solution.html#macsypy.solution.find_best_solutions">[docs]</a><span class="k">def</span> <span class="nf">find_best_solutions</span><span class="p">(</span><span class="n">systems</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Among the systems choose the combination of systems which does not share :class:`macsypy.hit.Hit`</span>
+<span class="sd">    and maximize the sum of systems scores</span>
+
+<span class="sd">    :param systems: the systems to analyse</span>
+<span class="sd">    :type systems: list of :class:`macsypy.system.System` object</span>
+<span class="sd">    :return: the list of list of systems which represent one best solution and the it&#39;s score</span>
+<span class="sd">    :rtype: tuple of 2 elements</span>
+<span class="sd">            ([[:class:`macsypy.system.System`, ...], [:class:`macsypy.system.System`, ...]], float score)</span>
+<span class="sd">            The inner list represent a best solution</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">sort_cliques</span><span class="p">(</span><span class="n">clique</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        sort cliques</span>
+
+<span class="sd">         - first by the sum of hits of system composing the solution, most hits in first</span>
+<span class="sd">         - second by the number of hits, most system in first</span>
+<span class="sd">         - and finally by hits position. This criteria is to produce predictable results</span>
+<span class="sd">           between two runs and to be testable (functional_test gembase)</span>
+
+<span class="sd">        :param clique: the solutions to sort</span>
+<span class="sd">        :type clique: List of :class:`macsypy.system.System` objects</span>
+<span class="sd">        :return: the clique ordered</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">solution</span> <span class="ow">in</span> <span class="n">clique</span><span class="p">:</span>
+            <span class="n">hits_pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">hit</span><span class="o">.</span><span class="n">position</span> <span class="k">for</span> <span class="n">syst</span> <span class="ow">in</span> <span class="n">solution</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">syst</span><span class="o">.</span><span class="n">hits</span><span class="p">}</span>
+            <span class="n">hits_pos</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">hits_pos</span><span class="p">))</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">sorted</span><span class="p">(</span><span class="n">solution</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">sys</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">hits_pos</span><span class="p">))</span>
+
+        <span class="n">sorted_cliques</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="p">(</span><span class="nb">sum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">hits</span><span class="p">)</span> <span class="k">for</span> <span class="n">sys</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]]),</span>
+                                                     <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                                                     <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                     <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">sys</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+                                                     <span class="p">),</span>
+                                <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">sorted_cliques</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sorted_cliques</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">sorted_cliques</span>
+
+    <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="c1"># add nodes (vertices)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">systems</span><span class="p">)</span>
+    <span class="c1"># let&#39;s create an edges between compatible nodes</span>
+    <span class="k">for</span> <span class="n">sys_i</span><span class="p">,</span> <span class="n">sys_j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">systems</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sys_i</span><span class="o">.</span><span class="n">is_compatible</span><span class="p">(</span><span class="n">sys_j</span><span class="p">):</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">sys_i</span><span class="p">,</span> <span class="n">sys_j</span><span class="p">)</span>
+
+    <span class="n">cliques</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">algorithms</span><span class="o">.</span><span class="n">clique</span><span class="o">.</span><span class="n">find_cliques</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="n">max_score</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">max_cliques</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cliques</span><span class="p">:</span>
+        <span class="n">current_score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">score</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">c</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">max_score</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">current_score</span> <span class="o">&gt;</span> <span class="n">max_score</span><span class="p">):</span>
+            <span class="n">max_score</span> <span class="o">=</span> <span class="n">current_score</span>
+            <span class="n">max_cliques</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">current_score</span> <span class="o">==</span> <span class="n">max_score</span><span class="p">:</span>
+            <span class="n">max_cliques</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="c1"># sort the solutions (cliques)</span>
+    <span class="n">solutions</span> <span class="o">=</span> <span class="n">sort_cliques</span><span class="p">(</span><span class="n">max_cliques</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">solutions</span><span class="p">,</span> <span class="n">max_score</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2014-2020, &#39;Institut Pasteur (Paris), CNRS&#39;
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+<a href="https://github.com/gem-pasteur/macsyfinder">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+         alt="Fork me on GitHub"
+         data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+</a>
+
+
+
+</body>
+</html>
