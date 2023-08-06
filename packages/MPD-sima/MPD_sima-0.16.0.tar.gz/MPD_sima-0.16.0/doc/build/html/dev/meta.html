@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Track object Documentation &#8212; MPD_sima 0.16.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script src="../_static/js/jquery-fix.js"></script>
+    <script src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Last.fm HTTP Client" href="lastfm.html" />
+    <link rel="prev" title="MPD_sima’s documentation!" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          MPD_sima</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.16.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Track object Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#meta-object-documentation">Meta object Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lastfm.html">Last.fm  HTTP Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cache.html">HTTP Cache Objects</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Track object Documentation</a></li>
+<li><a class="reference internal" href="#meta-object-documentation">Meta object Documentation</a><ul>
+<li><a class="reference internal" href="#generic-class-and-helper-function">Generic class and helper function</a></li>
+<li><a class="reference internal" href="#derived-objects">Derived objects</a></li>
+<li><a class="reference internal" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../index.html" title="Previous Chapter: MPD_sima’s documentation!"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; MPD_sima’s do...</span>
+    </a>
+  </li>
+  <li>
+    <a href="lastfm.html" title="Next Chapter: Last.fm HTTP Client"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Last.fm HTTP Client &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/dev/meta.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="module-sima.lib.track">
+<span id="track-object-documentation"></span><h1>Track object Documentation<a class="headerlink" href="#module-sima.lib.track" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="sima.lib.track.Track">
+<em class="property">class </em><code class="sig-prename descclassname">sima.lib.track.</code><code class="sig-name descname">Track</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">pos</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/lib/track.html#Track"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.lib.track.Track" title="Permalink to this definition">¶</a></dt>
+<dd><p>Track object.
+Instantiate with Player replies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>str</em>) – media file, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>time</strong> (<em>int</em>) – duration in second, defaults to 0</p></li>
+<li><p><strong>pos</strong> (<em>int</em>) – position in queue, defaults to -1</p></li>
+<li><p><strong>title|artist|album</strong> (<em>str</em>) – defaults to “”</p></li>
+<li><p><strong>musicbrainz_artistid|musicbrainz_albumartistid</strong> (<em>str</em>) – MusicBrainz IDs, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="sima.lib.track.Track.Artist">
+<em class="property">property </em><code class="sig-name descname">Artist</code><a class="headerlink" href="#sima.lib.track.Track.Artist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the <a class="reference internal" href="#sima.lib.meta.Artist" title="sima.lib.meta.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">sima.lib.meta.Artist</span></code></a> associated to this track</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.track.Track.file">
+<em class="property">property </em><code class="sig-name descname">file</code><a class="headerlink" href="#sima.lib.track.Track.file" title="Permalink to this definition">¶</a></dt>
+<dd><p>file is an immutable attribute that’s used for the hash method</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.track.Track.get_time">
+<code class="sig-name descname">get_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/lib/track.html#Track.get_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.lib.track.Track.get_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>get time property</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.track.Track.length">
+<em class="property">property </em><code class="sig-name descname">length</code><a class="headerlink" href="#sima.lib.track.Track.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a fancy duration as <code class="docutils literal notranslate"><span class="pre">%H:%M:%S</span></code> (use <a class="reference internal" href="#sima.lib.track.Track.time" title="sima.lib.track.Track.time"><code class="xref py py-attr docutils literal notranslate"><span class="pre">time</span></code></a> to get duration in second only)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.track.Track.set_time">
+<code class="sig-name descname">set_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/lib/track.html#Track.set_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.lib.track.Track.set_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>set time property</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.track.Track.time">
+<em class="property">property </em><code class="sig-name descname">time</code><a class="headerlink" href="#sima.lib.track.Track.time" title="Permalink to this definition">¶</a></dt>
+<dd><p>song duration in seconds (use <a class="reference internal" href="#sima.lib.track.Track.length" title="sima.lib.track.Track.length"><code class="xref py py-attr docutils literal notranslate"><span class="pre">length</span></code></a> for human readable time)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="meta-object-documentation">
+<h1>Meta object Documentation<a class="headerlink" href="#meta-object-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="generic-class-and-helper-function">
+<h2>Generic class and helper function<a class="headerlink" href="#generic-class-and-helper-function" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="sima.lib.meta.Meta">
+<em class="property">class </em><code class="sig-prename descclassname">sima.lib.meta.</code><code class="sig-name descname">Meta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">mbid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/lib/meta.html#Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.lib.meta.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>A generic Class to handle tracks metadata such as artist, album, albumartist
+names and their associated MusicBrainz’s ID.</p>
+<p>Using generic kwargs in constructor for convenience but the actual signature is:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Meta</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mbid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – set name attribute</p></li>
+<li><p><strong>mbid</strong> (<em>str</em>) – set MusicBrainz ID</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="sima.lib.meta.Meta.add_alias">
+<code class="sig-name descname">add_alias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/lib/meta.html#Meta.add_alias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.lib.meta.Meta.add_alias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add alternative name to <cite>aliases</cite> attibute.</p>
+<p><cite>other</cite> can be a <a class="reference internal" href="#sima.lib.meta.Meta" title="sima.lib.meta.Meta"><code class="xref py py-class docutils literal notranslate"><span class="pre">sima.lib.meta.Meta</span></code></a> object in which case aliases are merged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>str</em>) – Alias to add, could be any object with <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.meta.Meta.aliases">
+<em class="property">property </em><code class="sig-name descname">aliases</code><a class="headerlink" href="#sima.lib.meta.Meta.aliases" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.meta.Meta.aliases_sz">
+<em class="property">property </em><code class="sig-name descname">aliases_sz</code><a class="headerlink" href="#sima.lib.meta.Meta.aliases_sz" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.meta.Meta.mbid">
+<em class="property">property </em><code class="sig-name descname">mbid</code><a class="headerlink" href="#sima.lib.meta.Meta.mbid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.meta.Meta.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#sima.lib.meta.Meta.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.meta.Meta.name_sz">
+<em class="property">property </em><code class="sig-name descname">name_sz</code><a class="headerlink" href="#sima.lib.meta.Meta.name_sz" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.meta.Meta.names">
+<em class="property">property </em><code class="sig-name descname">names</code><a class="headerlink" href="#sima.lib.meta.Meta.names" title="Permalink to this definition">¶</a></dt>
+<dd><p>aliases + name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.lib.meta.Meta.names_sz">
+<em class="property">property </em><code class="sig-name descname">names_sz</code><a class="headerlink" href="#sima.lib.meta.Meta.names_sz" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="sima.lib.meta.Meta.use_mbid">
+<code class="sig-name descname">use_mbid</code><em class="property"> = True</em><a class="headerlink" href="#sima.lib.meta.Meta.use_mbid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class attribute to disable use of MusicBrainz IDs</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="sima.lib.meta.is_uuid4">
+<code class="sig-prename descclassname">sima.lib.meta.</code><code class="sig-name descname">is_uuid4</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uuid</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/lib/meta.html#is_uuid4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.lib.meta.is_uuid4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls MusicBrainz UUID4 format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uuid</strong> (<em>str</em>) – String representing the UUID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="derived-objects">
+<h2>Derived objects<a class="headerlink" href="#derived-objects" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="sima.lib.meta.Artist">
+<em class="property">class </em><code class="sig-prename descclassname">sima.lib.meta.</code><code class="sig-name descname">Artist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">mbid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">albumartist</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">musicbrainz_artistid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">musicbrainz_albumartistid</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/lib/meta.html#Artist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.lib.meta.Artist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sima.lib.meta.Meta" title="sima.lib.meta.Meta"><code class="xref py py-class docutils literal notranslate"><span class="pre">sima.lib.meta.Meta</span></code></a></p>
+<p>Artist object deriving from <a class="reference internal" href="#sima.lib.meta.Meta" title="sima.lib.meta.Meta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Meta</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Artist name</p></li>
+<li><p><strong>mbid</strong> (<em>str</em>) – Musicbrainz artist ID</p></li>
+<li><p><strong>artist</strong> (<em>str</em>) – Overrides “name” argument</p></li>
+<li><p><strong>albumartist</strong> (<em>str</em>) – Overrides “name” and “artist” argument</p></li>
+<li><p><strong>musicbrainz_artistid</strong> (<em>str</em>) – Overrides “mbid” argument</p></li>
+<li><p><strong>musicbrainz_albumartistid</strong> (<em>str</em>) – Overrides “musicbrainz_artistid” argument</p></li>
+</ul>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">trk</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span><span class="s1">&#39;Art Name&#39;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>       <span class="s1">&#39;albumartist&#39;</span><span class="p">:</span> <span class="s1">&#39;Alb Art Name&#39;</span><span class="p">,</span>           <span class="c1"># optional</span>
+<span class="gp">&gt;&gt;&gt; </span>       <span class="s1">&#39;musicbrainz_artistid&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;UUID4&gt;&#39;</span><span class="p">,</span>       <span class="c1"># optional</span>
+<span class="gp">&gt;&gt;&gt; </span>       <span class="s1">&#39;musicbrainz_albumartistid&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;UUID4&gt;&#39;</span><span class="p">,</span>  <span class="c1"># optional</span>
+<span class="gp">&gt;&gt;&gt; </span>      <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">artobj0</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="o">**</span><span class="n">trk</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">artobj1</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Tool&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="sima.lib.meta.MetaException">
+<em class="property">class </em><code class="sig-prename descclassname">sima.lib.meta.</code><code class="sig-name descname">MetaException</code><a class="reference internal" href="../_modules/sima/lib/meta.html#MetaException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.lib.meta.MetaException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic Meta Exception</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2009-2020, kaliko.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

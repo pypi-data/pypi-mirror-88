@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>musicpd &#8212; MPD_sima 0.16.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script src="../_static/js/jquery-fix.js"></script>
+    <script src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          MPD_sima</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.16.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/mpdclient.html">MPD Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/meta.html">Track object Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/meta.html#meta-object-documentation">Meta object Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/lastfm.html">Last.fm  HTTP Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/cache.html">HTTP Cache Objects</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for musicpd</h1><div class="highlight"><pre>
+<span></span><span class="c1"># python-musicpd: Python MPD client library</span>
+<span class="c1"># Copyright (C) 2012-2019  kaliko &lt;kaliko@azylum.org&gt;</span>
+<span class="c1"># Copyright (C) 2019       Naglis Jonaitis &lt;naglis@mailbox.org&gt;</span>
+<span class="c1"># Copyright (C) 2019       Bart Van Loon &lt;bbb@bbbart.be&gt;</span>
+<span class="c1"># Copyright (C) 2008-2010  J. Alexander Treuman &lt;jat@spatialrift.net&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># python-musicpd is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># python-musicpd is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License</span>
+<span class="c1"># along with python-musicpd.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="c1"># pylint: disable=missing-docstring</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+
+<span class="n">HELLO_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;OK MPD &quot;</span>
+<span class="n">ERROR_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;ACK &quot;</span>
+<span class="n">SUCCESS</span> <span class="o">=</span> <span class="s2">&quot;OK&quot;</span>
+<span class="n">NEXT</span> <span class="o">=</span> <span class="s2">&quot;list_OK&quot;</span>
+<span class="n">VERSION</span> <span class="o">=</span> <span class="s1">&#39;0.4.5&#39;</span>
+<span class="c1">#: seconds before a tcp connection attempt times out</span>
+<span class="n">CONNECTION_TIMEOUT</span> <span class="o">=</span> <span class="mi">5</span>
+
+
+<span class="k">def</span> <span class="nf">iterator_wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator handling iterate option&quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">decorated_function</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">generator</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="n">iterate</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">generator</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_iterating</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">def</span> <span class="nf">iterator</span><span class="p">(</span><span class="n">gen</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">item</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">_iterating</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">iterator</span><span class="p">(</span><span class="n">generator</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">decorated_function</span>
+
+
+<span class="k">class</span> <span class="nc">MPDError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">ConnectionError</span><span class="p">(</span><span class="n">MPDError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">ProtocolError</span><span class="p">(</span><span class="n">MPDError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">CommandError</span><span class="p">(</span><span class="n">MPDError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">CommandListError</span><span class="p">(</span><span class="n">MPDError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">PendingCommandError</span><span class="p">(</span><span class="n">MPDError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">IteratingError</span><span class="p">(</span><span class="n">MPDError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">Range</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpl</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tpl</span> <span class="o">=</span> <span class="n">tpl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tpl</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;:&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tpl</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tpl</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{0[0]}</span><span class="s1">:</span><span class="si">{0[1]}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tpl</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Range(</span><span class="si">{0}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tpl</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tpl</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">CommandError</span><span class="p">(</span><span class="s1">&#39;Wrong type, provide a tuple&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tpl</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">CommandError</span><span class="p">(</span><span class="s1">&#39;length not in [0, 1, 2]&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tpl</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">CommandError</span><span class="p">(</span><span class="s1">&#39;Not a tuple of int&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_NotConnected</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dummy</span>
+
+    <span class="k">def</span> <span class="nf">_dummy</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Not connected&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MPDClient"><a class="viewcode-back" href="../dev/mpdclient.html#sima.mpdclient.MPDClient">[docs]</a><span class="k">class</span> <span class="nc">MPDClient</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;MPDClient instance will look for ``MPD_HOST``/``MPD_PORT``/``XDG_RUNTIME_DIR`` environment</span>
+<span class="sd">    variables and set instance attribute ``host``, ``port`` and ``pwd``</span>
+<span class="sd">    accordingly. Regarding ``MPD_HOST`` format to expose password refer</span>
+<span class="sd">    MPD client manual :manpage:`mpc (1)`.</span>
+
+<span class="sd">    Then :py:obj:`musicpd.MPDClient.connect` will use ``host`` and ``port`` as defaults if not provided as args.</span>
+
+<span class="sd">    Cf. :py:obj:`musicpd.MPDClient.connect` for details.</span>
+
+<span class="sd">    &gt;&gt;&gt; from os import environ</span>
+<span class="sd">    &gt;&gt;&gt; environ[&#39;MPD_HOST&#39;] = &#39;pass@mpdhost&#39;</span>
+<span class="sd">    &gt;&gt;&gt; cli = musicpd.MPDClient()</span>
+<span class="sd">    &gt;&gt;&gt; cli.pwd == environ[&#39;MPD_HOST&#39;].split(&#39;@&#39;)[0]</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; cli.host == environ[&#39;MPD_HOST&#39;].split(&#39;@&#39;)[1]</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; cli.connect() # will use host/port as set in MPD_HOST/MPD_PORT</span>
+
+<span class="sd">    :ivar str host: host used with the current connection</span>
+<span class="sd">    :ivar str,int port: port used with the current connection</span>
+<span class="sd">    :ivar str pwd: password detected in ``MPD_HOST`` environment variable</span>
+
+<span class="sd">    .. warning:: Instance attribute host/port/pwd</span>
+
+<span class="sd">      While :py:attr:`musicpd.MPDClient().host` and</span>
+<span class="sd">      :py:attr:`musicpd.MPDClient().port` keep track of current connection</span>
+<span class="sd">      host and port, :py:attr:`musicpd.MPDClient().pwd` is set once with</span>
+<span class="sd">      password extracted from environment variable.</span>
+<span class="sd">      Calling :py:meth:`musicpd.MPDClient().password()` with a new password</span>
+<span class="sd">      won&#39;t update :py:attr:`musicpd.MPDClient().pwd` value.</span>
+
+<span class="sd">      Moreover, :py:attr:`musicpd.MPDClient().pwd` is only an helper attribute</span>
+<span class="sd">      exposing password extracted from ``MPD_HOST`` environment variable, it</span>
+<span class="sd">      will not be used as default value for the :py:meth:`password` method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterate</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="c1"># Status Commands</span>
+            <span class="s2">&quot;clearerror&quot;</span><span class="p">:</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;currentsong&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_object</span><span class="p">,</span>
+            <span class="s2">&quot;idle&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="c1">#&quot;noidle&quot;:             None,</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_object</span><span class="p">,</span>
+            <span class="s2">&quot;stats&quot;</span><span class="p">:</span>              <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_object</span><span class="p">,</span>
+            <span class="c1"># Playback Option Commands</span>
+            <span class="s2">&quot;consume&quot;</span><span class="p">:</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;crossfade&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;mixrampdb&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;mixrampdelay&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;random&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;repeat&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;setvol&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;single&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;replay_gain_mode&quot;</span><span class="p">:</span>   <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;replay_gain_status&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_item</span><span class="p">,</span>
+            <span class="s2">&quot;volume&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="c1"># Playback Control Commands</span>
+            <span class="s2">&quot;next&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;pause&quot;</span><span class="p">:</span>              <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;play&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;playid&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;previous&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;seek&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;seekid&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;seekcur&quot;</span><span class="p">:</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;stop&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="c1"># Queue Commands</span>
+            <span class="s2">&quot;add&quot;</span><span class="p">:</span>                <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;addid&quot;</span><span class="p">:</span>              <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_item</span><span class="p">,</span>
+            <span class="s2">&quot;clear&quot;</span><span class="p">:</span>              <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;delete&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;deleteid&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;move&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;moveid&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;playlist&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_playlist</span><span class="p">,</span>
+            <span class="s2">&quot;playlistfind&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_songs</span><span class="p">,</span>
+            <span class="s2">&quot;playlistid&quot;</span><span class="p">:</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_songs</span><span class="p">,</span>
+            <span class="s2">&quot;playlistinfo&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_songs</span><span class="p">,</span>
+            <span class="s2">&quot;playlistsearch&quot;</span><span class="p">:</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_songs</span><span class="p">,</span>
+            <span class="s2">&quot;plchanges&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_songs</span><span class="p">,</span>
+            <span class="s2">&quot;plchangesposid&quot;</span><span class="p">:</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_changes</span><span class="p">,</span>
+            <span class="s2">&quot;prio&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;prioid&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;rangeid&quot;</span><span class="p">:</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;shuffle&quot;</span><span class="p">:</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;swap&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;swapid&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;addtagid&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;cleartagid&quot;</span><span class="p">:</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="c1"># Stored Playlist Commands</span>
+            <span class="s2">&quot;listplaylist&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="s2">&quot;listplaylistinfo&quot;</span><span class="p">:</span>   <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_songs</span><span class="p">,</span>
+            <span class="s2">&quot;listplaylists&quot;</span><span class="p">:</span>      <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_playlists</span><span class="p">,</span>
+            <span class="s2">&quot;load&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;playlistadd&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;playlistclear&quot;</span><span class="p">:</span>      <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;playlistdelete&quot;</span><span class="p">:</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;playlistmove&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;rename&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;rm&quot;</span><span class="p">:</span>                 <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;save&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="c1"># Database Commands</span>
+            <span class="s2">&quot;albumart&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_composite</span><span class="p">,</span>
+            <span class="s2">&quot;count&quot;</span><span class="p">:</span>              <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_object</span><span class="p">,</span>
+            <span class="s2">&quot;find&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_songs</span><span class="p">,</span>
+            <span class="s2">&quot;findadd&quot;</span><span class="p">:</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;list&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="s2">&quot;listall&quot;</span><span class="p">:</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_database</span><span class="p">,</span>
+            <span class="s2">&quot;listallinfo&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_database</span><span class="p">,</span>
+            <span class="s2">&quot;listfiles&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_database</span><span class="p">,</span>
+            <span class="s2">&quot;lsinfo&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_database</span><span class="p">,</span>
+            <span class="s2">&quot;readcomments&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_object</span><span class="p">,</span>
+            <span class="s2">&quot;search&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_songs</span><span class="p">,</span>
+            <span class="s2">&quot;searchadd&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;searchaddpl&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;update&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_item</span><span class="p">,</span>
+            <span class="s2">&quot;rescan&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_item</span><span class="p">,</span>
+            <span class="c1"># Mounts and neighbors</span>
+            <span class="s2">&quot;mount&quot;</span><span class="p">:</span>              <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;unmount&quot;</span><span class="p">:</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;listmounts&quot;</span><span class="p">:</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_mounts</span><span class="p">,</span>
+            <span class="s2">&quot;listneighbors&quot;</span><span class="p">:</span>      <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_neighbors</span><span class="p">,</span>
+            <span class="c1"># Sticker Commands</span>
+            <span class="s2">&quot;sticker get&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_item</span><span class="p">,</span>
+            <span class="s2">&quot;sticker set&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;sticker delete&quot;</span><span class="p">:</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;sticker list&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="s2">&quot;sticker find&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_songs</span><span class="p">,</span>
+            <span class="c1"># Connection Commands</span>
+            <span class="s2">&quot;close&quot;</span><span class="p">:</span>              <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;kill&quot;</span><span class="p">:</span>               <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;password&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;ping&quot;</span><span class="p">:</span>               <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;tagtypes&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="s2">&quot;tagtypes disable&quot;</span><span class="p">:</span>   <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;tagtypes enable&quot;</span><span class="p">:</span>    <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;tagtypes clear&quot;</span><span class="p">:</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;tagtypes all&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="c1"># Partition Commands</span>
+            <span class="s2">&quot;partition&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;listpartitions&quot;</span><span class="p">:</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="s2">&quot;newpartition&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="c1"># Audio Output Commands</span>
+            <span class="s2">&quot;disableoutput&quot;</span><span class="p">:</span>      <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;enableoutput&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;toggleoutput&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;outputs&quot;</span><span class="p">:</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_outputs</span><span class="p">,</span>
+            <span class="s2">&quot;outputset&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="c1"># Reflection Commands</span>
+            <span class="s2">&quot;config&quot;</span><span class="p">:</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_object</span><span class="p">,</span>
+            <span class="s2">&quot;commands&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="s2">&quot;notcommands&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="s2">&quot;urlhandlers&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="s2">&quot;decoders&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_plugins</span><span class="p">,</span>
+            <span class="c1"># Client to Client</span>
+            <span class="s2">&quot;subscribe&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;unsubscribe&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+            <span class="s2">&quot;channels&quot;</span><span class="p">:</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">,</span>
+            <span class="s2">&quot;readmessages&quot;</span><span class="p">:</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_messages</span><span class="p">,</span>
+            <span class="s2">&quot;sendmessage&quot;</span><span class="p">:</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_envvars</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_envvars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve MPD env. var. to overrides &quot;localhost:6600&quot;</span>
+<span class="sd">            Use MPD_HOST/MPD_PORT if set</span>
+<span class="sd">            else use MPD_HOST=${XDG_RUNTIME_DIR:-/run/}/mpd/socket if file exists</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pwd</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MPD_PORT&#39;</span><span class="p">,</span> <span class="s1">&#39;6600&#39;</span><span class="p">)</span>
+        <span class="n">mpd_host_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MPD_HOST&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mpd_host_env</span><span class="p">:</span>
+            <span class="c1"># If password is set:</span>
+            <span class="c1"># mpd_host_env = [&#39;pass&#39;, &#39;host&#39;] because MPD_HOST=pass@host</span>
+            <span class="n">mpd_host_env</span> <span class="o">=</span> <span class="n">mpd_host_env</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)</span>
+            <span class="n">mpd_host_env</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">mpd_host_env</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mpd_host_env</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">mpd_host_env</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pwd</span> <span class="o">=</span> <span class="n">mpd_host_env</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Is socket there</span>
+            <span class="n">xdg_runtime_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;XDG_RUNTIME_DIR&#39;</span><span class="p">,</span> <span class="s1">&#39;/run&#39;</span><span class="p">)</span>
+            <span class="n">rundir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xdg_runtime_dir</span><span class="p">,</span> <span class="s1">&#39;mpd/socket&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">rundir</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">rundir</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;send_noidle&#39;</span><span class="p">:</span>  <span class="c1"># have send_noidle to cancel idle as well as noidle</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">noidle</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;send_&quot;</span><span class="p">):</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;send_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">wrapper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span>
+        <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;fetch_&quot;</span><span class="p">):</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;fetch_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">wrapper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="n">attr</span>
+            <span class="n">wrapper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span>
+        <span class="k">if</span> <span class="n">command</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">command</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39; object has no attribute &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span>
+                                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">wrapper</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CommandListError</span><span class="p">(</span><span class="s2">&quot;Cannot use send_</span><span class="si">%s</span><span class="s2"> in a command list&quot;</span> <span class="o">%</span>
+                                   <span class="n">command</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">retval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CommandListError</span><span class="p">(</span><span class="s2">&quot;Cannot use fetch_</span><span class="si">%s</span><span class="s2"> in a command list&quot;</span> <span class="o">%</span>
+                                   <span class="n">command</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterating</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IteratingError</span><span class="p">(</span><span class="s2">&quot;Cannot use fetch_</span><span class="si">%s</span><span class="s2"> while iterating&quot;</span> <span class="o">%</span>
+                                 <span class="n">command</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PendingCommandError</span><span class="p">(</span><span class="s2">&quot;No pending commands to fetch&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">command</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PendingCommandError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39; is not the currently &quot;</span>
+                                      <span class="s2">&quot;pending command&quot;</span> <span class="o">%</span> <span class="n">command</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">retval</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">retval</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">retval</span>
+
+    <span class="k">def</span> <span class="nf">_execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterating</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IteratingError</span><span class="p">(</span><span class="s2">&quot;Cannot execute &#39;</span><span class="si">%s</span><span class="s2">&#39; while iterating&quot;</span> <span class="o">%</span>
+                                 <span class="n">command</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PendingCommandError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot execute &#39;</span><span class="si">%s</span><span class="s2">&#39; with pending commands&quot;</span> <span class="o">%</span> <span class="n">command</span><span class="p">)</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">retval</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">CommandListError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39; not allowed in command list&quot;</span> <span class="o">%</span> <span class="n">command</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">retval</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">retval</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">retval</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">retval</span>
+
+    <span class="k">def</span> <span class="nf">_write_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">line</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_write_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">command</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0!s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Range</span><span class="p">(</span><span class="n">arg</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">escape</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_line</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_read_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rfile</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Connection lost while reading line&quot;</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">ERROR_PREFIX</span><span class="p">):</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">ERROR_PREFIX</span><span class="p">):]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="n">CommandError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="n">NEXT</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="n">SUCCESS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ProtocolError</span><span class="p">(</span><span class="s2">&quot;Got unexpected &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">SUCCESS</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">line</span> <span class="o">==</span> <span class="n">SUCCESS</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">return</span> <span class="n">line</span>
+
+    <span class="k">def</span> <span class="nf">_read_pair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">pair</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ProtocolError</span><span class="p">(</span><span class="s2">&quot;Could not parse pair: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">line</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pair</span>
+
+    <span class="k">def</span> <span class="nf">_read_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;: &quot;</span><span class="p">):</span>
+        <span class="n">pair</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pair</span><span class="p">(</span><span class="n">separator</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">pair</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">pair</span>
+            <span class="n">pair</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pair</span><span class="p">(</span><span class="n">separator</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_read_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pairs</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="n">seen</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">seen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ProtocolError</span><span class="p">(</span><span class="s2">&quot;Expected key &#39;</span><span class="si">%s</span><span class="s2">&#39;, got &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span>
+                                        <span class="p">(</span><span class="n">seen</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+                <span class="n">seen</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="k">yield</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_read_playlist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pairs</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_read_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delimiters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">delimiters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">delimiters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pairs</span><span class="p">():</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">delimiters</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">obj</span>
+                    <span class="n">obj</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                        <span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">continue</span>
+            <span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="nf">_read_command_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">retval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">retval</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_nothing</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ProtocolError</span><span class="p">(</span><span class="s2">&quot;Got unexpected return value: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">line</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_pairs</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">return</span> <span class="n">pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@iterator_wrapper</span>
+    <span class="k">def</span> <span class="nf">_fetch_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_list</span><span class="p">()</span>
+
+    <span class="nd">@iterator_wrapper</span>
+    <span class="k">def</span> <span class="nf">_fetch_playlist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_playlist</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">objs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_objects</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">objs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">objs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@iterator_wrapper</span>
+    <span class="k">def</span> <span class="nf">_fetch_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delimiters</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_objects</span><span class="p">(</span><span class="n">delimiters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_objects</span><span class="p">([</span><span class="s2">&quot;cpos&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_songs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_objects</span><span class="p">([</span><span class="s2">&quot;file&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_playlists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_objects</span><span class="p">([</span><span class="s2">&quot;playlist&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_objects</span><span class="p">([</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;directory&quot;</span><span class="p">,</span> <span class="s2">&quot;playlist&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_objects</span><span class="p">([</span><span class="s2">&quot;outputid&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_objects</span><span class="p">([</span><span class="s2">&quot;plugin&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_objects</span><span class="p">([</span><span class="s2">&quot;channel&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_mounts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_objects</span><span class="p">([</span><span class="s2">&quot;mount&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_objects</span><span class="p">([</span><span class="s2">&quot;neighbor&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fetch_composite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pairs</span><span class="p">():</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;binary&#39;</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="n">by</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
+        <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">by</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s1">&#39;surrogateescape&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="nd">@iterator_wrapper</span>
+    <span class="k">def</span> <span class="nf">_fetch_command_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_command_list</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_hello</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rfile</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Connection lost while reading MPD hello&quot;</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">HELLO_PREFIX</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ProtocolError</span><span class="p">(</span><span class="s2">&quot;Got invalid MPD hello: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">line</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mpd_version</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">HELLO_PREFIX</span><span class="p">):]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mpd_version</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iterating</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rfile</span> <span class="o">=</span> <span class="n">_NotConnected</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wfile</span> <span class="o">=</span> <span class="n">_NotConnected</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_connect_unix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="s2">&quot;AF_UNIX&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span>
+                <span class="s2">&quot;Unix domain sockets not supported on this platform&quot;</span><span class="p">)</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sock</span>
+
+    <span class="k">def</span> <span class="nf">_connect_tcp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">flags</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">AI_ADDRCONFIG</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNSPEC</span><span class="p">,</span>
+                                      <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">,</span>
+                                      <span class="n">flags</span><span class="p">):</span>
+            <span class="n">af</span><span class="p">,</span> <span class="n">socktype</span><span class="p">,</span> <span class="n">proto</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">sa</span> <span class="o">=</span> <span class="n">res</span>
+            <span class="n">sock</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">af</span><span class="p">,</span> <span class="n">socktype</span><span class="p">,</span> <span class="n">proto</span><span class="p">)</span>
+                <span class="n">sock</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="n">CONNECTION_TIMEOUT</span><span class="p">)</span>
+                <span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">sa</span><span class="p">)</span>
+                <span class="n">sock</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">sock</span>
+            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">socket_err</span><span class="p">:</span>
+                <span class="n">err</span> <span class="o">=</span> <span class="n">socket_err</span>
+                <span class="k">if</span> <span class="n">sock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;getaddrinfo returns an empty list&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">noidle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># noidle&#39;s special case</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;idle&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CommandError</span><span class="p">(</span>
+                <span class="s1">&#39;cannot send noidle if send_idle was not called&#39;</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_command</span><span class="p">(</span><span class="s2">&quot;noidle&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_list</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MPDClient.connect"><a class="viewcode-back" href="../dev/mpdclient.html#sima.mpdclient.MPDClient.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Connects the MPD server</span>
+
+<span class="sd">        :param str host: hostname, IP or FQDN (defaults to `localhost` or socket, see below for details)</span>
+<span class="sd">        :param port: port number (defaults to 6600)</span>
+<span class="sd">        :type port: str or int</span>
+
+<span class="sd">        The connect method honors MPD_HOST/MPD_PORT environment variables.</span>
+
+<span class="sd">        .. note:: Default host/port</span>
+
+<span class="sd">          If host evaluate to :py:obj:`False`</span>
+<span class="sd">           * use ``MPD_HOST`` environment variable if set, extract password if present,</span>
+<span class="sd">           * else looks for a existing file in ``${XDG_RUNTIME_DIR:-/run/}/mpd/socket``</span>
+<span class="sd">           * else set host to ``localhost``</span>
+
+<span class="sd">          If port evaluate to :py:obj:`False`</span>
+<span class="sd">           * if ``MPD_PORT`` environment variable is set, use it for port</span>
+<span class="sd">           * else use ``6600``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">host</span><span class="p">:</span>
+            <span class="n">host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">port</span><span class="p">:</span>
+            <span class="n">port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Already connected&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">host</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_unix</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_tcp</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="o">.</span><span class="n">makefile</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;surrogateescape&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="o">.</span><span class="n">makefile</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hello</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="MPDClient.disconnect"><a class="viewcode-back" href="../dev/mpdclient.html#sima.mpdclient.MPDClient.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Closes the MPD connection.</span>
+<span class="sd">        The client closes the actual socket, it does not use the</span>
+<span class="sd">        &#39;close&#39; request from MPD protocol (as suggested in documentation).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rfile</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wfile</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">fileno</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Not connected&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">command_list_ok_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CommandListError</span><span class="p">(</span><span class="s2">&quot;Already in command list&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterating</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IteratingError</span><span class="p">(</span><span class="s2">&quot;Cannot begin command list while iterating&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PendingCommandError</span><span class="p">(</span><span class="s2">&quot;Cannot begin command list &quot;</span>
+                                      <span class="s2">&quot;with pending commands&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_command</span><span class="p">(</span><span class="s2">&quot;command_list_ok_begin&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">command_list_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CommandListError</span><span class="p">(</span><span class="s2">&quot;Not in command list&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterating</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IteratingError</span><span class="p">(</span><span class="s2">&quot;Already iterating over a command list&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_command</span><span class="p">(</span><span class="s2">&quot;command_list_end&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_command_list</span><span class="p">()</span></div>
+
+
+<span class="k">def</span> <span class="nf">escape</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\\\</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
+<span class="c1"># vim: set expandtab shiftwidth=4 softtabstop=4 textwidth=79:</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2009-2020, kaliko.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

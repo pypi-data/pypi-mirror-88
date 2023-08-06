@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>MPD Client &#8212; MPD_sima 0.16.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script src="../_static/js/jquery-fix.js"></script>
+    <script src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Track object Documentation" href="meta.html" />
+    <link rel="prev" title="MPD_sima’s documentation!" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          MPD_sima</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.16.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MPD Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meta.html">Track object Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meta.html#meta-object-documentation">Meta object Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lastfm.html">Last.fm  HTTP Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cache.html">HTTP Cache Objects</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">MPD Client</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../index.html" title="Previous Chapter: MPD_sima’s documentation!"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; MPD_sima’s do...</span>
+    </a>
+  </li>
+  <li>
+    <a href="meta.html" title="Next Chapter: Track object Documentation"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Track object ... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/dev/mpdclient.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="mpd-client">
+<h1>MPD Client<a class="headerlink" href="#mpd-client" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="sima.mpdclient.MPD">
+<em class="property">class </em><code class="sig-prename descclassname">sima.mpdclient.</code><code class="sig-name descname">MPD</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">daemon</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/mpdclient.html#MPD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.mpdclient.MPD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">musicpd.MPDClient</span></code></p>
+<p>Player instance inheriting from MPDClient (python-musicpd).</p>
+<p>Some methods are overridden to format objects as sima.lib.Track for
+instance, other are calling parent class directly through super().
+cf. MPD.__getattr__</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>find methods are looking for exact match of the object provided
+attributes in MPD music library</p></li>
+<li><p>search methods are looking for exact match + fuzzy match.</p></li>
+</ul>
+</div>
+<dl class="py method">
+<dt id="sima.mpdclient.MPD.add">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">payload</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/mpdclient.html#MPD.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.mpdclient.MPD.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overriding MPD’s add method to accept Track objects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>payload</strong> (<a class="reference internal" href="meta.html#sima.lib.track.Track" title="sima.lib.track.Track"><em>Track</em></a><em>,</em><em>list</em>) – Either a single <code class="xref py py-obj docutils literal notranslate"><span class="pre">Track</span></code> or a list of it</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.mpdclient.MPD.clean">
+<code class="sig-name descname">clean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/mpdclient.html#MPD.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.mpdclient.MPD.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean blocking event (idle) and pending commands</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.mpdclient.MPD.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/mpdclient.html#MPD.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.mpdclient.MPD.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overriding explicitly MPDClient.connect()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.mpdclient.MPD.disconnect">
+<code class="sig-name descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/mpdclient.html#MPD.disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.mpdclient.MPD.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overriding explicitly MPDClient.disconnect()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.mpdclient.MPD.find_tracks">
+<code class="sig-name descname">find_tracks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">what</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/mpdclient.html#MPD.find_tracks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.mpdclient.MPD.find_tracks" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Find tracks for a specific artist or album</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">player</span><span class="o">.</span><span class="n">find_tracks</span><span class="p">(</span><span class="n">Artist</span><span class="p">(</span><span class="s1">&#39;Nirvana&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">player</span><span class="o">.</span><span class="n">find_tracks</span><span class="p">(</span><span class="n">Album</span><span class="p">(</span><span class="s1">&#39;In Utero&#39;</span><span class="p">,</span> <span class="n">artist</span><span class="o">=</span><span class="p">(</span><span class="n">Artist</span><span class="p">(</span><span class="s1">&#39;Nirvana&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>what</strong> (<a class="reference internal" href="meta.html#sima.lib.meta.Artist" title="sima.lib.meta.Artist"><em>Artist</em></a><em>,</em><em>Album</em>) – Artist or Album to fetch track from</p>
+</dd>
+</dl>
+<p>Returns a list of :py:obj:Track objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.mpdclient.MPD.monitor">
+<code class="sig-name descname">monitor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sima/mpdclient.html#MPD.monitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sima.mpdclient.MPD.monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Monitor player for change
+Returns a list a events among:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>database  player media library has changed</p></li>
+<li><p>playlist  playlist modified</p></li>
+<li><p>options   player options changed: repeat mode, etc…</p></li>
+<li><p>player    player state changed: paused, stopped, skip track…</p></li>
+<li><p>skipped   current track skipped</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.mpdclient.MPD.playlist">
+<em class="property">property </em><code class="sig-name descname">playlist</code><a class="headerlink" href="#sima.mpdclient.MPD.playlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override deprecated MPD playlist command</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sima.mpdclient.MPD.state">
+<em class="property">property </em><code class="sig-name descname">state</code><a class="headerlink" href="#sima.mpdclient.MPD.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns (play|stop|pause)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2009-2020, kaliko.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
