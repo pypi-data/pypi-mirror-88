@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: LimitFunc
+Version: 0.0.1
+Summary: limit function args type
+Home-page: https://github.com/lisztomania-Zero/LimitFunc
+Author: lisztomania
+Author-email: lisztomania@vip.qq.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+# LimitFunc：限制函数
+Limit function args type
+
+限制函数参数类型
+
+# method of application：使用方法
+
+annotation：The parameters are ordered in the default order
+
+注：参数顺序按默认顺序
+
+```python
+from LimitFunc import limit_func
+# No default values
+# 没有默认值
+@check_args(checks={'a': int, 'b': str})
+def test(a, b):
+    pass
+```
+
+
+
+```python
+from LimitFunc import limit_func
+# Have default values
+# 有默认值
+@check_args(checks={'a': int, 'b': str}, defaults={'b': 'test'})
+def test(a, b):
+    pass
+```
+
+
+
