@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: 4dpyautodiff
+Version: 1.0.0
+Summary: A simple library for auto differentiation
+Home-page: https://github.com/cs107-JTGC/cs107-FinalProject
+Author: cs107-JTGC
+Author-email: chenfanzhuang@g.harvard.edu
+License: MIT
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: graphviz
+
+PyAutoDiff provides the ability to seamlessly calculate the gradient of a given function within your Python code. By using automatic differentiation, this project addresses efficiency and precision issues in symbolic and finite differentiation algorithms
+
+
