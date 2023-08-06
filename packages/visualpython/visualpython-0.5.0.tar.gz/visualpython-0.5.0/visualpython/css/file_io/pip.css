@@ -1,0 +1,18 @@
+.vp-pip-add-btn {
+    width: 464px;
+}
+.vp-icon-btn {
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.vp-add-col {
+    background-image: url(../../resource/plus_circle.svg);
+}
+.vp-pip-del {
+    background-image: url(../../resource/close_big.svg);
+}

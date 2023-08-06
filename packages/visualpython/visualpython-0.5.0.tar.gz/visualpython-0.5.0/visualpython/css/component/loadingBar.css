@@ -1,0 +1,74 @@
+.loading-container {
+    position: absolute;
+    width: 400px;
+    left: 50%;
+    margin-left: -200px;
+    top: 50%;
+    margin-top: -200px;
+    height: 400px;
+}
+
+.loading-inner {
+    position: relative;
+    width: 100%;
+
+    height: 100%;
+}
+
+.loading-h1 {
+    position:absolute;
+    top:-40px;
+    text-align: center; 
+    font-size: 16px;
+}
+
+.circle {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-color: #545454;
+    border-radius: 50%;
+    animation: loading 1.5s cubic-bezier(.8, .5, .2, 1.4) infinite;
+    transform-origin: bottom center;
+    position: relative;
+}
+
+@keyframes loading {
+    0%{
+        transform: translateY(0px);
+        background-color: #141414;
+    }
+    50%{
+        transform: translateY(50px);
+        background-color: #545454;
+    }
+    100%{
+        transform: translateY(0px);
+        background-color: #f4f4f4;
+    }
+}
+
+.circle-1{
+    animation-delay: 0.1s;
+}
+.circle-2{
+    animation-delay: 0.2s;
+}
+.circle-3{
+    animation-delay: 0.3s;
+}
+.circle-4{
+    animation-delay: 0.4s;
+}
+.circle-5{
+    animation-delay: 0.5s;
+}
+.circle-6{
+    animation-delay: 0.6s;
+}
+.circle-7{
+    animation-delay: 0.7s;
+}
+.circle-8{
+    animation-delay: 0.8s;
+}
