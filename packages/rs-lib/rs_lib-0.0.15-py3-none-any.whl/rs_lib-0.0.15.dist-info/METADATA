@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: rs-lib
+Version: 0.0.15
+Summary: Library for general Remote Sensing code
+Home-page: https://github.com/Kortforsyningen/RS_Lib
+License: MIT
+Project-URL: Changelog, https://github.com/Kortforsyningen/RS_Lib/commits/master
+Project-URL: Issue Tracker, https://github.com/Kortforsyningen/RS_Lib/issues
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Unix
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Utilities
+Requires-Python: >=3.4, !=2.*
+Description-Content-Type: text/markdown
+Requires-Dist: psycopg2 (>=2.8.5)
+Provides-Extra: dev
+Requires-Dist: numpy (>=1.19.4) ; extra == 'dev'
+Requires-Dist: pytest (>=6.1.2) ; extra == 'dev'
+
+# RS_Lib
+Library for general Remote Sensing code
+
+## Prerequisites
+- Python 3 version 3.4 and above
+- PostgreSQL server version 7.4 to 12
+- PostgreSQL client library version 9.1
+
+## Build prerequisites
+- Setuptools (``pip install --upgrade setuptools``)
+- The pg_config program: it is usually installed by the libpq-dev package or by postgresql server but sometimes it is not in a PATH directory. Having it in the PATH greatly streamlines the installation, so try running pg_config --version.
+
+## Install
+- Just run ``pip install rs-lib``
+
+### Development install
+- Clone this repository.
+- Cd into the cloned folder
+- Run ``pip install .[dev]``
+- All the development dependencies will be installed, currently: pytest and numpy
+
+## Usage
+### Import
+```python
+import rs_lib as rs
+
+# Create an instance of the Config class
+config = rs.Config()
+
+# Load a config file
+config.use(path_to_config_file)
+
+# Pass the config class to a function
+result = gru_orto(schema, table, priority, config)
+```
+
+### Config file
+As the library relies on several database functions and file paths, a config file must be used. An example of such a config file can be seen [here](config.example.ini) 
+
