@@ -1,0 +1,90 @@
+Metadata-Version: 2.1
+Name: http-request-codegen
+Version: 0.0.2
+Summary: Multilanguage HTTP requests code generator.
+Home-page: https://github.com/mondeja/http-request-codegen
+Author: Álvaro Mondéjar Rubio
+Author-email: mondejar1994@gmail.com
+License: BSD License
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Documentation
+Classifier: Topic :: Internet
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3
+Description-Content-Type: text/markdown
+Requires-Dist: faker (>=4.0.0)
+Provides-Extra: dev
+Requires-Dist: twine (==3.2.0) ; extra == 'dev'
+Requires-Dist: bump2version (==1.0.1) ; extra == 'dev'
+Requires-Dist: pre-commit (==2.9.3) ; extra == 'dev'
+Requires-Dist: mkdocs (==1.1.2) ; extra == 'dev'
+Requires-Dist: mkdocs-material (==6.1.7) ; extra == 'dev'
+Requires-Dist: mkdocs-macros-plugin (==0.5.0) ; extra == 'dev'
+Requires-Dist: mkdocs-minify-plugin (==0.3.0) ; extra == 'dev'
+Requires-Dist: mkdocs-include-markdown-plugin (==1.0.0) ; extra == 'dev'
+Requires-Dist: mkdocstrings (==0.13.6) ; extra == 'dev'
+Requires-Dist: mkdocs-exclude (==1.0.2) ; extra == 'dev'
+Requires-Dist: pytest (==6.1.2) ; extra == 'dev'
+Requires-Dist: pytest-cov (==2.10.1) ; extra == 'dev'
+Requires-Dist: inflection (==0.5.1) ; extra == 'dev'
+Requires-Dist: flask (==1.1.2) ; extra == 'dev'
+Requires-Dist: requests (==2.25.0) ; extra == 'dev'
+Requires-Dist: flake8 (==3.8.4) ; extra == 'dev'
+Requires-Dist: flake8-print (==4.0.0) ; extra == 'dev'
+Requires-Dist: flake8-implicit-str-concat (==0.2.0) ; extra == 'dev'
+Requires-Dist: isort (==5.6.4) ; extra == 'dev'
+Requires-Dist: yamllint (==1.25.0) ; extra == 'dev'
+Provides-Extra: doc
+Requires-Dist: mkdocs (==1.1.2) ; extra == 'doc'
+Requires-Dist: mkdocs-material (==6.1.7) ; extra == 'doc'
+Requires-Dist: mkdocs-macros-plugin (==0.5.0) ; extra == 'doc'
+Requires-Dist: mkdocs-minify-plugin (==0.3.0) ; extra == 'doc'
+Requires-Dist: mkdocs-include-markdown-plugin (==1.0.0) ; extra == 'doc'
+Requires-Dist: mkdocstrings (==0.13.6) ; extra == 'doc'
+Requires-Dist: mkdocs-exclude (==1.0.2) ; extra == 'doc'
+Provides-Extra: lint
+Requires-Dist: flake8 (==3.8.4) ; extra == 'lint'
+Requires-Dist: flake8-print (==4.0.0) ; extra == 'lint'
+Requires-Dist: flake8-implicit-str-concat (==0.2.0) ; extra == 'lint'
+Requires-Dist: isort (==5.6.4) ; extra == 'lint'
+Requires-Dist: yamllint (==1.25.0) ; extra == 'lint'
+Provides-Extra: test
+Requires-Dist: pytest (==6.1.2) ; extra == 'test'
+Requires-Dist: pytest-cov (==2.10.1) ; extra == 'test'
+Requires-Dist: inflection (==0.5.1) ; extra == 'test'
+Requires-Dist: flask (==1.1.2) ; extra == 'test'
+Requires-Dist: requests (==2.25.0) ; extra == 'test'
+
+
+<h1 align="center">http-request-codegen</h1>
+
+<h2 align="center"><a href="https://mondeja.github.io/http-request-codegen">:book: Documentation</a></h2>
+
+<!--start-intro-->
+**http-request-codegen** generates HTTP request code snippets for different
+implementations. It's perfect if you want to include examples documenting APIs.
+Supports the following features:
+
+- Request parameters values randomization using multiples strategies:
+    - Random values from lists and functions.
+    - Random values from data types.
+    - Random values from [Faker providers](https://faker.readthedocs.io/en/master/providers.html).
+    - Randomization seeds.
+    - Localization.
+- Request headers customization.
+- Request optional arguments.
+- Custom line wrapping.
+- Custom indentation.
+- Custom quotation character.
+- Rendering in one line.
+<!--end-intro-->
+
+
