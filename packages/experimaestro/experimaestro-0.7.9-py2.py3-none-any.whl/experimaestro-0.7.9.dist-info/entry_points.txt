@@ -1,0 +1,6 @@
+[console_scripts]
+experimaestro = experimaestro.__main__:main
+
+[mkdocs.plugins]
+experimaestro = experimaestro.mkdocs:Documentation
+
