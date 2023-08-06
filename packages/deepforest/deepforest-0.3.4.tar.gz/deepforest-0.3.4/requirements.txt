@@ -1,0 +1,27 @@
+
+cython>=0.28
+h5py==2.10.0
+numpy
+numpydoc
+matplotlib
+pandas
+pillow
+pip
+progressbar2
+psutil
+pytest
+pyyaml>=5.1.0
+recommonmark
+sphinx
+sphinx-markdown-tables
+sphinx_rtd_theme
+tensorflow==2.4.0
+twine
+tqdm
+xmltodict
+#Pip specific in reference to environment.yml
+bumpversion
+keras==2.3.0
+keras-resnet
+opencv-python
+slidingwindow
