@@ -1,0 +1,15 @@
+clld>=7
+sqlalchemy
+zope.interface
+
+[dev]
+flake8
+wheel
+twine
+
+[test]
+pytest>=5
+pytest-mock
+coverage>=4.2
+pytest-cov
+webtest
