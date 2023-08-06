@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "cpraa"
+version = "0.2.0"
+description = "A checker for probabilistic abstract argumentation"
+authors = ["Nikolai Käfer <nikolai.kaefer@tu-dresden.de>"]
+maintainers = ["Nikolai Käfer <nikolai.kaefer@tu-dresden.de>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+z3-solver = "^4.8.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^4.6"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
