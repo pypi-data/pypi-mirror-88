@@ -1,0 +1,98 @@
+Metadata-Version: 2.1
+Name: pytest-super-check
+Version: 2.2.0
+Summary: Pytest plugin to check your TestCase classes call super in setUp, tearDown, etc.
+Home-page: https://github.com/adamchainz/pytest-super-check
+Author: Adam Johnson
+Author-email: me@adamj.eu
+License: MIT
+Project-URL: Changelog, https://github.com/adamchainz/pytest-super-check/blob/master/HISTORY.rst
+Project-URL: Twitter, https://twitter.com/adamchainz
+Keywords: pytest,super,unittest,testcase
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: Pytest
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+Requires-Dist: pytest
+
+==================
+pytest-super-check
+==================
+
+.. image:: https://img.shields.io/github/workflow/status/adamchainz/pytest-super-check/CI/master?style=for-the-badge
+   :target: https://github.com/adamchainz/pytest-super-check/actions?workflow=CI
+
+.. image:: https://img.shields.io/pypi/v/pytest-super-check.svg?style=for-the-badge
+   :target: https://pypi.org/project/pytest-super-check/
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge
+   :target: https://github.com/psf/black
+
+.. image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge
+   :target: https://github.com/pre-commit/pre-commit
+   :alt: pre-commit
+
+Pytest plugin to check your TestCase classes call super in setUp, tearDown,
+etc.
+
+Features
+========
+
+This plugin checks all ``TestCase`` classes in your test suite to ensure that
+their ``setUp``, ``tearDown``, ``setUpClass``, ``tearDownClass``, and
+``setUpTestData`` (Django extension) methods all call ``super()``. You might
+care about this when you have extensions to these methods in your project
+specific base class that when skipped (by accidentally missing ``super()``),
+cause subtle bugs.
+
+About
+=====
+
+I developed this feature in a closed source Nose plugin whilst working on the
+big Django project at YPlan. We had some custom enhancements and fixes on top
+of the Django test classes, but some ``TestCase`` classes didn't call
+``super()`` in e.g. ``setUp``, which caused the tests to fail, or incorrectly
+pass, in rather subtle ways. This problem is exacerbated by Django's ``setUp``
+etc. doing magic around not requiring ``super()`` to be called. Our solution
+was to just ensure every ``TestCase`` always calls ``super()`` in those
+methods. This is a Pytest port of that plugin.
+
+Installation
+============
+
+Install from pip with:
+
+.. code-block:: bash
+
+    python -m pip install pytest-super-check
+
+Python 3.6 to 3.9 supported.
+
+----
+
+**Testing a Django project?**
+Check out my book `Speed Up Your Django Tests <https://gumroad.com/l/suydt>`__ which covers loads of best practices so you can write faster, more accurate tests.
+
+----
+
+Usage
+=====
+
+Pytest will automatically find and use the plugin. Test discovery will then
+blow up if any subclasses of ``unittest.TestCase`` are found that have
+``setUp`` etc. methods that don't call ``super()``.
+
+You can disable the plugin by passing the options ``-p no:super_check`` to
+``pytest``.
+
+
