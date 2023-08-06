@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: few-shots-clf
+Version: 1.0.11
+Summary: Few Shots Classification Library. Classification task from a small amount of data.
+Home-page: https://github.com/delmalih/few-shots-classification
+Author: David El Malih
+Author-email: da.elmalih@gmail.com
+License: LICENSE.txt
+Download-URL: https://github.com/delmalih/few-shots-classification/archive/v_1011.tar.gz
+Description: # Few Shots Classification
+        
+        ## Description
+        
+        TODO
+        
+        ## Installation
+        
+        ### Clone
+        
+        ```
+        git clone https://github.com/delmalih/few-shots-classification
+        cd few-shots-classification
+        ```
+        
+        ### Pyenv
+        
+        ```
+        pyenv virtualenv 3.6.12 few-shots-classification
+        pyenv local few-shots-classification
+        ```
+        
+        ### Requirements
+        
+        ```
+        pip install -r requirements.txt
+        ```
+        
+Keywords: FEW-SHOTS,CLASSIFICATION,IMAGE,COMPUTER VISION
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Requires-Python: >=3.6, <3.7
+Description-Content-Type: text/markdown
