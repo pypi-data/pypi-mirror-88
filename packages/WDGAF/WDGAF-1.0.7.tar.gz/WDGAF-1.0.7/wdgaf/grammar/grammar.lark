@@ -1,0 +1,116 @@
+start 		: (figure_stmt)*
+figure_stmt	:"fig" id "{" stmt_list "}"	-> figure_stmt
+
+stmt_list 	: (stmt)*
+stmt 		: size_stmt
+       		| range_stmt
+       		| function_stmt
+       		| plot_stmt 
+       		| contour_grid
+       		| contour_stmt
+       		| print_stmt
+
+
+
+
+size_stmt : "size" "<-" INT [attr_list] -> size_row_stmt
+	| "size" "<-" INT "," INT [attr_list] -> size_row_col_stmt
+	| "size" "<-" "(" INT "," INT ")" [attr_list] -> size_row_col_stmt
+
+
+// expression for range are independent
+// and do not involve variables
+rsum_expr: rprod_expr -> expr
+		| rsum_expr "+" rprod_expr -> sum_expr
+		| rsum_expr "-" rprod_expr -> sub_expr
+rprod_expr: rexp_expr -> expr
+		| rprod_expr "*" rexp_expr -> prd_expr
+		| rprod_expr "/" rexp_expr -> div_expr
+		| rprod_expr "//" rexp_expr -> floor_div_expr
+		| rprod_expr "%" rexp_expr -> mod_expr
+rexp_expr: ratom_expr -> expr
+		| rexp_expr "^" ratom_expr -> exp_expr
+ratom_expr	: REAL 				-> expr_real
+			| CONST 			-> expr_const
+			| "-" ratom_expr	-> expr_negation
+			| "+" ratom_expr	-> expr_positive
+			| "(" rsum_expr ")"	-> nested_expr
+
+
+// expressions for functions involves 
+// variables and function calls
+sum_expr: prod_expr -> expr
+		| sum_expr "+" prod_expr -> sum_expr
+		| sum_expr "-" prod_expr -> sub_expr
+prod_expr: exp_expr -> expr
+		| prod_expr "*" exp_expr -> prd_expr
+		| prod_expr "/" exp_expr -> div_expr
+		| prod_expr "//" exp_expr -> floor_div_expr
+		| prod_expr "%" exp_expr -> mod_expr
+exp_expr: atom_expr -> expr
+		| exp_expr "^" atom_expr -> exp_expr
+atom_expr	: REAL 				-> expr_real
+			| CONST 			-> expr_const
+			| "-" atom_expr		-> expr_negation
+			| "+" atom_expr		-> expr_positive
+			| "(" sum_expr ")"	-> nested_expr
+			| id 				-> expr_id
+			| id "(" sum_expr ")" 		-> func_call_unary
+			| id "(" sum_expr "," sum_expr ")" -> func_call_binary
+
+
+
+range_stmt 	: id "<-" points 	-> range_stmt
+			| id "<-" range		-> range_stmt
+
+points 	: "[" rsum_expr ("," rsum_expr)* "]"	-> real_points_list
+		| "[" "]" -> real_points_list
+		| "[" ESC_STR ("," ESC_STR)* "]" -> str_points_list
+
+range : "(" rsum_expr "," rsum_expr ")" ("step" rsum_expr)? -> range_expr
+
+
+function_stmt 	: id ":=" func_expr 	-> func_stmt
+func_expr : sum_expr 	-> expr
+	| "[" sum_expr ("," sum_expr)* "]" -> real_points_list
+	| "[" "]" -> real_points_list
+
+plot_stmt : "plot" "(" id "," id ("," attr_list)? ")"	-> plt_stmt
+
+contour_grid: id "," id "<-" "contour_grid" "(" REAL "," REAL "," REAL "," REAL ")" -> contour_grid
+contour_stmt: "contour" "(" id "," id "," func_expr ("," attr_list)? ")" -> contour_stmt
+
+
+
+print_stmt	:	"print" "(" id ("," id)* ")" -> print_stmt
+
+attr_list 		: "{" attr ("," attr)* "}"
+attr 			: id "=" ATTR_VALUE		-> attribute
+id 		        : ID 		-> identifier
+
+
+
+
+ATTR_VALUE 		: ESC_STR | REAL
+COMMENT			: 	"#" /.*/
+CONST 			: UCASE_LETTER+
+LCASE_LETTER    : "a".."z"
+UCASE_LETTER    : "A".."Z"
+LETTER          : UCASE_LETTER | LCASE_LETTER
+ID 				: ("_"|LETTER) ("_"|LETTER|DIGIT)*
+DIGIT           : "0".."9"
+INT             : DIGIT+
+SINT      		: ["+"|"-"] DIGIT+
+DECIMAL         : INT "." INT? | "." INT
+_EXP            : ("e"|"E") SINT
+FLOAT           : INT _EXP | DECIMAL _EXP?
+NUMBER          : FLOAT | INT
+REAL		    : ["+"|"-"] NUMBER 
+ESC_STR 		: ("\"" _STRING_ESC_INNER "\"")
+				| ("'" _STRING_ESC_INNER "'")
+_STRING_INNER       : /.*?/
+_STRING_ESC_INNER   : _STRING_INNER /(?<!\\)(\\\\)*?/
+WS: /[ \t\f\r\n]/+
+
+%ignore WS
+%ignore COMMENT
