@@ -1,0 +1,12 @@
+---
+
+
+publisher:
+  addr: tcp://broker.sudo.is./
+  frequency: 240
+
+
+sensor_names:
+  ds18b20:
+    28-0300a279f70f: study
+    28-0300a279bbc9: outside
