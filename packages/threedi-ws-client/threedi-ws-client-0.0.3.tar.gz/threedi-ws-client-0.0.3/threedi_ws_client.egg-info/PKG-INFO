@@ -1,0 +1,98 @@
+Metadata-Version: 1.2
+Name: threedi-ws-client
+Version: 0.0.3
+Summary: websocket client for threedi websocket consumer endpoints
+Home-page: https://github.com/larsclaussen/threedi-ws-client
+Author: Lars Claussen
+Author-email: claussen.lars@nelen-schuurmans.nl
+License: MIT license
+Description: =================
+        threedi-ws-client
+        =================
+        
+        
+        .. image:: https://img.shields.io/pypi/v/threedi-ws-client.svg
+                :target: https://pypi.python.org/pypi/threedi_ws_client
+        
+        .. image:: https://img.shields.io/travis/larsclaussen/threedi-ws-client.svg
+                :target: https://travis-ci.org/larsclaussen/threedi_ws_client
+        
+        .. image:: https://readthedocs.org/projects/threedi-ws-client/badge/?version=latest
+                :target: https://threedi-ws-client.readthedocs.io/en/latest/?badge=latest
+                :alt: Documentation Status
+        
+        
+        Quick start
+        -----------
+        
+        Create a virtual python > 3.6 environment, run::
+        
+            pip install -r requirements.txt
+        
+        The `active_simulations` command takes a required keyword argument `--env` with
+        the options
+        
+        - prod (production obviously)
+        - stag (staging obviously)
+        - local
+        
+        You have to create a corresponding `.env` file for the destination environment.
+        The `prod.env` file could look something like this::
+        
+            API_USERNAME='micheal.jackson'
+            API_PASSWORD='sefdiee92u43dmslzxsad'
+            API_HOST='https://api.3di.live/v3.0'
+        
+        
+        To start the client run::
+        
+            python threedi_ws_client/commands/active_simulations.py --env=<prod | stag | local>
+        
+        * Free software: MIT license
+        * Documentation: https://threedi-ws-client.readthedocs.io.
+        
+        
+        Features
+        --------
+        
+        * TODO
+        
+        Credits
+        -------
+        
+        This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+        
+        .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+        .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+        
+        
+        =======
+        History
+        =======
+        
+        0.0.3 (2020-12-16)
+        ------------------
+        
+        - Use click directly.
+        
+        
+        0.0.2 (2020-12-16)
+        ------------------
+        
+        - Create PyPi project first.
+        
+        
+        0.1.0 (2020-04-21)
+        ------------------
+        
+        * First release on PyPI.
+        
+Keywords: threedi_ws_client
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.7
