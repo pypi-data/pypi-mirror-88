@@ -1,0 +1,8 @@
+graft src/collective
+prune src/collective/fhirpath/tests
+prune docs
+prune .cache
+prune examples
+include *.rst LICENSE.GPL
+global-exclude *.pyc
+exclude .gitlab-ci.yml Makefile constraints.txt constraints_plone52.txt requirements.txt tox.ini .readthedocs.yml

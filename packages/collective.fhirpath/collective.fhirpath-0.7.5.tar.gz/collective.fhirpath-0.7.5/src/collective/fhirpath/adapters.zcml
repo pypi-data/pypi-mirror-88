@@ -1,0 +1,8 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".adapters.ElasticsearchEngineFactory" />
+  <adapter factory=".adapters.SearchContextFactory" />
+  <adapter factory=".adapters.FhirSearch" />
+  <adapter factory=".adapters.ZCatalogFhirSearch" />
+
+</configure>
