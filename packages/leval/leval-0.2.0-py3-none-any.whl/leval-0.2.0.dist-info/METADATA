@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: leval
+Version: 0.2.0
+Summary: Limited evaluator
+Home-page: https://github.com/valohai/leval
+Author: Valohai
+Author-email: info@valohai.com
+Maintainer: Aarni Koskela
+Maintainer-email: akx@iki.fi
+License: MIT
+Platform: UNKNOWN
+Provides-Extra: dev
+Requires-Dist: pytest-cov (==2.10.1) ; extra == 'dev'
+Requires-Dist: pytest (==6.1.2) ; extra == 'dev'
+Requires-Dist: black (==20.8b1) ; (python_version >= "3.6") and extra == 'dev'
+Requires-Dist: flake8-black (==0.2.1) ; (python_version >= "3.6") and extra == 'dev'
+Requires-Dist: flake8-bugbear (==20.11.1) ; (python_version >= "3.6") and extra == 'dev'
+Requires-Dist: flake8-docstrings (==1.5.0) ; (python_version >= "3.6") and extra == 'dev'
+Requires-Dist: flake8 (==3.8.4) ; (python_version >= "3.6") and extra == 'dev'
+Requires-Dist: isort (==5.6.4) ; (python_version >= "3.6") and extra == 'dev'
+
+UNKNOWN
+
+
