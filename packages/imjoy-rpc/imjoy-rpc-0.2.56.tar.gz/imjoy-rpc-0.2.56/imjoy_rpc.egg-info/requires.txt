@@ -1,0 +1,17 @@
+werkzeug
+
+[:python_version < "3.7"]
+contextvars
+aiocontextvars
+
+[full]
+numpy
+zarr
+
+[jupyter]
+numpy
+ipykernel
+
+[socketio]
+numpy
+python-socketio[client]
