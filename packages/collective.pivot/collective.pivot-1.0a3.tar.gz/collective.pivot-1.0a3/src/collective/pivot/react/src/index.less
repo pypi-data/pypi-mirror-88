@@ -1,0 +1,275 @@
+
+#root{
+    width: 100vw;
+    display: block;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+    }
+.pivot-filter{
+    padding: 2rem 50px;
+    background: #EDF2F7;
+    margin: 4rem 0 0 0;
+    label{
+        display: none;
+    }
+    form{
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .pivot-filter-container{
+        display: flex;
+    }
+}
+/* Select */
+
+.pivot-result-count{
+    font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+    margin: 1.5rem 0 1.5rem 0;
+    display: block;
+    font-weight: bold;
+}
+.pivot-select-form select{
+    padding: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+    font-size: 18px;
+    color: #60666d;
+    background: transparent ;
+    border: 0px;
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 50px;
+    cursor: pointer;
+}
+.pivot-select-container {
+    position: relative;
+    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 23px -1px rgba(0, 0, 0,0.1);
+    z-index: 0;
+    background: #fff;
+    &:after {
+        position: absolute;
+        content: "\E877" !important;
+        font-family: fontello;
+        font-size: 35px;
+        color: #60666d;
+        right: 11px;
+        top: 54%;
+        transform: translateY(-50%);
+        z-index: -1;
+    }
+}
+/////
+
+/*Hidden Map*/
+.pivot-display-map{
+    padding: 10px;
+    background: #fff;
+    display: inline-block;
+    vertical-align: middle;
+    box-shadow: 0 5px 23px -1px rgba(0, 0, 0,0.1);
+    margin-left: auto;
+    cursor: pointer;
+    span{
+        color: #60666d;
+        font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+        font-size: 18px;
+    }
+    .display-map-icon{
+        width: 20px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+//////
+.pivot-result.hidden-map {
+    .pivot-offer-list{
+        width: 100%;
+        max-width: 1920px;
+        margin: 0 auto;
+        overflow-y: inherit;
+        height: inherit;
+        .pivot-offer-list-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+            grid-gap: 30px;
+            .pivot-item{
+                margin-bottom: 0px !important;
+                .offer-card{
+                    flex-direction: column;
+                    .card-caption{
+                        min-height: 131px;
+                    }
+                    .card-container-img{
+                        flex: 0 0 100%;
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    .pivot-offer-map{
+        display: none;
+    }
+}
+
+.pivot-result.open-map {
+    
+}
+.leaflet-container{
+    width: 100%;
+    height: 800px;
+    font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+}
+
+
+.pivot-offer-list {
+    overflow-y: scroll;
+    width: 750px;
+    padding:0 50px;
+    box-sizing: content-box;
+    height: 800px;
+    .pivot-offer-list-container{
+        padding: 0;
+        margin: 0 0 0 0!important;
+    }
+}
+.pivot-offer-map {
+	width: calc(100% - 850px);
+}
+.pivot-result{
+    display: flex;
+    border-top: solid 2px #e8e8e8;
+}
+
+.pivot-item{
+    width: 100%;
+    list-style: none;
+    margin-bottom: 20px!important;
+}
+
+
+
+/* CARD */
+.offer-card{
+    display: flex;
+    border: 2px solid rgba(142, 142, 142, 0.13);
+    border-radius: 3px;
+    box-shadow:
+    0 0px 1.4px rgba(0, 0, 0, 0.024),
+    0 0px 3.9px rgba(0, 0, 0, 0.035),
+    0 0px 9.3px rgba(0, 0, 0, 0.046),
+    0 0px 31px rgba(0, 0, 0, 0.07);
+    &:hover{
+        border: 2px solid rgba(195, 195, 195, 0.43);
+    }
+    .card-container-img{
+        overflow: hidden;
+        -ms-flex: 0 0 41.666667%;
+        flex: 0 0 41.666667%;
+        max-width: 41.666667%;
+        position: relative;
+        display: block;
+        width: 100%;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        background: #EDF2F7;
+        &:before{
+            display: block;
+            content: "";
+            padding-top: 56.25%;
+        }
+        &:hover img{
+            scale: 1.05;
+        }
+        .embed-responsive-img{
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        transition: all .3s ease;
+        }
+    }
+    
+    .offer-card-img{
+        height: 245px;
+        object-fit: cover;
+        width: 100%;
+    }
+    .card-caption{
+        position: relative;
+        flex: 1 1 auto;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        background: #fff;
+        padding-top: 1rem;
+        padding-left: 1rem;
+        span{
+            display: block;
+            font-size: 16px;
+            padding: 2px 0;
+            a{
+                color: #343a40 !important;
+                text-decoration: none;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+    
+    .card-caption-title{
+        font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+        display: block;
+        color: #343a40 !important;
+        text-decoration: none;
+        font-size: 18px;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+    .card-caption-details {
+        position: absolute;
+        right: 16px;
+        color: #343a40 !important;
+        bottom: 10px;
+        a{
+            color: #343a40 !important;
+            text-decoration: none;
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+    }
+    .card-icon{
+        display: inline-block;
+        width: 14px;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+    .card-next{
+        width: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 11px;
+    }
+}
