@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="caixa_guissona_journal" model="account.journal">
+      <field name="name">Caixa Guissona</field>
+      <field name="code">BGUI</field>
+      <field name="type">bank</field>
+      <field name="bank_account_id" ref="somconnexio.caixa_guissona"/>
+      <field name="update_posted" eval="True"></field>
+    </record>
+    <delete model="account.journal" search="[('name','=','Bank')]"/>
+    <record id="subscription_journal" model="account.journal">
+      <field name="name">SC Subscription Journal</field>
+      <field name="code">SUBJ</field>
+      <field name="type">sale</field>
+      <field name="sequence_id" ref="easy_my_coop.sequence_subscription_journal"/>
+      <field name="refund_sequence" eval="True"></field>
+      <field name="update_posted" eval="True"></field>
+    </record>
+  </data>
+</odoo>
