@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: pyscpapi
+Version: 1.1.0
+Summary: SCP API for python (https://api.scpslgame.com/)
+Home-page: https://github.com/LEv145/SCP-Secret-Laboratory-API-python-pyscpapi
+License: MIT
+Author: LEv145
+Requires-Python: >=3.6,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: ujson (>=4.0.1,<5.0.0)
+Project-URL: Repository, https://github.com/LEv145/SCP-Secret-Laboratory-API-python-pyscpapi
+Description-Content-Type: text/markdown
+
+## pyscpapi
+
+# Installing
+
+You can get the library directly from PyPI:
+```
+python3 -m pip install pyscpapi
+```
+
+If you are using Windows, then the following should be used instead:
+```
+py -3 -m pip install pyscpapi
+```
+
+# HOW TO USE
+Read official API:
+https://api.scpslgame.com/
+
+Simple Code:
+
+```py
+import asyncio
+from Pyscp_Api.api import API
+
+async def start():
+    ip = await API.ip()
+    serverinfo = await API.serverinfo(id_ = YOUR_ID, key = YOUR_KEY, list_ = "true", players = "true")
+    lobbylist = await API.lobbylist(key = YOUR_KEY, minimal = "Test")
+    return (ip, serverinfo, lobbylist)
+  
+ip, serverinfo, lobbylist = asyncio.run(start())
+print(f"IP:          {ip}")
+print(f"Server Info: {serverinfo}")
+print(f"Lobby List:  {lobbylist}")
+```
+
+
+# Donate
+https://money.yandex.ru/to/410015858804944/0
+
+
+
+
