@@ -1,0 +1,23 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/f6c7064a/
+DEPRECATED	../gidlogger/logger_functions.py	/^def DEPRECATED(in_alternative=None):$/;"	kind:function	line:45
+NEWRUN	../gidlogger/logger_functions.py	/^def NEWRUN():$/;"	kind:function	line:55
+__init__.py	../gidlogger/__init__.py	1;"	kind:file	line:1
+__updated__	../gidlogger/logger_functions.py	/^__updated__ = '2020-07-13 01:31:43'$/;"	kind:variable	line:31
+aux_logger	../gidlogger/logger_functions.py	/^def aux_logger(in_name):$/;"	kind:function	line:77
+called	../gidlogger/logger_functions.py	/^def called(function_name):$/;"	kind:function	line:65
+class_initiated	../gidlogger/logger_functions.py	/^def class_initiated(in_class):$/;"	kind:function	line:61
+completed	../gidlogger/logger_functions.py	/^def completed(function_name):$/;"	kind:function	line:68
+imported	../gidlogger/logger_functions.py	/^def imported(in_name):$/;"	kind:function	line:41
+log_folderer	../gidlogger/logger_functions.py	/^def log_folderer(in_log_file_name, in_main_log_folder='logs', in_old_log_subfolder='old_logs'):$/;"	kind:function	line:109
+logger_functions.py	../gidlogger/logger_functions.py	1;"	kind:file	line:1
+main_logger	../gidlogger/logger_functions.py	/^def main_logger(in_file_name, in_level, in_back_up=2):$/;"	kind:function	line:81
+setup.py	../setup.py	1;"	kind:file	line:1
+std_namer	../gidlogger/logger_functions.py	/^def std_namer(name):$/;"	kind:function	line:101
