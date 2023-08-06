@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: metrixpp
+Version: 1.7.0
+Summary: Metrix++ is an extendable tool for code metrics collection and analysis.
+Home-page: https://github.com/metrixplusplus/metrixplusplus
+Author: Stefan Strobel
+Author-email: stefan.strobel@shimatta.net
+License: UNKNOWN
+Project-URL: Documentation, https://metrixplusplus.github.io/
+Project-URL: Source, https://github.com/metrixplusplus/metrixplusplus
+Project-URL: Tracker, https://github.com/metrixplusplus/metrixplusplus/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+
+# [Metrix++](https://github.com/metrixplusplus/metrixplusplus)
+
+![Metrix++ Tests](https://github.com/metrixplusplus/metrixplusplus/workflows/Metrix++%20Tests/badge.svg)
+![Upload Python Package](https://github.com/metrixplusplus/metrixplusplus/workflows/Upload%20Python%20Package/badge.svg)
+
+Metrix++ is an extendable tool for code metrics collection and analysis.
+Check projects documentation for additional information:
+* [https://metrixplusplus.github.io/](https://metrixplusplus.github.io/)
+
+Thank you for using the tool!
+
+## Installation
+
+Metrix++ is published on [PyPi](https://pypi.org/project/metrixpp/) as `metrixpp` and can be installed using pip:
+
+```
+pip install metrixpp
+```
+
+Alternatively you can [download the archive](https://github.com/metrixplusplus/metrixplusplus/releases)
+with the latest stable version and unpack it to some folder.
+The first run of the tool will trigger the installation within the folder, where it was launched.
+
+For more installation options, please, check [this documentation](https://metrixplusplus.github.io/home.html#download_section)
+
+## Issue tracker and feedback 
+Have got a bug or a feature request or any feedback?
+[Please submit a ticket](https://github.com/metrixplusplus/metrixplusplus/issues/new).
+
+Be aware of some [limitations](https://github.com/metrixplusplus/metrixplusplus/blob/master/LIMITATIONS.md).
+
+## Copyright and license
+[MIT](https://github.com/metrixplusplus/metrixplusplus/blob/master/LICENSE)
+
