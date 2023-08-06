@@ -1,0 +1,222 @@
+<!--Copyright STACKEO - INRIA 2020 .-->
+<mxGraphModel dx="1336" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    {% for Tier in DrawIO.tiers %}
+      <mxCell id="{{Tier.ids[0]}}" value="" style="group" vertex="1" connectable="0" parent="1">
+        <mxGeometry x="{{Tier.position[0]}}" y="{{Tier.position[1]}}" width="{{Tier.dimension[0]}}" height="{{Tier.dimension[1]}}" as="geometry" />
+      </mxCell>
+
+      <object label="" id="{{Tier.ids[2]}}" Type="label">
+        <mxCell style="group;fontFamily=Comic Sans MS;fontColor=#FFF11F;" parent="{{Tier.ids[0]}}" vertex="1" connectable="0">
+          <mxGeometry width="{{Tier.dimension[0]}}" height="60" as="geometry" />
+        </mxCell>
+      </object>
+      <object label="{{Tier.name}}"   Type="Tier" id="{{Tier.ids[3]}}">
+        <mxCell style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;fillColor=#6E7A8A;strokeColor=#6C8EBF;fontFamily=Helvetica;fontSize=22;fontColor=#FFFFFF;" parent="{{Tier.ids[2]}}" vertex="1">
+          <mxGeometry width="{{Tier.dimension[0]}}" height="60" as="geometry" />
+        </mxCell>
+      </object>
+      {% for Node in Tier.nodes %}
+      <object label="{{Node.name}}" Type="{{Node.type}}" Tier="{{Tier.ids[3]}}" id="{{Node.ids[0]}}">
+        <mxCell  style="group;align=center;labelBackgroundColor=none;fillColor=none;fontSize=16;fontColor=#000000;rounded=1;fontStyle=1;" vertex="1" connectable="0" parent="{{Tier.ids[0]}}">
+          <mxGeometry x="{{Node.position[0]}}" y="{{Node.position[1]}}" width="{{Node.dimension[0]}}" height="{{Node.dimension[1]}}" as="geometry" />
+        </mxCell>
+      </object>
+    <mxCell id="{{Node.ids[1]}}" value="&lt;font style=&quot;font-size: 16px&quot;&gt;{{Node.name}}&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;horizontal=1;verticalAlign=top;fontStyle=1;{{Node.box_style}};strokeWidth=2;" parent="{{Node.ids[0]}}" vertex="1">
+      <mxGeometry width="{{Node.dimension[0]}}" height="{{Node.dimension[1]}}" as="geometry" />
+    </mxCell>
+
+    {% for Layer in Node.layers %}
+    <mxCell id="{{Layer.ids[1]}}" value="" style="group;labelBackgroundColor=#FF99CC;fillColor=#{{Layer.colors[0]}};strokeColor=#{{Layer.colors[1]}};" parent="{{Node.ids[0]}}" vertex="1" connectable="0">
+      <mxGeometry x="{{Layer.position[0]}}" y="{{Layer.position[1]}}" width="{{Layer.dimension[0]}}" height="{{Layer.dimension[1]}}" as="geometry" />
+    </mxCell>
+    <object label="" Type="{{Layer.type}}layerElement" id="{{Layer.ids[0]}}" Node="{{Node.ids[0]}}" Hub="{{Layer.hub}}">
+      <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=middle;fillColor=#{{Layer.colors[0]}};strokeColor=#{{Layer.colors[1]}};" parent="{{Layer.ids[1]}}" vertex="1">
+        <mxGeometry width="{{Layer.dimension[0]}}" height="{{Layer.dimension[1]}}" as="geometry" />
+      </mxCell>
+    </object>
+      {% if Layer.hatching %}
+      <mxCell id="{{Layer.ids[1]}}1" value="" style="strokeWidth=2;endArrow=none;html=1;entryX=1;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=1;exitDx=0;exitDy=0;strokeColor=#FFFFFF;dashed=1;" parent="{{Layer.ids[1]}}" source="{{Layer.ids[0]}}" target="{{Layer.ids[0]}}" edge="1">
+        <mxGeometry width="50" height="50" relative="1" as="geometry">
+          <mxPoint x="210" y="520" as="sourcePoint" />
+          <mxPoint x="260" y="470" as="targetPoint" />
+        </mxGeometry>
+      </mxCell>
+      <mxCell id="{{Layer.ids[1]}}2" value="" style="strokeWidth=2;endArrow=none;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;strokeColor=#FFFFFF;dashed=1;" parent="{{Layer.ids[1]}}" source="{{Layer.ids[0]}}" target="{{Layer.ids[0]}}" edge="1">
+        <mxGeometry width="50" height="50" relative="1" as="geometry">
+          <mxPoint x="160" y="270" as="sourcePoint" />
+          <mxPoint x="430" y="210" as="targetPoint" />
+        </mxGeometry>
+      </mxCell>
+      <mxCell id="{{Layer.ids[1]}}3" value="" style="strokeWidth=2;endArrow=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#FFFFFF;dashed=1;" parent="{{Layer.ids[1]}}" source="{{Layer.ids[0]}}" target="{{Layer.ids[0]}}" edge="1">
+        <mxGeometry width="50" height="50" relative="1" as="geometry">
+          <mxPoint x="227.5" y="270" as="sourcePoint" />
+          <mxPoint x="430" y="225" as="targetPoint" />
+        </mxGeometry>
+      </mxCell>
+      <mxCell id="{{Layer.ids[1]}}4" value="" style="strokeWidth=2;endArrow=none;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;strokeColor=#FFFFFF;dashed=1;" parent="{{Layer.ids[1]}}" source="{{Layer.ids[0]}}" target="{{Layer.ids[0]}}" edge="1">
+        <mxGeometry width="50" height="50" relative="1" as="geometry">
+          <mxPoint x="295" y="270" as="sourcePoint" />
+          <mxPoint x="430" y="240" as="targetPoint" />
+        </mxGeometry>
+      </mxCell>
+      <mxCell id="{{Layer.ids[1]}}5" value="" style="strokeWidth=2;endArrow=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;strokeColor=#FFFFFF;dashed=1;" parent="{{Layer.ids[1]}}" source="{{Layer.ids[0]}}" target="{{Layer.ids[0]}}" edge="1">
+        <mxGeometry width="50" height="50" relative="1" as="geometry">
+          <mxPoint x="305" y="280" as="sourcePoint" />
+          <mxPoint x="440" y="250" as="targetPoint" />
+        </mxGeometry>
+      </mxCell>
+      <mxCell id="{{Layer.ids[1]}}6" value="" style="strokeWidth=2;endArrow=none;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0.25;exitDx=0;exitDy=0;strokeColor=#FFFFFF;dashed=1;" parent="{{Layer.ids[1]}}" source="{{Layer.ids[0]}}" target="{{Layer.ids[0]}}" edge="1">
+        <mxGeometry width="50" height="50" relative="1" as="geometry">
+          <mxPoint x="160" y="240" as="sourcePoint" />
+          <mxPoint x="295" y="210" as="targetPoint" />
+        </mxGeometry>
+      </mxCell>
+      <mxCell id="{{Layer.ids[1]}}7" value="" style="strokeWidth=2;endArrow=none;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;strokeColor=#FFFFFF;dashed=1;" parent="{{Layer.ids[1]}}" source="{{Layer.ids[0]}}" target="{{Layer.ids[0]}}" edge="1">
+        <mxGeometry width="50" height="50" relative="1" as="geometry">
+          <mxPoint x="407" y="305" as="sourcePoint" />
+          <mxPoint x="474.5" y="290" as="targetPoint" />
+        </mxGeometry>
+      </mxCell>
+      {% endif %}
+    <mxCell id="{{Layer.ids[2]}}" value="{{Layer.type}}" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=2;fontColor=#{{Layer.colors[1]}};fontSize=11;" parent="{{Layer.ids[1]}}" vertex="1">
+      <mxGeometry x="{{Layer.position[2]}}" y="-2" width="40" height="20" as="geometry" />
+    </mxCell>
+    {% if  not Layer.hub %}
+    {% for Component in Layer.components %}
+      {% if Component.type=='Hardware' %}
+      <object label="{{Component.name}}" Type="PhysicalComponent" id="{{Component.id}}">
+      <mxCell style="group;strokeWidth=1;fillColor=none;fontColor=none;" vertex="1" connectable="0" parent="{{Layer.ids[1]}}">
+        <mxGeometry x="{{Component.position[0]}}" y="{{Component.position[1]}}" width="{{Component.dimension[0] + 20 }}" height="{{Component.dimension[1]}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{Component.id}}1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="2.9165384615384653" width="{{Component.dimension[0] + 20 - 2.916538461538462}}" height="{{Component.dimension[1]}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}2" value="&lt;font style=&quot;font-size: 17px&quot;&gt;{{Component.name}}&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;verticalAlign=middle;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="4.9581153846153825" y="2.2999999999999545" width="{{Component.dimension[0] + 20 - 4 - 2.916538461538462}}" height="{{Component.dimension[1] - 4.5}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="7" y="4.559999999999945" width="2" height="2" as="geometry" />
+    </mxCell>
+    {% for i in range(5, Component.dimension[1], 5) %}
+    <mxCell id="{{Component.id}}{{4+i}}" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#000000;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="{{Component.dimension[0]+ 23 - 2.916538461538462}}" y="{{i}}" width="2.916538461538462" height="0.7844016136261763" as="geometry" />
+    </mxCell>
+
+    <mxCell id="{{Component.id}}{{i+1500000000000}}" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#000000;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry y="{{i}}" width="2.916538461538462" height="0.7844016136261763" as="geometry" />
+    </mxCell>
+    {% endfor %}
+      {% elif  Component.type=='Software'%}
+
+
+      <object label="{{Component.name}}" Type="SoftwareComponent" id="{{Component.id}}">
+      <mxCell style="group" vertex="1" connectable="0" parent="{{Layer.ids[1]}}">
+        <mxGeometry x="{{Component.position[0]}}" y="{{Component.position[1]}}" width="{{Component.dimension[0]}}" height="{{Component.dimension[1]}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{Component.id}}1" value="&lt;span&gt;&amp;lt;/&amp;gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#000000;strokeWidth=1;fontColor=none;align=left;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry width="29" height="{{Component.dimension[1]}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}2" value="&lt;font style=&quot;font-size: 17px&quot;&gt;{{Component.name}}&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;fontColor=none;align=center;fillColor=#FFFFFF;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="21" width="{{Component.dimension[0]}}" height="{{Component.dimension[1]}}" as="geometry" />
+    </mxCell>
+    {% else %}
+
+
+      <object label="{{Component.name}}" Type="ServiceComponent" id="{{Component.id}}">
+      <mxCell style="group" vertex="1" connectable="0" parent="{{Layer.ids[1]}}">
+        <mxGeometry x="{{Component.position[0]}}" y="{{Component.position[1]}}" width="{{Component.dimension[0]}}" height="{{Component.dimension[1]}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{Component.id}}1" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#FFFFFF;fontColor=none;align=left;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry width="47" height="{{Component.dimension[1]}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}2" value="&lt;font style=&quot;font-size: 17px&quot;&gt;{{Component.name}}&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;fontColor=none;align=center;fillColor=#FFFFFF;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="22" width="{{Component.dimension[0]}}" height="{{Component.dimension[1]}}  " as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}3" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=1;shadow=0;dashed=0;shape=mxgraph.ios7.icons.cloud;rounded=0;fillColor=#FFFFFF;fontColor=none;aspect=fixed;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="2" y="13.099999999999994" width="18" height="10.8" as="geometry" />
+    </mxCell>
+
+
+      {% endif %}
+    {% endfor %}
+    {% else %}
+    {% for Component in Layer.components %}
+      {% if Component.type=='Hardware' %}
+      <object label="" Type="PhysicalComponent" id="{{Component.id}}">
+      <mxCell style="group;strokeWidth=1;fillColor=none;fontColor=none;" vertex="1" connectable="0" parent="{{Layer.ids[3]}}">
+        <mxGeometry x="{{Component.position[0]}}" width="{{Component.dimension[0] }}" height="{{Component.dimension[1]}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{Component.id}}1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="2.9165384615384653" width="{{Component.dimension[0] - 2.916538461538462}}" height="{{Component.dimension[1]}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}2" value="&lt;font style=&quot;font-size: 17px&quot;&gt;{{Component.name}}&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;verticalAlign=middle;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="4.9581153846153825" y="2.2999999999999545" width="{{Component.dimension[0] - 4 - 2.916538461538462}}" height="{{Component.dimension[1] - 4.5}}"  as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="7" y="4.559999999999945" width="2" height="2" as="geometry" />
+    </mxCell>
+
+    {% for i in range(5, Component.dimension[1], 5) %}
+    <mxCell id="{{Component.id}}{{4+i}}" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#000000;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="{{Component.dimension[0]+  3 - 2.916538461538462}}" y="{{i}}" width="2.916538461538462" height="0.7844016136261763" as="geometry" />
+    </mxCell>
+
+    <mxCell id="{{Component.id}}{{i+1500000000000}}" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#000000;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry  y="{{i}}" width="2.916538461538462" height="0.7844016136261763" as="geometry" />
+    </mxCell>
+
+
+    {% endfor %}
+      {% elif  Component.type=='Software'%}
+      <object label="{{Component.name}}" Type="SoftwareComponent" id="{{Component.id}}">
+      <mxCell style="group" vertex="1" connectable="0" parent="{{Layer.ids[3]}}">
+        <mxGeometry  x="{{Component.position[0]}}" width="{{Component.dimension[0]}}" height="{{Component.dimension[1]}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{Component.id}}1" value="&lt;span&gt;&amp;lt;/&amp;gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#000000;strokeWidth=1;fontColor=none;align=left;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry width="29" height="{{Component.dimension[1]}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}2" value="&lt;font style=&quot;font-size: 17px&quot;&gt;{{Component.name}}&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;fontColor=none;align=center;fillColor=#FFFFFF;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="21" width="{{Component.dimension[0]-20}}" height="{{Component.dimension[1]}}  " as="geometry" />
+    </mxCell>
+
+      {% else %}
+      <object label="{{Component.name}}" Type="ServiceComponent" id="{{Component.id}}">
+      <mxCell style="group" vertex="1" connectable="0" parent="{{Layer.ids[3]}}">
+        <mxGeometry  x="{{Component.position[0]}}" width="{{Component.dimension[0]}}" height="{{Component.dimension[1]}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{Component.id}}1" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#FFFFFF;fontColor=none;align=left;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry width="47" height="{{Component.dimension[1]}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}2" value="&lt;font style=&quot;font-size: 17px&quot;&gt;{{Component.name}}&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;fontColor=none;align=center;fillColor=#FFFFFF;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="22" width="{{Component.dimension[0]-20}}" height="{{Component.dimension[1]}}  " as="geometry" />
+    </mxCell>
+    <mxCell id="{{Component.id}}3" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=1;shadow=0;dashed=0;shape=mxgraph.ios7.icons.cloud;rounded=0;fillColor=#FFFFFF;fontColor=none;aspect=fixed;" vertex="1" parent="{{Component.id}}">
+      <mxGeometry x="2" y="13.099999999999994" width="18" height="10.8" as="geometry" />
+    </mxCell>
+    {% endif %}
+    {% endfor %}
+    <object label="" Type="Hub" id="{{Layer.ids[3]}}">
+      <mxCell style="group" vertex="1" connectable="0" parent="{{Layer.ids[1]}}">
+        <mxGeometry x="8.4473684210526017" y="20" width="{{Layer.dimension[0] - 30}}" height="{{Layer.dimension[1] - 35}}" as="geometry" />
+      </mxCell>
+    </object>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+    {% for link in DrawIO.links %}
+      <mxCell Layer="{{link.layer}}" Type="Link" id="{{link.id}}" style="edgeStyle=entityRelationEdgeStyle;startArrow=classic;startFill=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Comic Sans MS;fontSize=17;fontColor=#000000;strokeColor={{link.color}};strokeWidth=4;elbow=vertical;"  edge="1" parent="1" source="{{link.source}}" target="{{link.sink}}">
+        <mxGeometry relative="1" as="geometry" />
+      </mxCell>
+      {% endfor %}
+  </root>
+</mxGraphModel>

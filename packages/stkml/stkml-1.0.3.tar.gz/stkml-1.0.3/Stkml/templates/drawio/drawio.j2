@@ -1,0 +1,40 @@
+<!--Copyright STACKEO - INRIA 2020 .-->
+<mxGraphModel dx="1358" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <root>
+      <mxCell id="0" />
+      <mxCell id="1" parent="0" />
+      {% for Tier in DrawIO.tiers %}
+      <mxCell id="{{Tier.ids[0]}}" value="" style="group" vertex="1" connectable="0" parent="1">
+        <mxGeometry x="{{Tier.position[0]}}" y="{{Tier.position[1]}}" width="{{Tier.dimension[0]}}" height="{{Tier.dimension[1]}}" as="geometry" />
+      </mxCell>
+      <mxCell id="{{Tier.ids[1]}}" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5DDE5;strokeColor=#EBEBEB;fontColor=#D5DDE5;" parent="{{Tier.ids[0]}}" vertex="1">
+        <mxGeometry width="{{Tier.dimension[0]}}" height="{{Tier.dimension[1]}}" as="geometry" />
+      </mxCell>
+      <object label="" id="{{Tier.ids[2]}}" Type="label">
+        <mxCell style="group;fontFamily=Comic Sans MS;fontColor=#FFF11F;" parent="{{Tier.ids[0]}}" vertex="1" connectable="0">
+          <mxGeometry width="{{Tier.dimension[0]}}" height="60" as="geometry" />
+        </mxCell>
+      </object>
+      <object label="{{Tier.name}}"   Type="Tier" id="{{Tier.ids[3]}}">
+        <mxCell style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;fillColor=#195190FF;strokeColor=#6c8ebf;fontFamily=Comic Sans MS;fontSize=22;fontColor=#FFFFFF;" parent="{{Tier.ids[2]}}" vertex="1">
+          <mxGeometry width="{{Tier.dimension[0]}}" height="60" as="geometry" />
+        </mxCell>
+      </object>
+      {% for node in Tier.nodes %}
+      <object label="{{node.name}}" Type="{{node.type}}" id="{{node.ids[0]}}" Tier="{{Tier.ids[3]}}">
+        <mxCell style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;aspect=fixed;image={{node.image}};fontFamily=Comic Sans MS;fontSize=17;fontColor=#000000;" parent="{{Tier.ids[0]}}" vertex="1" >
+          <mxGeometry x="{{node.position[0]}}" y="{{node.position[1]}}" width="{{node.dimension[0]}}" height="{{node.dimension[1]}}" as="geometry" />
+        </mxCell>
+      </object>
+      {% endfor %}
+      {% endfor %}
+      {% for link in DrawIO.links %}
+        {% if  link.display %}
+      <mxCell Type="Link" id="{{link.id}}" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Comic Sans MS;fontSize=17;fontColor=#000000;edgeStyle=entityRelationEdgeStyle;startArrow=classic;startFill=1;"  edge="1" parent="1" source="{{link.source}}" target="{{link.sink}}">
+        <mxGeometry relative="1" as="geometry" />
+      </mxCell>
+        {% endif %}
+      {% endfor %}
+    </root>
+  </mxGraphModel>
+
