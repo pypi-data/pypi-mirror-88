@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: sibi
+Version: 0.1.5
+Summary: Synchronous Interactiver Brokers Interface
+License: MIT
+Author: Manuel Fedele
+Author-email: manuelfedele@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: Twisted (>=20.3.0,<21.0.0)
+Requires-Dist: loguru (>=0.5.3,<0.6.0)
+Requires-Dist: redis (>=3.5.3,<4.0.0)
+Requires-Dist: typer (>=0.3.2,<0.4.0)
+Description-Content-Type: text/markdown
+
+**Solid** is an XMLRPC interface to Interactive Brokers API.
+
+The main purpose of this library is to transform the `async` world of tws api into `sync` procedures, in order to develop custom applications easily.
+
+It needs TWS **9.76.1** or greater python api to work.
+
+---
+
+## Example
+* Create a file `testxmlrpc.py` with:
+
+```Python
+import xmlrpc.client
+
+s = xmlrpc.client.ServerProxy('http://localhost:7080')
+
+bars = s.reqHistoricalData("EUR", "CASH", "GBP", "IDEALPRO")
+
+print(bars)
+```
+
+And that's it.

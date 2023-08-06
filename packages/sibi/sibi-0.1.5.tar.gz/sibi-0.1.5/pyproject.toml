@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "sibi"
+version = "0.1.5"
+description = "Synchronous Interactiver Brokers Interface"
+authors = ["Manuel Fedele <manuelfedele@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.scripts]
+sibi = "sibi.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Twisted = "^20.3.0"
+typer = "^0.3.2"
+loguru = "^0.5.3"
+redis = "^3.5.3"
+
+[tool.poetry.dev-dependencies]
+Sphinx = "^3.3.1"
+sphinx-rtd-theme = "^0.5.0"
+black = {version = "^20.8b1", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
