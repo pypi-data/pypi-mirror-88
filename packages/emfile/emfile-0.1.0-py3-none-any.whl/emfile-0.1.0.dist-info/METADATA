@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: emfile
+Version: 0.1.0
+Summary: Basic utility to read tomography data from files in `*.em` format.
+Home-page: https://github.com/brisvag/emfile
+Author: Lorenzo Gaifas
+Author-email: lorenzo.gaifas@gmail.com
+License: BSD 3-Clause
+Platform: UNKNOWN
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Utilities
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+
+# emfile
+
+Basic utility to read tomography data from files in `*.em` format.
+
+## Installation
+```bash
+pip install emfile
+```
+
+## Usage
+```python
+header, data = emfile.read(path)
+```
+
+
