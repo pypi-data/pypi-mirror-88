@@ -1,0 +1,127 @@
+Metadata-Version: 2.1
+Name: Sanic-Auth
+Version: 0.3.0
+Summary: Sanic-Auth - Simple Authentication for Sanic
+Home-page: https://github.com/pyx/sanic-auth/
+Author: Philip Xu and contributors
+Author-email: pyx@xrefactor.com
+License: BSD-New
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: sanic (>=20.3.0)
+Provides-Extra: dev
+Requires-Dist: aiohttp ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: Sphinx ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+
+============================================
+Sanic-Auth - Simple Authentication for Sanic
+============================================
+
+Sanic-Auth implements a minimal backend agnostic session-based user
+authentication mechanism for `Sanic`_.
+
+
+.. _Sanic: https://github.com/channelcat/sanic
+
+
+Quick Start
+===========
+
+
+Installation
+------------
+
+.. code-block:: sh
+
+  pip install --upgrade Sanic-Auth
+
+
+How to use it
+-------------
+
+.. code-block:: python
+
+  from sanic_auth import Auth
+  from sanic import Sanic, response
+
+
+  app = Sanic(__name__)
+  app.config.AUTH_LOGIN_ENDPOINT = 'login'
+
+
+  @app.middleware('request')
+  async def add_session_to_request(request):
+      # setup session
+
+  auth = Auth(app)
+
+  @app.route('/login', methods=['GET', 'POST'])
+  async def login(request):
+      message = ''
+      if request.method == 'POST':
+          username = request.form.get('username')
+          password = request.form.get('password')
+          # fetch user from database
+          user = some_datastore.get(name=username)
+          if user and user.check_password(password):
+              auth.login_user(request, user)
+              return response.redirect('/profile')
+      return response.html(HTML_LOGIN_FORM)
+
+
+  @app.route('/logout')
+  @auth.login_required
+  async def logout(request):
+      auth.logout_user(request)
+      return response.redirect('/login')
+
+
+  @app.route('/profile')
+  @auth.login_required(user_keyword='user')
+  async def profile(request, user):
+      return response.json({'user': user})
+
+
+For more details, please see documentation.
+
+
+License
+=======
+
+BSD New, see LICENSE for details.
+
+
+Links
+=====
+
+- `Documentation <http://sanic-auth.readthedocs.org/>`_
+
+- `Issue Tracker <https://github.com/pyx/sanic-auth/issues/>`_
+
+- `Source Package @ PyPI <https://pypi.python.org/pypi/sanic-auth/>`_
+
+- `Git Repository @ Github
+  <https://github.com/pyx/sanic-auth/>`_
+
+- `Git Repository @ Gitlab
+  <https://gitlab.com/pyx/sanic-auth/>`_
+
+- `Development Version
+  <http://github.com/pyx/sanic-auth/zipball/master#egg=sanic-auth-dev>`_
+
+
