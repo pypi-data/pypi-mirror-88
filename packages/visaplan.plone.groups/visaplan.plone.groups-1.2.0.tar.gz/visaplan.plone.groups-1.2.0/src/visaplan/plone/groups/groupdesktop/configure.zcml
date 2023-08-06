@@ -1,0 +1,45 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <!-- note:
+     - "groupdesktop" is an old-style browser;
+     - "group-desktop" and
+       "group-desktop-embed" are BrowserViews
+       (which have been skin layer views originally; see
+       ../views/fullpage.zcml,
+       ../views/ajax.zcml,
+       ../views/configure.zcml)
+    -->
+  <browser:page
+      for="*"
+      name="groupdesktop"
+      class=".browser.Browser"
+      permission="zope2.View"
+      allowed_interface=".browser.IGroupDesktop"
+      />
+
+    <browser:page
+             for="*"
+             name="gdmacros"
+             template="gdmacros.pt"
+             permission="zope2.View"
+             />
+
+    <include package="visaplan.plone.base" />
+    <include package="visaplan.plone.infohubs" />
+
+    <include file="fullpage.zcml" />
+    <include file="ajax.zcml"
+             zcml:condition="installed visaplan.plone.ajaxnavigation"
+             />
+
+  <configure zcml:condition="installed visaplan.plone.breadcrumbs">
+  <include package="visaplan.plone.breadcrumbs" />
+  <include package=".oldcrumbs"
+      zcml:condition="have VisaplanTentativeBreadcrumbs"
+      />
+  </configure>
+
+</configure>

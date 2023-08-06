@@ -1,0 +1,29 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="board_embed"
+             template="board.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="new-thread-embed"
+             template="new-thread.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="thread-reply-embed"
+             template="thread-reply.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+</configure>

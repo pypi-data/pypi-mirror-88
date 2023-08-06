@@ -1,0 +1,19 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <!-- see (gf) for corresponding full-page views:
+    ./fullpage.zcml
+    -->
+
+    <!-- [ folders ... [ -->
+    <browser:page
+        name="group-desktop-embed"
+        for="Products.CMFCore.interfaces.IFolderish"
+        template="group-desktop.pt"
+        class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+        permission="zope2.View"
+        />
+    <!-- ] ... folders ] -->
+
+</configure>

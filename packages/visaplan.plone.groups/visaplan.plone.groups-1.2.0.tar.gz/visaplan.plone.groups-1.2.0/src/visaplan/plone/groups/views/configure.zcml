@@ -1,0 +1,9 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+    <include file="fullpage.zcml" />
+    <include file="ajax.zcml"
+             zcml:condition="installed visaplan.plone.ajaxnavigation"
+             />
+</configure>

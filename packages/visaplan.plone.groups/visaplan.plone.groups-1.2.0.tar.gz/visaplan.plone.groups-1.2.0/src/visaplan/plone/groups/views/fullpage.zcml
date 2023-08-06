@@ -1,0 +1,18 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <!-- see (gf) for corresponding ...embed views:
+    ./ajax.zcml
+    -->
+
+    <!-- [ folders ... [ -->
+    <browser:page
+        name="group-desktop"
+        for="Products.CMFCore.interfaces.IFolderish"
+        template="group-desktop.pt"
+        permission="zope2.View"
+        />
+    <!-- ] ... folders ] -->
+
+</configure>

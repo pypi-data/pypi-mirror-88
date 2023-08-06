@@ -1,0 +1,13 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="configure_groupsharing_embed"
+             template="configure_groupsharing.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+</configure>

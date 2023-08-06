@@ -1,0 +1,27 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <browser:page
+      for="*"
+      name="groupboard"
+      class=".browser.Browser"
+      permission="zope2.View"
+      allowed_interface=".browser.IGroupBoard"
+      />
+
+
+    <include file="fullpage.zcml" />
+    <include file="ajax.zcml"
+             zcml:condition="installed visaplan.plone.ajaxnavigation"
+             />
+
+  <configure zcml:condition="installed visaplan.plone.breadcrumbs">
+  <include package="visaplan.plone.breadcrumbs" />
+  <include package=".oldcrumbs"
+      zcml:condition="have VisaplanTentativeBreadcrumbs"
+      />
+  </configure>
+
+</configure>

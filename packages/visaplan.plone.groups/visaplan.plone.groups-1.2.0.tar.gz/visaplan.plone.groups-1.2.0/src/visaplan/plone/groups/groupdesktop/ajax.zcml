@@ -1,0 +1,256 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <include package="Products.CMFCore" />
+    <include package="visaplan.plone.ajaxnavigation.views" />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="group_administration_learning_progress_embed"
+             template="group_administration_learning_progress_view.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="group_administration_user_embed"
+             template="group_administration_user_view.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="group_administration_embed"
+             template="group_administration_view.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-animations-embed"
+             template="our-animations.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-articles-embed"
+             template="our-articles.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-audios-embed"
+             template="our-audios.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-binaries-embed"
+             template="our-binaries.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-courses-embed"
+             template="our-courses.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-events-embed"
+             template="our-events.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-formulas-embed"
+             template="our-formulas.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-glossaries-embed"
+             template="our-glossaries.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-images-embed"
+             template="our-images.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-literatures-embed"
+             template="our-literatures.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-news-embed"
+             template="our-news.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-standards-embed"
+             template="our-standards.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-tables-embed"
+             template="our-tables.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="our-videos-embed"
+             template="our-videos.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-animations-embed"
+             template="our-animations.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-articles-embed"
+             template="our-articles.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-audios-embed"
+             template="our-audios.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-binaries-embed"
+             template="our-binaries.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-courses-embed"
+             template="our-courses.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-events-embed"
+             template="our-events.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-formulas-embed"
+             template="our-formulas.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-glossaries-embed"
+             template="our-glossaries.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-images-embed"
+             template="our-images.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-literatures-embed"
+             template="our-literatures.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-news-embed"
+             template="our-news.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-standards-embed"
+             template="our-standards.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-tables-embed"
+             template="our-tables.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.IFolderish"
+             name="my-videos-embed"
+             template="our-videos.pt"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             permission="zope2.View"
+             />
+
+</configure>
