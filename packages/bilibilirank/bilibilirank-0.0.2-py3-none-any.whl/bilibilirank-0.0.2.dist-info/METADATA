@@ -1,0 +1,139 @@
+Metadata-Version: 2.1
+Name: bilibilirank
+Version: 0.0.2
+Summary: download data of bilibilirank
+Home-page: http://iseuwei.org
+Author: Iseuwei
+Author-email: iseu1130@sina.cn
+License: BSD
+Keywords: BiliBili Rank
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: License :: OSI Approved :: BSD License
+Requires-Dist: pandas (>=0.18.0)
+Requires-Dist: requests (>=2.0.0)
+Requires-Dist: lxml (>=3.8.0)
+Requires-Dist: simplejson (>=3.16.0)
+Requires-Dist: msgpack (>=0.5.6)
+Requires-Dist: pyzmq (>=16.0.0)
+
+
+bilibilirank
+===============
+
+* easy to use as most of the data returned are pandas DataFrame objects
+* can be easily saved as csv, excel or json files
+* can be inserted into MySQL or Mongodb
+
+Target Users
+--------------
+
+* financial market analyst of China
+* learners of financial data analysis with pandas/NumPy
+* people who are interested in China financial data
+
+Installation
+--------------
+
+    pip install bilibilirank
+
+Upgrade
+---------------
+
+    pip install bilibilirank --upgrade
+
+Quick Start
+--------------
+
+::
+
+    import bilibilirank as brc
+
+    df = brc.PopularTop100('全站')
+    print(df)
+    df.to_csv('bilibili_top100.csv', encoding="utf-8-sig")  # pandas直接保存到csv
+
+    df = brc.PopularHot()
+    print(df)
+    df.to_excel('bilibili_hot.xlsx')
+
+    df = brc.PopularHistory()
+    print(df)
+    df.to_excel('bilibili_history.xlsx')
+
+    df = brc.PopularWeekly()
+    print(df)
+    df.to_excel('bilibili_weekly.xlsx')
+
+    df = brc.PopularRank('全站')
+    print(df)
+    df.to_excel('bilibili_rank.xlsx')
+
+return::
+
+                videos  tid  ...             achievement  mission_id     
+    aid                    ...                                    
+    1250357        1   59  ...          不论何时这个视频永远有人在线         NaN
+    19390801       1   22  ...                全站知名鬼畜视频         NaN
+    4033926        1   22  ...              papi酱的御用片头         NaN
+    2023391        1   22  ...      2015年度热词「Duang」的起源         NaN
+    2271112        1   22  ...             小米官方转发认证的神曲         NaN
+    4606803        1   22  ...      PDD「全英雄联盟最骚的骚猪」的起源         NaN
+    902007         1  126  ...             梁逸峰同学的鬼畜出道作         NaN
+    1561567       69   17  ...                全站知名游戏视频         NaN
+    21061574       1  126  ...          捧红了两位草根歌手的鬼畜视频         NaN
+    3327562        1   22  ...                鬼畜RAP代表作         NaN
+    6482189        1   22  ...          引发了《家有儿女》的鬼畜大潮         NaN
+    54737593       1   95  ...         央视新闻、人民日报官方转发推荐         NaN
+    24972274       1   27  ...              全站知名动画杂谈视频         NaN
+    6117110        1   20  ...                全站知名舞蹈视频         NaN
+    810872         2   24  ...                 全站知名AMV         NaN
+    2129461        1   30  ...  ilem代表作，被汪峰、李宇春等多位歌手翻唱         NaN
+    3771373        1   22  ...      《Lovelive!》鬼畜视频代表作         NaN
+    20944110       1  138  ...              表情包配音系列代表作         NaN
+    32504233       1  171  ...      2018年英雄联盟全球总决赛官方MV         NaN
+    3037947        1   22  ...            唐国强老师收藏的鬼畜视频         NaN
+    113221         1   24  ...               全站知名燃系MAD         NaN
+    2098846        2  130  ...          全站知名Mashup音乐视频         NaN
+    27315158       1   17  ...         《史上最XX的游戏》系列代表作         NaN
+    49842011       1  182  ...              全站知名漫威解说视频         NaN
+    14909587       1   31  ...         全网超高播放的《病名为爱》翻唱     10280.0
+    1002217        2  126  ...      鬼畜区顶尖水平的填词与调教代表作之一         NaN
+    19370230       1  183  ...               漫威电影混剪代表作         NaN
+    1328701        1   24  ...            火影忍者燃系MAD代表作         NaN
+    39237975       1  138  ...           动物搞笑配音视频代表作之一         NaN
+    2498218        1  183  ...       《大圣归来》电影官方转发的同人MV         NaN
+    107084         1  126  ...              首个大型鬼畜合作企划         NaN
+    5263217        1   22  ...       「2016夏夜鬼畜大赏」人气第一名        51.0
+    37743569       1  183  ...         广受好评的2018年度混剪视频         NaN
+    33246          1   24  ...            全站早年原创MAD代表作         NaN
+    2288962      138   59  ...            全站知名钢琴演奏视频合集         NaN
+    1766730        2  121  ...            全站知名暴雪游戏混剪视频         NaN
+    2786567        1   65  ...     知名游戏搞笑视频《国际网骗》系列代表作         NaN
+    23836532       1  182  ...              全站知名影视杂谈视频         NaN
+    352137         1   22  ...      「雪姨」扮演者王琳本人转发的鬼畜视频         NaN
+    40063426       2  154  ...      鬼畜金曲《念诗之王》与舞蹈的成功结合         NaN
+    26725241       1   17  ...         《囧的呼唤》诞生十周年纪念视频         NaN
+    209711         1   24  ...             2012拜年祭开场节目         NaN
+    3905462        1   30  ...             2016拜年祭代表作品         NaN
+    8656914        2   20  ...             首支BDF主题曲宣传片     10064.0
+    1252354        1   31  ...   13国歌手合唱，献给世界和平的音乐合作企划         NaN
+    1638627        1  183  ...              误解系混剪视频的巅峰         NaN
+    3905480        1   47  ...           国产动画《风灵玉秀》的起源         NaN
+    8506694        1   30  ...      「2017哔哩哔哩音乐大赏」获奖作品     10276.0
+    5512579        1   28  ...   2016年度神曲，彩虹室内合唱团成名作之一         NaN
+    706            1   47  ...          东方project标志性视频         NaN
+    106            1   26  ...        真·万恶之源，「鬼畜」一词的起源         NaN
+    314            1   26  ...         第一个被称为「镇站之宝」的视频         NaN
+    43526          1   26  ...                 动画鬼畜代表作         NaN
+    345660         1   24  ...               误解系MAD代表作         NaN
+    628659         1   17  ...    无论看多少遍都会被震撼到的「别人的世界」         NaN
+
+
+
