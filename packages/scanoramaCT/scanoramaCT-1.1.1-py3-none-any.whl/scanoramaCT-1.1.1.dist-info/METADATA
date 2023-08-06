@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: scanoramaCT
+Version: 1.1.1
+Summary: An adapted version of the Scanorama package by Brian Hie, Bryan Bryson, and Bonnie Berger for application to CytoTRACE.
+Home-page: UNKNOWN
+Author: Gunsagar Gulati
+Author-email: gunsagargulati@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: annoy (>=1.11.5)
+Requires-Dist: fbpca (>=1.0)
+Requires-Dist: geosketch (>=1.0)
+Requires-Dist: intervaltree (==2.1.0)
+Requires-Dist: matplotlib (>=2.0.2)
+Requires-Dist: numpy (>=1.12.0)
+Requires-Dist: scipy (>=1.0.0)
+Requires-Dist: scikit-learn (>=0.20rc1)
+
+# Scanorma for CytoTRACE (ScanoramaCT)
+
+`scanoramaCT.py` is an adapted version of the original <a href="https://github.com/brianhie/scanorama">Scanorama code</a> for application to CytoTRACE. The code has been modified to adjust the aligned gene count vectors using Gaussian kernel normalization. CytoTRACE is then applied to the Scanorama-adjusted gene counts and expression matrix. 
+
+`scanoramaCT` is now available within the CytoTRACE codebase and web framework (<a href="https://github.com/gunsagargulati/CytoTRACE">CytoTRACE GitHub</a>). 
+
+
