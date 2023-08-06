@@ -1,0 +1,8 @@
+- hosts: all
+  name: Run dib functional tests
+  roles:
+    - ensure-pip
+    - bindep
+    - dib-setup-gate-mirrors
+    - dib-functests
+
