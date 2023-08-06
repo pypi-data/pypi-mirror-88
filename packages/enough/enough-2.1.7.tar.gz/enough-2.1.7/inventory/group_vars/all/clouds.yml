@@ -1,0 +1,12 @@
+clouds:
+  production:
+    auth:
+      auth_url: "https://identity.api.ams.fuga.cloud:443/v3"
+      user_id: "ef5cae1b61b8424594a6ddf94a28381c"
+      password: "lDk9vOLt9a6iIXFW09oWcQEiq0sjB4cV"
+      user_domain_id: "b919e186cb0e477a88bb9bf89f89e9d9"
+      project_domain_id: "b919e186cb0e477a88bb9bf89f89e9d9"
+      project_id: "25481e67871b4de39a80e63fa2008029"
+    region_name: "ams"
+    interface: "public"
+    identity_api_version: 3
