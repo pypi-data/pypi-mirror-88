@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: json-graph-lite
+Version: 0.8a0
+Summary: Lightweight graph implementation with JSON serialization
+Home-page: https://github.com/rnd0101/json-graph-lite
+Author: Roman Suzi
+Author-email: roman.suzi@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries
+Description-Content-Type: text/markdown
+
+Lightweight library for JSON graph 
+==================================
+
+Library, similar to:
+
+https://github.com/jsongraph/jsongraph.py
+
+**NB: `json-graph-lite` library uses list for nodes, not object, so it's not compatible with JSON Graph Format.**
+
+JSON Graph Format compatible classes (Graph, Graphs) can be found from `json_graph_lite.jgf`.
+
+Incompatible change: list is used for nodes, not object, because JSON object can't represent integer keys.
+
+The intention of json-graph-lite is to provide lightweight graph library, which serializes
+and deserializes graphs a la JSON graph format.
+
+Take a look at [tests/test_graphs.py](tests/test_graphs.py) for usage examples.
+
+
