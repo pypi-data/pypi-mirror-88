@@ -1,0 +1,7 @@
+cachecontrol>=0.12.6
+google-api-python-client>=1.7.8
+google-cloud-storage>=1.18.0
+
+[:platform_python_implementation != "PyPy"]
+google-api-core[grpc]<2.0.0dev,>=1.14.0
+google-cloud-firestore>=1.4.0
