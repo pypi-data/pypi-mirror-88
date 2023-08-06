@@ -1,0 +1,82 @@
+Metadata-Version: 2.1
+Name: ecco
+Version: 0.0.10
+Summary: Visualization tools for NLP machine learning models.
+Home-page: https://github.com/jalammar/ecco
+Author: Jay Alammar
+Author-email: alammar@gmail.com
+License: BSD-3-Clause
+Project-URL: Changelog, https://github.com/jalammar/ecco/blob/master/CHANGELOG.rst
+Project-URL: Issue Tracker, https://github.com/jalammar/ecco/issues
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Utilities
+Requires-Python: !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*
+Requires-Dist: transformers (<3.5)
+Requires-Dist: seaborn (~=0.11)
+Requires-Dist: scikit-learn (~=0.23)
+Provides-Extra: dev
+Requires-Dist: pytest (>=6.1) ; extra == 'dev'
+
+========
+Overview
+========
+
+
+
+
+Ecco
+================================
+Ecco is a python library for creating interactive visualizations for Natural Language Processing models.
+
+It provides multiple interfaces to aid the explanation and intuition of `Transformer
+<https://example.com/>`_-based language models.
+
+Ecco runs inside Jupyter notebooks. It is built on top of `pytorch
+<https://pytorch.org/>`_ and `transformers
+<https://github.com/huggingface/transformers>`_.
+
+
+* Free software: BSD 3-Clause License
+
+Installation
+============
+
+::
+
+    pip install ecco
+
+
+Documentation
+=============
+
+
+To use the project:
+
+.. code-block:: python
+
+    import ecco
+    lm = ecco.from_pretrained('distilgpt2')
+    text= "The countries of the European Union are:\n1. Austria\n2. Belgium\n3. Bulgaria\n4."
+
+    output = lm.generate(text, generate=20, do_sample=True)
+
+
+Changelog
+=========
+
+0.0.8 (2020-11-20)
+------------------
+
+* Allowing the project some fresh air.
+
