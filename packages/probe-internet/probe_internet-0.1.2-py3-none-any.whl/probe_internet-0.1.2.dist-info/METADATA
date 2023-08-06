@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: probe-internet
+Version: 0.1.2
+Summary: Probe IP addresses and notify when connections are re-established.
+Home-page: https://github.com/mmerickel/probe_internet
+License: MIT
+Keywords: internet notifier,internet probe,network down
+Author: Michael Merickel
+Author-email: oss@m.merickel.org
+Requires-Python: >=3.7,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Home Automation
+Classifier: Topic :: System :: Networking
+Requires-Dist: humanize
+Requires-Dist: toml
+Requires-Dist: twilio
+Project-URL: Repository, https://github.com/mmerickel/probe_internet
+Description-Content-Type: text/markdown
+
+# Installation
+
+```console
+$ pip install probe-internet
+```
+
+## Usage
+
+Define a `profile.toml` similar to:
+
+```toml
+[probe]
+ip = "8.8.8.8"
+port = 53
+
+# how often to probe
+interval = 5
+timeout = 3
+
+[twilio]
+account_sid = "..."
+auth_token = "..."
+source_phone_number = "+1..."
+target_phone_number = "+1..."
+
+# how long must the connection be down before a message is sent
+min_interval = 30
+```
+
+Run it:
+
+```console
+$ probe-internet
+```
+
