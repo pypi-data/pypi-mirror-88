@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: dkist
+Version: 0.1a3
+Summary: DKIST User Tools
+Home-page: http://dkist.nso.edu
+Author: NSO / AURA
+Author-email: stuart@cadair.com
+License: BSD 3-Clause
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.7
+Requires-Dist: dask[array] (>=2)
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: globus-sdk
+Requires-Dist: appdirs
+Requires-Dist: parfive[ftp]
+Requires-Dist: astropy
+Requires-Dist: asdf
+Requires-Dist: gwcs
+Requires-Dist: sunpy[asdf,net] (>=2.0)
+Requires-Dist: ndcube (>=2.0.0b2)
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: sphinx-astropy ; extra == 'docs'
+Requires-Dist: sphinx-gallery ; extra == 'docs'
+Requires-Dist: pytest ; extra == 'docs'
+Requires-Dist: towncrier ; extra == 'docs'
+Requires-Dist: dkist-sphinx-theme ; extra == 'docs'
+Provides-Extra: tests
+Requires-Dist: pytest-astropy ; extra == 'tests'
+Requires-Dist: pytest-cov ; extra == 'tests'
+Requires-Dist: pytest-mock ; extra == 'tests'
+Requires-Dist: pytest-mpl ; extra == 'tests'
+Requires-Dist: tox ; extra == 'tests'
+
+DKIST User Tools
+----------------
+
+.. image:: http://img.shields.io/badge/powered%20by-SunPy-orange.svg?style=flat
+    :target: http://www.sunpy.org
+    :alt: Powered by SunPy Badge
+
+A Python library of tools for obtaining, processing and interacting with DKIST
+data.
+
+License
+-------
+
+This project is Copyright (c) NSO / AURA and licensed under
+the terms of the BSD 3-Clause license. This package is based upon
+the `Astropy package template <https://github.com/astropy/package-template>`_
+which is licensed under the BSD 3-clause licence. See the licenses folder for
+more information.
+
+
