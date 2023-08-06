@@ -1,0 +1,49 @@
+
+======== running Feff module /home/matt/anaconda3/lib/python3.8/site-packages/xraylarch-0.9.47-py3.8.egg/larch/bin/linux64/feff6l ========
+ Feff 6L.02
+  
+ Calculating potentials and phases...
+     free atom potential and density for atom type    0
+     free atom potential and density for atom type    1
+     free atom potential and density for atom type    2
+     overlapped potential and density for unique potential    0
+     overlapped potential and density for unique potential    1
+     overlapped potential and density for unique potential    2
+     muffin tin radii and interstitial parameters
+     phase shifts for unique potential    0
+     phase shifts for unique potential    1
+     phase shifts for unique potential    2
+ Preparing plane wave scattering amplitudes...
+   nncrit in prcrit       9
+ Searching for paths...
+     Rmax  5.0000  keep and heap limits   0.0000000   0.0000000
+    Preparing neighbor table
+     nfound  nheap  nheapx  nsc    r
+     Paths found      428   (nheapx, nbx      59   4)
+ Eliminating path degeneracies...
+     Plane wave chi amplitude filter   2.50%
+     Unique paths     18,  total paths     404
+ Calculating EXAFS parameters...
+     Curved wave chi amplitude ratio   4.00%
+     Discard feff.dat for paths with cw ratio <   2.67%
+     path  cw ratio     deg    nleg  reff
+       1   100.000     6.000     2   2.1554
+       2    90.050    12.000     2   3.0482
+       3    13.784    24.000     3   3.6795
+       4    19.633    48.000     3   3.6795
+       5    34.764     8.000     2   3.7333
+       6    19.454     6.000     2   4.3108
+       7    14.034     6.000     3   4.3108
+       8    47.870    12.000     3   4.3108
+       9    11.900     6.000     4   4.3108
+      10     4.418     6.000     4   4.3108
+      11    29.408     6.000     4   4.3108
+      12     7.171    24.000     4   4.3108
+      13     0.837    24.000     4   4.3108 neglected
+      14     6.532    48.000     3   4.4684
+      15    20.899    48.000     3   4.4684
+      16    25.450    48.000     3   4.4684
+      17     7.562    48.000     3   4.5723
+      18    52.712    24.000     2   4.8196
+    17 paths kept,   18 examined.
+ Feff done.  Have a nice day.
