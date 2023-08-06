@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: func-adl-uproot
+Version: 1.0
+Summary: Functional Analysis Description Language uproot backend for accessing flat ROOT ntuples
+Home-page: https://github.com/iris-hep/func_adl_uproot
+Author: Mason Proffitt
+Author-email: masonlp@uw.edu
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <3.10
+Description-Content-Type: text/markdown
+Requires-Dist: awkward (>=1)
+Requires-Dist: numpy
+Requires-Dist: qastle (>=0.10)
+Requires-Dist: uproot (>=4)
+
+# func_adl_uproot
+
+[![codecov](https://codecov.io/gh/iris-hep/func_adl_uproot/branch/master/graph/badge.svg)](https://codecov.io/gh/iris-hep/func_adl_uproot)
+[![PyPI version](https://badge.fury.io/py/func-adl-uproot.svg)](https://badge.fury.io/py/func-adl-uproot)
+
+This package provides an [uproot](https://github.com/scikit-hep/uproot)-based backend for [func_adl](https://github.com/iris-hep/func_adl).
+
+
