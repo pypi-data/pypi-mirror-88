@@ -1,0 +1,5 @@
+Hello,
+
+The page '{{ page.title|safe }}' has been shared with you. Please click the following link to view it.
+
+{{ review_url|safe }}
