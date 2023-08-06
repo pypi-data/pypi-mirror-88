@@ -1,0 +1,114 @@
+Metadata-Version: 2.1
+Name: web3fsnpy
+Version: 1.0.2
+Summary: A Fusion extension to the web3.py package
+Home-page: https://github.com/FUSIONFoundation/web3fsnpy
+Author: Marcel Cure
+Author-email: marcel.cure@gmail.com
+License: UNKNOWN
+Keywords: Fusion Protocol,blockchain,Decentralized finance
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Natural Language :: English
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: attrdict (==2.0.1)
+Requires-Dist: attrs (==19.1.0)
+Requires-Dist: base58 (==1.0.3)
+Requires-Dist: certifi (==2019.9.11)
+Requires-Dist: chardet (==3.0.4)
+Requires-Dist: cytoolz (==0.10.1)
+Requires-Dist: eth-abi (==2.0.0)
+Requires-Dist: eth-hash (==0.2.0)
+Requires-Dist: eth-keyfile (==0.5.1)
+Requires-Dist: eth-keys (==0.2.4)
+Requires-Dist: eth-rlp (==0.1.2)
+Requires-Dist: hexbytes (==0.2.0)
+Requires-Dist: idna (==2.8)
+Requires-Dist: ipfshttpclient (==0.4.12)
+Requires-Dist: jsonschema (==3.0.2)
+Requires-Dist: lru-dict (==1.1.6)
+Requires-Dist: multiaddr (==0.0.8)
+Requires-Dist: netaddr (==0.7.19)
+Requires-Dist: parsimonious (==0.8.1)
+Requires-Dist: protobuf (==3.10.0)
+Requires-Dist: pycryptodome (==3.9.0)
+Requires-Dist: pyrsistent (==0.15.4)
+Requires-Dist: python-dateutil (==2.8.0)
+Requires-Dist: requests (==2.22.0)
+Requires-Dist: rlp (==1.1.0)
+Requires-Dist: six (==1.12.0)
+Requires-Dist: toolz (==0.10.0)
+Requires-Dist: urllib3 (==1.25.6)
+Requires-Dist: varint (==1.0.2)
+Requires-Dist: web3 (==5.5.0)
+Requires-Dist: websockets (==8.1.0)
+
+# web3fsnpy
+
+The Python3 implementation of FUSION’s Web3 functions
+
+All installation instructions, description of functions and examples of usage are described on the [web3fsnpy readthedocs page](https://web3fsnpy.readthedocs.io/en/latest/index.html)
+
+# Quick start
+
+Install some dependencies (you will need > python3.6) :-
+
+#> sudo apt install python3 python3-pip
+
+#> sudo pip3 install web3fsnpy  (or pip3 install web3fsnpy --user if you want to install a username only copy)
+
+You can find some example python programs at https://github.com/FUSIONFoundation/web3fsnpy/tree/master/fusion_tests 
+
+designed to demonstrate the API's functionality. These will be added to as new functions are developed.
+
+You will probably need to set the environmental variable FSN_PRIVATE_KEY to be able to use any write transaction methods. 
+
+Get your private key from your Fusion wallet (click on 'View details') and then :-
+
+#> export FSN_PRIVATE_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+To update (frequent updates available) just type :-
+
+#> sudo pip3 install --upgrade web3fsnpy  (or pip3 install --upgarde web3fsnpy --user)
+
+
+
+# Developer setup
+
+For a developer setup, you will likely need to install Ethereum's web3.py according to the instructions at https://github.com/ethereum/web3.py
+
+Then install web3fsnpy :-
+
+#> git clone https://github.com/FUSIONFoundation/web3fsnpy.git
+
+The dependencies are listed in the file requirements.txt
+
+
+Now you need to update the PYTHONPATH environmental variable to your .bashrc file assuming that you are in the folder web3fsnpy :-
+
+#> echo "export PYTHONPATH=$PWD:$PWD/web3fsnpy:$PYTHONPATH">>~/.bashrc
+
+Now restart your shell to activate the PYTHONPATH. You can now try some of the scripts in the folder fusion_tests to make sure that it is working.
+
+It is best practice to operate within a virtualenv when modifying code, so as to isolate dependency issues.
+
+
+# Bugs and enhancements
+
+Please report bugs or suggest enhancements by creating a git pull request to https://github.com/FUSIONFoundation/web3fsnpy
+
+
+
+
+
+
+
+
+
+
+
+
