@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: metro-notation
+Version: 0.1.0
+Summary: Rubik's cube algorithm visualizer
+Home-page: https://github.com/kitao/metro-notation
+Author: Takashi Kitao
+Author-email: takashi.kitao@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Topic :: Multimedia :: Graphics
+Description-Content-Type: text/markdown
+Requires-Dist: pillow
+
+# metro-notation
+
+Visualize the Rubik's cube algorithms in a notation like a train route map that I call **"Metro notation (メトロ記法)"**.
+
+**"Metro notation"** focuses on the direction in which the force of each finger is applied.
+
+## Installation
+
+```sh
+pip3 install metro-notation
+```
+
+or
+
+```sh
+pip install metro-notation
+```
+
+## Usage
+
+```sh
+metro-notation [filename]
+```
+
+## Algorithm notation format
+
+- ``#`` ignores up to the end of the line as a comment
+- ``[name]`` specifies the name of the following algorithm
+- ``RMLUDFBw2xy'`` can be used to describe the algorithm
+- ``whitespace`` splits the algorithm into triggers
+- ``----`` splits the following description into separate columns
+
+```
+#
+# PLL algorithms
+#
+
+[Ua Perm]
+RU'RU RU RU'R'U' R2
+
+[Z Perm]
+M2'U'M2'U' M'U2' M2'U2'M'
+
+----
+
+[Ra Perm]
+y RU'R'U' RURD R'U'RD' R'U2R'
+
+[Gb Perm]
+F'U'F R2UwR'U RU'RUw' R2'
+```
+
+## Output examples
+
+**PLL algorithms**
+
+<img src="images/pll.png">
+
+
