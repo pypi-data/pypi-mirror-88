@@ -1,0 +1,183 @@
+Metadata-Version: 2.1
+Name: cioc4d
+Version: 0.2.0
+Summary: C4D plugin for Conductor Cloud Rendering Platform.
+Home-page: https://github.com/AtomicConductor/conductor-c4d
+Author: conductor
+Author-email: info@conductortech.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python
+Classifier: Topic :: Multimedia :: Graphics :: 3D Rendering
+Requires-Python: ~=2.7
+Description-Content-Type: text/markdown
+Requires-Dist: ciocore (<1.0.0,>=0.2.15)
+
+# Conductor for Cinema 4d
+
+Cinema 4d plugin submitter for the Conductor Cloud rendering service.
+
+## Install
+
+**To install the latest version.**
+```bash
+pip install --upgrade cioc4d --target=$HOME/Conductor
+```
+
+**To install a specific version, for example 0.1.0.**
+```bash
+pip install --upgrade --force-reinstall cioc4d==0.1.0 --target=$HOME/Conductor
+```
+
+## Usage
+
+Go to **Edit->Preferences->Plugins** and add the path to the cioc4d installation directory. 
+
+```
+~/Conductor/cioc4d
+```
+
+restart Cinema 4d.
+
+To set up a render, choose **Conductor->ConductorRender**. 
+
+For detailed help, checkout the [tutorial](https://docs.conductortech.com/tutorials/c4d) and [reference](https://docs.conductortech.com/reference/c4d) documentation.
+
+
+## License
+[MIT](https://choosealicense.com/licenses/mit)
+
+## Changelog
+
+### Version:0.2.0 -- 15 Dec 2020
+
+* Expand user home directory to resolve fixtures location. This is only useful for developers. [953d2e3]
+* Repair fixtures bug that caused incompatibility with core 0.2.15. [25f7913]
+* Remove failed-retries control. It is always zero now, so that customers don't waste money. [30cc1b4]
+
+### Version:0.1.32 -- 08 Oct 2020
+
+* Create long description from readme and changelog. [2d99da9]
+
+### Version:0.1.31 -- 17 Sep 2020
+
+* Fixed bad import. [3eeb75c]
+
+### Version:0.1.30 -- 01 Sep 2020
+
+* Resolve hidable task template when validating. [74a8dc2]
+* Implemented upload_only. No longer emits tasks. [a47aabe]
+
+### Version:0.1.29 -- 28 Aug 2020
+
+* Fix bug on r21 where c4d scene file was not picked up in asset scraping. [71ed037]
+
+### Version:0.1.28 -- 28 Aug 2020
+
+* Destination path is automatically derived from out files. [6f53510]
+* Fix asset scaping issue that affected R21 . [6f53510]
+
+### Version:0.1.27 -- 28 Aug 2020
+
+* Video post validations added, and image validations handle relelative paths. [16ddc92]
+* Task and destination fields are now hidable, and hidden with default values by default. [dc96924]
+* Make strings unicode. [20a007a]
+* Reset UI works, except for instance type. [e72d4d0]
+
+### Version:0.1.26 -- 11 Aug 2020
+
+* Forward slashes in templated docfile path. [ed4b37c]
+
+### Version:0.1.25 -- 11 Aug 2020
+
+* Production release.
+
+### Version:0.1.24 -- 10 Aug 2020
+
+* Sanitize chunk size and make dest path literal (no token expansion). [80fc7f3]
+* Adds validator framework and implemented some validators. [e5b8105]
+
+### Version:0.1.23 -- 08 Aug 2020
+
+* Render with redshift. Also uses core 0.2.2 which has a workaround for missing plugin-host links in packages. [abc0eba]
+* Change last_commit to modified. [7954eca]
+* Quotes around scene name in template. [6375881]
+
+
+### Version:0.1.22 -- 07 Aug 2020
+
+* Fixes broken preemptible checkbox. [600bdc2]
+* Sets useUploadDaemon to False by default. [600bdc2]
+
+### Version:0.1.21 -- 06 Aug 2020
+
+* Remove redundant buttons and use minimal render template. [0613881]
+
+### Version:0.1.20 -- 06 Aug 2020
+
+* Fix a bug where the autosave cleanup parameter didn't disable when it should, i.e. when setting useUploiadDaemon to true. [9b9ba34]
+* Make sure the location field does not contribute to the submission when empty. [bd22b84]
+* Update icon. [494e61c]
+
+### Version:0.1.19 -- 01 Aug 2020
+
+* Adds ability for store to detect when new file loaded. [fd78816]
+* Adds preview to bottom with green color. [4c1af37]
+* Use coredata init, and commit to store continuously. [645753f]
+* Save_to_store and resolve with context
+
+app can now be installed in maxon plugins folder with no pythonpath set. [631fbf2]
+* Remove special characters. [9d50a17]
+* Implement max preview tasks. [1decc41]
+* All parts now resolved in preview including assets. [8ceb769]
+
+
+### Version:0.1.18 -- 22 Jul 2020
+
+* Bump core dependency to 0.1.11. [cb60c26]
+* Added wizard instructions in README. [358b6de]
+
+### Version:0.1.17 -- 21 Jul 2020
+
+* Wip generate submission json. [e62bf83]
+* Replace vars with cio. [cc5d807]
+* All fields populated from store except software pkgs. [5374257]
+* Repair mod path instruction in readme. [a231fd7]
+
+### Version:0.1.16 -- 08 Jul 2020
+
+* Sets default collapsed states. [407bad9]
+* Requires core 0.1.8. [aab99db]
+
+### Version:0.1.15 -- 06 Jul 2020
+
+* Adds location, diagnostics etc. plus tidy. [4aa36fa]
+* Rename check_box to checkbox. [1bf934a]
+* Refactor - use introspection for sections. [948f68c]
+* Compact env section header row. [ff73ad5]
+* Extra env section and tidy up. [c1b03e1]
+* Adds extra assets section. [a1de885]
+* File browser buttons work. [cfc829f]
+* Better click-to-expand mouse detection region. [3a412f0]
+* Adds asset button row. [a99f2cd]
+* Tidy up groups file. [b9e8749]
+* Groups inherit from CollapsibleGroup. [452ecaa]
+* Adds frames info and does calculations. [7b7a51a]
+* Adds frame section and cleaner widget making pattern. [88faef2]
+
+### Version:0.1.14 -- 22 Jun 2020
+
+* Flattened the structure, remove namespaces, and simplified the version file.
+
+### Version:0.1.13 -- 15 Jun 2020
+
+* Better version resolution. [9a9bb76]
+
+### Version:0.1.12 -- 15 Jun 2020
+
+* Made deployable with cmc_release script. [6fcee09]
+
+--
+
