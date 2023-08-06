@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: 3dstrudel
+Version: 0.1
+Summary: Strudel package
+Home-page: UNKNOWN
+Author: Andrei Istrate
+Author-email: andrei@ebi.ac.uk
+License: Apache License
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: scipy
+Requires-Dist: biopython
+Requires-Dist: numpy
+Requires-Dist: mrcfile
+Requires-Dist: mpi4py
+Requires-Dist: psutil
+
+# strudel
+# Requirements
+biopython, mrcfile, mpi4py, psutil, scipy
+
+
