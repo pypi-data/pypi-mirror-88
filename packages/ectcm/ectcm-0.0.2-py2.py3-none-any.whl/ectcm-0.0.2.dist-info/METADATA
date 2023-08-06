@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: ectcm
+Version: 0.0.2
+Summary: download data from https://www.ectcm.com/ and export as csv
+Home-page: https://github.com/pyscaffold/pyscaffold/
+Author: Eric NG
+Author-email: mr5iff@gmail.com
+License: mit
+Project-URL: Documentation, https://pyscaffold.org/
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst; charset=UTF-8
+Requires-Dist: pandas
+Requires-Dist: requests
+Provides-Extra: testing
+Requires-Dist: pytest ; extra == 'testing'
+Requires-Dist: pytest-cov ; extra == 'testing'
+
+=====
+ectcm
+=====
+
+
+Add a short description here!
+
+
+Description
+===========
+
+A longer description of your project goes here...
+
+
+Note
+====
+
+This project has been set up using PyScaffold 3.2.3. For details and usage
+information on PyScaffold see https://pyscaffold.org/.
+
+
