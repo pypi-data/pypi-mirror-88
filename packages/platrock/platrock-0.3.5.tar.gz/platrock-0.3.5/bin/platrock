@@ -1,0 +1,64 @@
+#!/usr/bin/python3
+
+"""
+Copyright (c) 2017, 2018, 2019 Irstea
+Copyright (c) 2017, 2018, 2019 François Kneib
+Copyright (c) 2017, 2018, 2019 Franck Bourrier
+Copyright (c) 2017, 2018, 2019 David Toe
+Copyright (c) 2017, 2018, 2019 Frédéric Berger
+Copyright (c) 2017, 2018, 2019 Stéphane Lambert
+
+This file is part of PlatRock.
+
+PlatRock is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 3 of the License.
+
+PlatRock is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Foobar. If not, see <http://www.gnu.org/licenses/>.
+"""
+
+
+import sys,os,logging,argparse
+
+from IPython.terminal.embed import InteractiveShellEmbed
+shell = InteractiveShellEmbed()
+shell.enable_matplotlib()
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-ll", "--log-level", dest="log_level", help="Log level", choices=['info', 'warning', 'error'],default='warning')
+parser.add_argument("input_script", nargs='?', help="The script to launch.", default=None)
+args = parser.parse_args()
+
+bin_file=os.path.realpath(__file__)
+
+import platrock
+if platrock.SICONOS_FOUND: TwoDShape=platrock.TwoDShape
+import platrock.Common.Debug as Debug
+import platrock.TwoD as TwoD
+import platrock.ThreeD as ThreeD
+
+if(args.log_level=='info'):
+	Debug.init(Debug.INFO)
+elif(args.log_level=='warning'):
+	Debug.init(Debug.WARNING)
+elif(args.log_level=='error'):
+	Debug.init(Debug.ERROR)
+Debug.add_logger()
+
+print("Lauching PlatRock",platrock.version)
+if(args.input_script==None):
+	print("No script given.")
+elif os.path.exists(args.input_script):
+	path = os.path.abspath(args.input_script)
+	exec(open(path).read())
+else:
+	print("Cannot find " + args.input_script)
+	os._exit(1)
+shell()
