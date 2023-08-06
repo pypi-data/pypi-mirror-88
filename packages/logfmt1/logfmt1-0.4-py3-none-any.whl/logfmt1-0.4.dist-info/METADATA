@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: logfmt1
+Version: 0.4
+Summary: handle *.log.fmt specifiers and regex conversion
+Home-page: https://fossil.include-once.org/modseccfg/wiki/logfmt1
+License: Apache-2.0
+Keywords: io
+Platform: UNKNOWN
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >= 3.6
+Description-Content-Type: text/x-rst
+
+**logfmt1** handles ``*.log.fmt`` files to transform LogFormat /
+placeholder strings to regular expressions (named capture groups).
+Currently just comes with rules for Apache definitions. It bundles a
+``logex`` and ``update-logfmt`` to create/rewrite ``*.log.fmt`` files
+globally.
+
+::
+
+   {
+      "class": "apache combined",
+      "record": "%h %l %u %t \"%r\" %>s %b",
+   }
+
+It’s basically meant for universal log parsing, whilst reducing manual
+configuration or the restrain on basic log variants. It originated in
+`modseccfg <https://fossil.include-once.org/modseccfg/>`__. This Python
+package is mostly a stub. You should preferrably install the `system
+package <https://apt.include-once.org/>`__:
+
+::
+
+   apt install python3-logfmt1
+
+This will yield the proper ``/usr/share/logfmt/`` structure and the
+run-parts wrapper ``update-logfmt``. The grok placeholders are
+supported, but remain untested.
+
+logfmt1
+~~~~~~~
+
+To craft a regex:
+
+::
+
+   import logfmt1, json
+   fmt = json.load(open("/.../access.log.fmt", "r"))
+   rx = logfmt1.regex(fmt)
+   rx = logfmt1.rx2re(rx)   # turn into Python regex
+
+Or with plain old guesswork / presuming a standard log format:
+
+::
+
+   rx = logfmt1.regex({"class": "apache combined"})
+
+Though that’s of course not the intended use case, and hinges on
+predefined formats in /usr/share/logfmt/.
+
+logex
+~~~~~
+
+Very crudementary extractor for log files:
+
+::
+
+   logex .../access.log --tab @host @date +id
+
+Which of course handles the ``.fmt`` implicitly.
+
+update-logfmt
+~~~~~~~~~~~~~
+
+The Python package does bundle a run-parts wrapper, but just the apache
+collector, and a local Python copy of the format database. It should
+discover all ``*.log`` files nonetheless and pair them with ``.fmt``
+declarations.
+
+

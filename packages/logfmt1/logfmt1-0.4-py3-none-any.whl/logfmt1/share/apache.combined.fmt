@@ -1,0 +1,7 @@
+{
+    "class": "apache combined",
+    "record": "%h %l %u %t \"%r\" %>s %b",
+    "glob": [
+        "*.access.log"
+    ]
+}

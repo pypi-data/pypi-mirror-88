@@ -1,0 +1,180 @@
+{
+    "class": "strftime",
+    "placeholder": "%\\w",
+    "rewrite": {
+        "%[EO_^0#\\-]+(\\w)": "%$1"
+    },
+    "fields": {
+        "%a": {
+            "id": "tm_wday",
+            "rx": "\\w+"
+        },
+        "%A": {
+            "id": "tm_wday",
+            "rx": "\\w+"
+        },
+        "%b": {
+            "id": "tm_mon",
+            "rx": "\\w+"
+        },
+        "%B": {
+            "id": "tm_mon",
+            "rx": "\\w+"
+        },
+        "%c": {
+            "id": "tm_dt",
+            "rx": "[-:/.\\w\\d]+"
+        },
+        "%C": {
+            "id": "tm_cent",
+            "rx": "\\d\\d"
+        },
+        "%d": {
+            "id": "tm_mday",
+            "rx": "\\d\\d"
+        },
+        "%D": {
+            "id": "tm_mdy",
+            "rx": "\\d+/\\d+/\\d+"
+        },
+        "%e": {
+            "id": "tm_mday",
+            "rx": "[\\d\\s]\\d"
+        },
+        "%F": {
+            "id": "tm_date",
+            "rx": "\\d\\d\\d\\d-\\d\\d-\\d\\d"
+        },
+        "%G": {
+            "id": "tm_wyear",
+            "rx": "\\d\\d\\d\\d"
+        },
+        "%g": {
+            "id": "tm_wyearnc",
+            "rx": "\\d\\d"
+        },
+        "%h": {
+            "id": "tm_mon",
+            "rx": "\\w+"
+        },
+        "%H": {
+            "id": "tm_hour",
+            "rx": "\\d\\d"
+        },
+        "%I": {
+            "id": "tm_hour",
+            "rx": "\\d\\d"
+        },
+        "%j": {
+            "id": "tm_yday",
+            "rx": "\\d\\d\\d"
+        },
+        "%k": {
+            "id": "tm_hour",
+            "rx": "\\d\\d"
+        },
+        "%l": {
+            "id": "tm_hour",
+            "rx": "[\\d\\s]\\d"
+        },
+        "%m": {
+            "id": "tm_mon",
+            "rx": "\\d\\d"
+        },
+        "%M": {
+            "id": "tm_min",
+            "rx": "\\d\\d"
+        },
+        "%n": {
+            "id": "newline",
+            "rx": "\\n"
+        },
+        "%p": {
+            "id": "tm_ampm",
+            "rx": "AM|PM"
+        },
+        "%P": {
+            "id": "tm_ampm",
+            "rx": "am|pm"
+        },
+        "%r": {
+            "id": "tm_time",
+            "rx": "\\d\\d:\\d\\d:\\d\\d [AMPM]{2}"
+        },
+        "%R": {
+            "id": "tm_time",
+            "rx": "\\d\\d:\\d\\d"
+        },
+        "%s": {
+            "id": "tm_epoch",
+            "rx": "\\d+"
+        },
+        "%S": {
+            "id": "tm_sec",
+            "rx": "\\d\\d"
+        },
+        "%t": {
+            "id": "tab",
+            "rx": "\\t"
+        },
+        "%T": {
+            "id": "tm_time",
+            "rx": "\\d\\d:\\d\\d:\\d\\d"
+        },
+        "%u": {
+            "id": "tm_wday",
+            "rx": "[1-7]"
+        },
+        "%U": {
+            "id": "tm_yday",
+            "rx": "[0-5]\\d|5[0123]"
+        },
+        "%V": {
+            "id": "tm_yday",
+            "rx": "\\d\\d"
+        },
+        "%w": {
+            "id": "tm_wday",
+            "rx": "[0-6]"
+        },
+        "%W": {
+            "id": "tm_yday",
+            "rx": "\\d\\d"
+        },
+        "%x": {
+            "id": "tm_ldate",
+            "rx": "[-./\\d]+"
+        },
+        "%X": {
+            "id": "tm_ltime",
+            "rx": "[:.\\d]+"
+        },
+        "%y": {
+            "id": "tm_year",
+            "rx": "\\d\\d"
+        },
+        "%Y": {
+            "id": "tm_year",
+            "rx": "\\d\\d\\d\\d"
+        },
+        "%z": {
+            "id": "tm_tz",
+            "rx": "[-+]\\d\\d\\d\\d"
+        },
+        "%Z": {
+            "id": "tm_tz",
+            "rx": "\\w+"
+        },
+        "%+": {
+            "id": "tm_date",
+            "rx": "[-/:. \\w\\d]+"
+        },
+        "%%": {
+            "id": "percent",
+            "rx": "%"
+        }
+    },
+    "expand": {
+        "%(\\w)": "[\\w\\d.]+"
+    }
+}
