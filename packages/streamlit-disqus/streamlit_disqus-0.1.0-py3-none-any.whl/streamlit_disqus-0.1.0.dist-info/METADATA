@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: streamlit-disqus
+Version: 0.1.0
+Summary: A streamlit component to integrate Disqus in your applications.
+Home-page: https://github.com/okld/streamlit-disqus
+Author: okld
+Author-email: 
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: streamlit (>=0.63)
+
+# Streamlit Disqus
+
+[![Open in Streamlit][share_badge]][share_app] [![PyPI version][pypi_badge]][pypi_link]
+
+## Installation
+
+```sh
+pip install streamlit-disqus
+```
+
+## Quick usage
+
+```python
+from streamlit_disqus import st_disqus
+
+st_disqus("streamlit-disqus-demo")
+```
+
+## Demo
+
+Interested to see Streamlit Disqus in action? You can try it out now in [streamlit sharing][share_app]!
+
+Demo's **source code** and the component's **documentation** are also available there.
+
+[![Demo preview][share_img]][share_app]
+
+
+[share_badge]: https://static.streamlit.io/badges/streamlit_badge_black_white.svg
+[share_app]: https://share.streamlit.io/okld/streamlit-disqus-demo/main/app.py
+[share_src]: https://github.com/okld/streamlit-disqus-demo/blob/main/app.py
+[share_img]: https://raw.githubusercontent.com/okld/streamlit-disqus-demo/main/app.png
+
+[pypi_badge]: https://badgen.net/pypi/v/streamlit-disqus?color=black&icon=pypi&label=PyPi
+[pypi_link]: https://pypi.org/project/streamlit-disqus
+
+
