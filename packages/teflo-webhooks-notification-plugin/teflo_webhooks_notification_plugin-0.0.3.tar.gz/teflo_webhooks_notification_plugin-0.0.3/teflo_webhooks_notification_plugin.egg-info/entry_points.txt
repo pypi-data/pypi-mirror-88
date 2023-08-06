@@ -1,0 +1,5 @@
+[notification_plugins]
+gchat-notifier = teflo_webhooks_notification_plugin:GchatNotificationPlugin
+slack-notifier = teflo_webhooks_notification_plugin:SlackNotificationPlugin
+webhook-notifier = teflo_webhooks_notification_plugin:WebhooksNotificationPlugin
+
