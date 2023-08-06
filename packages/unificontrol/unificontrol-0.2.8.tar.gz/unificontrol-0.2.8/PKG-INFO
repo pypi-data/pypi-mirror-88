@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: unificontrol
+Version: 0.2.8
+Summary: Secure access to Ubiquiti Unifi network controllers
+Home-page: https://github.com/nickovs/unificontrol
+Author: Nicko van Someren
+Author-email: nicko@nicko.org
+License: UNKNOWN
+Description: A high-level Python interface to the Unifi controller software
+        ==============================================================
+        
+        unificontrol is a rich and full-featured Python interface to the
+        Ubiquiti Unifi software defined network controller. Goals of this package
+        include:
+        
+        - A clean interface that supports introspection and self-documentation.
+        - A complete implementation of the Unifi controller API. Currently it supports over 100 API calls to the Unifi controller.
+        - Proper handling of SSL connections to allow secure access to the controller even when the controller uses a [self-signed certificate](ssl_self_signed.md).
+        - A concise, readable internal representation of the Unifi API, so that new API calls can easily be added as new features are added to the controller.
+        - Python 3 only, since it's the way of the future.
+        
+        Installation
+        ------------
+        
+        To install the most recent release use:
+        ::
+        
+          pip install unificontrol
+        
+        To install the latest version of the code from GitHub use:
+        
+        ::
+        
+          pip install -e git+https://github.com/nickovs/unificontrol.git@master#egg=unificontrol
+        
+        Documentation
+        -------------
+        
+        The `unificontrol` code aims to be self-documenting as far as possible so if you are using it in an interactive environment the built in Python `help()` function will often tell you what you need.
+        
+        There is also documentation that can be built using Sphynx in the `docs` directory and a built version of these docs is `hosted on ReadTheDocs <https://unificontrol.readthedocs.io/en/latest/>`_.
+        
+        
+Keywords: unifi,wifi,network,mamangement
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.4
+Description-Content-Type: text/x-rst
