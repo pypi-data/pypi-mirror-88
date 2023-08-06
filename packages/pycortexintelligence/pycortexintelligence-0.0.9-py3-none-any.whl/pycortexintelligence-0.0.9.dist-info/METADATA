@@ -1,0 +1,116 @@
+Metadata-Version: 2.1
+Name: pycortexintelligence
+Version: 0.0.9
+Summary: Cortex Intelligence Platform Python SDK
+Home-page: https://github.com/endersonmenezes/pycortexintelligence
+Author: Enderson Menezes
+Author-email: endersonster@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests (>=2.24.0)
+Requires-Dist: click (>=7.1.2)
+
+# Py Cortex Intelligence 
+
+## Release Notes
+Need to consult the history of our project? [Click Here](CHANGELOG.md)
+
+## How to build locale
+```shell
+pip install wheel
+python setup.py bdist_wheel
+```
+
+## How to update on PIP
+```
+python -m twine upload  dist/*
+```
+
+## Cases of Use
+
+### If you need upload a file to Cortex Application
+```python
+from pycortexintelligence import functions as cortexfunctions
+
+# DataFormat are Optionally defined
+dafault_data_format = {
+    "charset": "UTF-8",
+    "quote": "\"",
+    "escape": "\/\/",
+    "delimiter": ",",
+    "fileType": "CSV"
+}
+
+# Upload to Cortex
+cortexfunctions.upload_to_cortex(
+    cubo_id='',
+    file_path='',
+    plataform_url='CLIENT.cortex-intelligence.com',
+    username='',
+    password='',
+    data_format=dafault_data_format
+)
+```
+
+### If you need download file from Cortex Application
+```python
+from pycortexintelligence import functions as cortexfunctions
+
+# DataFormat are Optionally defined
+dafault_data_format = {
+    "charset": "UTF-8",
+    "quote": "\"",
+    "escape": "\/\/",
+    "delimiter": ",",
+}
+
+# Select the headers from file
+columns = ['Name of Column A', 'Name of Column B']
+
+# OPTIONAL Filters
+filters = [
+    ['Name of Column A', 'Value'],
+    ['Name of Column B', 'dd/mm/YYYY'],
+    ['Name of Column B', 'dd/mm/YYYY-dd/mm/YYYY'],
+]
+
+# Upload to Cortex
+cortexfunctions.download_from_cortex(
+    cubo_id='',
+    file_path='',
+    plataform_url='CLIENT.cortex-intelligence.com',
+    username='',
+    password='',
+    data_format=dafault_data_format,
+    columns=columns,
+    filters=filters,
+)
+```
+
+## CLI Usage
+```bash
+cortex.py --help
+```
+
+### Examples
+
+```bash
+cortex.py startproject --name "Project Name" --sname project_name
+```
+
+## How to Contribute
+
+### Developers
+
+Developers can access our development manual by [clicking here](CONTRIBUTING.md).
+
+### Community
+
+You can create a new Issue [clicking here](issues/new/choose), and we will start a description about the reported Bug or Feature. 
+
+
