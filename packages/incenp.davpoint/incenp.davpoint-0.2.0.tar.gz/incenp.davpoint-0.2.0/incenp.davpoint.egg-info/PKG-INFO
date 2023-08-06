@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: incenp.davpoint
+Version: 0.2.0
+Summary: Davfs2 wrapper to mount SharePoint filesystems
+Home-page: https://git.incenp.org/damien/davpoint
+Author: Damien Goutte-Gattat
+Author-email: dgouttegattat@incenp.org
+License: UNKNOWN
+Description: Davpoint - Davfs2 wrapper to mount SharePoint filesystems
+        =========================================================
+        
+        Davpoint is a wrapper for the
+        [Davfs2](http://savannah.nongnu.org/projects/davfs2) tool. It allows to
+        mount remote SharePoint filesystems that require cookie-based
+        authentication.
+        
+        
+        Rationale
+        ---------
+        Although SharePoint services are available through the standard WebDAV
+        protocol, they may require the client to provide an authentication token
+        in the HTTP header in addition to the standard username and password.
+        The WebDAV client for Linux ``davfs2`` does not directly support this
+        mode of authentication, but it does allow to set any arbitrary cookie in
+        its configuration file and its developer [has
+        suggested](http://savannah.nongnu.org/support/?109122#comment1) to
+        “create some start script to automate” the retrieval of the
+        authentication token.
+        
+        Davpoint provides precisely such a script. Given a little extra
+        configuration (see below), it will automatically authenticate a user to
+        a SharePoint service, get the authentication token, then call ``davfs2``
+        (through the standard ``mount (8)`` command) with the required
+        configuration options to mount the SharePoint filesystem.
+        
+        
+        Configuration & Usage
+        ---------------------
+        Davpoint requires the WebDAV resource and its intended mount point to be
+        listed in the ``/etc/fstab`` file. The username and password must also
+        appear in Davfs2’s “secrets” file (either ``/etc/davfs2/secrets`` or
+        ``~/.davfs2/secrets``), according to Davfs2’s documentation.
+        
+        In addition, Davpoint needs a dedicated configuration file, which it
+        expects in ``~/.davfs2/sharepoint.conf`` by default. This file uses the
+        .ini format, where each section represents a SharePoint resource.
+        
+        Each section must contain at least two options: ``endpoint``, which is
+        the WebDAV resource to mount, and ``mountpoint``, which is the location
+        on the local filesystem where the resource should be mounted. The values
+        must match what is configured in the ``/etc/fstab`` file. All other
+        options will be passed verbatim to Davfs2.
+        
+        Importantly, the main Davfs2 configuration file
+        (``/etc/davfs2/davfs2.conf`` or ``~/.davfs2/davfs2.conf``) is *ignored*
+        when Davfs2 is called by Davpoint. Any Davfs2 options needed for a given
+        SharePoint resource *must* be specified in the ``sharepoint.conf`` file
+        instead of the ``davfs2.conf`` file.
+        
+        Here is an example of a ``~/.davfs2/sharepoint.conf`` file:
+        
+        ```
+        [example]
+        endpoint: https://example.com/personal/alice_example_com/Documents
+        mountpoint: /home/alice/example
+        use_locks: 0
+        ```
+        
+        With such a configuration, the resource may be mounted by the following
+        command:
+        
+        ```
+        $ davpoint example
+        ```
+        
+        Unmounting the resource is done as usual with the standard ``umount
+        (8)`` command.
+        
+        
+        Copying
+        -------
+        Davpoint is distributed under the terms of the GNU General Public
+        License, version 3 or higher. The full license is included in the
+        [COPYING file](COPYING) of the source distribution.
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/markdown
