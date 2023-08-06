@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: octomy-batch
+Version: 0.0.10
+Summary: OctoMY scheduler
+Home-page: https://gitlab.com/octomy/batch
+Author: Lennart Rolland
+Author-email: lennart@octomy.org
+Maintainer: Lennart Rolland
+Maintainer-email: lennart@octomy.org
+License: GPL-3 LGPL-3 MIT
+Description: # About batch
+        
+        <img src="https://gitlab.com/octomy/batch/-/raw/master/design/batch-logo-1024.png" width="20%"/>
+        
+        Batch is a batch tasks queue and executor
+        
+        
+        Batch is [available on gitlab](https://gitlab.com/octomy/batch).
+        Batch is [available in PyPI](https://pypi.org/project/batch/).
+        
+        ```shell
+        # Install batch into your current Python environment
+        pip install octomy-batch
+        
+        ```
+Keywords: octomy batch task queue
+Platform: Linux
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Other Audience
+Classifier: Topic :: Utilities
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Topic :: Other/Nonlisted Topic
+Requires-Python: ~=3.7.4
+Description-Content-Type: text/markdown
