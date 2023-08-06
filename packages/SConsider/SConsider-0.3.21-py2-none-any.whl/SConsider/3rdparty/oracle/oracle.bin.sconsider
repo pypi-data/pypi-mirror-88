@@ -1,0 +1,148 @@
+# vim: set et ai ts=4 sw=4:
+# -------------------------------------------------------------------------
+# Copyright (c) 2011, Peter Sommerlad and IFS Institute for Software
+# at HSR Rapperswil, Switzerland
+# All rights reserved.
+#
+# This library/application is free software; you can redistribute and/or
+# modify it under the terms of the license that is included with this
+# library/application in the file license.txt.
+# -------------------------------------------------------------------------
+
+import pkg_resources
+
+pkg_resources.require(["SConsider"])
+Import('*')
+
+_sconsider_dist = pkg_resources.get_distribution("SConsider").parsed_version
+if _sconsider_dist < pkg_resources.parse_version("0.3.10"):
+    from SConsider.PackageRegistry import createFulltargetname
+else:
+    from SConsider.PackageRegistry import PackageRegistry
+    createFulltargetname = PackageRegistry.createFulltargetname
+
+INCLUDE_TARGET_NAME = 'include'
+TARGET_LIBS_AND_HEADERS = [
+    (INCLUDE_TARGET_NAME, 'include', 'oci.h', 'C'),
+    ('occi', 'occi', 'oci.h', 'C'),
+    ('clntshcore', 'clntshcore', 'oci.h', 'C'),
+    ('clntsh', 'clntsh', 'oci.h', 'C'),
+    ('nnz', 'nnz', 'oci.h', 'C'),
+    ('ociicus', 'ociicus', 'oci.h', 'C'),  # oci library supporting us character sets
+    ('ociei', 'ociei', 'oci.h', 'C'),  # oci library supporting all character sets
+    ('sqlplus', 'sqlplus', 'oci.h', 'C'),
+    ('sqlplusic', 'sqlplusic', 'oci.h', 'C'),
+]
+
+if _sconsider_dist < pkg_resources.parse_version("0.5"):
+    from ThirdParty import determine_3rdparty_bin_node, determine_3rdparty_lib_node, getBinaryDistDir
+
+    from SConsider import cloneBaseEnv, createTargets
+
+    buildSettings = {packagename: {'linkDependencies': [], 'requires': []}}
+    _package_link_dependencies = buildSettings.get(packagename, {}).get('linkDependencies', [])
+    _package_requires = buildSettings.get(packagename, {}).get('requires', [])
+
+    env = cloneBaseEnv()
+
+    for _target_name, _real_libname_or_subdir, _headerfile, _lang in TARGET_LIBS_AND_HEADERS:
+        _lib_targetname = '_'.join(['lib', _target_name])
+        if _target_name == INCLUDE_TARGET_NAME:
+            buildSettings[_target_name] = {
+                'public': {
+                    'includeSubdir': _real_libname_or_subdir,
+                },
+            }
+            _package_link_dependencies.append(createFulltargetname(packagename, _target_name))
+        else:
+            _checked_library = determine_3rdparty_lib_node(env, _real_libname_or_subdir,
+                                                           getBinaryDistDir(packagename))
+            if _checked_library:
+                buildSettings[_lib_targetname] = {
+                    'targetType': 'PrecompiledLibrary',
+                    'sourceFiles': [getBinaryDistDir(packagename).File(_real_libname_or_subdir)],
+                    'appendUnique': {},
+                    'linkDependencies': [
+                        createFulltargetname(packagename, INCLUDE_TARGET_NAME),  # pass public include dirs
+                    ],
+                    'public': {},
+                }
+                # add link dependencies to own targets
+                if _target_name in ['clntsh', 'nnz']:
+                    _core_lib_targetname = '_'.join(['lib', 'clntshcore'])
+                    if buildSettings.get(_core_lib_targetname):
+                        buildSettings[_lib_targetname]['linkDependencies'].append(
+                            createFulltargetname(packagename, _core_lib_targetname))
+                # add default link dependency to package target if needed
+                if _target_name in ['clntsh', 'nnz']:
+                    _package_link_dependencies.append(createFulltargetname(packagename, _lib_targetname))
+                # add default requires if needed
+                if _target_name in ['ociicus']:
+                    _package_requires.append(createFulltargetname(packagename, _lib_targetname))
+
+    _executable_name = 'sqlplus'
+    _checked_executable = determine_3rdparty_bin_node(env, _executable_name, getBinaryDistDir(packagename))
+    if _checked_executable:
+        _bin_targetname = '_'.join(['bin', _executable_name])
+        buildSettings[_bin_targetname] = {
+            'targetType': 'PrecompiledBinary',
+            'sourceFiles': [getBinaryDistDir(packagename).File(_executable_name)],
+        }
+        _script_targetname = '_'.join(['script', _executable_name])
+        buildSettings[_script_targetname] = {
+            'targetType': 'ProgramApp',
+            'requires': [
+                createFulltargetname(packagename, default=True),
+                createFulltargetname(packagename, 'lib_sqlplus'),
+            ],
+            'usedTarget': createFulltargetname(packagename, _bin_targetname),
+            'runConfig': {},
+        }
+        # alias to prefixed targets
+        _bin_target_aliasname = 'sqlplusbin'
+        buildSettings[_bin_target_aliasname] = {
+            'linkDependencies': [
+                createFulltargetname(packagename, _bin_targetname),
+            ],
+        }
+
+    createTargets(packagename, buildSettings)
+
+elif _sconsider_dist >= pkg_resources.parse_version("0.5"):
+    from TargetHelpers import (
+        createPackageProgramScripts,
+        createPackageRunTarget,
+        installPrecompiledBinaries,
+        installPrecompiledLibraries,
+    )
+    from TargetMaker import EnvBuilder
+
+    includeTarget = EnvBuilder(export=[EnvBuilder().include(Dir('include'))]).build().RegisterPackageTarget(
+        packagename=packagename, targetname='include')
+
+    libnames = [('occi', 'lib_occi'), ('clntsh', 'lib_clntsh'), ('clntshcore', 'lib_clntshcore'),
+                ('nnz', 'lib_nnz'), ('ociicus', 'lib_ociicus'), ('ociei', 'lib_ociei'),
+                ('sqlplus', 'lib_sqlplus'), ('sqlplusic', 'lib_sqlplusic')]
+    libs_installed = installPrecompiledLibraries(packagename, libnames)
+    libs = EnvBuilder().depend(libs_installed).build().RegisterPackageTarget(packagename=packagename,
+                                                                             targetname='libs')
+
+    binnames = [('sqlplus', 'bin_sqlplus', {
+        'require': [
+            'oracle.lib_sqlplus', 'oracle.lib_sqlplusic', 'oracle.lib_clntsh', 'oracle.lib_nnz',
+            'oracle.lib_ociicus'
+        ]
+    })]
+    bins_installed = installPrecompiledBinaries(packagename, binnames)
+    bins = EnvBuilder().depend(bins_installed).build().RegisterPackageTarget(packagename=packagename,
+                                                                             targetname='bins')
+
+    scriptnames = [('bin_sqlplus', {}, {'runParams': '-- -h'})]
+    scripts_installed = createPackageProgramScripts(packagename, bins_installed, scriptnames,
+                                                    createPackageRunTarget)
+    scripts = EnvBuilder().depend(scripts_installed).build().RegisterPackageTarget(packagename=packagename,
+                                                                                   targetname='scripts')
+
+    EnvBuilder().depend(includeTarget, libs, bins,
+                        scripts).build().RegisterPackageTarget(packagename=packagename,
+                                                               targetname=packagename)
