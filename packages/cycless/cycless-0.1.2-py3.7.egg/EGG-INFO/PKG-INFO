@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: cycless
+Version: 0.1.2
+Summary: A collection of algorithms for cycles in a graph.
+Home-page: https://github.com/vitroid/cycles/
+Author: Masakazu Matsumoto
+Author-email: vitroid@gmail.com
+License: MIT
+Description: # cycless
+        
+        A collection of algorithms to analyze a graph as a set of cycles.
+        
+        Some codes come from [https://github.com/vitroid/Polyhed](vitroid/Polyhed) and [https://github.com/vitroid/countrings](vitroid/countrings) are integrated and improved.
+        
+        
+        ## References
+        
+        1. M. Matsumoto, A. Baba, and I. Ohmine, Topological building blocks of hydrogen bond network in water, J. Chem. Phys. 127, 134504 (2007). http://doi.org/10.1063/1.2772627
+        
+Keywords: cycles,graph
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
