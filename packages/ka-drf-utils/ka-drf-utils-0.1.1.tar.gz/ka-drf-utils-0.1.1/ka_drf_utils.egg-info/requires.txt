@@ -1,0 +1,9 @@
+gdn-python-common[drf]>=0.8.9
+
+[broker]
+kombu>=5.0
+msgpack==1.0.0
+
+[translation]
+django-parler==2.2
+django-parler-rest==2.1
