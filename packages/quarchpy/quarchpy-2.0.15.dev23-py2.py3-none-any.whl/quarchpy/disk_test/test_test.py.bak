@@ -1,0 +1,1054 @@
+import os
+import sys
+import time
+from abc import ABC
+
+from disk_test import base_test
+from quarchpy.disk_test.base_test import BaseTest
+from quarchpy.disk_test.driveTestCore import get_quarch_modules_qps, DiskStatusCheck, is_tool
+from quarchpy.fio.performanceClass import FioPerformance
+
+
+class PowerVsPerformance(BaseTest, ABC):
+    def __init__(self):
+        super(PowerVsPerformance, self).__init__()
+
+        # Declare custom variables for the tes
+
+        self.cv_linkspeed = self.declare_custom_variable(custom_name="linkspeed", default_value="automatic",
+                                                         description="Value to compare drive's link speed, GB/s")
+        self.cv_lanewidth = self.declare_custom_variable(custom_name="lanewidth", default_value="automatic",
+                                                         description="Value to compare drive's lane width")
+        self.cv_idle_time = self.declare_custom_variable(custom_name="idle_time", default_value=30, numerical_max=100,
+                                                         description="Time allocated to record power whilst drive "
+                                                                     "is idle")
+        self.cv_fio_runtime = self.declare_custom_variable(custom_name="FIO runtime", default_value=10,
+                                                           description="Runtime for each job. '0' value runs until job "
+                                                                       "completes")
+        self.cv_fio_blocksize = self.declare_custom_variable(custom_name="Blocksize Comparison", default_value="4k",
+                                                             description="Blocksize used for queue depth sweep and "
+                                                                         "default fio jobs",
+                                                             accepted_vals=['512', '4k', '8k', '16k', '32k', '64k',
+                                                                            '128k', '256k', '512k'])
+        self.cv_averaging = self.declare_custom_variable(custom_name="averaging", default_value="16k",
+                                                         description="Sampling rate for QPS",
+                                                         accepted_vals=['32k', '16k', '8k', '4k', '2k', '1k', '512'])
+
+        # self.cv_trim_time = self.declare_custom_variable(custom_name="trim_time", default_value=30)
+        # self.cv_rampup_time = self.declare_custom_variable(custom_name="rampup_time", default_value=30)
+
+        # Declare additional variables that may not be visible to the user by default
+        # Should custom variables have a custom unit, like "ms"?  This may be easier than parsing strings
+        self.cv_drivename = self.declare_custom_variable(custom_name="driveName", default_value=None,
+                                                         var_purpose="internal")
+        self.cv_quarchname = self.declare_custom_variable(custom_name="quarchName", default_value=None,
+                                                          var_purpose="internal")
+
+
+        self.cv_ontime = self.declare_custom_variable(custom_name="onTime", default_value=15, var_purpose="internal")
+        self.cv_offtime = self.declare_custom_variable(custom_name="offTime", default_value=10, var_purpose="internal")
+
+        # Using block sizes shown in graphfrom this article
+        # https://medium.com/@duhroach/the-impact-of-blocksize-on-persistent-disk-performance-7e50a85b2647
+        # added additional values from andy's links on PVP spec pdf
+        self.cv_block_sizes = self.declare_custom_variable(custom_name="block_sizes", var_purpose="internal",
+                                                           default_value=["512", "4k", "8k", "16k", "32k", "64k",
+                                                                          "128k", "256k", "512k"])
+        # FIO : Cannot do IO_DEPTH 0
+        self.cv_iodepths = self.declare_custom_variable(custom_name="iodepths", var_purpose="internal",
+                                                        default_value=[1, 32, 64, 96, 128, 160, 192, 224, 256])
+        # default_value=[1, 4, 16, 64, 256, 1024, 4096, "16k"])
+        self.cv_mixed_io = self.declare_custom_variable(custom_name="Mixed_io_percents", var_purpose="internal",
+                                                        default_value=[10, 20, 30, 40, 50, 60, 70, 80, 90])
+
+        self.quarch_stream = None
+        self.performance = FioPerformance()
+
+        # Request QPS start if not already open
+        if not self.request_qps():
+            self.test_errors.append("No running QPS instance found. Is QPS running on client Java PC?")
+
+    def check_prerequisites(self, document_mode=False):
+        # need the standard imports
+        super(PowerVsPerformance, self).check_prerequisites()
+
+        if not is_tool("fio"):
+            self.test_errors.append("Fio Not found on server machine, please install and restart server")
+
+        try:
+            import pandas as pd
+        except ImportError as IE:
+            self.test_errors.append("Test requires the Pandas Python library to be installed")
+
+    def start_test(self, document_mode=False):
+
+        self._set_documentation_mode(document_mode)
+        self.test_id.reset()
+
+        # # Start object
+        self.test_point(self.test_id.gen_next_id(), test_description="Setting up required test resources")
+        self.test_id.up_tier(singular=True)
+
+        self.cv_drivename.custom_value = self.select_drive()
+
+        if not self.cv_drivename.custom_value:
+            self.comms.send_stop_test(reason="No Drive Selected")
+            return
+
+        self.cv_quarchname.custom_value = self.select_quarch_module(use_qps=True)
+
+        if not self.cv_quarchname.custom_value:
+            self.comms.send_stop_test(reason="No Quarch Module Selected")
+            return
+
+        self._start_quarch_stream()
+
+        try:
+
+            self.test_id.down_tier(singular=True, description="Beginning Tests core")
+
+            #############################
+            # PART 1 - power up
+            #############################
+
+            group_name = "Power Up test"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.power_up_test(group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 2 - Idle Power
+            # #############################
+
+            group_name = "Testing Idle Power"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Start of idle time wait", function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "start"})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Waiting for specified idle time", function=self._wait_for_idle_period,
+                            stop_timeout=True,
+                            function_args={"parent_id": self.test_id.return_parent_id()})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Adding end of cycle annotation", function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "end"})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Getting idle power results from qps",
+                            function=self._results_idle_power,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "group_name": group_name})
+
+            self.test_id.down_tier()
+
+            ###########################
+            # PART 3 - Sleep Power
+            ###########################
+
+            # TODO : How to put drive into sleep mode?
+
+            group_name = "Testing Sleep Power"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Start of sleep time wait", function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "start"})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Waiting for specified sleep time",
+                            function=self._wait_for_idle_period, stop_timeout=True,
+                            function_args={"parent_id": self.test_id.return_parent_id()})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Adding end of sleep time annotation",
+                            function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "end"})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Getting sleep power results from qps",
+                            function=self._results_idle_power,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "group_name": group_name})
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 4 - Latency Test - 4k Random Read, QD 1
+            #############################
+
+            group_name = "Latency Test: {0} Random read, Queue depth 1".format(str(self.cv_fio_blocksize.custom_value))
+
+            self.test_id.up_tier(description=group_name)
+
+            self.Latency_test(sequential=False, is_read=True, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 5 - Latency Test - 4k Random Write, QD 1
+            #############################
+
+            group_name = "Latency Test: {0} Random write, Queue depth 1".format(str(self.cv_fio_blocksize.custom_value))
+
+            self.test_id.up_tier(description=group_name)
+
+            self.Latency_test(sequential=False, is_read=False, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 6 - QD 1 - Random read - Block size sweep
+            #############################
+
+            group_name = "Block size sweep Test: Random Read, Queue depth 1"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.Block_size_sweep_test(sequential=False, is_read=True, group_name=group_name)
+
+            self.test_id.down_tier()
+            #############################
+            # PART 7 - QD 1 - Random write - Block size sweep
+            #############################
+
+            group_name = "Block size sweep Test: Random write, Queue depth 1"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.Block_size_sweep_test(sequential=False, is_read=False, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 8 - 4k Sequential read, QD 1
+            #############################
+
+            group_name = "Latency Test: {0} Sequential read, Queue depth 1".format(
+                str(self.cv_fio_blocksize.custom_value))
+
+            self.test_id.up_tier(description=group_name)
+
+            self.Latency_test(sequential=True, is_read=True, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 9 - 4k Sequential Write, QD 1
+            #############################
+
+            group_name = "Latency Test: {0} Sequential write, Queue depth 1".format(
+                str(self.cv_fio_blocksize.custom_value))
+
+            self.test_id.up_tier(description=group_name)
+
+            self.Latency_test(sequential=True, is_read=False, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 10 - QD 1 - Sequential read - Block size sweep
+            #############################
+
+            group_name = "Block size sweep Test: Sequential read, Queue depth 1"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.Block_size_sweep_test(sequential=True, is_read=True, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 11 - QD 1 - Sequential write - Block size sweep
+            #############################
+
+            group_name = "Block size sweep Test: Sequential write, Queue depth 1"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.Block_size_sweep_test(sequential=True, is_read=False, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 12 - Peak Performance - Random Read - Block size 4k, sweep QD's
+            #############################
+
+            # TODO : Keep a record of 'best' performing queue depth
+
+            group_name = "Sweep Queue Depths Test: 4k Random read"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.optimised_performance_test(sequential=False, is_read=True, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 13 - Peak performance - sequential read - Block size 4k, sweep QD's
+            #############################
+
+            # TODO : Keep a record of 'best' performing queue depth
+
+            group_name = "Sweep Queue Depths Test: 4k Sequential read"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.optimised_performance_test(sequential=True, is_read=True, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 14 - Optimised Performance - Random write - Block size 4k, sweep QD's
+            #############################
+
+            # TODO : Keep a record of 'best' performing queue depth
+
+            group_name = "Sweep Queue Depths Test: 4k Random write"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.optimised_performance_test(sequential=False, is_read=False, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 15 - Random write performance -  Block size 4k, sweep QD's
+            #############################
+
+            # TODO : Keep a record of 'best' performing queue depth
+
+            group_name = "Random write Performance"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.write_performance_test(sequential=False, is_read=False, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 16 - Sequential write performance -  Block size 4k, sweep QD's
+            #############################
+
+            # TODO : Keep a record of 'best' performing queue depth
+
+            group_name = "Sequential write Performance"
+
+            self.test_id.up_tier(description=group_name)
+
+            self.write_performance_test(sequential=True, is_read=False, group_name=group_name)
+
+            self.test_id.down_tier()
+
+            #############################
+            # PART 17 - Mixed IO performance - Sweep read / write
+            #############################
+
+            # TODO : Keep a record of 'best' performing queue depth
+
+            group_name = "Mixed IO Performance, QD {0}, BS {1}".format("32", self.cv_fio_blocksize.custom_value)
+
+            self.test_id.up_tier(description=group_name)
+
+            self.mixed_io_performance_test(group_name)
+
+            self.test_id.down_tier()
+
+        except Exception as e:
+            print(e)
+
+        self._end_quarch_stream()
+
+    def power_up_test(self, group_name):
+        self.test_point(self.test_id.gen_next_id(), function_description="Waiting for drive status change",
+                        function=self._add_qps_annotation,
+                        function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "start"})
+        self.test_point(self.test_id.gen_next_id(),
+                        function=self._add_quarch_command,
+                        function_args={"command": "run:power down",
+                                       "quarch_device": self.cv_quarchname.custom_value})
+        enum_time = self.test_point(self.test_id.gen_next_id(),
+                                    function_description="Waiting for drive status change",
+                                    function=self.test_wait_for_enumeration, has_return=True,
+                                    function_args={'enumeration': True, "drive": self.cv_drivename.custom_value,
+                                                   "ontime": self.cv_ontime.custom_value,
+                                                   "offtime": self.cv_offtime.custom_value})
+
+        self.check_point(self.test_id.gen_next_id(),
+                         description="Checking device not enumerated when powered down",
+                         function=DiskStatusCheck,
+                         function_args={'driveId': self.cv_drivename.custom_value, 'expectedState': 0})
+        self.test_point(self.test_id.gen_next_id(),
+                        function=self._add_quarch_command,
+                        function_args={"command": "run:power up",
+                                       "quarch_device": self.cv_quarchname.custom_value})
+        enum_time = self.test_point(self.test_id.gen_next_id(), function=self.test_wait_for_enumeration,
+                                    has_return=True, function_description="Waiting for drive status change",
+                                    function_args={'enumeration': True, "drive": self.cv_drivename.custom_value,
+                                                   "ontime": self.cv_ontime.custom_value,
+                                                   "offtime": self.cv_offtime.custom_value})
+
+        self.check_point(self.test_id.gen_next_id(), description="Checking device enumerated after power up",
+                         function=DiskStatusCheck, has_return=True,
+                         function_args={'driveId': self.cv_drivename.custom_value, 'expectedState': 1})
+        self.check_point(self.test_id.gen_next_id(), description="Checking device's reported link speed",
+                         function=self.test_check_link_speed,
+                         function_args={"drive": self.cv_drivename.custom_value,
+                                        "quarch_module": self.cv_quarchname.custom_value,
+                                        "link_speed": self.cv_linkspeed.custom_value})
+        self.check_point(self.test_id.gen_next_id(), description="Checking device's reported lane width",
+                         function=self.test_check_lane_width,
+                         function_args={"drive": self.cv_drivename.custom_value,
+                                        "quarch_module": self.cv_quarchname.custom_value,
+                                        "lane_width": self.cv_lanewidth.custom_value})
+        self.test_point(self.test_id.gen_next_id(), function_description="Adding end of cycle annotation",
+                        function=self._add_qps_annotation,
+                        function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "end"})
+        self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                        function=self._results_power_up,
+                        function_args={"parent_id": self.test_id.return_parent_id(), "group_name": group_name,
+                                       "enum_time": enum_time})
+
+    def mixed_io_performance_test(self, group_name):
+        # Should prep drive be on EVERY test?
+        self.test_point(self.test_id.gen_next_id(), function_description="Preconditioning drive",
+                        function=self._prepare_drive,
+                        stop_timeout=True, function_args={"param": "None"})
+        for write_percent in self.cv_mixed_io.default_value:
+            self.test_id.up_tier("Write percent : " + str(write_percent))
+
+            # TODO : replace Queue depth with best performing queue depth
+            workload_args = {"read_percentage": write_percent, "sequential": True,
+                             "blocksize": self.cv_fio_blocksize.custom_value, "iodepth": 32,
+                             "workload_file_size": "100%", "runtime": int(self.cv_fio_runtime.custom_value),
+                             "run_directory": self.cv_drivename.custom_value.identifier_str}
+
+            output = {"summary_data": ['write_iops', 'latency_percentiles_write']}
+
+            retval = self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                                     function=self.performance.start_workload, has_return=True,
+                                     stop_timeout=True,
+                                     function_args={"workload_args_dict": workload_args, "output_data": output})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Start of power up cycle", function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "start",
+                                           "result_dict": retval})
+
+            self.test_point(self.test_id.gen_next_id(), function_description="Adding end of cycle annotation",
+                            function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "end",
+                                           "result_dict": retval})
+
+            self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                            function=self._results_mixed_IO_performance,
+                            function_args={"results_dict": retval,
+                                           "group_name": group_name + "_R{0}_W{1}".format(
+                                               str(100 - int(write_percent)), str(write_percent)),
+                                           "parent_id": self.test_id.return_parent_id()})
+
+            self.test_id.down_tier()
+
+    def write_performance_test(self, sequential=True, is_read=True, group_name=None):
+        read_percent = 100
+        iops_type = "read_iops"
+        latency_type = "latency_percentiles_read"
+        if not is_read:
+            read_percent = 0
+            iops_type = "write_iops"
+            latency_type = "latency_percentiles_write"
+
+        sequential_str = "seq" if sequential else "rand"
+
+        # Should prep drive be on EVERY test?
+        self.test_point(self.test_id.gen_next_id(), function_description="Preconditioning drive, 200% random writes",
+                        function=self._prepare_drive_random_write_200,
+                        stop_timeout=True, function_args={"param": "None"})
+        for QD in self.cv_iodepths.default_value:
+            self.test_id.up_tier("Queue depth : " + str(QD))
+
+            workload_args = {"read_percentage": read_percent, "sequential": sequential,
+                             "blocksize": self.cv_fio_blocksize.custom_value, "iodepth": QD,
+                             "workload_file_size": "300%", "runtime": int(self.cv_fio_runtime.custom_value),
+                             "run_directory": self.cv_drivename.custom_value.drive_path}
+
+            output = {"summary_data": [iops_type, latency_type]}
+
+            retval = self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                                     function=self.performance.start_workload, has_return=True,
+                                     stop_timeout=True,
+                                     function_args={"workload_args_dict": workload_args, "output_data": output})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Start of power up cycle", function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "start",
+                                           "result_dict": retval})
+
+            self.test_point(self.test_id.gen_next_id(), function_description="Adding end of cycle annotation",
+                            function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "end",
+                                           "result_dict": retval})
+
+            self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                            function=self._results_peak_performance,
+                            function_args={"results_dict": retval,
+                                           "group_name": "{0}_QD_{1}".format(group_name, QD),
+                                           "parent_id": self.test_id.return_parent_id()})
+
+            self.test_id.down_tier()
+
+    def optimised_performance_test(self, sequential=True, is_read=True, group_name=None):
+        read_percent = 100
+        iops_type = "read_iops"
+        latency_type = "latency_percentiles_read"
+        if not is_read:
+            read_percent = 0
+            iops_type = "write_iops"
+            latency_type = "latency_percentiles_write"
+
+        # Should prep drive be on EVERY test?
+        self.test_point(self.test_id.gen_next_id(), function_description="Prepare drive", function=self._prepare_drive,
+                        stop_timeout=True, function_args={"param": "None"})
+        for QD in self.cv_iodepths.default_value:
+            self.test_id.up_tier("Queue depth : " + str(QD))
+
+            workload_args = {"read_percentage": read_percent, "sequential": sequential,
+                             "blocksize": self.cv_fio_blocksize.custom_value, "iodepth": QD,
+                             "workload_file_size": "300%", "runtime": int(self.cv_fio_runtime.custom_value),
+                             "run_directory": self.cv_drivename.custom_value.drive_path}
+
+            output = {"summary_data": [iops_type, latency_type]}
+
+            retval = self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                                     function=self.performance.start_workload, has_return=True, stop_timeout=True,
+                                     function_args={"workload_args_dict": workload_args, "output_data": output})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Start of power up cycle", function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "start",
+                                           "result_dict": retval})
+
+            self.test_point(self.test_id.gen_next_id(), function_description="Adding end of cycle annotation",
+                            function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "end",
+                                           "result_dict": retval})
+
+            self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                            function=self._results_peak_performance,
+                            function_args={"results_dict": retval,
+                                           "group_name": "{0}_QD_{1}".format(group_name, QD),
+                                           "parent_id": self.test_id.return_parent_id()})
+
+            self.test_id.down_tier()
+
+    def Block_size_sweep_test(self, sequential=True, is_read=True, group_name=None):
+        read_percent = 100
+        iops_type = "read_iops"
+        latency_type = "latency_percentiles_read"
+        if not is_read:
+            read_percent = 0
+            iops_type = "write_iops"
+            latency_type = "latency_percentiles_write"
+
+        # Should prep drive be on EVERY test?
+        self.test_point(self.test_id.gen_next_id(), function_description="Prepare drive", function=self._prepare_drive,
+                        stop_timeout=True,
+                        function_args={"param": "None"})
+
+        for bs in self.cv_block_sizes.default_value:
+            self.test_id.up_tier("Block size : " + str(bs))
+
+            workload_args = {"read_percentage": read_percent, "sequential": sequential, "blocksize": bs, "iodepth": 1,
+                             "runtime": int(self.cv_fio_runtime.custom_value),
+                             "workload_file_size": "100%",
+                             "run_directory": self.cv_drivename.custom_value.drive_path}
+
+            output = {"summary_data": [iops_type, latency_type]}
+
+            retval = self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                                     function=self.performance.start_workload, has_return=True, stop_timeout=True,
+                                     function_args={"workload_args_dict": workload_args, "output_data": output})
+
+            self.test_point(self.test_id.gen_next_id(),
+                            function_description="Start of power up cycle", function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "start",
+                                           "result_dict": retval})
+
+            self.test_point(self.test_id.gen_next_id(), function_description="Adding end of cycle annotation",
+                            function=self._add_qps_annotation,
+                            function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "end",
+                                           "result_dict": retval})
+
+            self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                            function=self._results_block_performance,
+                            function_args={"results_dict": retval, "current_block_size": bs,
+                                           "group_name": "{0}_BS_{1}".format(group_name, bs),
+                                           "parent_id": self.test_id.return_parent_id()})
+
+            self.test_id.down_tier()
+
+    def Latency_test(self, sequential=True, is_read=True, group_name=None):
+        read_percent = 100
+        iops_type = "read_iops"
+        latency_type = "latency_percentiles_read"
+        if not is_read:
+            read_percent = 0
+            iops_type = "write_iops"
+            latency_type = "latency_percentiles_write"
+
+        self.test_point(self.test_id.gen_next_id(), function_description="Prepare drive", function=self._prepare_drive,
+                        stop_timeout=True,
+                        function_args={"param": "None"})
+
+        workload_args = dict(read_percentage=read_percent, sequential=sequential,
+                             blocksize=self.cv_fio_blocksize.custom_value, iodepth=1,
+                             runtime=int(self.cv_fio_runtime.custom_value), workload_file_size="100%",
+                             run_directory=self.cv_drivename.custom_value.drive_path)
+
+        output = {"summary_data": [iops_type, latency_type]}
+
+        retval = self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                                 function=self.performance.start_workload, has_return=True, stop_timeout=True,
+                                 function_args={"workload_args_dict": workload_args, "output_data": output})
+
+        self.test_point(self.test_id.gen_next_id(),
+                        function_description="Start of power up cycle", function=self._add_qps_annotation,
+                        function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "start",
+                                       "result_dict": retval})
+
+        self.test_point(self.test_id.gen_next_id(), function_description="Adding end of cycle annotation",
+                        function=self._add_qps_annotation,
+                        function_args={"parent_id": self.test_id.return_parent_id(), "anno_point": "end",
+                                       "result_dict": retval})
+
+        self.test_point(self.test_id.gen_next_id(), function_description="Performance test",
+                        function=self._results_latency,
+                        function_args={"results_dict": retval, "group_name": group_name,
+                                       "parent_id": self.test_id.return_parent_id()})
+
+    def _end_quarch_stream(self):
+        if not self.document_mode:
+            self.quarch_stream.stopStream()
+        else:
+            return
+
+    def _start_quarch_stream(self):
+        # Begin Stream
+        # file_path = os.path.dirname(os.path.realpath(base_test.__file__))
+        file_name = time.strftime("%Y-%m-%d-%H-%M-%S", time.gmtime())
+        if not self.document_mode:
+            self.quarch_stream = self.cv_quarchname.custom_value.startStream("./" + file_name)
+        else:
+            self.quarch_stream = None
+
+    def _wait_for_idle_period(self, parent_id):
+        time.sleep(int(self.cv_idle_time.custom_value))
+
+    def _add_qps_comment(self, state, check_power_on):
+        """
+        Used to add comments to QPS
+        This function's comments show drive state as comments on QPS
+
+        :param state: What state the drive is in
+        :param check_power_on:
+        :return:
+        """
+
+        on_state = "on" if state else "off"
+        off_state = "off" if state else "on"
+
+        if check_power_on:
+            desc = "Checking device powered on\nDevice State : " + str(on_state)
+            y_pos = 70
+        else:
+            desc = "Checking power off,\rDevice State : " + str(off_state)
+            y_pos = 50
+
+        # will need to change to assign colours.
+        self.quarch_stream.addComment(title=desc + "2", yPos=y_pos)
+
+    def _add_qps_annotation(self, parent_id, anno_point, result_dict=None):
+
+        """
+        Adds QPS annotations with specific identifiers
+        These are used to gather stats from QPS at a later point in test.
+
+        :param parent_id: Unique ID of parent - Postfix of the annotation identifier
+        :param anno_point: Which annotation to add (start/end)
+        :return:
+        """
+
+        start_annotation = "START:" + str(parent_id)
+        end_annotation = "END:" + str(parent_id)
+        # will need to change to assign colours.
+        if "start" in str(anno_point):
+            if result_dict:
+                print (result_dict["timestamp_ms"])
+                print(result_dict["runtime"])
+                start_time = float(result_dict["timestamp_ms"]) - float(result_dict["runtime"])
+                self.quarch_stream.addAnnotation(title=start_annotation, annotationTime=start_time)
+            else:
+                self.quarch_stream.addAnnotation(title=start_annotation)
+        if "end" in str(anno_point):
+            if result_dict:
+                self.quarch_stream.addAnnotation(title=end_annotation, annotationTime=result_dict["timestamp_ms"])
+            else:
+                self.quarch_stream.addAnnotation(title=end_annotation)
+
+    def _results_power_up(self, parent_id, enum_time, group_name):
+
+        """
+        Avg power
+        Max Power
+        """
+        # args lists
+        # arg1      | Arg2      | Arg3
+        # -------------------------
+        # current   | 12v       | Min
+        # voltage   | 5v        | Max
+        # power     | ToT       | Mean
+        # Start     |           | RMS
+        # End       |           |
+        # Text      |           |
+
+        qps_results = {"current 12V Max": ""}
+        self._request_stats_qps(parent_id=parent_id, request_dict=qps_results)
+
+        # TODO : Time to idle power?
+
+        results = {"Max Inrush Current": str(qps_results["current 12V Max"]),
+                   "Time to enumerate": str(enum_time)
+                   }
+
+        self.log_results(results, str(parent_id) + " " + str(group_name))
+
+    def _results_idle_power(self, parent_id, group_name):
+        """
+        Avg power
+        Max Power
+        """
+
+        qps_results = {"power Tot Max": "", "power Tot Mean": ""}
+        self._request_stats_qps(parent_id=parent_id, request_dict=qps_results)
+
+        results = {"Average power": str(qps_results["power Tot Mean"]),
+                   "Max Power": str(qps_results["power Tot Max"])
+                   }
+
+        self.log_results(results, str(parent_id) + " " + str(group_name))
+
+    def _results_latency(self, parent_id, results_dict, group_name):
+        """
+        IOPS
+        iops per watt
+        Average power
+        Max Power
+        Latency 3/4/5 nines
+        :return:
+        """
+
+        iops = 0
+        three_nines = 0
+        four_nines = 0
+        five_nines = 0
+        for key, value in results_dict.items():
+            if key in "write_iops":
+                iops = value
+            elif key in "read_iops":
+                iops = value
+            if key in "jobs:read:clat_ns:percentile:99.999000":
+                five_nines = value
+            if key in "jobs:read:clat_ns:percentile:99.990000":
+                four_nines = value
+            if key in "jobs:read:clat_ns:percentile:99.900000":
+                three_nines = value
+            if key in "jobs:write:clat_ns:percentile:99.999000":
+                five_nines = value
+            if key in "jobs:write:clat_ns:percentile:99.990000":
+                four_nines = value
+            if key in "jobs:write:clat_ns:percentile:99.900000":
+                three_nines = value
+
+        qps_results = {"power Tot Max": "", "power Tot Mean": ""}
+        got_qps_stats = self._request_stats_qps(parent_id=parent_id, request_dict=qps_results)
+
+        iops_per_watt = "N/A"
+        average_pwr = "N/A"
+        max_pwr = "N/A"
+
+        if not got_qps_stats:
+            average_pwr = "Issue retrieving QPS Data"
+            iops_per_watt = "Issue retrieving QPS Data"
+            max_pwr = "Issue retrieving QPS Data"
+        else:
+            average_pwr = qps_results["power Tot Mean"]
+            max_pwr = qps_results["power Tot Max"]
+            if int(qps_results["power Tot Mean"]) > 0:
+                iops_per_watt = float(qps_results["power Tot Mean"]) / iops
+            else:
+                iops_per_watt = 0
+
+        results = {"IOPS": iops,
+                   "Average IOPS per Watt": iops_per_watt,
+                   "3 nines Latency": three_nines,
+                   "4 nines Latency": four_nines,
+                   "5 nines Latency": five_nines,
+                   "Average power": average_pwr,
+                   "Max Power": max_pwr
+                   }
+
+        self.log_results(results, str(parent_id) + " " + str(group_name))
+
+    def _results_block_performance(self, parent_id, results_dict, current_block_size, group_name):
+
+        """
+        Display:
+        IOPS vs blcok size
+        MB/S vs blcok size
+        Average power per block
+        Max power per block
+        MB's Per watt
+        """
+
+        read_iops = 0
+        write_iops = 0
+        for key, value in results_dict.items():
+            if key in "write_iops":
+                write_iops = value
+            if key in "read_iops":
+                read_iops = value
+
+        qps_results = {"power Tot Max": "", "power Tot Mean": ""}
+        got_qps_stats = self._request_stats_qps(parent_id=parent_id, request_dict=qps_results)
+
+        #######################################
+        # AREN'T THESE 2 THINGS THE SAME?
+        # MB/S VS BLOCKS SIZE (read iops / 1,000,000) ?
+        # READ IOPS VS BLOCK SIZE
+        """
+        # FIO RESULTS
+        "iops" : 48460.733333, (input/output operations per second)
+        "runtime" : 15000, (Runtime ms)
+        "total_ios" : 726911, (total Input/output operations)
+        """
+        # Should this be just report the iops?
+        read_iops_vs_block = read_iops
+        write_iops_vs_block = write_iops
+        # Should this be report the read mb/s?
+        read_mb_s_vs_block = read_iops / 1000000
+        write_mb_s_vs_block = write_iops / 1000000
+
+        current_block_size = self._return_block_size_as_int(current_block_size)
+
+        if not got_qps_stats:
+            avg_power_per_block = "Issue retrieving QPS Data"
+            max_power_per_block = "Issue retrieving QPS Data"
+            read_mb_s_per_watt = "Issue retrieving QPS Data"
+            write_mb_s__per_watt = "Issue retrieving QPS Data"
+        else:
+            avg_power_per_block = float(qps_results["power Tot Mean"]) / float(current_block_size)
+            max_power_per_block = float(qps_results["power Tot Max"]) / float(current_block_size)
+            if int(qps_results["power Tot Mean"]) > 0:
+                read_mb_s_per_watt = read_mb_s_vs_block / float(qps_results["power Tot Mean"])
+                write_mb_s__per_watt = write_mb_s_vs_block / float(qps_results["power Tot Mean"])
+            else:
+                read_mb_s_per_watt = 0
+                write_mb_s__per_watt = 0
+
+        results = {"read_iops vs block size": read_iops_vs_block,
+                   "write_iops vs block size": write_iops_vs_block,
+                   "read MB/S vs block size": read_mb_s_vs_block,
+                   "write MB/S vs block size": write_mb_s_vs_block,
+                   "Average power per block": avg_power_per_block,
+                   "Max power per block": max_power_per_block,
+                   "avg read MB/S per watt": read_mb_s_per_watt,
+                   "avg write MB/S per watt": write_mb_s__per_watt,
+                   }
+
+        self.log_results(results, str(parent_id) + " " + str(group_name))
+
+    def _results_peak_performance(self, parent_id, results_dict, group_name):
+        """
+        IO for each QD
+        Average Power every QD
+        Max power every QD
+        MB/S per Watt
+        """
+        iops = 0
+        for key, value in results_dict.items():
+            if key in "write_iops":
+                iops = value
+            if key in "read_iops":
+                iops = value
+
+        qps_results = {"power Tot Max": "", "power Tot Mean": ""}
+        got_qps_stats = self._request_stats_qps(parent_id=parent_id, request_dict=qps_results)
+
+        mb_s = float(iops) / 1000000
+
+        if not got_qps_stats:
+            mb_s_per_watt = "Issue retrieving QPS Data"
+        else:
+            if float(qps_results["power Tot Mean"]) > 0:
+                mb_s_per_watt = float(mb_s) / float(qps_results["power Tot Mean"])
+            else:
+                mb_s_per_watt = 0
+
+        results = {"IOPS": iops,
+                   "Average power": str(qps_results["power Tot Mean"]),
+                   "Max Power": str(qps_results["power Tot Max"]),
+                   "avg MB/S per watt": str(mb_s_per_watt)
+                   }
+
+        self.log_results(results,str(parent_id) + " " + str(group_name))
+
+    def _results_mixed_IO_performance(self, parent_id, results_dict, group_name):
+        """
+        MB/s
+        IOPS
+        MB/S PER WATT
+        AVG POWER
+        MAX POWER
+        """
+        iops = 0
+        for key, value in results_dict.items():
+            if key in "write_iops":
+                iops = value
+            if key in "read_iops":
+                iops = value
+
+        qps_results = {"power Tot Max": "", "power Tot Mean": ""}
+        got_qps_stats = self._request_stats_qps(parent_id=parent_id, request_dict=qps_results)
+
+        mb_s = iops / 1000000
+        if not got_qps_stats:
+            mb_s_per_watt = "Issue retrieving QPS Data"
+        else:
+            mb_s_per_watt = mb_s / float(qps_results["power Tot Mean"])
+
+        results = {"MB/S": mb_s,
+                   "IOPS": iops,
+                   "avg MB/S per watt": mb_s_per_watt,
+                   "Average power": str(qps_results["power Tot Mean"]),
+                   "Max Power": str(qps_results["power Tot Max"])
+                   }
+
+        self.log_results(results,str(parent_id) + " " + str(group_name))
+
+    def log_results(self, results, group):
+        for key, value in results.items():
+            if "Issue retrieving QPS Data" in str(value):
+                self.comms.create_request_log(time.time(), "error", "Error executing Function",
+                                              os.path.basename(__file__) + " - " + sys._getframe().f_code.co_name,
+                                              {key: str(value)}, uId="")
+            else:
+                # Note for reader - formatted values to 3dp
+                try:
+                    value = float(value)
+                    # ".3f" replaces float with string
+                    self.comms.sendMsgToGUI(
+                        self.comms.create_request_log(time.time(), "result_statistic",
+                                                      str(key) + " : " + format(value, ".3f"),
+                                                      os.path.basename(
+                                                          __file__) + " - " + sys._getframe().f_code.co_name,
+                                                      messageData={'group': group}, uId=""))
+                except ValueError:
+                    self.comms.sendMsgToGUI(
+                        self.comms.create_request_log(time.time(), "result_statistic",
+                                                      str(key) + " : " + value,
+                                                      os.path.basename(
+                                                          __file__) + " - " + sys._getframe().f_code.co_name,
+                                                      messageData={'group': group}, uId=""))
+
+
+
+    def _request_stats_qps(self, parent_id, request_dict):
+
+        # Giving time for stats to be calculated
+        time.sleep(1)
+
+        start_annotation = "START:" + str(parent_id)
+        end_annotation = "END:" + str(parent_id)
+
+        stats = self.quarch_stream.get_stats()
+
+        try:
+            index = stats.index[stats['Text'] == end_annotation].tolist()
+
+            # replacing all of the values in dict with requested keys
+            for key, value in request_dict.items():
+                request_dict[key] = stats[key].loc[index[0]]
+            return True
+        except Exception as e:
+            for key, value in request_dict.items():
+                request_dict[key] = None
+            return False
+
+    def _return_block_size_as_int(self, current_block_size_str):
+        current_block_size_str = str(current_block_size_str).replace("k", "")
+        end_num = 24 * int(current_block_size_str)
+        current_block_size_str = int(current_block_size_str) * 1000
+        current_block_size_str = current_block_size_str + end_num
+        """
+        e.g. 
+        32K
+        32
+        32 * 24 =  768
+        32 * 1000 = 32000
+        32768 ( 32k in int value )
+        """
+        return current_block_size_str
+
+    def _prepare_drive(self, param=None):
+
+        workload_args = {"read_percentage": 0, "sequential": True, "blocksize": 256, "iodepth": 128,
+                         "runtime": int(self.cv_fio_runtime.custom_value),
+                         "workload_file_size": "100%", "run_directory": self.cv_drivename.custom_value.drive_path}
+
+        self.performance.start_workload(workload_args_dict=workload_args)
+
+    def _prepare_drive_random_write_200(self, param=None):
+        workload_args = {"read_percentage": 0, "sequential": False, "blocksize": 256, "iodepth": 128,
+                         "runtime": int(self.cv_fio_runtime.custom_value),
+                         "workload_file_size": "200%",
+                         "run_directory": self.cv_drivename.custom_value.drive_path}
+
+        self.performance.start_workload(workload_args_dict=workload_args)
+
+    def _prepare_drive_sequential_write_200(self, param=None):
+        workload_args = {"read_percentage": 0, "sequential": True, "blocksize": 256, "iodepth": 128,
+                         "runtime": int(self.cv_fio_runtime.custom_value),
+                         "workload_file_size": "200%",
+                         "run_directory": self.cv_drivename.custom_value.identifier_str}
+
+        self.performance.start_workload(workload_args_dict=workload_args)
+
+        """
+        [global]
+        name= CS FIO WL Test matching PRD
+        ioengine=libaio
+        direct=1
+        thread=1
+        buffered=0
+        size=100%
+        randrepeat=0
+        fill_device=1
+        norandommap
+        allow_mounted_write
+        log_avg_msec=1000
+        group_reporting
+        filename=/dev/nvme0n1
+
+        [job1]
+        stonewall
+        bs=128k
+        iodepth=128
+        numjobs=1
+        rw=write
+        :return:
+        """
