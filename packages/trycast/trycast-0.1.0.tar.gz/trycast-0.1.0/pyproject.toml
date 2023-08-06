@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "trycast"
+version = "0.1.0"
+description = ""
+authors = ["David Foster <david@dafoster.net>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/davidfstr/trycast"
+repository = "https://github.com/davidfstr/trycast"
+#documentation = "TODO"
+classifiers = [  # https://pypi.org/classifiers/
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Software Development"
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.790"
+tox = "^3.20.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
