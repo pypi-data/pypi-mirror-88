@@ -1,0 +1,18 @@
+# package requirements
+dataclasses; python_version<"3.7"
+Django>=2.0
+python-dateutil
+sqlparse
+
+# dev and test
+dj-database-url
+pre-commit
+pytest
+pytest-cov
+pytest-coverage
+pytest-django
+pytest-mock
+pytest-xdist < 2.0
+requests
+snapshottest
+time-machine
