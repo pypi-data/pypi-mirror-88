@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2018 Linaro Ltd.
+# Copyright 2018-2019 Arm Ltd.
+%YAML 1.2
+---
+$id: "http://devicetree.org/meta-schemas/vendor-props.yaml#"
+$schema: "http://json-schema.org/draft-07/schema#"
+
+description: Metaschema for vendor specific properties
+
+patternProperties:
+  '^\^': true
+  '^[^,]*$': true
+  '^linux,.*$': true
+  '-(gpio|gpios)$': true
+  '-supply$': true
+  '-(bits|mhz|hz|sec|ms|us|ns|ps|mm)$': true
+  '-(microamp|microamp-hours|ohms|micro-ohms|microwatt-hours)$': true
+  '-(microvolt|picofarads|celsius|millicelsius|kpascal)$': true
+
+additionalProperties:
+    type: object
+    required:
+      - description
+    oneOf:
+      - properties:   # A boolean property
+          description: true
+          type:
+            const: boolean
+          deprecated: true
+        required:
+          - type
+        additionalProperties: false
+
+      - properties:   # A string property with exact values
+          description: true
+          enum:
+            items:
+              type: string
+          const:
+              type: string
+          deprecated: true
+        oneOf:
+          - required: [ enum ]
+          - required: [ const ]
+        additionalProperties: false
+
+      - properties:   # A property with a type and additional constraints
+          $ref:
+            pattern: "types.yaml#[\/]{0,1}definitions\/.*"
+          allOf:
+            items:
+              - properties:
+                  $ref:
+                    pattern: "types.yaml#[\/]{0,1}definitions\/.*"
+                required:
+                  - $ref
+        oneOf:
+          - required: [ $ref ]
+          - required: [ allOf ]
+
+...

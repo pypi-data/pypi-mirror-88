@@ -1,0 +1,93 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2018 Linaro Ltd.
+# Copyright 2018-2019 Arm Ltd.
+%YAML 1.2
+---
+$id: "http://devicetree.org/meta-schemas/core.yaml#"
+$schema: "http://json-schema.org/draft-07/schema#"
+description: "Metaschema for devicetree binding documentation"
+
+allOf:
+  - $ref: "http://devicetree.org/meta-schemas/base.yaml#"
+
+definitions:
+  all-properties:
+    allOf:
+      - $ref: "#/definitions/core-properties"
+      - $ref: "clocks.yaml#"
+      - $ref: "gpios.yaml#"
+      - $ref: "interrupts.yaml#"
+      - $ref: "reset.yaml#"
+      - $ref: "mailbox.yaml#"
+      - $ref: "vendor-props.yaml#"
+  core-properties:
+    properties:
+      reg:
+        $ref: "cell.yaml#/array"
+      compatible:
+        $ref: "string-array.yaml"
+      $nodename:
+        $ref: "string-array.yaml"
+      memory-region:
+        $ref: "cell.yaml#/array"
+      memory-region-names:
+        $ref: "string-array.yaml"
+    propertyNames:
+      # Ensure DT property names are not json-schema vocabulary names
+      not:
+        enum: [ $ref, additionalItems, additionalProperties, allOf, anyOf,
+                const, contains, default, dependencies, deprecated, description,
+                else, enum, if, items, maxItems, maximum, minItems, minimum,
+                multipleOf, not, oneOf, pattern, patternProperties, properties,
+                propertyNames, required, then, unevaluatedProperties ]
+
+    patternProperties:
+      '.*-names$':
+        $ref: "string-array.yaml"
+
+      '^#.*-cells$':
+        $ref: "cell.yaml#/single"
+
+      '^.*$':
+        properties:
+          # 'boolean' and 'object' are the only native types allowed
+          type:
+            enum: [ boolean, object ]
+          properties:
+            $ref: "#/definitions/all-properties"
+          patternProperties:
+            $ref: "#/definitions/all-properties"
+
+        allOf:
+          - $ref: "items.yaml#"
+          - if:
+              type: object
+              properties:
+                type:
+                  const: object
+              required:
+                - type
+            then:
+              $ref: "nodes.yaml#"
+          - if:
+              required: [ properties ]
+            then:
+              anyOf:
+                - required: [ type ]
+                - required: [ $ref ]
+
+    dependencies:
+      "#size-cells": [ "#address-cells" ]
+      memory-region-names: [ memory-region ]
+
+properties:
+  patternProperties:
+    $ref: "#/definitions/all-properties"
+  properties:
+    $ref: "#/definitions/all-properties"
+
+anyOf:
+  - required:
+      - properties
+  - required:
+      - patternProperties
