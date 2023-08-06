@@ -1,0 +1,19 @@
+language: python
+python:
+  - 3.6
+cache: pip
+install:
+  - pip install -U setuptools
+  - pip install -U pip
+  - pip install .
+  - pip install -U .[test]
+script:
+  - python setup.py test
+deploy:
+  provider: pypi
+  server: $PYPI_URL
+  user: "__token__"
+  password: $PYPI_TOKEN
+  skip_existing: true
+  on:
+    tags: true
