@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: broly
+Version: 0.4.5
+Summary: small (wip) wrapper for rds data api for lambda
+Home-page: https://github.com/lucasmarcelli/broly/
+Author: Lucas Marcelli
+Author-email: lucas@marcelli.ca
+License: UNKNOWN
+Project-URL: Source, https://github.com/lucasmarcelli/broly/
+Description: # Broly
+        
+        Small module for managing models with the AWS rds data-api from lambda. Should be set into a lambda layer.
+        
+        Uses [pypika](https://github.com/kayak/pypika) to generate MySQL and boto3's rds-data client.
+        
+        ## To add to lambda layer
+        ```bash
+        mkdir python
+        pip3 install broly --target python/
+        zip -r python layer
+        ```
+        
+        Then just upload it to your lambda's layer.
+        
+        ## Usage
+        ```python
+        from broly.model import Model
+        from broly.column import IntColumn, VarChar
+        
+        class Example(Model):
+        
+            table_name = 'example'
+            secret_arn = 'secret-arn'
+            resource_arn = 'resource-arn'
+            database = 'db-name'
+        
+            id = IntColumn(primary_key=True)
+            name = VarChar(nullable=False)
+            description = VarChar(size=1000)
+        
+        e = Example(name="name")
+        e.set_value('description', 'desc')
+        print(e)
+        e = e.save()
+        print(e)
+        ```
+Keywords: lambda,setuptools,development,rds-data,wip
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.5, <4
+Description-Content-Type: text/markdown
