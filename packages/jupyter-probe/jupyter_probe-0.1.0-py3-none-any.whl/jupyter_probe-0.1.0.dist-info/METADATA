@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: jupyter-probe
+Version: 0.1.0
+Summary: A package to monitor, manage, declare and analyse notebook resource usage on jupyter environments
+Home-page: https://github.com/vermashresth/jupyter-probe
+Author: Shresth Verma
+Author-email: vermashresth@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.7
+Classifier: License :: OSI Approved :: MIT License
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: psutil
+Requires-Dist: requests
+Requires-Dist: py3nvml
+Requires-Dist: rich
+Requires-Dist: jupyter
+Requires-Dist: jupyterlab
+Requires-Dist: filelock
+
+# Jupyter Probe
+A package to monitor, manage, declare and analyse notebook resource usage on jupyter environments
+
+
