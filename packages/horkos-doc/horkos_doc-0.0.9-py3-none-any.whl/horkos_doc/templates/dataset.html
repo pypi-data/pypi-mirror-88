@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block contents %}
+<h1 class='dataset_title'>{{ schema.name }}</h1>
+<div class='tags expander' expand_target='dataset_labels_raw'>
+  {% for key, value in schema.labels.items() %}
+  <div class='tag black'>
+    <span class='tag_label'>{{ key }}</span><span class='tag_value'> {{ value | shorten }} </span>
+  </div>
+  {% endfor %}
+</div>
+<pre class='default_hidden' id='dataset_labels_raw'><code>{{ schema.labels | to_yaml}}</code></pre>
+<div>{{ schema.description | markdown | safe }}</div>
+{% if schema.description and schema.fields %}<hr class='divider'>{% endif %}
+{% for field in schema.fields %}
+  <div class='field_header'>
+    <div class='field_title anchorable' id='{{field.name}}'>
+      {{field.name}}
+      <a class="headerlink" href="#{{field.name}}" title="Permanent link to section">&para</a>
+    </div>
+    <div class='field_type'>{{field.type.name}}</div>
+  </div>
+  <div class='field_body'>
+  {% if not field.required or field.nullable or field.labels or field.checks or field.derived%}
+  <div class='tags expander' expand_target='{{field.name}}_raw'>
+    {% if not field.required %}
+    <div class='tag red'>
+      <span class='tag_label'>not required</span>
+    </div>
+      {% endif %}
+    {% if field.derived %}
+    <div class='tag blue'>
+      <span class='tag_label'>derived</span>
+    </div>
+    {% endif %}
+    {% if field.nullable %}
+    <div class='tag yellow'>
+      <span class='tag_label'>nullable</span>
+    </div>
+    {% endif %}
+    {% if field.checks|length %}
+    <div class='tag gray'>
+      <span class='tag_label'>checks</span><span class='tag_value'> {{ field.checks|length }} </span>
+    </div>
+    {% endif %}
+    {% for key, value in field.labels.items() %}
+    <div class='tag black'>
+      <span class='tag_label'>{{ key }}</span><span class='tag_value'> {{ value | shorten }} </span>
+    </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+  <pre class='default_hidden' id='{{field.name}}_raw'><code>{{ field | field_to_yaml}}</code></pre>
+  <div class='field_description'>{{ field.description | markdown | safe}}</div>
+  </div>
+{% endfor %}
+{% endblock %}
+{% block right_side %}
+{% include "links.html" %}
+{% endblock %}
