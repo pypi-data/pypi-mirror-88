@@ -1,0 +1,114 @@
+Metadata-Version: 2.1
+Name: lore-iris
+Version: 0.0.1b0
+Summary: Programmatic access to thousands of public documents.
+Home-page: https://api.iris.lore.ai
+Author: Lore Ai
+Author-email: iris@lore.ai
+License: MIT
+Description: 
+        
+        # Installation
+        
+        You can install Lore's Iris API with pip.
+        
+            pip install lore-iris
+        
+        The API has been tested with python 3.8.
+        
+        # Setup
+        
+        In order to use Iris you need to register for a free [Iris API
+        account](https://api.iris.lore.ai/signup).  After registration you can access
+        your token at [https://api.iris.lore.ai/user](https://api.iris.lore.ai/user).
+        
+        You will be prompted to enter this token when you first use the API:
+        
+        	>>> from lore.iris import Client
+        	>>> client = Client()
+        	>>> results = client.search(docset_name="NEWS", query_string="covid")
+        	Authorization failed.  Visit http://api.iris.lore.ai//user to get your token and then update your iris.yaml
+        	Token: 
+        	Updated to new token
+        	Config file saved to /home/<username>/.config/iris/iris.yaml
+        	>>> len(results)
+        	100
+        
+        Note that the initial search query will run upon entering a valid token.
+        
+        
+        # Basic Usage
+        
+        To access the API:
+        
+        	from lore.iris import Client
+        	client = Client()
+        
+        	# run a search
+        	results = client.search(
+        			docset_name="NEWS",
+        			query_string="covid",
+        			fuzzy=True
+        			)
+        
+        To see the number of results:
+        
+        	# check number of results
+        	print(len(results))
+        
+        A "fuzzy" query will generally include more terms than the original search string:
+        
+        	>>> print(results.terms)
+        	['covid', 'coronavirus', 'pandemic', 'covid-19', 'covid 19']
+        
+        The results object is an iterator:
+        
+        	# get first result
+        	first = next(results)
+        	print(first)
+        
+        You can iterate through all results but note that this will _automatically_
+        generate additional queries to page through all results (by default a search
+        generates max 100 results returned in pages of size 10):
+        
+        	# get all results
+        	# NOTE: this will automatically fire additional paging queries
+        	for idx,r in enumerate(results):
+        		print(f"{idx}. {r['display_name']} (lang [{r['language']}], {r['num_pages']} pages)")
+        
+        
+        # Config
+        
+        Iris reads its configuration from the file `.config/iris/iris.yaml` in your
+        home directory:
+        
+            irisapi:
+                server: http://api.iris.lore.ai/
+                token: <API_TOKEN>
+                version: '0.1'
+        
+        
+        If this file is missing, Iris will use a default configuration without any token.
+        If you try to access the API with this configuration you will be prompted to
+        visit:
+        
+            https://api.iris.lore.ai/user
+        
+        where you will see your token.  Copy this into the prompt and Iris will save
+        your updated config file to `.config/iris/iris.yaml` in your homedir.
+        
+        
+        # Testing
+        
+        To test run:
+        
+            pytest tests/test_api.py 
+        
+        
+        
+        
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
