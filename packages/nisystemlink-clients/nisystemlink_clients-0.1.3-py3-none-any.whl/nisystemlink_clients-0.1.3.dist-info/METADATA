@@ -1,0 +1,103 @@
+Metadata-Version: 2.1
+Name: nisystemlink-clients
+Version: 0.1.3
+Summary: NI-SystemLink Python API
+Home-page: UNKNOWN
+Author: National Instruments
+Maintainer: Paul Spangler, Alex Weaver
+Maintainer-email: paul.spangler@ni.com, alex.weaver@ni.com
+License: MIT
+Keywords: nisystemlink,systemlink
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Manufacturing
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: System :: Hardware :: Hardware Drivers
+Requires-Dist: events
+Requires-Dist: typing-extensions
+Requires-Dist: aenum ; python_version < "3.6"
+Requires-Dist: requests ; python_version < "3.6"
+Requires-Dist: httpx ; python_version >= "3.6"
+
+===========  ====================================================
+Info         NI SystemLink API Clients for Python
+Author       National Instruments
+===========  ====================================================
+
+About
+=====
+The **nisystemlink-clients** package contains an API (Application Programming
+Interface) for `SystemLink <https://ni.com/systemlink>`_ that uses HTTP to
+interact with a SystemLink Server. The package is implemented in Python. NI
+created and supports this package.
+
+.. image:: https://badge.fury.io/py/nisystemlink-clients.svg
+    :target: https://badge.fury.io/py/nisystemlink-clients
+
+Requirements
+============
+**nisystemlink-clients** has the following requirements:
+
+* A SystemLink Server installation or a
+  `SystemLink Cloud <https://www.systemlinkcloud.com/>`_ account to connect to
+* CPython 3.5+
+
+.. _installation_section:
+
+Installation
+============
+To install **nisystemlink-clients**, use one of the following methods:
+
+1. `pip <https://pypi.python.org/pypi/pip>`_::
+
+   $ python -m pip install nisystemlink-clients
+
+2. **easy_install** from `setuptools <https://pypi.python.org/pypi/setuptools>`_::
+
+   $ python -m easy_install nisystemlink-clients
+
+3. Download the project source and run::
+
+   $ python setup.py install
+
+.. _usage_section:
+
+Usage
+=====
+Refer to the `documentation <https://python-docs.systemlink.io>`_
+for detailed information on how to use **nisystemlink-clients**.
+
+.. _support_section:
+
+Support / Feedback
+==================
+The **nisystemlink-clients** package is supported by NI. For support for
+**nisystemlink-clients**, open a request through the NI support portal at
+`ni.com <https://www.ni.com>`_.
+
+Bugs / Feature Requests
+=======================
+To report a bug or submit a feature request, please use the
+`GitHub issues page <https://github.com/ni/nisystemlink-clients-python/issues>`_.
+
+Documentation
+=============
+To view the documentation, visit the
+`systemlink.clients Documentation Page <https://python-docs.systemlink.io>`_.
+
+License
+=======
+**nisystemlink-clients** is licensed under an MIT-style license (see `LICENSE
+<LICENSE>`_).  Other incorporated projects may be licensed under different
+licenses. All licenses allow for non-commercial and commercial use.
+
+
