@@ -1,0 +1,11 @@
+fastapi
+marshmallow
+unimatrix>=0.4.0
+unimatrix.ext.model>=0.0.10
+python-ioc
+
+[all]
+uvicorn
+
+[uvicorn]
+uvicorn
