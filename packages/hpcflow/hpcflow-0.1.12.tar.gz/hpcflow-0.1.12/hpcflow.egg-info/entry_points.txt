@@ -1,0 +1,8 @@
+
+        [console_scripts]
+        hpcflow=hpcflow.cli:cli
+        hfsub=hpcflow.cli:submit
+        hfmake=hpcflow.cli:make
+        hfstat=hpcflow.cli:stat
+        hfkill=hpcflow.cli:kill
+    
