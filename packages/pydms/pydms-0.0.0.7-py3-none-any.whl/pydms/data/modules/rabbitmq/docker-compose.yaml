@@ -1,0 +1,23 @@
+version: '3'
+networks:
+  micro:
+    external: true
+services:
+  rabbitmq:
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_VHOST: "micro"
+      RABBITMQ_DEFAULT_USER: "micro"
+      RABBITMQ_DEFAULT_PASS: "micro"
+    image: "rabbitmq:3.8-management"
+    restart: always
+    volumes:
+      - "/opt/rabbitmq/data:/var/lib/rabbitmq"
+      - "/opt/rabbitmq/log:/var/log/rabbitmq/log"
+    networks:
+      - micro
+    ports:
+      - "15672:15672"
+      - "4369:4369"
+      - "5672:5672"
+      - "25672:25672"

@@ -1,0 +1,15 @@
+version: "3"
+networks:
+  micro:
+    external: true
+services:
+  registrator:
+    image: gliderlabs/registrator
+    container_name: docker_consul_registrator
+    networks:
+      - micro
+    external_links:
+      - consul1:consul
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    command: consul://consul:8500
