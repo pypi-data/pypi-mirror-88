@@ -1,0 +1,23 @@
+# Config file for automatic testing at travis-ci.com
+
+language: python
+
+matrix:
+    include:
+      - python: 3.5
+        env: TOXENV=py35
+      - python: 3.6
+        env: TOXENV=py36
+      - python: 3.7
+        env: TOXENV=py37
+      - python: pypy3
+        env: TOXENV=pypy3
+      - python: 3.7
+        env: TOXENV=flake8
+
+install:
+  - pip install tox
+
+script: tox
+
+cache: pip
