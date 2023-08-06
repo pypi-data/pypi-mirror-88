@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: pytorch-wavelet
+Version: 1.2
+Summary: UNKNOWN
+Home-page: UNKNOWN
+Author: ['Michael Kellman']
+Author-email: michael.kellman@ucsf.edu
+License: BSD
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+Requires-Dist: torch (>=1.7.0)
+
+# Wavelet Transform for Pytorch
+
+This package provides a differentiable Pytorch implementation of the Haar wavelet transform.
+
+![asdf](https://github.com/kellman/pytorch_wavelet/blob/main/figures/output.png)
+
+## Usage
+
+``` 
+import torch
+import matplotlib.pyplot as plt
+from skimage import data
+import pytorch_wavelet as wavelet
+
+x = torch.from_numpy(data.camera())
+a = wavelet.visualize(x, Nlayers = 2)
+
+plt.figure()
+plt.subplot(121)
+plt.imshow(x)
+plt.title('Image')
+plt.subplot(122)
+plt.imshow(a)
+plt.title('Wavelet Decomposition')
+
+```
+
+## Install
+
+```pip install pytorch-wavelet ```
+
+
+
