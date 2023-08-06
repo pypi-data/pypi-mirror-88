@@ -1,0 +1,19 @@
+setuptools>=38.3.0
+mbstrdecoder<2,>=0.8.3
+tabledata<2,>=1.0.0
+typepy<2,>=0.6.6
+
+[dumps]
+pytablewriter<2,>=0.48.0
+
+[logging]
+loguru<1,>=0.4.1
+
+[test]
+pytest
+SimpleSQLite>=1
+pytest-md-report>=0.1
+pytablewriter<2,>=0.48.0
+
+[test:python_version <= "3.9"]
+pytest-discord>=0.0.5
