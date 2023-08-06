@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: concentrator-calculator
+Version: 1.0.1
+Summary: Tool to calculate vacuum centrifuge times
+Home-page: https://github.com/DominikBuchner/concentrator_calculator
+Author: Dominik Buchner
+Author-email: dominik.buchner524@googlemail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: PySimpleGUI (>=4.19.0)
+Requires-Dist: numpy (>=1.18.4)
+Requires-Dist: pandas (>=1.0.4)
+Requires-Dist: scipy (>=1.4.1)
+
+# concentrator_calculator
+ A small calculater to compute the time needed for volume reductions in an eppendorf concentrator.
+
+ **Preheat the concentrator to the desired temperature for at least 30 minutes.**
+
+## Installation
+`pip install concentrator-calculator`
+
+## How to start
+Open terminal and type:
+
+`concentrator_calculator`
+
+
