@@ -1,0 +1,14 @@
+prefix=/tmp/pip-req-build-r8ojujy8/_skbuild/linux-x86_64-3.9/cmake-install
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: blosc
+Description: A blocking, shuffling and lossless compression library
+URL: http://blosc.org/
+Version: 1.20.1
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lblosc
+Cflags: -I${includedir}
