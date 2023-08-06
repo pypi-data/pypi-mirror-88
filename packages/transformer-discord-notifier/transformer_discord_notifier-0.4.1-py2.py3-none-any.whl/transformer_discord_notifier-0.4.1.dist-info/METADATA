@@ -1,0 +1,129 @@
+Metadata-Version: 2.1
+Name: transformer-discord-notifier
+Version: 0.4.1
+Summary: A Discord Notifier to send progress updates, params and results to a Discord channel.
+Home-page: https://github.com/Querela/python-transformer-discord-notifier
+Author: Erik Körner
+Author-email: koerner@informatik.uni-leipzig.de
+License: MIT
+Project-URL: Documentation, https://python-transformer-discord-notifier.readthedocs.io/
+Project-URL: Changelog, https://python-transformer-discord-notifier.readthedocs.io/en/latest/changelog.html
+Project-URL: Issue Tracker, https://github.com/Querela/python-transformer-discord-notifier/issues
+Keywords: transformers,discord.py
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+Requires-Dist: transformers (<5,>=4.0.0)
+Requires-Dist: discord.py
+Provides-Extra: dev
+Requires-Dist: docutils ; extra == 'dev'
+Requires-Dist: check-manifest ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: readme-renderer ; extra == 'dev'
+Requires-Dist: pygments ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+
+========
+Overview
+========
+
+
+
+A Discord Notifier to send progress updates, params and results to a Discord channel.
+
+* Free software: MIT license
+
+Installation
+============
+
+::
+
+    pip install transformer-discord-notifier
+
+You can also install the in-development version with::
+
+    pip install https://github.com/Querela/python-transformer-discord-notifier/archive/master.zip
+
+
+Documentation
+=============
+
+
+https://python-transformer-discord-notifier.readthedocs.io/
+
+::
+
+    git clone https://github.com/Querela/python-transformer-discord-notifier.git
+    cd python-transformer-discord-notifier
+    sphinx-build -b html docs dist/docs
+
+
+Changelog
+=========
+
+0.4.0 (2020-12-17)
+-----------------------
+
+* Reintroduce tests with ``pytest`` and ``tox``.
+* Add simple tests for ``transformer_discord_notifier.discord.DiscordClient``.
+* Add tests for ``transformer_discord_notifier.transformers.DiscordProgressCallback``.
+
+0.3.1 (2020-12-17)
+------------------
+
+* Let Discord bot gracefully handle initialization failures.
+* Let transformer callback handler handle invalid configs gracefully, to simply exit.
+* Better handling of edge cases of Discord client login.
+
+0.3.0 (2020-12-16)
+------------------
+
+* Add (private) scripts (make venv, run checks).
+* Update usage docs.
+* Extend / rewrite discord client methods.
+* Reuse existing ``tqdm`` ``transformers.trainer_callback.ProgressCallback`` for progress tracking.
+* Fancy aggregation of prediction runs, split train progress into epochs.
+
+0.2.1 (2020-12-15)
+------------------
+
+* Correct ``setup.py`` validation.
+* Add (private) distribution/docs build scripts.
+
+0.2.0 (2020-12-15)
+------------------
+
+* Refactor blocking discord code into ``transformer_discord_notifier.discord`` submodule.
+* Fix behaviour for ``__del__`` with refactoring, so it work as intended.
+* Improve documentation for ``transformer_discord_notifier.discord`` module.
+
+0.1.0 (2020-12-11)
+------------------
+
+* First release on PyPI.
+* First working version, tested manually.
+* Cleaned up skeleton files.
+* Updated docs.
+
+0.0.0 (2020-12-10)
+------------------
+
+* Initial code skeleton.
+
+
