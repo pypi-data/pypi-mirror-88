@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "aws-tmp-keys-fetcher"
+version = "0.0.4"
+description = "AWS temporary keys fetcher - simple command-line tool to fetch temporary aws credentials and stores them in your configs so that third party that require actual access keys can work with them."
+authors = ["Gerco Grandia <gerco.grandia@4synergy.nl>"]
+include = ["pyproject.toml"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/gercograndia/aws-tmp-keys-fetcher"
+repository = "https://github.com/gercograndia/aws-tmp-keys-fetcher"
+documentation = "https://github.com/gercograndia/aws-tmp-keys-fetcher/blob/master/README.md"
+keywords = [
+    "AWS",
+    "IAM",
+    "Temporary",
+    "Credentials"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+boto3 = "^1.12.22"
+click = "^7.1.1"
+outdated = "^0.2.0"
+configparser = "^5.0.1"
+toml = "^0.10.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^4.6"
+pyassert = "^0.4.2"
+pylint = "^2.5.2"
+
+[tool.poetry.scripts]
+aws-tmp-keys-fetcher = "aws_tmp_keys_fetcher.cli:fetch_credentials"
+
+[tool.poetry.urls]
+issues = "https://github.com/gercograndia/aws-tmp-keys-fetcher/issues"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
