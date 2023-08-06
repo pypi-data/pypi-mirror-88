@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: python-actions-pypi-test
+Version: 1.0.0
+Summary: Just a simple Hello World package
+Home-page: https://github.com/vaisakhpisharody/python-actions-pypi-test
+Author: Vaisakh Pisharody
+Author-email: vaisakh.cob@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Description-Content-Type: text/markdown
+
+# python-actions-pypi-test
+
+This repository deals with testing out PyPI releases using GitHub Actions. It has been created to see how much effort is needed to do the same.
+
+## Usage
+
+This package exposes the `get_hello_world` function, which returns the **"Hello World"** string
+
+# LICENSE
+
+This project is published under MIT License. Read more [here](./LICENSE)
+
