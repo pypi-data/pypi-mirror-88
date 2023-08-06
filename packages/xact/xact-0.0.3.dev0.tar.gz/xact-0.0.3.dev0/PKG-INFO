@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: xact
+Version: 0.0.3.dev0
+Summary: Model based design for developers
+Home-page: http://xplain.systems
+License: AGPL-3.0-only
+Keywords: modelling,simulation,message,actor,framework
+Author: William Payne
+Author-email: will@xplain.systems
+Maintainer: William Payne
+Maintainer-email: will@xplain.systems
+Requires-Python: >=3.6.1
+Classifier: Development Status :: 1 - Planning
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Embedded Systems
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: System :: Distributed Computing
+Requires-Dist: Jinja2 (>=2.1)
+Requires-Dist: ansible (==2.9.13)
+Requires-Dist: click
+Requires-Dist: cryptography
+Requires-Dist: dill
+Requires-Dist: jsonschema
+Requires-Dist: loguru
+Requires-Dist: numpy
+Requires-Dist: paramiko
+Requires-Dist: psutil (>=5.0)
+Requires-Dist: pytest (>=5.2)
+Requires-Dist: pyyaml
+Requires-Dist: pyzmq
+Requires-Dist: setproctitle
+Requires-Dist: toml
+Requires-Dist: xmltodict
+Project-URL: Documentation, https://github.com/xplain-systems/xact/wiki
+Project-URL: Issues, https://github.com/xplain-systems/xact/issues
+Project-URL: Repository, https://github.com/xplain-systems/xact
+Project-URL: Releases, https://github.com/xplain-systems/xact/releases
+Project-URL: Source, https://github.com/xplain-systems/xact
+Description-Content-Type: text/x-rst
+
+XACT: Model based design for developers
+#######################################
+
+Xact is a tool for configuring and deploying software intensive systems,
+from simulations running on cloud infrastructure to distributed intelligent
+sensing systems running on edge devices.
+
+Xact defines a unified configuration data structure for specifying component
+dependencies and for configuring various types of messaging middleware,
+enabling distributed dataflow systems to be rapidly and conveniently
+described and deployed.
+
+It is intended to support model based systems and software engineering
+processes and to be a foundation for future design automation tools.
+
