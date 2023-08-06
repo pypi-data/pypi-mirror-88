@@ -1,0 +1,17 @@
+DL_POLY TEST CASE 1
+CUTOFF 8.0
+UNITS ev
+NCONFIGS 1
+ATOMS 3
+Mn core 1.0  2.0
+Mg core 1.0  2.0
+O  core 1.0 -2.0
+MOLTYPES 1
+MgO
+MAXATOM 512
+finish
+VDW 3
+O core  O core buck   22764.3 0.1490 20.370
+Mg core O core buck    700.3  0.3372 0.00000
+Mn core O core buck    1007.4 0.3262 0.000000
+CLOSE

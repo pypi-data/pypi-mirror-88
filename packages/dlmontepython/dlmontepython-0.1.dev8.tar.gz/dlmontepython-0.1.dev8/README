@@ -1,0 +1,18 @@
+Python tools associated with the Monte Carlo simulation program DL_MONTE
+(project homepage: https://gitlab.com/dl_monte).
+
+Key functionality includes:
+- Functions for applying various analysis methods to data obtained from
+  molecular simulation, including histogram reweighting and block averaging
+- A Python interface to DL_MONTE
+- A framework for automating calculations of, e.g. isotherms, using DL_MONTE 
+
+
+Documentation
+-------------
+The directory 'docs' contains documentation in the form of Jupyter
+notebooks and rst files, and 'examples' contains example Python scripts 
+demonstrating the use of the various subpackages in dlmontepython.
+
+API documentation can be found at https://dl_monte.gitlab.io/dlmontepython
+

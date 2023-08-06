@@ -1,0 +1,77 @@
+Test
+CUTOFF 12
+UNITS K
+NCONFIGS 1
+ATOMS 19
+H_S_0 core 1.008 0.08852
+H_S_1 core 1.008 0.13729
+C_S_0 core 12.011 -0.34776
+C_S_1 core 12.011 -0.12319
+C_S_2 core 12.011 0.0018
+C_S_3 core 12.011 0.12689
+C_S_4 core 12.011 0.25225
+C_S_5 core 12.011 0.55838
+C_S_6 core 12.011 0.71008
+O_Zn_0 core 15.999 -0.69497
+O_Zn_1 core 15.999 -0.69497
+O_Zn_2 core 15.999 -0.69497
+O_S_0 core 15.999 -0.58798
+O_S_1 core 15.999 -0.58013
+O_S_2 core 15.999 -0.54076
+Zn_S_0 core 65.38 0.76437
+Zn_S_1 core 65.38 0.77264
+O core 15.999 -0.38
+CH2 core 12.011 0.19
+MOLTYPES 2
+UMCM1
+MAXATOM 1212
+Dioxane
+ATOMS 6 6
+O core 1.32 0.0 0.596
+CH2 core 0.78 1.194 0.0
+CH2 core -0.78 1.194 0.0
+O core 0.78 -1.194 0.0
+CH2 core -0.78 -1.194 0.0
+CH2 core -1.32 0.0 -0.596
+EXCLUDE
+RIGID
+FINISH
+VDW 37 
+C_S_3 core CH2 core +lj 50.126 5.645
+Zn_S_0 core O core +lj 98.346 3.62
+O_S_1 core CH2 core +lj 50.283 5.425
+H_S_0 core O core +lj 34.435 3.815
+Zn_S_0 core CH2 core +lj 57.236 5.14
+C_S_5 core O core +lj 86.13 4.125
+O_Zn_1 core O core +lj 68.407 3.95
+O_Zn_2 core O core +lj 68.407 3.95
+C_S_2 core O core +lj 86.13 4.125
+O_Zn_1 core CH2 core +lj 39.812 5.47
+O core O core +lj 155.0 3.585
+C_S_6 core O core +lj 86.13 4.125
+C_S_6 core CH2 core +lj 50.126 5.645
+O_Zn_0 core CH2 core +lj 39.812 5.47
+O_S_0 core O core +lj 86.399 3.905
+C_S_4 core O core +lj 86.13 4.125
+O_Zn_0 core O core +lj 68.407 3.95
+O_S_2 core CH2 core +lj 50.283 5.425
+Zn_S_1 core O core +lj 98.346 3.62
+C_S_0 core O core +lj 86.13 4.125
+O_S_0 core CH2 core +lj 50.283 5.425
+H_S_1 core O core +lj 34.435 3.815
+C_S_4 core CH2 core +lj 50.126 5.645
+C_S_1 core O core +lj 86.13 4.125
+CH2 core CH2 core +lj 52.5 5.865
+O_S_2 core O core +lj 86.399 3.905
+H_S_1 core CH2 core +lj 20.041 5.335
+Zn_S_1 core CH2 core +lj 57.236 5.14
+C_S_1 core CH2 core +lj 50.126 5.645
+C_S_0 core CH2 core +lj 50.126 5.645
+O_S_1 core O core +lj 86.399 3.905
+H_S_0 core CH2 core +lj 20.041 5.335
+C_S_5 core CH2 core +lj 50.126 5.645
+O_Zn_2 core CH2 core +lj 39.812 5.47
+C_S_2 core CH2 core +lj 50.126 5.645
+O core CH2 core +lj 90.208 5.105
+C_S_3 core O core +lj 86.13 4.125
+CLOSE

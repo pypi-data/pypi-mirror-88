@@ -1,0 +1,34 @@
+Force fields and bond constraints for for CO2 in a zeolite (use EPM2 for VDW)
+CUTOFF 12.0
+UNITS kcal
+NCONFIGS 1
+ATOMS 5
+Si core 28 2.4
+O_ core 16 -1.2
+C_ core 12 0.6512
+O_C core 16 -0.3256
+Xe core 1 0.0
+MOLTYPES 2
+zeolite
+MAXATOM 584
+co2
+ATOMS 3 3
+C_ core  0.00000000 0.0000000 0.0000000
+O_C core 1.16300000 0.0000000 0.0000000
+O_C core -1.16300000 0.0000000 0.0000000
+BONDS 3
+    1    2    1
+    1    3    1
+    2    3    2
+FINISH
+VDW       6
+O_ core       C_ core       lj    0.094566874 2.892
+O_ core       O_C core      lj    0.15998351 3.033
+C_ core       C_ core       lj    0.055892323 2.757
+C_ core       O_C core      lj    0.094566874 2.892
+O_C core      O_C core      lj    0.15998351 3.033
+O_C core      Xe core      12-6   16777216 0.0
+BONDS 2
+C_ core O_C core buck 0.0 0.1 0.0
+O_C core O_C core buck 0.0 0.1 0.0
+CLOSE

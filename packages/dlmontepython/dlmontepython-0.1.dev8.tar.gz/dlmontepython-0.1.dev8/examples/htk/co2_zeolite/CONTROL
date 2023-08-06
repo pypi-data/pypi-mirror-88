@@ -1,0 +1,18 @@
+Control file for CO2 in zeolite
+use gaspressure
+finish use-block
+steps 1000000
+temperature 273.0
+maxmolrot 0.005
+equilibration 100000
+print 1000
+acceptmolmoveupdate 200
+acceptmolrotupdate 200
+stack 100
+move molecule 1 20
+co2
+move rotatemol 1 20
+co2
+move gcinsertmol 1 60 0.5
+co2 0.0001
+start simulation

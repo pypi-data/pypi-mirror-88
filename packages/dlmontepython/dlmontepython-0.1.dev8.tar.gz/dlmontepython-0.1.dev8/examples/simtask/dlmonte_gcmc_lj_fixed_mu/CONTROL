@@ -1,0 +1,36 @@
+GCMC simulation LJ fluid
+finish
+
+seeds 12 34 56 78               # Seed RNG seeds explicitly to the default                          
+
+# k_B = 0.000086173303eV / K  => k_B * T = 0.000086173303 * (T/K) *eV => k_B * T / epsilon = 0.000086173303 * (T/K) * (epsilon / eV)
+# Here epsilon=1eV. Hence (T/K) = (k_B*T/epsilon)/0.000086173303
+
+#temperature     17406.783165779   # kB*T/epsilon = 1.5
+temperature     23209.044221039   # kB*T/epsilon = 2.0
+
+steps           120000
+#steps 600000
+
+yamldata 100
+
+
+# Activity a=exp(mu/(k_B*T)) =>  mu/(k_B*T) = ln(a)  =>  mu=k_B*T*ln(a)  => mu/epsilon = (k_B*T/epsilon)*ln(a)
+
+move gcinsertmol 1 100 0.7
+lj 0.038
+
+
+# Try mu/epsilon   = -4.9, -5.0, -5.1
+# Corresponds to a = 0.038133327, 0.035673993, 0.03337327
+
+# Try a=0.038, 0.035, 0.033
+ 
+
+#lj 0.03    # mu/epsilon =-5.259836846
+#lj  0.04        # mu/epsilon = -4.828313737
+#lj  0.05        # mu/epsilon = -4.493598411
+
+
+start 
+

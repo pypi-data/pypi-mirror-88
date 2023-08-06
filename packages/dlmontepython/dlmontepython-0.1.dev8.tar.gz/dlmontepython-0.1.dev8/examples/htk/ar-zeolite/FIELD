@@ -1,0 +1,19 @@
+MgO interactions using Lewis-Catlow potentials
+CUTOFF 12.0
+UNITS eV
+NCONFIGS 1
+ATOMS 3
+Si core 24.0 4.0
+O core 16.0 -2.0
+Ar core 39.9 0.0
+MOLTYPES 2
+zeolite
+MAXATOM 2304
+argon
+MAXATOM 200
+FINISH
+VDW 3  ecap 10000000000.0
+Ar core Ar core lj 0.010315 3.405
+Ar core Si core lj 0.0028437 2.04105
+Ar core O core lj 0.0028437 2.04105
+CLOSE

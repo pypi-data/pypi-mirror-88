@@ -1,0 +1,59 @@
+Test
+CUTOFF 12
+UNITS K
+NCONFIGS 1
+ATOMS 14
+H_S_0 core 1.008 0.08118
+H_S_1 core 1.008 0.10716
+C_S_0 core 12.011 -0.21669
+C_S_1 core 12.011 -0.07075
+C_S_2 core 12.011 0.06037
+C_S_3 core 12.011 0.73062
+O_Zn_0 core 15.999 -0.73744
+O_Zn_1 core 15.999 -0.55877
+O_S_0 core 15.999 -0.56881
+O_S_1 core 15.999 -0.55146
+Zn_S_0 core 65.38 0.79614
+Zn_S_1 core 65.38 0.81379
+CH2 core 1.0 0.4044
+Cl core 35.45 -0.2022
+MOLTYPES 2
+SNU70
+MAXATOM 1040
+Dichloromethane
+ATOMS 3 3
+CH2 core 0.0 0.762012 1.6e-05
+Cl core -1.47447 -0.215523 1.3e-05
+Cl core 1.474468 -0.215525 1.4e-05
+EXCLUDE
+RIGID
+FINISH
+VDW 27 
+CH2 core CH2 core +lj 123.34 5.4
+O_Zn_1 core Cl core +lj 61.022 4.98
+O_S_0 core CH2 core +lj 77.072 5.115
+Zn_S_0 core Cl core +lj 87.729 4.65
+O_S_1 core Cl core +lj 77.072 4.935
+C_S_2 core CH2 core +lj 76.831 5.335
+O_Zn_0 core CH2 core +lj 61.022 5.16
+Cl core Cl core +lj 123.34 5.13
+H_S_1 core Cl core +lj 30.717 4.845
+CH2 core Cl core +lj 123.34 5.22
+C_S_0 core CH2 core +lj 76.831 5.335
+H_S_0 core Cl core +lj 30.717 4.845
+C_S_3 core CH2 core +lj 76.831 5.335
+O_S_0 core Cl core +lj 77.072 4.935
+C_S_1 core CH2 core +lj 76.831 5.335
+Zn_S_1 core Cl core +lj 87.729 4.65
+C_S_2 core Cl core +lj 76.831 5.155
+H_S_1 core CH2 core +lj 30.717 5.025
+C_S_0 core Cl core +lj 76.831 5.155
+H_S_0 core CH2 core +lj 30.717 5.025
+O_Zn_1 core CH2 core +lj 61.022 5.16
+C_S_3 core Cl core +lj 76.831 5.155
+C_S_1 core Cl core +lj 76.831 5.155
+Zn_S_0 core CH2 core +lj 87.729 4.83
+O_S_1 core CH2 core +lj 77.072 5.115
+Zn_S_1 core CH2 core +lj 87.729 4.83
+O_Zn_0 core Cl core +lj 61.022 4.98
+CLOSE

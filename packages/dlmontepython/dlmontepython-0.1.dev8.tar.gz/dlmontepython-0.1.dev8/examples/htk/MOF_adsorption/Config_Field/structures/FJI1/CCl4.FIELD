@@ -1,0 +1,61 @@
+Test
+CUTOFF 12
+UNITS K
+NCONFIGS 1
+ATOMS 14
+H_S_0 core 1.008 0.05833
+H_S_1 core 1.008 0.07828
+H_S_2 core 1.008 0.08905
+C_S_0 core 12.011 -0.08783
+C_S_1 core 12.011 0.06839
+C_S_2 core 12.011 0.74605
+N_S_0 core 14.007 -0.09855
+N_S_1 core 14.007 -0.09852
+O_S_0 core 15.999 -0.60301
+O_S_1 core 15.999 -0.60296
+Zn_S_0 core 65.38 0.75003
+Zn_S_1 core 65.38 0.75015
+C core 12.011 -0.362
+Cl core 35.45 -0.235
+MOLTYPES 2
+FJI1
+MAXATOM 516
+CCl4
+ATOMS 5 5
+C core 0.0 0.0 0.0
+Cl core 1.18 1.18 1.18
+Cl core -1.18 -1.18 1.18
+Cl core -1.18 1.18 -1.18
+Cl core 1.18 -1.18 -1.18
+EXCLUDE
+RIGID
+FINISH
+VDW 27 
+N_S_1 core Cl core +lj 90.999 4.88
+C_S_1 core Cl core +lj 100.871 4.985
+Zn_S_0 core C core +lj 27.783 4.04
+H_S_0 core C core +lj 9.728 4.235
+C_S_2 core Cl core +lj 100.871 4.985
+N_S_1 core C core +lj 21.95 4.44
+C core Cl core +lj 51.282 4.655
+O_S_0 core C core +lj 24.408 4.325
+Cl core Cl core +lj 212.6 4.875
+O_S_0 core Cl core +lj 101.187 4.765
+Zn_S_1 core C core +lj 27.783 4.04
+O_S_1 core Cl core +lj 101.187 4.765
+C_S_0 core Cl core +lj 100.871 4.985
+O_S_1 core C core +lj 24.408 4.325
+C_S_0 core C core +lj 24.332 4.545
+H_S_2 core Cl core +lj 40.329 4.675
+H_S_1 core Cl core +lj 40.329 4.675
+C core C core +lj 12.37 4.215
+C_S_1 core C core +lj 24.332 4.545
+H_S_1 core C core +lj 9.728 4.235
+N_S_0 core C core +lj 21.95 4.44
+H_S_2 core C core +lj 9.728 4.235
+Zn_S_0 core Cl core +lj 115.179 4.48
+Zn_S_1 core Cl core +lj 115.179 4.48
+N_S_0 core Cl core +lj 90.999 4.88
+H_S_0 core Cl core +lj 40.329 4.675
+C_S_2 core C core +lj 24.332 4.545
+CLOSE

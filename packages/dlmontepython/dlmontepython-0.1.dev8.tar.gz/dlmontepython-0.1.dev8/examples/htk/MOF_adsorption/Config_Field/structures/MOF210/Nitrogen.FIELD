@@ -1,0 +1,123 @@
+Test
+CUTOFF 12
+UNITS K
+NCONFIGS 1
+ATOMS 14
+H_S_0 core 1.008 0.09015
+H_S_1 core 1.008 0.11142
+C_S_0 core 12.011 -0.10066
+C_S_1 core 12.011 0.1101
+C_S_2 core 12.011 0.68415
+O_Zn_0 core 15.999 -0.71594
+O_Zn_1 core 15.999 -0.52965
+O_S_0 core 15.999 -0.57569
+O_S_1 core 15.999 -0.53269
+O_S_2 core 15.999 -0.46876
+Zn_S_0 core 65.38 0.75389
+Zn_S_1 core 65.38 0.76031
+N core 14.007 -0.482
+COM core 1.0 0.964
+MOLTYPES 2
+MOF210
+MAXATOM 1854
+Nitrogen
+ATOMS 3 3
+N core 0.0 0.0 0.0
+COM core 0.0 0.0 0.55
+N core 0.0 0.0 1.1
+EXCLUDE
+RIGID
+FINISH
+VDW 91 
+H_S_0 core H_S_1 core +lj 7.65 4.275
+H_S_0 core C_S_0 core +lj 19.134 4.895
+H_S_0 core C_S_1 core +lj 19.134 4.895
+H_S_0 core C_S_2 core +lj 19.134 4.895
+H_S_0 core O_Zn_0 core +lj 15.197 4.545
+H_S_0 core O_Zn_1 core +lj 15.197 4.545
+H_S_0 core O_S_0 core +lj 19.194 4.455
+H_S_0 core O_S_1 core +lj 19.194 4.455
+H_S_0 core O_S_2 core +lj 19.194 4.455
+H_S_0 core Zn_S_0 core +lj 21.849 3.885
+H_S_0 core Zn_S_1 core +lj 21.849 3.885
+H_S_0 core N core +lj 16.595 4.735
+H_S_0 core COM core +lj 0.0 1.425
+H_S_1 core C_S_0 core +lj 19.134 4.895
+H_S_1 core C_S_1 core +lj 19.134 4.895
+H_S_1 core C_S_2 core +lj 19.134 4.895
+H_S_1 core O_Zn_0 core +lj 15.197 4.545
+H_S_1 core O_Zn_1 core +lj 15.197 4.545
+H_S_1 core O_S_0 core +lj 19.194 4.455
+H_S_1 core O_S_1 core +lj 19.194 4.455
+H_S_1 core O_S_2 core +lj 19.194 4.455
+H_S_1 core Zn_S_0 core +lj 21.849 3.885
+H_S_1 core Zn_S_1 core +lj 21.849 3.885
+H_S_1 core N core +lj 16.595 4.735
+H_S_1 core COM core +lj 0.0 1.425
+C_S_0 core C_S_1 core +lj 47.86 5.205
+C_S_0 core C_S_2 core +lj 47.86 5.205
+C_S_0 core O_Zn_0 core +lj 38.012 4.855
+C_S_0 core O_Zn_1 core +lj 38.012 4.855
+C_S_0 core O_S_0 core +lj 48.01 4.765
+C_S_0 core O_S_1 core +lj 48.01 4.765
+C_S_0 core O_S_2 core +lj 48.01 4.765
+C_S_0 core Zn_S_0 core +lj 54.649 4.195
+C_S_0 core Zn_S_1 core +lj 54.649 4.195
+C_S_0 core N core +lj 41.509 5.045
+C_S_0 core COM core +lj 0.0 1.735
+C_S_1 core C_S_2 core +lj 47.86 5.205
+C_S_1 core O_Zn_0 core +lj 38.012 4.855
+C_S_1 core O_Zn_1 core +lj 38.012 4.855
+C_S_1 core O_S_0 core +lj 48.01 4.765
+C_S_1 core O_S_1 core +lj 48.01 4.765
+C_S_1 core O_S_2 core +lj 48.01 4.765
+C_S_1 core Zn_S_0 core +lj 54.649 4.195
+C_S_1 core Zn_S_1 core +lj 54.649 4.195
+C_S_1 core N core +lj 41.509 5.045
+C_S_1 core COM core +lj 0.0 1.735
+C_S_2 core O_Zn_0 core +lj 38.012 4.855
+C_S_2 core O_Zn_1 core +lj 38.012 4.855
+C_S_2 core O_S_0 core +lj 48.01 4.765
+C_S_2 core O_S_1 core +lj 48.01 4.765
+C_S_2 core O_S_2 core +lj 48.01 4.765
+C_S_2 core Zn_S_0 core +lj 54.649 4.195
+C_S_2 core Zn_S_1 core +lj 54.649 4.195
+C_S_2 core N core +lj 41.509 5.045
+C_S_2 core COM core +lj 0.0 1.735
+O_Zn_0 core O_Zn_1 core +lj 30.19 4.68
+O_Zn_0 core O_S_0 core +lj 38.131 4.59
+O_Zn_0 core O_S_1 core +lj 38.131 4.59
+O_Zn_0 core O_S_2 core +lj 38.131 4.59
+O_Zn_0 core Zn_S_0 core +lj 43.403 4.02
+O_Zn_0 core Zn_S_1 core +lj 43.403 4.02
+O_Zn_0 core N core +lj 32.967 4.87
+O_Zn_0 core COM core +lj 0.0 1.56
+O_Zn_1 core O_S_0 core +lj 38.131 4.59
+O_Zn_1 core O_S_1 core +lj 38.131 4.59
+O_Zn_1 core O_S_2 core +lj 38.131 4.59
+O_Zn_1 core Zn_S_0 core +lj 43.403 4.02
+O_Zn_1 core Zn_S_1 core +lj 43.403 4.02
+O_Zn_1 core N core +lj 32.967 4.87
+O_Zn_1 core COM core +lj 0.0 1.56
+O_S_0 core O_S_1 core +lj 48.16 4.545
+O_S_0 core O_S_2 core +lj 48.16 4.545
+O_S_0 core Zn_S_0 core +lj 54.82 3.975
+O_S_0 core Zn_S_1 core +lj 54.82 3.975
+O_S_0 core N core +lj 41.638 4.825
+O_S_0 core COM core +lj 0.0 1.515
+O_S_1 core O_S_2 core +lj 48.16 4.545
+O_S_1 core Zn_S_0 core +lj 54.82 3.975
+O_S_1 core Zn_S_1 core +lj 54.82 3.975
+O_S_1 core N core +lj 41.638 4.825
+O_S_1 core COM core +lj 0.0 1.515
+O_S_2 core Zn_S_0 core +lj 54.82 3.975
+O_S_2 core Zn_S_1 core +lj 54.82 3.975
+O_S_2 core N core +lj 41.638 4.825
+O_S_2 core COM core +lj 0.0 1.515
+Zn_S_0 core Zn_S_1 core +lj 62.4 3.69
+Zn_S_0 core N core +lj 47.396 4.54
+Zn_S_0 core COM core +lj 0.0 1.23
+Zn_S_1 core N core +lj 47.396 4.54
+Zn_S_1 core COM core +lj 0.0 1.23
+N core COM core +lj 0.0 1.655
+CLOSE

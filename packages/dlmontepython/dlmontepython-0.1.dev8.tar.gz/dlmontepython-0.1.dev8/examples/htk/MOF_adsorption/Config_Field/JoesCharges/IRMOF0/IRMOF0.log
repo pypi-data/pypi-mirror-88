@@ -1,0 +1,108 @@
+|===============================================================================
+|
+|  DFTB+ release 18.2
+|
+|  Copyright (C) 2018  DFTB+ developers group
+|
+|===============================================================================
+|
+|  When publishing results obtained with DFTB+, please cite the following
+|  reference:
+|
+|  * B. Aradi, B. Hourahine and T. Frauenheim,
+|    DFTB+, a Sparse Matrix-Based Implementation of the DFTB Method,
+|    J. Phys. Chem. A, 111 5678 (2007).  [doi: 10.1021/jp070186p]
+|
+|  You should also cite additional publications crediting the parametrization
+|  data you use. Please consult the documentation of the SK-files for the
+|  references.
+|
+|===============================================================================
+
+
+***  Parsing and initializing
+
+Parser version: 6
+
+Interpreting input file 'dftb_in.hsd'
+--------------------------------------------------------------------------------
+Reading SK-files:
+  /home/mtolladay/pkgs/slako/3ob/3ob-3-1/O-O.skf
+  /home/mtolladay/pkgs/slako/3ob/3ob-3-1/O-Zn.skf
+  /home/mtolladay/pkgs/slako/3ob/3ob-3-1/O-C.skf
+  /home/mtolladay/pkgs/slako/3ob/3ob-3-1/Zn-Zn.skf
+  /home/mtolladay/pkgs/slako/3ob/3ob-3-1/Zn-C.skf
+  /home/mtolladay/pkgs/slako/3ob/3ob-3-1/C-C.skf
+Done.
+WARNING!
+-> The following 2 node(s) have been ignored by the parser:
+(1)
+Path: dftb_in/Hamiltonian/DFTB/HubbardDerivs/H
+Line: 27-27 (File: dftb_in.hsd)
+(2)
+Path: dftb_in/Hamiltonian/DFTB/MaxAngularMomentum/H
+Line: 39-39 (File: dftb_in.hsd)
+
+
+
+Processed input in HSD format written to 'dftb_pin.hsd'
+
+Starting initialization...
+--------------------------------------------------------------------------------
+MPI processes:               1
+OpenMP threads:              1
+BLACS orbital grid size:     1 x 1
+BLACS atom grid size:        1 x 1
+Chosen random seed:                 7590103
+Mode:                        Static calculation
+Self consistent charges:     Yes
+SCC-tolerance:                 0.100000E-09
+Max. scc iterations:                  10000
+Spin polarisation:           No
+Nr. of up electrons:            87.000000
+Nr. of down electrons:          87.000000
+Periodic boundaries:         Yes
+Diagonalizer:                Divide and Conquer
+Mixer:                       Broyden mixer
+Mixing parameter:                  0.200000
+Maximal SCC-cycles:                   10000
+Nr. of chrg. vec. in memory:              0
+Force evaluation method:     Traditional                                                                                                                                                                                             
+Electronic temperature:        0.100000E-07
+Initial charges:             Set automatically (system chrg:   0.000E+00)
+Included shells:             O:  s, p
+                            Zn:  s, p, d
+                             C:  s, p
+K-points and weights:           1:  0.000000  0.000000  0.000000     1.000000
+
+K-points in absolute space:     1:  0.000000  0.000000  0.000000
+
+Using DFT-D3 dispersion corrections
+Full 3rd order correction    Yes
+Extra options:
+                             Mulliken analysis
+                             Force calculation
+Force type                   original
+
+--------------------------------------------------------------------------------
+
+***  Geometry step: 0
+
+ iSCC Total electronic   Diff electronic      SCC error    
+    1   -0.83561016E+02    0.00000000E+00    0.10460286E+01
+    2   -0.83606054E+02   -0.45037521E-01    0.76044281E+00
+    3   -0.83645143E+02   -0.39089367E-01    0.10198378E+00
+    4   -0.83646023E+02   -0.87946885E-03    0.78772300E-01
+    5   -0.83647397E+02   -0.13747226E-02    0.21953317E-01
+    6   -0.83647410E+02   -0.12570852E-04    0.20849068E-02
+    7   -0.83647410E+02   -0.61161472E-07    0.54004097E-03
+    8   -0.83647410E+02   -0.88731866E-08    0.23289096E-03
+    9   -0.83647410E+02   -0.11491608E-08    0.79538433E-06
+   10   -0.83647410E+02    0.14210855E-13    0.38594719E-08
+   11   -0.83647410E+02   -0.14210855E-13    0.27444713E-12
+>> Charges saved for restart in charges.bin
+
+Total Energy:                      -80.8240037799 H        -2199.3330 eV
+Total Mermin free energy:          -80.8240037799 H        -2199.3330  eV
+Volume:                              0.926920E+04 au^3   0.137355E+04 A^3
+Pressure:                            0.204135E-03 au     0.600586E+10 Pa

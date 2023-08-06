@@ -1,0 +1,18 @@
+MgO-fcc lattice
+finish
+temperature      800.0
+steps               1000000
+maxatmdist 0.001
+maxvolchange 0.01
+equilibration       100000
+print                100
+paratom
+acceptatmmoveupdate 100
+#distewald
+acceptvolupdate 100
+stack               100
+move volume cubic lin 20
+move atoms 2 80
+Mg core
+O core
+start 

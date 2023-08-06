@@ -1,0 +1,113 @@
+Test
+CUTOFF 12
+UNITS K
+NCONFIGS 1
+ATOMS 17
+H_S_0 core 1.008 0.05833
+H_S_1 core 1.008 0.07828
+H_S_2 core 1.008 0.08905
+C_S_0 core 12.011 -0.08783
+C_S_1 core 12.011 0.06839
+C_S_2 core 12.011 0.74605
+N_S_0 core 14.007 -0.09855
+N_S_1 core 14.007 -0.09852
+O_S_0 core 15.999 -0.60301
+O_S_1 core 15.999 -0.60296
+Zn_S_0 core 65.38 0.75003
+Zn_S_1 core 65.38 0.75015
+H core 1.008 0.06
+C core 12.011 0.45
+O core 15.999 -0.5
+N core 14.007 -0.57
+Me core 1.0 0.28
+MOLTYPES 2
+FJI1
+MAXATOM 516
+DMF
+ATOMS 6 6
+H core 1.594 1.019 0.0
+C core 1.13 0.0 0.0
+O core 1.732 -0.945 0.0
+N core 0.0 0.0 0.0
+Me core -0.72 1.247 0.0
+Me core -0.698 -1.259 0.0
+EXCLUDE
+RIGID
+FINISH
+VDW 75 
+Zn_S_0 core Me core +lj 65.617 5.03
+H_S_2 core O core +lj 41.58 4.385
+O_S_1 core N core +lj 83.277 4.715
+O core Me core +lj 124.876 5.28
+N_S_1 core C core +lj 42.922 5.33
+Zn_S_1 core C core +lj 54.328 4.93
+O_S_1 core C core +lj 47.728 5.215
+H_S_2 core Me core +lj 22.975 5.225
+O_S_1 core H core +lj 18.595 3.715
+C_S_2 core H core +lj 18.537 3.935
+H core N core +lj 32.155 4.3
+O_S_0 core O core +lj 104.327 4.475
+N core N core +lj 144.0 4.8
+Zn_S_1 core Me core +lj 65.617 5.03
+H_S_0 core Me core +lj 22.975 5.225
+N_S_1 core Me core +lj 51.842 5.43
+C_S_1 core O core +lj 104.002 4.695
+H_S_0 core H core +lj 7.411 3.625
+H core C core +lj 18.429 4.8
+H_S_0 core C core +lj 19.022 5.125
+C_S_2 core Me core +lj 57.466 5.535
+H core H core +lj 7.18 3.3
+O_S_0 core C core +lj 47.728 5.215
+H_S_0 core N core +lj 33.19 4.625
+N_S_0 core Me core +lj 51.842 5.43
+O_S_0 core N core +lj 83.277 4.715
+C_S_1 core C core +lj 47.579 5.435
+H_S_0 core O core +lj 41.58 4.385
+H core O core +lj 40.283 4.06
+H_S_1 core H core +lj 7.411 3.625
+C_S_0 core Me core +lj 57.466 5.535
+O_S_0 core Me core +lj 57.646 5.315
+C_S_2 core C core +lj 47.579 5.435
+C core O core +lj 103.391 4.81
+H core Me core +lj 22.258 4.9
+H_S_1 core N core +lj 33.19 4.625
+O_S_0 core H core +lj 18.595 3.715
+N_S_0 core O core +lj 93.823 4.59
+N core Me core +lj 99.679 5.4
+Zn_S_1 core N core +lj 94.792 4.43
+C core N core +lj 82.53 5.05
+N_S_1 core N core +lj 74.892 4.83
+C_S_2 core O core +lj 104.002 4.695
+C core C core +lj 47.3 5.55
+N_S_0 core H core +lj 16.723 3.83
+N_S_1 core H core +lj 16.723 3.83
+Zn_S_0 core O core +lj 118.754 4.19
+H_S_1 core C core +lj 19.022 5.125
+N_S_0 core C core +lj 42.922 5.33
+C core Me core +lj 57.129 5.65
+H_S_2 core H core +lj 7.411 3.625
+O_S_1 core Me core +lj 57.646 5.315
+O core N core +lj 180.4 4.68
+N_S_0 core N core +lj 74.892 4.83
+Zn_S_1 core H core +lj 21.167 3.43
+C_S_0 core O core +lj 104.002 4.695
+Me core Me core +lj 69.0 5.7
+H_S_2 core N core +lj 33.19 4.625
+Zn_S_0 core C core +lj 54.328 4.93
+H_S_1 core O core +lj 41.58 4.385
+C_S_0 core N core +lj 83.017 4.935
+C_S_1 core N core +lj 83.017 4.935
+C_S_0 core C core +lj 47.579 5.435
+H_S_1 core Me core +lj 22.975 5.225
+C_S_0 core H core +lj 18.537 3.935
+O core O core +lj 226.0 4.44
+H_S_2 core C core +lj 19.022 5.125
+C_S_1 core Me core +lj 57.466 5.535
+Zn_S_0 core N core +lj 94.792 4.43
+N_S_1 core O core +lj 93.823 4.59
+Zn_S_1 core O core +lj 118.754 4.19
+C_S_2 core N core +lj 83.017 4.935
+C_S_1 core H core +lj 18.537 3.935
+O_S_1 core O core +lj 104.327 4.475
+Zn_S_0 core H core +lj 21.167 3.43
+CLOSE

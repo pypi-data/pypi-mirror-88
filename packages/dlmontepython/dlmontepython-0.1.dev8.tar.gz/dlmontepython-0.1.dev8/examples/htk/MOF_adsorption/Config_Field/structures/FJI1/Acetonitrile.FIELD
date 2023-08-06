@@ -1,0 +1,75 @@
+Test
+CUTOFF 12
+UNITS K
+NCONFIGS 1
+ATOMS 15
+H_S_0 core 1.008 0.05833
+H_S_1 core 1.008 0.07828
+H_S_2 core 1.008 0.08905
+C_S_0 core 12.011 -0.08783
+C_S_1 core 12.011 0.06839
+C_S_2 core 12.011 0.74605
+N_S_0 core 14.007 -0.09855
+N_S_1 core 14.007 -0.09852
+O_S_0 core 15.999 -0.60301
+O_S_1 core 15.999 -0.60296
+Zn_S_0 core 65.38 0.75003
+Zn_S_1 core 65.38 0.75015
+N core 14.007 0.269
+C core 12.011 0.129
+Me core 1.0 -0.398
+MOLTYPES 2
+FJI1
+MAXATOM 516
+Acetonitrile
+ATOMS 3 3
+N core 1.157 0.0 0.0
+C core 0.0 0.0 0.0
+Me core -1.54 0.0 0.0
+EXCLUDE
+RIGID
+FINISH
+VDW 42 
+H_S_1 core N core +lj 27.381 5.175
+Zn_S_0 core Me core +lj 61.188 4.18
+O_S_1 core N core +lj 68.7 5.265
+N core Me core +lj 76.681 4.825
+N_S_1 core C core +lj 48.343 5.18
+Zn_S_1 core N core +lj 78.2 4.98
+Zn_S_1 core C core +lj 61.188 4.78
+N_S_1 core N core +lj 61.783 5.38
+O_S_1 core C core +lj 53.755 5.065
+H_S_2 core Me core +lj 21.424 4.375
+C core C core +lj 60.0 5.325
+H_S_1 core C core +lj 21.424 4.975
+N_S_0 core C core +lj 48.343 5.18
+C core Me core +lj 60.0 4.725
+O_S_1 core Me core +lj 53.755 4.465
+N core N core +lj 98.0 5.625
+Zn_S_1 core Me core +lj 61.188 4.18
+N_S_0 core N core +lj 61.783 5.38
+H_S_0 core Me core +lj 21.424 4.375
+N_S_1 core Me core +lj 48.343 4.58
+Me core Me core +lj 60.0 4.425
+H_S_2 core N core +lj 27.381 5.175
+Zn_S_0 core C core +lj 61.188 4.78
+H_S_0 core C core +lj 21.424 4.975
+C_S_0 core N core +lj 68.486 5.485
+C_S_1 core N core +lj 68.486 5.485
+C_S_2 core Me core +lj 53.587 4.685
+O_S_0 core C core +lj 53.755 5.065
+H_S_0 core N core +lj 27.381 5.175
+C_S_0 core C core +lj 53.587 5.285
+N_S_0 core Me core +lj 48.343 4.58
+H_S_1 core Me core +lj 21.424 4.375
+O_S_0 core N core +lj 68.7 5.265
+C_S_1 core C core +lj 53.587 5.285
+H_S_2 core C core +lj 21.424 4.975
+C_S_1 core Me core +lj 53.587 4.685
+Zn_S_0 core N core +lj 78.2 4.98
+C_S_0 core Me core +lj 53.587 4.685
+C_S_2 core N core +lj 68.486 5.485
+N core C core +lj 76.681 5.425
+O_S_0 core Me core +lj 53.755 4.465
+C_S_2 core C core +lj 53.587 5.285
+CLOSE

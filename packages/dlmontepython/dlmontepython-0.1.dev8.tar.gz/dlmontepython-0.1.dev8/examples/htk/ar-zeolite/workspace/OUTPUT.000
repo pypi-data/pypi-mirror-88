@@ -1,0 +1,121 @@
+
+                   ===================================================================
+                   * * *                                                         * * *
+                   * * *            D L - M O N T E - v e r. 2.0 (5)             * * *
+                   * * *                                                         * * *
+                   * * *           STFC / CCP5 - Daresbury Laboratory            * * *
+                   * * *                 program library  package                * * *
+                   * * *                                                         * * *
+                   * * *     general purpose Monte Carlo simulation software     * * *
+                   * * *                                                         * * *
+                   * * *     version:  2.06 (gamma/stable dev.) / June 2018      * * *
+                   * * *     author :  J. A. Purton (2007-2015)                  * * *
+                   * * *     -----------------------------------------------     * * *
+                   * * *     co-authors:                                         * * *
+                   * * *     -------------                                       * * *
+                   * * *     A. V. Brukhno   - Free Energy Diff, planar pores    * * *
+                   * * *     T. L. Underwood - Lattice/Phase-Switch MC methods   * * *
+                   * * *     R. J. Grant     - extra potentials, optimizations   * * *
+                   * * *     -----------------------------------------------     * * *
+                   * * *                                                         * * *
+                   * * *     current execution:                                  * * *
+                   * * *     ==================                                  * * *
+                   * * *     number of nodes/CPUs/cores:          1              * * *
+                   * * *     number of threads per node:          1              * * *
+                   * * *     number of threads employed:          1              * * *
+                   * * *                                                         * * *
+                   * * * ======================================================= * * *
+                   * * * Publishing data obtained with DL_MONTE? - please cite:  * * *
+                   * * * ------------------------------------------------------- * * *
+                   * * *        Purton, J. A., Crabtree J. C. and Parker, S. C., * * *
+                   * * *        Molecular Simulation 2013, 39 (14-15), 1240-1252 * * *
+                   * * *                `DL_MONTE: A general purpose program for * * *
+                   * * *                         parallel Monte Carlo simulation`* * *
+                   * * * ------------------------------------------------------- * * *
+                   * * * if using Lattice-Switch method, please also cite:       * * *
+                   * * * ------------------------------------------------------- * * *
+                   * * *              Bruce A.D., Wilding N.B. and G.J. Ackland, * * *
+                   * * *                         Phys. Rev. Lett. 1997, 79, 3002 * * *
+                   * * *    `Free Energy of Crystalline Solids: A Lattice-Switch * * *
+                   * * *                                      Monte Carlo Method`* * *
+                   * * * ------------------------------------------------------- * * *
+                   * * * if using Planar Pore (slit) geometry, please also cite: * * *
+                   * * * ------------------------------------------------------- * * *
+                   * * *                                         Broukhno A. V., * * *
+                   * * *     `Free Energy and Surface Forces in polymer systems: * * *
+                   * * *                          Monte Carlo Simulation Studies`* * *
+                   * * *                           PhD Thesis, Lund, Sweden 2003 * * *
+                   * * *                                                         * * *
+                   * * *    Brukhno A. V., Akinshina A., Coldrick Z., Nelson A., * * *
+                   * * *                                             and Auer S. * * *
+                   * * *                              Soft Matter. 2011, 7, 1006 * * *
+                   * * *               `Phase phenomena in supported lipid films * * *
+                   * * *                        under varying electric potential`* * *
+                   ===================================================================
+
+ ----------------------------------------------------------------------------------------------------
+ FIELD title  (100 symbols max) :
+ ----------------------------------------------------------------------------------------------------
+'mgo interactions using lewis-catlow potentials'
+ ----------------------------------------------------------------------------------------------------
+
+ reading species:   1 - atomic field 'zeolite' of       2304 atoms (max)
+
+ ------------------
+
+ reading species:   2 - atomic field 'argon' of        200 atoms (max)
+
+ ------------------
+
+
+ ====================================================================================================
+ atom data :
+ ====================================================================================================
+ element           mass             charge
+ --------------------------------------------------
+  Si              24.0000         4.0000
+  O               16.0000        -2.0000
+  Ar              39.9000         0.0000
+
+
+ ====================================================================================================
+ molecule data :
+ ====================================================================================================
+ molecule name / rigid / exclude VDW & Coulomb
+ --------------------------------------------------
+ 'zeolite '    /   F   /  F
+ --------------------------------------------------
+
+ --------------------------------------------------
+ 'argon   '    /   F   /  F
+ --------------------------------------------------
+
+
+
+ ----------------------------------------------------------------------------------------------------
+ nonbonded (vdw) potentials :
+ ----------------------------------------------------------------------------------------------------
+ Ar      Ar         lj                0.500000       0.010315       3.405000       0.000000       0.000000       0.000000       0.000000
+
+ VdW repulsion capped at D_core(  1) =     0.823081 by E_cap = 0.100000E+11
+
+ Ar      Si         lj                0.500000       0.002844       2.041050       0.000000       0.000000       0.000000       0.000000
+
+ VdW repulsion capped at D_core(  2) =     0.443150 by E_cap = 0.100000E+11
+
+ Ar      O          lj                0.500000       0.002844       2.041050       0.000000       0.000000       0.000000       0.000000
+
+ VdW repulsion capped at D_core(  3) =     0.443150 by E_cap = 0.100000E+11
+
+
+
+ Node   0 :
+ ERROR: reading CONTROL has stopped : Atom type 'Xe       c' in 'move gcinsertatom' list not defined in FIELD!
+        Problematic line is: 'Xe core 0.02'
+
+
+ DL_MONTE terminated due to error   999
+
+
+ error - fatal failure : cannot proceed any further
+ error - for clues check outputs of all processes..

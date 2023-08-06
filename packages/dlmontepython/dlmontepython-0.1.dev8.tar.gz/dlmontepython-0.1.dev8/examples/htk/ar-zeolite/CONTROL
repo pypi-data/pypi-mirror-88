@@ -1,0 +1,18 @@
+Control file for Ar in zeolite
+use gaspressure
+finish use-block
+steps 1000000
+temperature 300.0
+maxatmdist 0.001
+equilibration 100000
+print 1000
+noewald all
+acceptatmmoveupdate 100
+acceptvolupdate 100
+stack 100
+move atom 1 80
+Ar core
+move gcinsertatom 2 20 1.0
+Ar core 0.001
+Xe core 0.02
+start simulation

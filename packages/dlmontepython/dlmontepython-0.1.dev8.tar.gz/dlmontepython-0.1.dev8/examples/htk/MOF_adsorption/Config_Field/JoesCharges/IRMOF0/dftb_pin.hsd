@@ -1,0 +1,143 @@
+Geometry = genFormat {
+29 S
+O Zn C
+1 3 5.558 5.558 9.19293
+2 3 9.19293 5.558 5.558
+3 3 5.558 9.19293 5.558
+4 3 5.558 5.558 1.92307
+5 3 1.92307 5.558 5.558
+6 3 5.558 1.92307 5.558
+7 3 5.558 5.558 10.63579
+8 3 10.63579 5.558 5.558
+9 3 5.558 10.63579 5.558
+10 3 5.558 5.558 0.48021
+11 3 0.48021 5.558 5.558
+12 3 5.558 0.48021 5.558
+13 1 4.75098 4.75098 8.63936
+14 1 8.63936 4.75098 4.75098
+15 1 4.75098 8.63936 4.75098
+16 1 6.36502 4.75098 2.47664
+17 1 6.36502 8.63936 6.36502
+18 1 2.47664 4.75098 6.36502
+19 1 4.75098 6.36502 2.47664
+20 1 8.63936 6.36502 6.36502
+21 1 4.75098 2.47664 6.36502
+22 1 6.36502 6.36502 8.63936
+23 1 6.36502 2.47664 4.75098
+24 1 2.47664 6.36502 4.75098
+25 1 5.558 5.558 5.558
+26 2 4.40416 4.40416 6.71184
+27 2 6.71184 4.40416 4.40416
+28 2 4.40416 6.71184 4.40416
+29 2 6.71184 6.71184 6.71184
+0.0 0.0 0.0
+11.116 0.0 0.0
+0.0 11.116 0.0
+0.0 0.0 11.116
+}
+Driver = {}
+Hamiltonian = DFTB {
+  Eigensolver = DivideAndConquer {}
+  Mixer = Broyden {
+    MixingParameter = 0.20000000000000001
+    InverseJacobiWeight = 1.0000000000000000E-002
+    MinimalWeight = 1.0000000000000000
+    MaximalWeight = 100000.00000000000
+    WeightFactor = 1.0000000000000000E-002
+  }
+  SpinPolarisation = {}
+  KPointsAndWeights = SuperCellFolding {
+1   0   0
+0   1   0
+0   0   1
+0.0 0.0 0.0
+  }
+  Dispersion = DftD3 {
+    Damping = ZeroDamping {
+      sr6 = 1.25
+      alpha6 = 29.61
+    }
+    s6 = 1.0
+    s8 = 0.49
+    cutoff = 94.868329805051374
+    cutoffcn = 40.000000000000000
+    threebody = No
+    hhrepulsion = No
+  }
+  HubbardDerivs = {
+    C = -0.1492
+    O = -0.1575
+    Zn = -0.0300
+  }
+  SlaterKosterfiles = Type2FileNames {
+    Prefix = /home/mtolladay/pkgs/slako/3ob/3ob-3-1/
+    Separator = -
+    Suffix = .skf
+    LowerCaseTypeName = No
+  }
+  MaxAngularMomentum = {
+    C = p
+    O = p
+    Zn = d
+  }
+  Filling = Fermi {
+    Temperature [Kelvin] = 0
+    IndependentKFilling = No
+  }
+  SCC = Yes
+  SCCTolerance = 1.000E-10
+  MaxSCCIterations = 10000
+  ThirdOrderFull = Yes
+  PolynomialRepulsive = {}
+  OrbitalResolvedSCC = No
+  OldSKInterpolation = No
+  ReadInitialCharges = No
+  InitialCharges = {}
+  EwaldParameter = 0.0000000000000000
+  EwaldTolerance = 1.0000000000000001E-009
+  HCorrection = None {}
+  ElectricField = {}
+  Charge = 0.0000000000000000
+  ThirdOrder = No
+  Differentiation = FiniteDiff {
+    Delta = 1.2207031250000000E-004
+  }
+  ForceEvaluation = "Traditional"
+}
+Options = {
+  WriteDetailedXML = Yes
+  WriteResultsTag = Yes
+  WriteDetailedOut = Yes
+  WriteAutotestTag = No
+  RestartFrequency = 20
+  RandomSeed = 0
+  WriteHS = No
+  WriteRealHS = No
+  MinimiseMemoryUsage = No
+  ShowFoldedCoords = No
+  TimingVerbosity = 0
+  WriteChargesAsText = No
+}
+Analysis = {
+  CalculateForces = Yes
+  WriteEigenvectors = No
+  ProjectStates = {}
+  MullikenAnalysis = Yes
+  AtomResolvedEnergies = No
+  WriteBandOut = Yes
+}
+ParserOptions = {
+  IgnoreUnprocessedNodes = Yes
+  ParserVersion = 6
+  WriteHSDInput = Yes
+  WriteXMLInput = No
+  StopAfterParsing = No
+}
+Parallel = {
+  UseOmpThreads = No
+  Groups = 1
+  Blacs = BlockSize {
+32
+  }
+}
+ExcitedState = {}

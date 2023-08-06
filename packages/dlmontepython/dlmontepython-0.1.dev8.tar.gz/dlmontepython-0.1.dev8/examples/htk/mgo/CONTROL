@@ -1,0 +1,18 @@
+MgO-fcc lattice
+finish use-block
+temperature 700.0
+steps 10000
+maxatmdist 0.001
+maxvolchange 0.01
+equilibration 100000
+print 100
+paratom None
+acceptatmmoveupdate 100
+acceptvolupdate 100
+stack 100
+pressure 0.001
+move volume cubic lin 20
+move atom 2 80
+Mg core
+O core
+start simulation

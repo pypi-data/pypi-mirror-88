@@ -1,0 +1,38 @@
+Test
+CUTOFF 12
+UNITS K
+NCONFIGS 1
+ATOMS 7
+H_S core 1.008 0.12243
+C_S_0 core 12.011 -0.0783
+C_S_1 core 12.011 0.68986
+O_S core 15.999 -0.56029
+Zn_S core 65.38 0.76878
+N core 14.007 -0.482
+COM core 1.0 0.964
+MOLTYPES 2
+IRMOF1
+MAXATOM 424
+Nitrogen
+ATOMS 3 3
+N core 0.0 0.0 0.0
+COM core 0.0 0.0 0.55
+N core 0.0 0.0 1.1
+EXCLUDE
+RIGID
+FINISH
+VDW 13
+H_S core N core +lj 16.595 4.735
+N core COM core +lj 0.0 1.655
+Zn_S core N core +lj 47.396 4.54
+C_S_0 core COM core +lj 0.0 1.735
+O_S core N core +lj 41.638 4.825
+C_S_1 core COM core +lj 0.0 1.735
+H_S core COM core +lj 0.0 1.425
+N core N core +lj 36.0 4.965
+COM core COM core +lj 0.0 0.0
+Zn_S core COM core +lj 0.0 1.23
+C_S_0 core N core +lj 41.509 5.045
+O_S core COM core +lj 0.0 1.515
+C_S_1 core N core +lj 41.509 5.045
+CLOSE

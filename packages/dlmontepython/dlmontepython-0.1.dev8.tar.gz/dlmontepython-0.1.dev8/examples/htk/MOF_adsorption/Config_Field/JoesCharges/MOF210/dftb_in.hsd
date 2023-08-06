@@ -1,0 +1,67 @@
+Geometry = genFormat { 
+    <<< MOF210.gen 
+    } 
+Driver = {} 
+Hamiltonian = DFTB { 
+    Eigensolver = DivideAndConquer { 
+        } 
+    Mixer = Broyden{} 
+    SpinPolarisation = {}
+    KPointsAndWeights = SuperCellFolding {
+        1   0   0
+        0   1   0
+        0   0   1
+        0.0 0.0 0.0
+        }
+    Dispersion = DftD3 {
+        Damping = ZeroDamping { 
+            sr6 = 1.25
+            alpha6 = 29.61
+            }
+        s6 = 1.0
+        s8 = 0.49
+        HHRepulsion = Yes
+        }
+    HCorrection = H5{}
+    HubbardDerivs { 
+        H = -0.1857  
+        C = -0.1492  
+        O = -0.1575  
+        Zn = -0.0300  
+        } 
+    SlaterKosterfiles = Type2FileNames { 
+        Prefix = /home/mtolladay/pkgs/slako/3ob/3ob-3-1/ 
+        Separator = - 
+        Suffix = .skf 
+        LowerCaseTypeName = No 
+        } 
+    MaxAngularMomentum { 
+        H = s 
+        C = p 
+        O = p 
+        Zn = d 
+        } 
+    Filling = Fermi { 
+        Temperature[Kelvin] = 0  
+        } 
+    SCC = Yes 
+    SCCTolerance = 1.000E-10 
+    MaxSCCIterations = 10000  
+    ThirdOrderFull = Yes 
+    }
+Options { 
+    WriteDetailedXML = Yes 
+    WriteResultsTag = Yes 
+    } 
+Analysis { 
+    CalculateForces = Yes 
+    WriteEigenvectors = No 
+    } 
+ParserOptions { 
+    IgnoreUnprocessedNodes = Yes 
+    } 
+Parallel { 
+    UseOmpThreads = No 
+    Groups = 1  
+    } 
+
