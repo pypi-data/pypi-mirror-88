@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: aakr
+Version: 0.0.1.dev0
+Summary: Implementation of Auto Associative Kernel Regression (AAKR)
+Home-page: https://github.com/jmyrberg/aakr
+Author: Jesse Myrberg
+Author-email: jesse.myrberg@gmail.com
+License: MIT
+Description: # aakr
+        
+        [![Build Status](https://travis-ci.com/jmyrberg/aakr.svg?branch=master)](https://travis-ci.com/jmyrberg/aakr)
+        
+        Python implementation of the Auto-Associative Kernel Regression (AAKR). The algorithm is suitable for signal reconstruction, which further be used for e.g. condition monitoring or anomaly detection.
+        
+        
+        ## Installation
+        
+        `pip install aakr`
+        
+        
+        ## Example usage
+        
+        Give examples of normal conditions as pandas DataFrame or numpy array.
+        
+        ```python
+        from aakr import AAKR
+        
+        aakr = AAKR()
+        aakr.fit(X_obs_nc)
+        ```
+        
+        Predict normal condition for given observations.
+        
+        ```python
+        X_nc = aakr.predict(X_obs)
+        ```
+        
+        
+        ## References
+        
+        * [MTM algorithm by Martello and Toth](http://people.sc.fsu.edu/~jburkardt/f77_src/knapsack/knapsack.f) (Fortran)
+        * [A modified Auto Associative Kernel Regression method for robust signal reconstruction in nuclear power plant components](https://www.researchgate.net/publication/292538769_A_modified_Auto_Associative_Kernel_Regression_method_for_robust_signal_reconstruction_in_nuclear_power_plant_components)
+        
+        ---
+        Jesse Myrberg (jesse.myrberg@gmail.com)
+Keywords: aakr,auto,associative,kernel,regression,anomaly,detection
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved
+Classifier: Topic :: Software Development
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Description-Content-Type: text/markdown
+Provides-Extra: tests
+Provides-Extra: docs
