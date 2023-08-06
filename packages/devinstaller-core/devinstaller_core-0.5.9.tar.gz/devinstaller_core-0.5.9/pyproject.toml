@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "devinstaller_core"
+version = "0.5.9"
+description = "The core library for creating a Devinstaller application."
+authors = ["Justine Kizhakkinedath <justine@kizhak.com>"]
+license = "MIT License"
+readme = "README.md"
+homepage = "https://justine.kizhak.com/projects/devinstaller-core-py"
+repository = "https://gitlab.com/justinekizhak/devinstaller-core-py"
+documentation = "https://devinstaller-core.readthedocs.io/en/latest/"
+keywords = [
+  ""
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.8",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+cerberus = "^1.3.2"
+anymarkup = "^0.8.1"
+typeguard = "^2.9.1"
+questionary = "^1.5.2"
+requests = "^2.24.0"
+pydantic = "^1.6.1"
+rich = "^9.2.0"
+
+[tool.poetry.dev-dependencies]
+sphinx = "^3.0.4"
+sphinx-autobuild = "^0.7.1"
+sphinxcontrib-napoleon = "^0.7"
+mypy = "^0.780"
+lxml = "^4.5.1"
+jupyterlab = "^2.1.4"
+pytest = "^5.4.3"
+pytest-cov = "^2.10.0"
+pytest-subprocess = "^0.1.4"
+pytest-mock = "^3.1.1"
+pdbpp = "^0.10.2"
+pylint = "^2.5.3"
+flake8 = "^3.8.3"
+black = {version = "^19.10b0", allow-prereleases = true}
+pytest-watch = "^4.2.0"
+hypothesis = "^5.27.0"
+hypothesis-fspaths = "^0.1"
+pytest-lazy-fixture = "^0.6.3"
+
+[tool.poetry.urls]
+"Bug Reports" = "https://gitlab.com/justinekizhak/devinstaller/issues"
+"Say Thanks!" = "https://saythanks.io/to/justine%40kizhak.com"
+
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
