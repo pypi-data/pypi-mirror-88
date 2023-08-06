@@ -1,0 +1,483 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Build a repository &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Understanding data models" href="understanding-data-models.html" />
+    <link rel="prev" title="Tutorials" href="bootcamp.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="build-a-repository">
+<span id="build-repository"></span><h1>Build a repository<a class="headerlink" href="#build-a-repository" title="Permalink to this headline">¶</a></h1>
+<p>Now that you have generated the skeleton of your repository via cookiecutter,
+bootstrapped your instance, run it and created a record, let’s have a deep dive
+at the various files and folders that were generated and what they do.</p>
+<p>The generated skeleton is our default recommendation, however you are
+completely free to adapt it as your see fit.</p>
+<div class="section" id="management-scripts">
+<h2>Management scripts<a class="headerlink" href="#management-scripts" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>...
+├── scripts
+│   ├── bootstrap
+│   ├── console
+│   ├── server
+│   ├── setup
+│   └── update
+...
+</pre></div>
+</div>
+<p>In your root folder, you will find the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory which contains
+executable bash scripts that will assist you with developing and managing your
+Invenio instance:</p>
+<p><strong>scripts/bootstrap</strong></p>
+<blockquote>
+<div><p>Installs all of the Python dependencies, your application’s code, and
+collects and builds the static files required for the instance to run. We’ll
+talk more about how we manage <a class="reference internal" href="#dependencies">dependencies</a> in the relevant section below.</p>
+</div></blockquote>
+<p><strong>scripts/setup</strong></p>
+<blockquote>
+<div><p>(Re)initializes data needed for services that hold application state, i.e.:</p>
+<ul class="simple">
+<li><p>Database tables</p></li>
+<li><p>Elasticsearch indices and templates</p></li>
+<li><p>RabbitMQ queues</p></li>
+<li><p>Redis databases</p></li>
+</ul>
+<p>This script is also useful when you’re doing local development and want to
+start from a clean state.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This scripts performs destructive and non-reversible operations. Only run
+this when you initialize your instance the first time. Running this in
+e.g. a production or testing environment will remove all existing data.</p>
+</div>
+</div></blockquote>
+<p><strong>scripts/server</strong></p>
+<blockquote>
+<div><p>Fires up a development HTTPS-enabled flask web server at <a class="reference external" href="https://localhost">https://localhost</a>
+for your application and a Celery worker. As you make HTTP requests to the
+web application or run any tasks you will see information, warnings and
+errors being logged in the terminal. Interrupting this script will
+automatically stop both services.</p>
+</div></blockquote>
+<p><strong>scripts/console</strong></p>
+<blockquote>
+<div><p>This will spawn an interactive IPython shell with your application fully
+loaded. You can use it to run arbitrary Python commands while having access
+to your application’s database models for queries. This is a great tool for
+testing functionality during development, troubleshooting and fixing problems
+on a live instance</p>
+</div></blockquote>
+<p><strong>scripts/update</strong></p>
+<blockquote>
+<div><p>This will repeat all of the steps of the <code class="docutils literal notranslate"><span class="pre">bootstrap</span></code> script, but will also
+additionally apply any new Alembic recipes for the database and Elasticsearch
+index changes.</p>
+</div></blockquote>
+</div>
+<div class="section" id="python-dependencies-and-packaging">
+<span id="dependencies"></span><h2>Python dependencies and packaging<a class="headerlink" href="#python-dependencies-and-packaging" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>...
+├── Pipfile
+├── Pipfile.lock
+├── setup.py
+├── MANIFEST.in
+...
+</pre></div>
+</div>
+<p>To manage our Python dependencies we have chosen to use <a class="reference external" href="https://pipenv.readthedocs.io">pipenv</a>. Pipenv does the following:</p>
+<ul class="simple">
+<li><p>Tracks your <em>loose</em> Python dependencies inside <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>.</p></li>
+<li><p>Pins specific versions (and hashes) of your Python depedendencies inside
+<code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code>. The existence of this file is essential to make sure that
+when you deploy your instance on a production environment, you can reproduce
+the exact same environment that you used when you developed and tested your
+application.</p></li>
+<li><p>Automatically creates a Python virtualenv with the correct Python version
+under the path defined in the <code class="docutils literal notranslate"><span class="pre">WORKON_HOME</span></code> environment variable (commonly
+used by <code class="docutils literal notranslate"><span class="pre">virtualenvwrapper</span></code>). If not set, new virtualenvs will be placed
+under <code class="docutils literal notranslate"><span class="pre">$HOME/.local/share/virtualenvs/</span></code>.</p></li>
+</ul>
+<p>We still need a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file though, not for tracking any dependencies,
+but for specifiyng the entrypoints that various Invenio packages rely on to
+automatically detect and register Flask blueprints, Celery tasks and other
+features.</p>
+</div>
+<div class="section" id="docker-and-docker-compose">
+<h2>Docker and Docker-Compose<a class="headerlink" href="#docker-and-docker-compose" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>...
+├── docker
+│   ├── postgres
+│   │   ├── ...
+│   ├── uwsgi
+│   │   ├── ...
+│   ├── nginx
+│   │   ├── ...
+│   ├── haproxy
+│   │   ├── ...
+├── docker-services.yml
+├── docker-compose.yml
+├── docker-compose.full.yml
+├── Dockerfile.base
+├── Dockerfile
+...
+</pre></div>
+</div>
+<p>The instance requires some services in order to run, like a database,
+Elasticsearch, Redis and RabbitMQ. To provide a cross-platform and convenient
+way of running these services, we are using Docker and Docker Compose, by
+configuring the following files:</p>
+<p><strong>docker-services.yml</strong></p>
+<blockquote>
+<div><p>This file contains basic definitions for the Docker containers for the
+services the instance uses. Configuration options such as the database
+credentials, exposed ports, and other service-specific options can be
+modified in here. This file’s containers are used as a common base and are
+extended by other <code class="docutils literal notranslate"><span class="pre">docker-compose.*.yml</span></code> files to build up a specific
+configuration for an infrastructure.</p>
+</div></blockquote>
+<p><strong>docker-compose.yml</strong></p>
+<blockquote>
+<div><p>This file contains and exposes locally the minimal set of service containers
+needed for developing the instance locally:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">db</span></code>: The database, PostgreSQL or MySQL, exposing the 5432 or 3306 ports.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">es</span></code>: Elasticsearch version 5 or 6, exposing the 9200 and 9300 ports.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mq</span></code>: RabbitMQ, exposing port 5672 for the service and port 15672 for a
+management web server (accessible via the default username/password
+<code class="docutils literal notranslate"><span class="pre">guest:guest</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cache</span></code>: Redis exposing port 6379.</p></li>
+</ul>
+<p>When developing and running your instance locally these services can be
+accessed by your application.</p>
+</div></blockquote>
+<p><strong>docker-compose.full.yml</strong></p>
+<blockquote>
+<div><p>This file contains a full-fledged definition of a production-like application
+infrastructure. It has all of the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file’s containers
+defined, and additionally:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lb</span></code>: HAProxy, publicly exposing ports 80 and 443 for accessing the web
+application and 8080 for accessing statistics.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frontend</span></code>: Nginx, exposing ports 80 and 443 and acting as a reverse
+proxy for your application containers and serving static files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">web-ui</span></code>/<code class="docutils literal notranslate"><span class="pre">web-api</span></code>: Two separate web application containers running
+uWSGI for the Invenio UI and REST API applications and exposing port 5000</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">worker</span></code>: The Celery worker of your application.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flower</span></code>: Monitoring web application for Celery, publicly exposing port
+5555.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kibana</span></code>: Monitoring web application for Elasticsearch, publicly exposing
+port 5601.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">web-ui</span></code>, <code class="docutils literal notranslate"><span class="pre">web-api</span></code> and <code class="docutils literal notranslate"><span class="pre">worker</span></code> containers are using Docker images
+that are built from the <code class="docutils literal notranslate"><span class="pre">Dockerfile.base</span></code> and <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> files
+described below.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While one might be tempted to deploy this as a fully functional Invenio
+instance, it is not meant to be a turn-key solution, since it hasn’t been
+tested for this purpose. This is rather meant to be an inspiration (in
+terms of configuration, networking and general principles) for
+configuring your own setup either by replacing the container services
+with actual nodes/machines or configuring a production-level container
+orchestration system like Kubernetes, OpenShift, etc.</p>
+</div>
+</div></blockquote>
+<p><strong>Dockerfile.base</strong></p>
+<blockquote>
+<div><p>This Dockerfile helps you build a Python dependencies-only base image from
+where your application can be built quickly.</p>
+</div></blockquote>
+<p><strong>Dockerfile</strong></p>
+<blockquote>
+<div><p>This Dockerfile builds a fully functional image of your application with all
+of the static assets it requires.</p>
+</div></blockquote>
+<p><strong>docker/postgres</strong></p>
+<blockquote>
+<div><p>Contains a Dockerfile and script that will setup the necessary users/roles
+for the database.</p>
+</div></blockquote>
+<p><strong>docker/uwsgi</strong></p>
+<blockquote>
+<div><p>Contains a the <code class="docutils literal notranslate"><span class="pre">uwsgi_ui.ini</span></code> and <code class="docutils literal notranslate"><span class="pre">uwsgi_api.ini</span></code> uWSGI configruation
+files used for running the Invenio UI and REST API web applications.</p>
+</div></blockquote>
+<p><strong>docker/nginx</strong></p>
+<blockquote>
+<div><p>Contains a Dockerfile, nginx configurations (<code class="docutils literal notranslate"><span class="pre">nginx.conf</span></code> and
+<code class="docutils literal notranslate"><span class="pre">conf.d/default.conf</span></code>) and a self-signed generated SSL certificate
+(<code class="docutils literal notranslate"><span class="pre">test.crt</span></code> and <code class="docutils literal notranslate"><span class="pre">test.key</span></code>). You can look into these files if you are
+interested in how to confiugre nginx to proxy requests to one or multiple
+uWSGI web application.</p>
+</div></blockquote>
+<p><strong>docker/haproxy</strong></p>
+<blockquote>
+<div><p>Contains a Dockerfile, HAProxy configuration (<code class="docutils literal notranslate"><span class="pre">haproxy.cfg</span></code>) and a
+self-signed generated SSL certificate (<code class="docutils literal notranslate"><span class="pre">haproxy_cert.pem</span></code>).</p>
+</div></blockquote>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>...
+├── my_site
+│   ├── config.py
+...
+</pre></div>
+</div>
+<p><strong>my_site/config.py</strong></p>
+<blockquote>
+<div><p>The instance’s basic configuration variables are defined inside this file.
+You should go through all of these variables to understand what kind of
+things can be customized for your instance, like e.g. what should be the
+“From” email address for your automatically sent emails.</p>
+</div></blockquote>
+<p>The configuration used by the Invenio applications is dynamically loaded from
+multiple sources. You can read more about this in <a class="reference external" href="https://invenio-config.readthedocs.io">Invenio-Config documentation</a>. Probably the most important part of
+this, is the order in which the various configuration sources are loaded, which
+allows you to effectively override any config variable. The following list
+describes this order (every item overrides the one above it):</p>
+<ul class="simple">
+<li><p>Configuation modules defined in <code class="docutils literal notranslate"><span class="pre">invenio_config.module</span></code> entrypoints.
+<code class="docutils literal notranslate"><span class="pre">my_site.config</span></code> is actually one of them. You can add as many as you want
+and they will be applied in alphabetical order of the entrypoint name.</p></li>
+<li><p>Configuration in the <code class="docutils literal notranslate"><span class="pre">&lt;app.instance_path&gt;/invenio.cfg</span></code>. For local
+development this is usually <code class="docutils literal notranslate"><span class="pre">${VIRUAL_ENV}/var/instance/invenio.cfg</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INVENIO_XYZ</span></code> environment variables. If for example you want to override
+the <code class="docutils literal notranslate"><span class="pre">SECRET_KEY</span></code>, you would have to do <code class="docutils literal notranslate"><span class="pre">export</span>
+<span class="pre">INVENIO_SECRET_KEY=&quot;my-secret&quot;</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>...
+├── tests
+│   ├── api
+│   │   ├── conftest.py
+│   │   └── test_api_simple_flow.py
+│   ├── e2e
+│   │   ├── conftest.py
+│   │   └── test_front_page.py
+│   ├── ui
+│   │   └── conftest.py
+│   ├── conftest.py
+│   └── test_version.py
+├── pytest.ini
+├── run-tests.sh
+...
+</pre></div>
+</div>
+<p>In Invenio we’re using the Python <a class="reference external" href="https://pytest.org/">pytest</a> library for
+testing. All of the instance’s tests are placed in the <code class="docutils literal notranslate"><span class="pre">tests/</span></code> directory.</p>
+<p><strong>tests/ui/</strong></p>
+<blockquote>
+<div><p>Includes tests that use the UI application views.</p>
+</div></blockquote>
+<p><strong>tests/api/</strong></p>
+<blockquote>
+<div><p>Includes tests that use the REST API application views.</p>
+</div></blockquote>
+<p><strong>tests/e2e/</strong></p>
+<blockquote>
+<div><p>Includes Selenium-based end-to-end tests which access both the UI and REST
+API applications.</p>
+</div></blockquote>
+<p><strong>pytest.ini</strong></p>
+<blockquote>
+<div><p>Used to configure <code class="docutils literal notranslate"><span class="pre">pytest</span></code> and its various plugins.</p>
+</div></blockquote>
+<p><strong>run-tests.sh</strong></p>
+<blockquote>
+<div><p>You can run this script locally or in your CI/CD pipeline and it will check:</p>
+<ul class="simple">
+<li><p>Your Python dependencies for security vulnerabilities using
+<a class="reference external" href="https://github.com/pyupio/safety">pyup.io’s “safety” library</a>.</p></li>
+<li><p>Your docs styling based on <a class="reference external" href="https://www.python.org/dev/peps/pep-0257/">PEP 257</a>.</p></li>
+<li><p>Your Python import for the correct sorting order using <a class="reference external" href="https://readthedocs.org/projects/isort/">isort</a>.</p></li>
+<li><p>Your <code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> for any missing entries.</p></li>
+<li><p>Your docs are building without errors.</p></li>
+<li><p>That your tests are passing.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>...
+├── docs
+│   ├── api.rst
+│   ├── authors.rst
+│   ├── changes.rst
+│   ├── configuration.rst
+│   ├── conf.py
+│   ├── contributing.rst
+│   ├── index.rst
+│   ├── installation.rst
+│   ├── license.rst
+│   ├── make.bat
+│   ├── Makefile
+│   ├── requirements.txt
+│   └── usage.rst
+├── AUTHORS.rst
+├── CHANGES.rst
+├── CONTRIBUTING.rst
+├── INSTALL.rst
+├── README.rst
+...
+</pre></div>
+</div>
+<p>To build the instance’s documentation we’re using <a class="reference external" href="https://www.sphinx-doc.org">Sphinx docs</a> and <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> as a markup language.</p>
+<p><strong>docs/*.rst</strong></p>
+<blockquote>
+<div><p>The various <code class="docutils literal notranslate"><span class="pre">.rst</span></code> files are placed in the root of your repository and in
+the <code class="docutils literal notranslate"><span class="pre">docs/</span></code> directory, and will be used to build your instance’s
+documentation, via running <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">run</span> <span class="pre">build_sphinx</span></code>.</p>
+</div></blockquote>
+<p><strong>docs/conf.py</strong></p>
+<blockquote>
+<div><p>This is the place where various documentation configuration variables can be
+set. You can have a look at it and tweak things based <cite>Sphinx docs’ extensive
+section on its configuration
+&lt;http://www.sphinx-doc.org/en/master/usage/configuration.html&gt;</cite></p>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Build a repository</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#management-scripts">Management scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-dependencies-and-packaging">Python dependencies and packaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-and-docker-compose">Docker and Docker-Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="bootcamp.html" title="previous chapter">Tutorials</a></li>
+      <li>Next: <a href="understanding-data-models.html" title="next chapter">Understanding data models</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/tutorials/build-a-repository.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

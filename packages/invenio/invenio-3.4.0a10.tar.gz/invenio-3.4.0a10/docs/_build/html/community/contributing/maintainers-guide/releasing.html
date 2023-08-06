@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Releasing &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Copyright and license policy" href="copyright-policy.html" />
+    <link rel="prev" title="Setting up a repository" href="repositories.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="releasing">
+<h1>Releasing<a class="headerlink" href="#releasing" title="Permalink to this headline">¶</a></h1>
+<p>The most common releases are:</p>
+<ul class="simple">
+<li><p><strong>Major/Minor-level release</strong> - Often these releases add significant new
+features and need to go through extensive testing.</p></li>
+<li><p><strong>Patch-level release</strong> - Often these releases fix security issues or
+important bugs.</p></li>
+</ul>
+<p>For major/minor-level releases, you’ll mostly be working only with the
+<code class="docutils literal notranslate"><span class="pre">master</span></code>-branch and only make a single PyPI release. For patch-level
+releases you’ll often be working with multiple maintenance branches and make
+several PyPI releases for all currently maintained versions of Invenio.</p>
+<p>Depending on the package that you are releasing, you will have to follow
+a different procedure. You might have to release:</p>
+<ul class="simple">
+<li><p>One of the Python (e.g. <a class="reference external" href="https://pypi.org/project/invenio-db/">Invenio-DB</a>)
+or JavaScript/React (e.g. <a class="reference external" href="https://www.npmjs.com/package/react-searchkit">React-SearchKit</a>)
+modules (happening rather often).</p></li>
+<li><p>The Invenio framework, the <a class="reference external" href="https://pypi.org/project/invenio/">invenio</a> package (happening less often).</p></li>
+</ul>
+<div class="section" id="before-you-start">
+<h2>Before you start<a class="headerlink" href="#before-you-start" title="Permalink to this headline">¶</a></h2>
+<p>Prior to preparing a new Invenio release, please ensure you have the latest
+changes in your local environment for the maintenance branches and <code class="docutils literal notranslate"><span class="pre">master</span></code>:</p>
+<ol class="arabic simple">
+<li><p>Check that all relevant PRs have been merged. For the <code class="docutils literal notranslate"><span class="pre">invenio</span></code> package,
+check that all relevant Invenio modules have been released.</p></li>
+<li><p>Fetch latest changes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span> <span class="pre">inveniosoftware</span></code></p></li>
+</ul>
+</li>
+<li><p>Checkout maintenance or master branch:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">maint-&lt;major&gt;.&lt;minor&gt;</span></code></p></li>
+</ul>
+</li>
+<li><p>Merge or reset to latest changes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">merge</span> <span class="pre">--ff-only</span> <span class="pre">inveniosoftware/maint-&lt;major&gt;.&lt;minor&gt;</span></code></p></li>
+<li><p><em>or</em> use git reset (<strong>warning</strong> use with caution) <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">inveniosoftware/maint-&lt;major&gt;.&lt;minor&gt;</span></code></p></li>
+</ul>
+</li>
+</ol>
+<p>While above is not strictly necessary, it avoids situations where you local
+and GitHub branches have diverged.</p>
+</div>
+<div class="section" id="patch-level-release">
+<h2>Patch-level release<a class="headerlink" href="#patch-level-release" title="Permalink to this headline">¶</a></h2>
+<p>Most of the time, patch-level releases are not necessary for the main
+<code class="docutils literal notranslate"><span class="pre">invenio</span></code> package, since by patch-level releases of the underlying
+modules are automatically picked up: the dependencies upper bounds are
+normally allowing the installation of patch-level releases.
+For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;invenio-records-rest&gt;=1.7.1,&lt;1.8.0&#39;</span><span class="p">,</span>
+<span class="s1">&#39;invenio-records-ui&gt;=1.2.0a1,&lt;1.3.0&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>Most of the Invenio modules have maintenance branches for previous
+major/minor releases. They are normally named <code class="docutils literal notranslate"><span class="pre">maint-&lt;version&gt;</span></code>,
+e.g. <a class="reference external" href="https://github.com/inveniosoftware/invenio-records-rest/tree/maint-1.6">Invenio-Records-Rest maint-1.6</a>.</p>
+<p>With patch-level releases, you’ll often make multiple releases and work with
+multiple maintenance branches. For instance, you might have to merge a
+bug fix to <code class="docutils literal notranslate"><span class="pre">master</span></code>, but also to <code class="docutils literal notranslate"><span class="pre">maint-3.1</span></code> and to <code class="docutils literal notranslate"><span class="pre">maint-3.2</span></code>.</p>
+</div>
+<div class="section" id="major-minor-level-release">
+<h2>Major/minor-level release<a class="headerlink" href="#major-minor-level-release" title="Permalink to this headline">¶</a></h2>
+<p>When releasing a major/minor version, you will have to take extra care to the
+compatibility with the current released <code class="docutils literal notranslate"><span class="pre">invenio</span></code> version, by checking
+the upper bounds defined for this module in the <code class="docutils literal notranslate"><span class="pre">invenio</span></code> releases.</p>
+<p>The most probable scenario is that for a given <code class="docutils literal notranslate"><span class="pre">invenio</span></code> release,
+e.g. <code class="docutils literal notranslate"><span class="pre">3.3</span></code>, the upper bound for an Invenio module <code class="docutils literal notranslate"><span class="pre">foo</span></code>
+(with current latest release <code class="docutils literal notranslate"><span class="pre">1.2.6</span></code>) is set to <code class="docutils literal notranslate"><span class="pre">invenio-foo&lt;1.3.0</span></code>.
+A new minor release <code class="docutils literal notranslate"><span class="pre">1.3.0</span></code> of this module will not affect
+<code class="docutils literal notranslate"><span class="pre">invenio</span> <span class="pre">3.3</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If this is not the case, you will have to make sure that the new release
+of the module <code class="docutils literal notranslate"><span class="pre">foo</span></code> will not introduce backward incompatible changes,
+because it will be installed by <code class="docutils literal notranslate"><span class="pre">invenio</span> <span class="pre">3.3</span></code>, potentially breaking
+existing Invenio installations.</p>
+</div>
+</div>
+<div class="section" id="module-release">
+<h2>Module release<a class="headerlink" href="#module-release" title="Permalink to this headline">¶</a></h2>
+<p>How to release an Invenio module.</p>
+<p><strong>Python module</strong></p>
+<ol class="arabic simple">
+<li><p>Make sure that all relevant PRs have been merged to <code class="docutils literal notranslate"><span class="pre">master</span></code>.</p></li>
+<li><p>Make sure that the build on <code class="docutils literal notranslate"><span class="pre">master</span></code> branch is passing.</p></li>
+<li><p>Prepare release notes in</p>
+<ul class="simple">
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">CHANGE.rst</span></code> file, making sure that you describe changes,
+highlighting backward incompatible ones, and that the release date
+is correct. Pay attention how you write, keep consistency with previous
+sentences forms.</p></li>
+</ul>
+</li>
+<li><p>Bump version in <code class="docutils literal notranslate"><span class="pre">version.py</span></code> (follow semantic versioning).</p></li>
+<li><p>If the module is changing from alpha/beta to official release remember to
+modify the classifiers in the setup.py according to <a class="reference external" href="https://pypi.org/classifiers/">PyPi classifiers</a>.</p></li>
+<li><p>Create a release commit (message pattern:
+<code class="docutils literal notranslate"><span class="pre">release:</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code>).</p></li>
+<li><p>Create tag and push release:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">inveniosoftware</span> <span class="pre">master</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+</ul>
+</li>
+<li><p>Regularly check <code class="docutils literal notranslate"><span class="pre">Travis</span></code> and <code class="docutils literal notranslate"><span class="pre">PyPI</span></code> to ensure the release went through.</p></li>
+</ol>
+<p><strong>JavaScript/React module</strong></p>
+<ol class="arabic simple">
+<li><p>Make sure that all relevant PRs have been merged to <code class="docutils literal notranslate"><span class="pre">master</span></code>.</p></li>
+<li><p>Make sure that the build on <code class="docutils literal notranslate"><span class="pre">master</span></code> branch is passing.</p></li>
+<li><p>Prepare release notes in</p>
+<ul class="simple">
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">CHANGE.md</span></code> file, making sure that you describe changes,
+highlighting backward incompatible ones, and that the release date
+is correct. Pay attention how you write, keep consistency with previous
+sentences forms.</p></li>
+</ul>
+</li>
+<li><p>Bump version in <code class="docutils literal notranslate"><span class="pre">package.json</span></code> (follow semantic versioning).</p></li>
+<li><p>Regenerate the <code class="docutils literal notranslate"><span class="pre">package-lock.json</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">package-lock.json</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">install</span></code></p></li>
+</ul>
+</li>
+<li><p>Create a release commit (message pattern:
+<code class="docutils literal notranslate"><span class="pre">release:</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code>).</p></li>
+<li><p>Create tag and push release:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">inveniosoftware</span> <span class="pre">master</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+</ul>
+</li>
+<li><p>Regularly check <code class="docutils literal notranslate"><span class="pre">Travis</span></code> and <code class="docutils literal notranslate"><span class="pre">NpmJS</span></code> to ensure the release went through.</p></li>
+</ol>
+<p><strong>Patch-level releases on multiple branches</strong></p>
+<p>When you need to create new releases in multiple branches, for example
+several <code class="docutils literal notranslate"><span class="pre">maint</span></code> releases (e.g. a bugfix affecting multiple releases),
+you will have to do the extra step of “copying” the changes and applying
+them to multiple branches to make a release.</p>
+<p>After the procedure described above for the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, below
+the procedure for a <code class="docutils literal notranslate"><span class="pre">maint</span></code> branch:</p>
+<ol class="arabic simple">
+<li><p>Checkout the <code class="docutils literal notranslate"><span class="pre">maint</span></code> branch and create a new release branch:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">maint-&lt;major&gt;.&lt;minor&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">rel-v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+</ul>
+</li>
+<li><p>Cherry-pick (yes, cherry-pick :)) the commits that you need and resolve any conflict:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">cherry-pick</span> <span class="pre">&lt;commit</span> <span class="pre">id&gt;</span></code></p></li>
+</ul>
+</li>
+<li><p>Run tests.</p></li>
+<li><p>Create a new commit with updated <code class="docutils literal notranslate"><span class="pre">changes</span></code> file and bumped version,
+as described above in step 3 of Python or JavaScript module release.</p></li>
+<li><p>Issue a pull request against the <strong>maintenance branch</strong> (
+<code class="docutils literal notranslate"><span class="pre">maint-&lt;major&gt;.&lt;minor&gt;</span></code>).</p></li>
+<li><p>If Travis fails:</p>
+<ul class="simple">
+<li><p>Fix issue and <strong>ensure head commit is the release commit</strong> (i.e. rebase if
+necessary).</p></li>
+</ul>
+</li>
+<li><p>Merge, tag and push release:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">maint-&lt;major&gt;.&lt;minor&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">merge</span> <span class="pre">--ff-only</span> <span class="pre">rel-v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">inveniosoftware</span> <span class="pre">maint-&lt;major&gt;.&lt;minor&gt;</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="invenio-release">
+<h2>Invenio release<a class="headerlink" href="#invenio-release" title="Permalink to this headline">¶</a></h2>
+<p>The pre-requirement necessary to release Invenio is that all the features in
+the various Invenio modules needed for the release have been merged and
+released. Then:</p>
+<ol class="arabic simple">
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>:</p>
+<ul class="simple">
+<li><p>Review all modules lower and upper bounds and adjust them as needed.</p></li>
+</ul>
+</li>
+<li><p>Documentation:</p>
+<ul class="simple">
+<li><p>Review documentation and make sure new features or breaking changes are
+documented, to help users when upgrading.</p></li>
+</ul>
+</li>
+<li><p>Prepare release notes (<a class="reference external" href="https://github.com/inveniosoftware/invenio/commit/f4d0aa5ac78d76228fe86754eeb3bbfe81a1854f">see example</a>):</p>
+<ul class="simple">
+<li><p>In <code class="docutils literal notranslate"><span class="pre">docs/releases/</span></code>, copy an existing patch-level or minor
+release notes (e.g. <code class="docutils literal notranslate"><span class="pre">docs/releases/v3.1.2.rst</span></code>).</p></li>
+<li><p>Edit release notes.</p></li>
+<li><p>Include the new release notes into <code class="docutils literal notranslate"><span class="pre">docs/releases/index.rst</span></code>.</p></li>
+<li><p>Check the “Maintenance policy”, e.g. is the version correct?
+(<a class="reference external" href="https://github.com/inveniosoftware/invenio/commit/edb863d2f5228fb158c090a69c2db7c3385b6ba3">example</a>).</p></li>
+</ul>
+</li>
+<li><p>Create a release commit (message pattern:
+<code class="docutils literal notranslate"><span class="pre">release:</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code>).</p></li>
+<li><p>Create tag and push release:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">inveniosoftware</span> <span class="pre">master</span> <span class="pre">v&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</span></code></p></li>
+</ul>
+</li>
+<li><p>Regularly check <code class="docutils literal notranslate"><span class="pre">Travis</span></code> and <code class="docutils literal notranslate"><span class="pre">PyPI</span></code> to ensure the release went through.</p></li>
+</ol>
+</div>
+<div class="section" id="manual-releases">
+<h2>Manual releases<a class="headerlink" href="#manual-releases" title="Permalink to this headline">¶</a></h2>
+<p>When the process of releasing fails for some reasons, you might want to
+manually publish the new version of a package.</p>
+<p><strong>PyPI</strong></p>
+<p>You can manually reproduce the publishing process done by <code class="docutils literal notranslate"><span class="pre">Travis</span></code> by doing:</p>
+<ol class="arabic">
+<li><p>Activate your virtualenv for the package that you want to release.</p></li>
+<li><p>Generate the different distributions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">compile_catalog</span> <span class="pre">sdist</span> <span class="pre">bdist_wheel</span></code></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">compile_catalog</span></code> is an optional argument, only valid if your module include translation files.</p>
+</div>
+</li>
+<li><p>Install the tool to upload releases to PyPI:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">twine</span> <span class="pre">wheel</span></code></p></li>
+</ul>
+</li>
+<li><p>Publish:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">twine</span> <span class="pre">upload</span> <span class="pre">dist/*</span></code>. The command will ask for username and password. <a class="reference external" href="https://github.com/orgs/inveniosoftware/teams/architects">Invenio architects</a> should have the credentials.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The wildcard will upload any file that are present in the folder. Make sure you build the package from a clean state
+to avoid old build’s files appearing in the released package. E.g. <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">compile_catalog</span> <span class="pre">sdist</span> <span class="pre">bdist_wheel</span></code>
+before building the package.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If it is your first time releasing in PyPI, or you are not sure if the release is correct, you can test it in <a class="reference external" href="https://test.pypi.org/">https://test.pypi.org/</a>. See related <a class="reference external" href="https://twine.readthedocs.io/en/latest/#using-twine">documentation</a>.</p>
+</div>
+</li>
+</ol>
+<p><strong>NpmJS</strong></p>
+<p>Manual release on <code class="docutils literal notranslate"><span class="pre">NpmJS</span></code> is not only needed in case of failure, but also
+when creating a totally new package, never released yet.</p>
+<ol class="arabic simple">
+<li><p>Make sure that you have an updated version of the
+<a class="reference external" href="https://www.npmjs.com/get-npm">npm</a> client installed in your machine.</p></li>
+<li><p>Login on <code class="docutils literal notranslate"><span class="pre">NpmJS</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">login</span></code>: you will need <code class="docutils literal notranslate"><span class="pre">inveniosoftware</span></code> username and password.
+<a class="reference external" href="https://github.com/orgs/inveniosoftware/teams/architects">Invenio architects</a> should have the credentials.</p></li>
+</ul>
+</li>
+<li><p>Optionally, verify the package before releasing:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">pack</span></code>: this will create the final archive that will be
+published on <code class="docutils literal notranslate"><span class="pre">NpmJS</span></code> in case you want to check its content.</p></li>
+</ul>
+</li>
+<li><p>Understand if the package that you are publising is
+<code class="docutils literal notranslate"><span class="pre">scoped</span></code> (<code class="docutils literal notranslate"><span class="pre">&#64;inveniosoftware</span></code>) or not. For example, <code class="docutils literal notranslate"><span class="pre">react-searchkit</span></code>
+is not scoped, but <code class="docutils literal notranslate"><span class="pre">&#64;inveniosoftware/react-invenio-app-ils</span></code> is scoped.</p></li>
+<li><p>Publish:</p>
+<ul class="simple">
+<li><p><cite>not scoped</cite>: <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">publish</span> <span class="pre">--dry-run</span></code> to double check that everything
+is ok, then <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">publish</span></code>.</p></li>
+<li><p><cite>scoped</cite>: you need to add the <code class="docutils literal notranslate"><span class="pre">access</span></code> param to publish it as public,
+otherwise by default, it will be <code class="docutils literal notranslate"><span class="pre">restricted</span></code>.
+Run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">publish</span> <span class="pre">--access</span> <span class="pre">public</span> <span class="pre">--dry-run</span></code> to double check that
+everything is ok, then <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">publish</span> <span class="pre">--access</span> <span class="pre">public</span></code>.</p></li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="announcing-release">
+<h1>Announcing release<a class="headerlink" href="#announcing-release" title="Permalink to this headline">¶</a></h1>
+<p>You should announce a new Invenio release in the following channels:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://invenio-talk.web.cern.ch/t/invenio-v3-2-released/62/3">Invenio-Talk Announcement</a></p></li>
+<li><p>Chatroom</p></li>
+<li><p><a class="reference external" href="https://inveniosoftware.org/blog/invenio-v33-released/">Blog post</a></p></li>
+</ul>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="repositories.html" title="Previous document">Setting up a repository</a>
+        </li>
+        <li>
+          <a href="copyright-policy.html" title="Next document">Copyright and license policy</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../documentation/index.html">Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Community</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Contributing</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../contribution-guide.html">Contribution guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../style-guide.html">Style guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../translation-guide.html">Translation guide</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Maintainer’s guide</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repositories.html">Setting up a repository</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Releasing</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#before-you-start">Before you start</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#patch-level-release">Patch-level release</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#major-minor-level-release">Major/minor-level release</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-release">Module release</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#invenio-release">Invenio release</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#manual-releases">Manual releases</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#announcing-release">Announcing release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="copyright-policy.html">Copyright and license policy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../security-policy.html">Security policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code-of-conduct.html">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Releases</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Community</a><ul>
+  <li><a href="../index.html">Contributing</a><ul>
+  <li><a href="index.html">Maintainer’s guide</a><ul>
+      <li>Previous: <a href="repositories.html" title="previous chapter">Setting up a repository</a></li>
+      <li>Next: <a href="copyright-policy.html" title="next chapter">Copyright and license policy</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../../_sources/community/contributing/maintainers-guide/releasing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

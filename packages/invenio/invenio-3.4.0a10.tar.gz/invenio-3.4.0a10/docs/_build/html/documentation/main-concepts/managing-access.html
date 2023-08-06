@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Managing access to records &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Integrating Files" href="handling-files.html" />
+    <link rel="prev" title="Understanding data models" href="understanding-data-models.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="managing-access-to-records">
+<span id="managing-access"></span><h1>Managing access to records<a class="headerlink" href="#managing-access-to-records" title="Permalink to this headline">¶</a></h1>
+<p>Invenio comes with a access control system that is very powerful and flexible
+but which can also seem overwhelming at first. This guide will show you a
+basic example of how to protect our REST API so only some users can see
+certain records.</p>
+<p>If you haven’t already done so, make sure you’ve followed the <a class="reference internal" href="../../getting-started/quickstart/index.html#quickstart"><span class="std std-ref">Quickstart</span></a>
+so you have an Invenio instance to work on.</p>
+<div class="section" id="endpoints">
+<h2>Endpoints<a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h2>
+<p>Your data model’s REST API has two main endpoints:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Search endpoint (e.g. <code class="docutils literal notranslate"><span class="pre">/api/records</span></code>)</p></li>
+<li><p>Detail endpoint (e.g. <code class="docutils literal notranslate"><span class="pre">/api/records/&lt;id&gt;</span></code>)</p></li>
+</ul>
+</div></blockquote>
+<p>The goal is to ensure that a) only an owner of a record can retrieve their
+record from the detail endpoint and b) that the search endpoint only shows
+records that a given user owns.</p>
+<p>In order to protect the two endpoints we will:</p>
+<ol class="arabic simple">
+<li><p><strong>Store permissions</strong> in a record by adding a new field <code class="docutils literal notranslate"><span class="pre">owner</span></code> to our
+data model.</p></li>
+<li><dl class="simple">
+<dt><strong>Require permissions</strong> by writing:</dt><dd><ul class="simple">
+<li><p>a <em>permission factory</em> to protect the detail endpoint.</p></li>
+<li><p>a <em>search filter</em> to filter results in the search endpoint.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>Configure endpoints</strong> to use the permission factory and search filter.</p></li>
+</ol>
+</div>
+<div class="section" id="storing-permissions">
+<h2>Storing permissions<a class="headerlink" href="#storing-permissions" title="Permalink to this headline">¶</a></h2>
+<p>First, below is an example of how we could store an owner inside a
+record by adding a new field <code class="docutils literal notranslate"><span class="pre">owner</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;My secret publication&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In order to be able to store the <code class="docutils literal notranslate"><span class="pre">owner</span></code> property in our data model, you
+must add this new field to the data model’s:</p>
+<ol class="arabic simple">
+<li><p><strong>JSONSchema</strong> (think of the JSONSchema as the database table structure that
+you add a new column to).</p></li>
+<li><p><strong>Elasticsearch mapping</strong> (think of the mapping as a description of how your
+data should be indexed).</p></li>
+<li><p><strong>Marshmallow schema</strong> (think of the Marshmallow schema as a description of
+how you would render one or more rows in a database table to an end-user).</p></li>
+</ol>
+<div class="section" id="jsonschema">
+<h3>JSONSchema<a class="headerlink" href="#jsonschema" title="Permalink to this headline">¶</a></h3>
+<p>In the quickstart example, our JSONSchema is located in
+<code class="docutils literal notranslate"><span class="pre">.../records/jsonschemas/records/record-v.1.0.0.json</span></code>, and you would add
+something like below to our schema:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;owners&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="elasticsearch-mapping">
+<h3>Elasticsearch mapping<a class="headerlink" href="#elasticsearch-mapping" title="Permalink to this headline">¶</a></h3>
+<p>In the quickstart example, our Elastisearch mapping is likely located in
+<code class="docutils literal notranslate"><span class="pre">.../records/mappings/v7/records/record-v.1.0.0.json</span></code>, and you would add
+something like below to our mapping:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;owners&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="requiring-permissions">
+<h2>Requiring permissions<a class="headerlink" href="#requiring-permissions" title="Permalink to this headline">¶</a></h2>
+<p>Once you have added the new field(s) to your data model, you need to make use
+of the field to protect the detail endpoint and the search endpoint. You
+do that by writing</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>a <em>permission factory</em> to protect the detail endpoint.</p></li>
+<li><p>a <em>search filter</em> to filter results in the search endpoint.</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="permission-factory">
+<h3>Permission factory<a class="headerlink" href="#permission-factory" title="Permalink to this headline">¶</a></h3>
+<p>The purpose of the permission factory is to create a permission object from a
+record which is then used by the detail endpoint to check if the current user
+has permission to view the current record. Below is a simple example of a
+permission factory:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">invenio_access</span> <span class="kn">import</span> <span class="n">Permission</span>
+<span class="kn">from</span> <span class="nn">flask_principal</span> <span class="kn">import</span> <span class="n">UserNeed</span>
+
+<span class="k">def</span> <span class="nf">my_permission_factory</span><span class="p">(</span><span class="n">record</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Permission</span><span class="p">(</span><span class="n">UserNeed</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;owner&quot;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>The permission factory function takes as input a record and creates a
+<a class="reference external" href="https://invenio-access.readthedocs.io/en/latest/api.html#invenio_access.permissions.Permission" title="(in Invenio-Access v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Permission</span></code></a> object from it.</p>
+<p>The permission, when checked, requires that the current user has the same id as
+the id stored in the records <code class="docutils literal notranslate"><span class="pre">owner</span></code> field. This is expressed with the
+<code class="docutils literal notranslate"><span class="pre">UserNeed</span></code>.</p>
+<p><strong>Permissions and needs</strong></p>
+<p>The concept of <em>needs</em> can be somewhat hard to grasp, but essentially it just
+expresses the smallest level of access control. For instance <code class="docutils literal notranslate"><span class="pre">UserNeed(1)</span></code>
+expresses the statement “has user id 1”, and <code class="docutils literal notranslate"><span class="pre">RoleNeed('admin')</span></code> expresses
+the statement “has admin role”.</p>
+<p>A <em>permission</em> represents a set of required <em>needs</em>. For instance
+<code class="docutils literal notranslate"><span class="pre">Permission(UserNeed(1),</span> <span class="pre">RoleNeed('admin'))</span></code> expresses the statement “has
+user id 1 or has admin role”.</p>
+<p>Thus, with a permission factory you can build arbitrarily complex permissions
+from the information stored in your records.</p>
+</div>
+<div class="section" id="search-filter">
+<h3>Search filter<a class="headerlink" href="#search-filter" title="Permalink to this headline">¶</a></h3>
+<p>For searches over possibly millions of records we need to be able to
+efficiently check permissions of all records. This is done with a search filter
+which is applied when executing a query. In comparison, a permission factory
+only deals with one record at a time.</p>
+<p>Below is an example of search filter which is applied to all queries on
+the search endpoint:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">elasticsearch_dsl</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">flask_security</span> <span class="kn">import</span> <span class="n">current_user</span>
+<span class="kn">from</span> <span class="nn">invenio_search.api</span> <span class="kn">import</span> <span class="n">DefaultFilter</span><span class="p">,</span> <span class="n">RecordsSearch</span>
+
+<span class="k">def</span> <span class="nf">permission_filter</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Q</span><span class="p">(</span><span class="s1">&#39;match&#39;</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">get_id</span><span class="p">())]</span>
+
+<span class="k">class</span> <span class="nc">MyRecordSearch</span><span class="p">(</span><span class="n">RecordsSearch</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;records&#39;</span>
+        <span class="n">default_filter</span> <span class="o">=</span> <span class="n">DefaultFilter</span><span class="p">(</span><span class="n">permission_filter</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The method <code class="docutils literal notranslate"><span class="pre">permission_filter</span></code> when called, will create an Elasticsearch DSL
+<code class="docutils literal notranslate"><span class="pre">Q()</span></code> (query object) which will match all records where the property owner
+equals the current user’s id (<code class="docutils literal notranslate"><span class="pre">current_user</span></code> is an object that holds the
+current request’s authenticated user).</p>
+<p>The class <code class="docutils literal notranslate"><span class="pre">MyRecordSearch</span></code>,  will be responsible for executing all queries on
+the search endpoint. In above example, we set the name of the Elasticsearch
+index it should used, and the search filter which it should use (in our case
+the permission filter).</p>
+<p><strong>Search filter vs permission factory</strong></p>
+<p>There’s a subtle difference between the search filter and the permission
+factory which is worth noting.</p>
+<p>The permission factory takes a record as input, while the search filter takes
+the current user as input. For the permission factory, the created permission
+is checked against the current user, while with the search filter the current
+user is checked against the records. Hence, the permission factory and search
+filter are coming from each their end when checking permissions.</p>
+<p>It’s therefore very important when writing the search filter and permission
+factory, that the two are producing identical results.</p>
+</div>
+</div>
+<div class="section" id="configuring-endpoints">
+<h2>Configuring endpoints<a class="headerlink" href="#configuring-endpoints" title="Permalink to this headline">¶</a></h2>
+<p>The last part of the puzzle is to tell our detail/search endpoints to use our
+newly created permission factory and search filter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RECORDS_REST_ENDPOINTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;recid&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="c1"># ...</span>
+        <span class="n">search_class</span><span class="o">=</span><span class="n">MyRecordSearch</span><span class="p">,</span>
+        <span class="n">read_permission_factory_imp</span><span class="o">=</span><span class="n">my_permission_factory</span><span class="p">,</span>
+        <span class="c1"># ...</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In our case we are protecting only the read operation on the view. Needless to
+say, as the REST API also supports CRUD operations, you should also protect
+the other operations with their a permission factory.</p>
+</div>
+<div class="section" id="complex-access-rights">
+<h2>Complex access rights<a class="headerlink" href="#complex-access-rights" title="Permalink to this headline">¶</a></h2>
+<p>The toy example presented in this guide is too simple for most normal
+requirements, thus in order to provide some inspiration, we here present two
+more complex ways you could store access rights in records:</p>
+<div class="section" id="computed-rights">
+<h3>Computed rights<a class="headerlink" href="#computed-rights" title="Permalink to this headline">¶</a></h3>
+<p>In some cases, it can be an advantage to use existing properties in your record
+to manage access rights. This way, you ensure that access rights does not get
+out of sync with other properties. An example of such a record could be:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;visibility&quot;</span><span class="p">:</span> <span class="s2">&quot;restricted&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;owners&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="nt">&quot;communities&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;blr&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A permission factory could for above record then compute different permissions
+objects for different types of actions.</p>
+<p>For reading the record, the permission could be:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Permission</span><span class="p">(</span><span class="n">any_user</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For seeing the files in the record, the permission could be:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Permission</span><span class="p">(</span><span class="n">UserNeed</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">UserNeed</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">RoleNeed</span><span class="p">(</span><span class="s1">&#39;blr-curators&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>For editing the record, the permission could be:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Permission</span><span class="p">(</span><span class="n">UserNeed</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">UserNeed</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="explicit-rights">
+<h3>Explicit rights<a class="headerlink" href="#explicit-rights" title="Permalink to this headline">¶</a></h3>
+<p>In some cases, it is an advantage to have explicit rights defined on your
+record so that even if the code changes, it still obvious who should have
+access for which actions. An example of such a record could be:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;_access&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;read&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;systemroles&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;campus_user&quot;</span><span class="p">]</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;update&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;users&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="nt">&quot;roles&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;curators&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This way, changes to rights can also be explicitly tracked via the records
+revision history and thus be audited.</p>
+</div>
+<div class="section" id="further-information">
+<h3>Further information<a class="headerlink" href="#further-information" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://invenio-access.readthedocs.io/">Invenio-Access</a></p></li>
+<li><p><a class="reference external" href="https://invenio-records-rest.readthedocs.io/">Invenio-Records-REST</a></p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="understanding-data-models.html" title="Previous document">Understanding data models</a>
+        </li>
+        <li>
+          <a href="handling-files.html" title="Next document">Integrating Files</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Main concepts</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="repository-structure.html">Repository structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Managing access to records</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#endpoints">Endpoints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storing-permissions">Storing permissions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#jsonschema">JSONSchema</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#elasticsearch-mapping">Elasticsearch mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#requiring-permissions">Requiring permissions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#permission-factory">Permission factory</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#search-filter">Search filter</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-endpoints">Configuring endpoints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#complex-access-rights">Complex access rights</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#computed-rights">Computed rights</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#explicit-rights">Explicit rights</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#further-information">Further information</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handling-files.html">Integrating Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture-infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture-application.html">Application architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="securing-your-instance.html">Securing your instance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bundles/index.html">Module Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../community/index.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Documentation</a><ul>
+  <li><a href="index.html">Main concepts</a><ul>
+      <li>Previous: <a href="understanding-data-models.html" title="previous chapter">Understanding data models</a></li>
+      <li>Next: <a href="handling-files.html" title="next chapter">Integrating Files</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../_sources/documentation/main-concepts/managing-access.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

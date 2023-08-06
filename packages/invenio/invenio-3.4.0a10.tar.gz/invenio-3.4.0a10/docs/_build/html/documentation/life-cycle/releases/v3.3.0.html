@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Version 3.3.0 &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Version 3.2.2" href="v3.2.2.html" />
+    <link rel="prev" title="Maintenance Policy" href="maintenance-policy.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="version-3-3-0">
+<h1>Version 3.3.0<a class="headerlink" href="#version-3-3-0" title="Permalink to this headline">¶</a></h1>
+<p><em>Released 2020-05-18</em></p>
+<p>We are proud to announce the release of Invenio v3.3.0.</p>
+<p><strong>Python compatibility</strong></p>
+<p>Invenio v3.3 supports Python versions 3.6 and 3.7. Python 2 support in Invenio
+ended on January 1st, 2020 with the official end of life for Python 2 on the
+same date.</p>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>See our <a class="reference internal" href="../../../getting-started/quickstart/index.html#quickstart"><span class="std std-ref">Quickstart</span></a> guide.</p>
+<div class="section" id="upgrading-to-v3-3">
+<h3>Upgrading to v3.3<a class="headerlink" href="#upgrading-to-v3-3" title="Permalink to this headline">¶</a></h3>
+<p>To upgrade your Invenio instance to v3.3 follow the upgrading guide:
+<a class="reference internal" href="../upgrading/upgrade-3_2-3_3.html#upgrade-3-1-3-2"><span class="std std-ref">Upgrading from Invenio v3.2 to v3.3</span></a></p>
+</div>
+</div>
+<div class="section" id="what-s-new-in-invenio-v3-3">
+<h2>What’s new in Invenio v3.3?<a class="headerlink" href="#what-s-new-in-invenio-v3-3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python-3-7">
+<h3>Python 3.7<a class="headerlink" href="#python-3-7" title="Permalink to this headline">¶</a></h3>
+<p>Python 3.7 is now supported by Invenio!</p>
+</div>
+<div class="section" id="improved-support-for-single-page-applications">
+<h3>Improved support for Single Page Applications<a class="headerlink" href="#improved-support-for-single-page-applications" title="Permalink to this headline">¶</a></h3>
+<p>Invenio v3.3 improves the support for Single Page Applications (SPA) by adding
+REST APIs for account management operations such as login, logout, user registration,
+password change, email confirmation and more. The integrated OAuth client
+also adds a new REST API so that you can login via your OAuth providers such
+as GitHub, ORCID and Globus.</p>
+</div>
+<div class="section" id="csrf-protection">
+<h3>CSRF Protection<a class="headerlink" href="#csrf-protection" title="Permalink to this headline">¶</a></h3>
+<p>Invenio-REST adds a CSRF middleware, called <cite>CSRFProtectMiddlewate</cite> to protect
+API views against CSRF attacks. The CSRF checks can be skipped in REST API
+calls when using a personal OAuth API token.</p>
+</div>
+<div class="section" id="dependency-management">
+<h3>Dependency management<a class="headerlink" href="#dependency-management" title="Permalink to this headline">¶</a></h3>
+<p>We have revamped management of third-party dependencies. New releases
+of some of the many third-party packages Invenio depends on could often
+cause dependency conflicts. Invenio v3.3 introduces the concept of coordinator
+packages, who are responsible for properly specifying third-party dependencies.</p>
+<p>Here’s a table of all the current coordinator modules:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Module</p></th>
+<th class="head"><p>Dependencies</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><cite>invenio-base</cite></p></td>
+<td><p><cite>Flask</cite>, <cite>werkzeug</cite>, <cite>six</cite>, <cite>blinker</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>invenio-accounts</cite></p></td>
+<td><p><cite>Flask-Security</cite>, <cite>Flask-KVSession</cite>, <cite>Flask-Login</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><cite>invenio-admin</cite></p></td>
+<td><p><cite>Flask-Admin</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>invenio-celery</cite></p></td>
+<td><p><cite>celery</cite>, <cite>kombu</cite>, <cite>msgpack</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><cite>invenio-rest</cite></p></td>
+<td><p><cite>webargs</cite>, <cite>marshmallow</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>invenio-i18n</cite></p></td>
+<td><p><cite>Flask-BabelEx</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><cite>invenio-db</cite></p></td>
+<td><p><cite>Flask-SQLAlchemy</cite>, <cite>Flask-Alembic</cite>, <cite>SQLAlchemy</cite>, <cite>SQLAlchemy-Continuum</cite>, <cite>SQLAlchemy-Utils</cite>, <cite>psycopg2</cite>, <cite>pymysql</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>invenio-search</cite></p></td>
+<td><p><cite>elasticsearch</cite>, <cite>elasticsearch-dsl</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><cite>pytest-invenio</cite></p></td>
+<td><p><cite>pytest</cite>, <cite>coverage</cite>, <cite>isort</cite>, <cite>check-manifest</cite></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="minor-changes-in-v3-3">
+<h2>Minor changes in v3.3<a class="headerlink" href="#minor-changes-in-v3-3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Invenio-Access: adds <cite>explicit excludes</cite>. It enables to deny a specific need or role.</p></li>
+<li><p>Invenio-Celery: fixes the rate limiting during celery task</p></li>
+</ul>
+</div>
+<div class="section" id="features-removed-in-v3-3">
+<h2>Features removed in v3.3<a class="headerlink" href="#features-removed-in-v3-3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Support for Elasticsearch 2</p></li>
+</ul>
+</div>
+<div class="section" id="maintenance-policy">
+<h2>Maintenance policy<a class="headerlink" href="#maintenance-policy" title="Permalink to this headline">¶</a></h2>
+<p>Invenio v3.3 will be supported with bug and security fixes until the release of
+Invenio v3.5 and minimum until 2021-05-18.</p>
+<p>See our <a class="reference internal" href="maintenance-policy.html#maintenance-policy"><span class="std std-ref">Maintenance Policy</span></a>.</p>
+</div>
+<div class="section" id="what-s-next">
+<h2>What’s next?<a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
+<p>In Invenio v3.4 we are planning to release two major new features:</p>
+<ul class="simple">
+<li><p>Theming support and a new Semantic UI theme.</p></li>
+<li><p>A statistics bundle that adds support for collecting COUNTER Research Data Usage Metrics compliant statistics.</p></li>
+<li><p>Index migration support for migrating between Elasticsearch clusters (aka zero down-time reindexing and index migration).</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="maintenance-policy.html" title="Previous document">Maintenance Policy</a>
+        </li>
+        <li>
+          <a href="v3.2.2.html" title="Next document">Version 3.2.2</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../requirements.html">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../main-concepts/index.html">Main concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bundles/index.html">Module Reference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Life cycle</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Releases</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="maintenance-policy.html">Maintenance Policy</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Version 3.3.0</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#getting-started">Getting started</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#upgrading-to-v3-3">Upgrading to v3.3</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#what-s-new-in-invenio-v3-3">What’s new in Invenio v3.3?</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#python-3-7">Python 3.7</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#improved-support-for-single-page-applications">Improved support for Single Page Applications</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#csrf-protection">CSRF Protection</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#dependency-management">Dependency management</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#minor-changes-in-v3-3">Minor changes in v3.3</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#features-removed-in-v3-3">Features removed in v3.3</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#maintenance-policy">Maintenance policy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#what-s-next">What’s next?</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="v3.2.2.html">Version 3.2.2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.2.1.html">Version 3.2.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.2.0.html">Version 3.2.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.1.2.html">Version 3.1.2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.1.1.html">Version 3.1.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.1.0.html">Version 3.1.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.0.2.html">Version 3.0.2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.0.1.html">Version 3.0.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.0.0.html">Version 3.0.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v2.html">Version 2.x</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v1.html">Version 1.x</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v0.html">Version 0.x</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../upgrading/index.html">Upgrading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../community/index.html">Community</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Documentation</a><ul>
+  <li><a href="../index.html">Life cycle</a><ul>
+  <li><a href="index.html">Releases</a><ul>
+      <li>Previous: <a href="maintenance-policy.html" title="previous chapter">Maintenance Policy</a></li>
+      <li>Next: <a href="v3.2.2.html" title="next chapter">Version 3.2.2</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../../_sources/documentation/life-cycle/releases/v3.3.0.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

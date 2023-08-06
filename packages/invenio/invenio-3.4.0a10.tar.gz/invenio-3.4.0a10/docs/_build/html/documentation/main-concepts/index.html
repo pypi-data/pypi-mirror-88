@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main concepts &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Repository structure" href="repository-structure.html" />
+    <link rel="prev" title="Requirements" href="../requirements.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="main-concepts">
+<span id="id1"></span><h1>Main concepts<a class="headerlink" href="#main-concepts" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="repository-structure.html">Repository structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="repository-structure.html#management-scripts">Management scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repository-structure.html#python-dependencies-and-packaging">Python dependencies and packaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repository-structure.html#docker-and-docker-compose">Docker and Docker-Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repository-structure.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repository-structure.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repository-structure.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="understanding-data-models.html">Understanding data models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#first-steps">First steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#define-a-jsonschema">Define a JSONSchema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#define-an-elasticsearch-mapping">Define an Elasticsearch mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#define-a-marshmallow-schema">Define a Marshmallow schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#define-serializers">Define serializers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#define-loaders">Define loaders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#define-templates">Define templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#configure-the-ui">Configure the UI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#configure-the-rest-api">Configure the REST API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-data-models.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="managing-access.html">Managing access to records</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="managing-access.html#endpoints">Endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="managing-access.html#storing-permissions">Storing permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="managing-access.html#requiring-permissions">Requiring permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="managing-access.html#configuring-endpoints">Configuring endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="managing-access.html#complex-access-rights">Complex access rights</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="handling-files.html">Integrating Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#integration-with-records">Integration with records</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#using-rest-apis">Using REST APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#setup-your-storage">Setup your storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#permissions">Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#large-files-upload">Large files upload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#files-integrity-checks">Files integrity checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#previewing-files">Previewing files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#handling-images-using-iiif">Handling images using IIIF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#security">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handling-files.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture-infrastructure.html">Infrastructure architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture-infrastructure.html#request-handling">Request handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-infrastructure.html#storing-records">Storing records</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-infrastructure.html#search-and-indexing">Search and indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-infrastructure.html#background-processing">Background processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-infrastructure.html#caching-and-temporary-storage">Caching and temporary storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-infrastructure.html#storing-files">Storing files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture-application.html">Application architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture-application.html#core-concepts">Core concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-application.html#interfaces-wsgi-cli-and-celery">Interfaces: WSGI, CLI and Celery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-application.html#application-assembly">Application assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-application.html#assembly-phases">Assembly phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-application.html#module-discovery">Module discovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-application.html#wsgi-ui-and-rest">WSGI: UI and REST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture-application.html#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="securing-your-instance.html">Securing your instance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="securing-your-instance.html#secret-key">Secret key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="securing-your-instance.html#allowed-hosts">Allowed hosts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="securing-your-instance.html#number-of-proxies">Number of proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="securing-your-instance.html#csrf-protection">CSRF protection</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="../requirements.html" title="Previous document">Requirements</a>
+        </li>
+        <li>
+          <a href="repository-structure.html" title="Next document">Repository structure</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Main concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="repository-structure.html">Repository structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="managing-access.html">Managing access to records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handling-files.html">Integrating Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture-infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture-application.html">Application architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="securing-your-instance.html">Securing your instance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bundles/index.html">Module Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../community/index.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Documentation</a><ul>
+      <li>Previous: <a href="../requirements.html" title="previous chapter">Requirements</a></li>
+      <li>Next: <a href="repository-structure.html" title="next chapter">Repository structure</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../_sources/documentation/main-concepts/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quickstart" href="quickstart/index.html" />
+    <link rel="prev" title="Overview" href="overview.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="history">
+<h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="from-software-to-framework">
+<h2>From software to framework<a class="headerlink" href="#from-software-to-framework" title="Permalink to this headline">¶</a></h2>
+<p>Invenio v3 is a completely new framework that has been rewritten from scratch.
+Why such a dramatic decision? To understand why the rewrite
+was necessary we have to go back to when Invenio was called CDSWare, back to
+August 1st 2002 when the first version of Invenio was released.</p>
+<p>In 2002:</p>
+<ul class="simple">
+<li><p>First iPod had just hit the market (Nov 2001).</p></li>
+<li><p>The Budapest Open Access Initiative had just been signed (Feb, 2002).</p></li>
+<li><p>JSON had just been discovered (2001).</p></li>
+<li><p>Python 2.1 had just been released (2001).</p></li>
+<li><p>Apache Lucene had just joined the Apache Jakarta project (but not yet an
+official top-level project).</p></li>
+<li><p>MySQL v4.0 beta was released and did not even have transactions yet.</p></li>
+<li><p>Hibernate ORM was released.</p></li>
+<li><p>The first DOI had just been assigned to a dataset.</p></li>
+</ul>
+<p>Following products did not even exists:</p>
+<ul class="simple">
+<li><p>Apache Solr (2004)</p></li>
+<li><p>Google Maps (2005)</p></li>
+<li><p>Google Scholar (2004)</p></li>
+<li><p>Facebook (2007)</p></li>
+<li><p>Django (2005)</p></li>
+</ul>
+<p>A lot has happen since 2002. Many problems that Invenio originally had to deal
+with now have open source off-the-shelf solutions available. In particular two
+things happen:</p>
+<ul class="simple">
+<li><p>Search become pervasive with the exponential growth of data collected and
+created on the internet every day, and open source products to solve handles
+these needs like Elasticsearch became big business.</p></li>
+<li><p>Web frameworks for both front-end and back-end made it significant faster to
+develop web applications.</p></li>
+</ul>
+<p>In addition to above technological changes, it also started to become more and
+more difficult to adapt Invenio v1 to all the different use cases we wanted
+to support. Preservation archives have vastly different requirements from
+aggregators which have vastly different requirements from research data
+management systems. We further started to see performance problems with larger
+and larger number of records.</p>
+<p>Last but not least, we had many uses cases where it was no longer beneficial
+to store the records in MARC21, but instead adopt either newer or custom
+data model.</p>
+<p>All in all, new technologies, an aging product showing its cracks,
+slow development and a wish to have other data models was key determining
+factors in deciding to start from scratch and implement a framework rather than
+a software application.</p>
+</div>
+<div class="section" id="what-happened-to-invenio-v2">
+<h2>What happened to Invenio v2?<a class="headerlink" href="#what-happened-to-invenio-v2" title="Permalink to this headline">¶</a></h2>
+<p>Initial in 2011 we started out on creating a hybrid application which would
+allow us to progressively migrate features as we had the time. In 2013 we
+launched Zenodo as the first site on the v2 development version which among
+other things featured Jinja templates instead of the previous Python based
+templates.</p>
+<p>In theory everything was sound, however over the following years it became very
+difficult to manage the inflow of changes from larger and larger teams on the
+development side and operationally proved to be quite unstable compared to v1.</p>
+<p>Last but not least, Invenio v1 was built in a time where the primary need was
+publication repositories and v2 inherited this legacy making it difficult to
+deal with very large research datasets.</p>
+<p>Thus, in late 2015 we were being slowed so much down by our past legacy that we
+saw no other way that starting over from scratch if we were to deal with the
+next 20 years of challenges.</p>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="overview.html" title="Previous document">Overview</a>
+        </li>
+        <li>
+          <a href="quickstart/index.html" title="Next document">Quickstart</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">History</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#from-software-to-framework">From software to framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-happened-to-invenio-v2">What happened to Invenio v2?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-help.html">Getting help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="channels.html">Communication channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-environment.html">Developer environment guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Getting started</a><ul>
+      <li>Previous: <a href="overview.html" title="previous chapter">Overview</a></li>
+      <li>Next: <a href="quickstart/index.html" title="next chapter">Quickstart</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../_sources/getting-started/history.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

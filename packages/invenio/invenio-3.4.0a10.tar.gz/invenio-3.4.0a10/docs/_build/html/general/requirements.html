@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Requirements &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Getting help" href="getting-help.html" />
+    <link rel="prev" title="Bundles" href="bundles.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="requirements">
+<span id="id1"></span><h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
+<p>Following is a brief overview of the requirements of Invenio:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Supported Python versions:</dt><dd><ul>
+<li><p>Python 3: v3.4, v3.5 and v3.6 (v3.7 is not yet supported due to Celery
+incompatibility).</p></li>
+<li><p>Python 2: v2.7 (until 2020, the official end of life for Python 2.7)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Supported databases:</dt><dd><ul>
+<li><p>PostgreSQL v9.4+, MySQL 5.6+ or SQLite (for testing).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Supported search engines:</dt><dd><ul>
+<li><p>Elasticsearch v5 or v6.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Supported memory caches:</dt><dd><ul>
+<li><p>Redis or Memcache.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Supported message queues:</dt><dd><ul>
+<li><p>RabbitMQ, Redis or Amazon SQS (untested).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Supported storage protocols:</dt><dd><ul>
+<li><p>Local, S3, WebDAV, XRootD and many more.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Supported WSGI servers:</dt><dd><ul>
+<li><p>Gunicorn</p></li>
+<li><p>uWSGI</p></li>
+<li><p>mod_wsgi</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Supported Flask versions:</dt><dd><ul>
+<li><p>v0.12.x</p></li>
+<li><p>v1.0.x</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Supported Celery versions:</dt><dd><ul>
+<li><p>v4.0, 4.1, 4.2</p></li>
+<li><p>v3.1</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Supported operating systems:</dt><dd><ul>
+<li><p>macOS: Newer releases.</p></li>
+<li><p>Linux: Newer distributions such as Ubuntu 16/18 or CentOS 7.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="system-requirements">
+<h2>System requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Invenio can run in both Docker, virtual machines and physical machines. Invenio
+can run on a single machine or a cluster of 100s of machines. It all
+depends on exactly how much data you are handling and your performance
+requirements.</p>
+<p>Following is an estimate of a small, medium and large installation of Invenio.
+The purpose is only to provide a <strong>very rough</strong> idea about how an Invenio
+installation could look like.</p>
+<p><strong>Small installation:</strong></p>
+<ul class="simple">
+<li><p>Web/app/background servers and Redis: 1 node</p></li>
+<li><p>Database: 1 node</p></li>
+<li><p>Elasticsearch: 1 node</p></li>
+</ul>
+<p><strong>Medium installation:</strong></p>
+<ul class="simple">
+<li><p>Load balancer: 1 node</p></li>
+<li><p>Web/app servers and background workers: 2 nodes</p></li>
+<li><p>Database: 1 node</p></li>
+<li><p>Elasticsearch: 3 nodes</p></li>
+<li><p>Redis/RabbitMQ: 1 node</p></li>
+</ul>
+<p><strong>Large installation:</strong></p>
+<ul class="simple">
+<li><p>Load balancer: 2 node (with DNS load balancing)</p></li>
+<li><p>Web/app servers: 3+ nodes</p></li>
+<li><p>Background workers: 3+ nodes</p></li>
+<li><p>Database: 2 nodes (master/slave)</p></li>
+<li><p>Elasticsearch: 5 nodes (3 data, 2 clients)</p></li>
+<li><p>Redis: 3 nodes (HA setup)</p></li>
+<li><p>RabbitMQ: 2 nodes (HA setup)</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Overview</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bundles.html">Bundles</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-help.html">Getting help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Overview</a><ul>
+      <li>Previous: <a href="bundles.html" title="previous chapter">Bundles</a></li>
+      <li>Next: <a href="getting-help.html" title="next chapter">Getting help</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/general/requirements.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

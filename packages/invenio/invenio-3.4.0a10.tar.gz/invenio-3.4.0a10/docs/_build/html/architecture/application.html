@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Application architecture &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Migrating to v3" href="../migrating.html" />
+    <link rel="prev" title="Infrastructure architecture" href="infrastructure.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="application-architecture">
+<h1>Application architecture<a class="headerlink" href="#application-architecture" title="Permalink to this headline">¶</a></h1>
+<p>Invenio is at the core an application built on-top of the Flask web
+development framework, and fully understanding Invenio’s architectural design
+requires you to understand core concepts from Flask which will briefly be
+covered here.</p>
+<p>The Flask application is exposed via different <em>application interfaces</em>
+depending on if the application is running in a web server, CLI or job queue.</p>
+<p>Invenio adds a powerful <em>application factory</em> on top of Flask, which takes
+care of dynamically assembling an Invenio application from the many individual
+modules that make up Invenio, and which also allow you to easily extend
+Invenio with your own modules.</p>
+<div class="section" id="core-concepts">
+<h2>Core concepts<a class="headerlink" href="#core-concepts" title="Permalink to this headline">¶</a></h2>
+<p>We will explain the core Flask concepts using a simple Flask application:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span>
+
+<span class="c1"># Blueprint</span>
+<span class="n">bp</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s1">&#39;bp&#39;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span>
+
+<span class="nd">@bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_user_agent</span><span class="p">():</span>
+    <span class="c1"># Executing inside request context</span>
+    <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">]</span>
+
+<span class="c1"># Extension</span>
+<span class="k">class</span> <span class="nc">MyExtension</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">app</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">init_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;MYCONF&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Application</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">ext</span> <span class="o">=</span> <span class="n">MyExtension</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">bp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can save above code in a file <code class="docutils literal notranslate"><span class="pre">app.py</span></code> and run the application:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install Flask
+<span class="gp">$</span> <span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>app.py flask run
+</pre></div>
+</div>
+<p class="rubric">Application and blueprint</p>
+<p>Invenio is a large application built up of many smaller individual modules. The
+way Flask allows you to build modular applications is via <em>blueprints</em>.
+In above example we have a small blueprint with just one <em>view</em>
+(<code class="docutils literal notranslate"><span class="pre">my_user_agent</span></code>), which returns the browser’s user agent sting.</p>
+<p>This blueprint is <em>registered</em> on the <em>Flask application</em>. This allow you
+to reuse the blueprint in another Flask application.</p>
+<p class="rubric">Flask extensions</p>
+<p>Like blueprints allow you to modularise your Flask application’s views,
+Flask extensions allow you to modularise the initialization of your application
+that is not specific to views (e.g. providing database connectivity).</p>
+<p>Flask extensions are just objects like the one in the example above, which has
+an <code class="docutils literal notranslate"><span class="pre">init_app</span></code> method.</p>
+<p class="rubric">Application and request context</p>
+<p>Code in a Flask application can be executed in two “states”:</p>
+<ul class="simple">
+<li><p><em>Application context</em>: when the application is e.g. being used via a CLI
+or running in a job queue (i.e. not handling requests).</p></li>
+<li><p><em>Request context</em>: when the application is handling a request from a user.</p></li>
+</ul>
+<p>In the above example, the  code inside the view <code class="docutils literal notranslate"><span class="pre">my_user_agent</span></code> is executed
+during a request, and thus you can have access to the browser’s user agent
+string. On the other hand, if you tried to access <code class="docutils literal notranslate"><span class="pre">request.headers</span></code> outside
+the view, the application would fail as no request is being processed.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">request</span></code> object is a proxy object which points to the current request
+being processed. There is some magic happening behind the scenes in order to
+make this thread safe.</p>
+</div>
+<div class="section" id="interfaces-wsgi-cli-and-celery">
+<h2>Interfaces: WSGI, CLI and Celery<a class="headerlink" href="#interfaces-wsgi-cli-and-celery" title="Permalink to this headline">¶</a></h2>
+<p>Overall the Flask application is running via three different application
+interfaces:</p>
+<ul class="simple">
+<li><p><strong>WSGI:</strong> The frontend web server interfaces with Flask via Flask’s WSGI
+application.</p></li>
+<li><p><strong>CLI:</strong> The command-line interface is made using Click and takes care of
+executing commands inside the Flask application.</p></li>
+<li><p><strong>Celery:</strong> The distributed job queue is made using Celery and takes care of
+executing jobs inside the Flask application.</p></li>
+</ul>
+</div>
+<div class="section" id="application-assembly">
+<h2>Application assembly<a class="headerlink" href="#application-assembly" title="Permalink to this headline">¶</a></h2>
+<p>In each of the above interfaces, a Flask application needs to be created.
+A common pattern for large Flask applications is to move the application
+creation into a factory function, named an <strong>application factory</strong>.</p>
+<p>Invenio provides a powerful application factory for Flask which is capable of
+dynamically assembling an application. In order to illustrate the basics of
+what the Invenio application factory does, have a look at the following
+example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">Blueprint</span>
+
+<span class="c1"># Module 1</span>
+<span class="n">bp1</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="s1">&#39;bp1&#39;</span><span class="p">)</span>
+<span class="nd">@bp1</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span>
+
+<span class="c1"># Module 2</span>
+<span class="n">bp2</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="s1">&#39;bp2&#39;</span><span class="p">)</span>
+<span class="nd">@bp2</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">world</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;World&#39;</span>
+
+<span class="c1"># Application factory</span>
+<span class="k">def</span> <span class="nf">create_app</span><span class="p">():</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">bp1</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">bp2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span>
+</pre></div>
+</div>
+<p>The example illustrates two blueprints, which are statically registered on the
+Flask application blueprint inside the application factory. It is essentially
+this part that the Invenio application factory takes care of for you. Invenio
+will automatically discover all your installed Invenio modules and register
+them on your application.</p>
+</div>
+<div class="section" id="assembly-phases">
+<h2>Assembly phases<a class="headerlink" href="#assembly-phases" title="Permalink to this headline">¶</a></h2>
+<p>The Invenio application factory assembles your application in five phases:</p>
+<ol class="arabic simple">
+<li><p><strong>Application creation</strong>: Besides creating the Flask application object,
+this phase will also ensure your instance folder exists, as well as route
+Python warnings through the Flask application logger.</p></li>
+<li><p><strong>Configuration loading</strong>: In this phase your application will load your
+instance configuration. This essentially sets all the configuration
+variables for which you don’t want to use the default values, e.g.  the
+database host configuration.</p></li>
+<li><p><strong>URL converter loading</strong>: In this phase, the application will load any of
+your URL converts. This phase is usually only needed for some few specific
+cases.</p></li>
+<li><p><strong>Flask extensions loading</strong>: In this phase all the Invenio modules which
+provide Flask extensions will initialize the extension. Usually the
+extensions will provide default configuration values they need, unless the
+user already set them.</p></li>
+<li><p><strong>Blueprints loading</strong>: After all extensions have been loaded, the factory
+will end with registering all the blueprints provided by the Invenio modules
+on the application.</p></li>
+</ol>
+<p>Understanding the above application assembly phases, what they do, and how you
+can plug into them is essential for fully mastering Invenio development.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>No loading order within a phase</strong></p>
+<p>It’s very important to know that, within each phase, there is <strong>no order</strong>
+in how the Invenio modules are loaded. Say, within the Flask extensions
+loading phase, there’s no way to specify that one extension has to be
+loaded before another extension.</p>
+<p>You only have the order of the phases to work with, so e.g. Flask extensions are
+loaded before any blueprints are loaded.</p>
+</div>
+</div>
+<div class="section" id="module-discovery">
+<h2>Module discovery<a class="headerlink" href="#module-discovery" title="Permalink to this headline">¶</a></h2>
+<p>In each of the application assembly phases, the Invenio factory automatically
+discovers your installed Invenio modules. This works via Python
+<strong>entry points</strong>. When you install the Python package for an Invenio module,
+the package describes via entry points which Flask extensions, blueprints etc.
+it provides.</p>
+</div>
+<div class="section" id="wsgi-ui-and-rest">
+<h2>WSGI: UI and REST<a class="headerlink" href="#wsgi-ui-and-rest" title="Permalink to this headline">¶</a></h2>
+<p>Each of the application interfaces (WSGI, CLI, Celery) may need slightly
+different Flask applications. The Invenio application factory is in charge
+of assembling these applications, which is done through the five assembly
+phases.</p>
+<p>The WSGI application is however also split up into two Flask applications:</p>
+<ul class="simple">
+<li><p><strong>UI:</strong> Flask application responsible for processing all user facing views.</p></li>
+<li><p><strong>REST:</strong> Flask application responsible for processing all REST API requests.</p></li>
+</ul>
+<p>The reason to split the frontend part of Invenio into two separate applications
+is partly</p>
+<ul class="simple">
+<li><p>to be able to run the REST API on one domain (<code class="docutils literal notranslate"><span class="pre">api.example.org</span></code>) and the
+UI app on another domain (<code class="docutils literal notranslate"><span class="pre">www.example.org</span></code>)</p></li>
+<li><p>because UI and REST API applications usually have vastly different
+requirements.</p></li>
+</ul>
+<p>As an example, a <code class="docutils literal notranslate"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">found</span></code> HTTP error, usually needs to render a
+template in the UI application, but returns a JSON response in the REST API
+application.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>The following Invenio modules are each responsible for implementing parts of the
+above application architecture, and it is highly advisable to dig deeper into
+these modules for a better understanding of the Invenio application
+architecture:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://invenio-base.readthedocs.io">Invenio-Base</a>: Implements the Invenio
+application factory.</p></li>
+<li><p><a class="reference external" href="https://invenio-config.readthedocs.io">Invenio-Config</a>: Implements the
+configuration loading phase.</p></li>
+<li><p><a class="reference external" href="https://invenio-app.readthedocs.io">Invenio-App</a>: Implements default
+applications for WSGI, CLI and Celery.</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Application architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-concepts">Core concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interfaces-wsgi-cli-and-celery">Interfaces: WSGI, CLI and Celery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#application-assembly">Application assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assembly-phases">Assembly phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-discovery">Module discovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wsgi-ui-and-rest">WSGI: UI and REST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="infrastructure.html" title="previous chapter">Infrastructure architecture</a></li>
+      <li>Next: <a href="../migrating.html" title="next chapter">Migrating to v3</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/architecture/application.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

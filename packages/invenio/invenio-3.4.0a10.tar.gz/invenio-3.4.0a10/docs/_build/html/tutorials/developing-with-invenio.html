@@ -1,0 +1,458 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Developing with Invenio &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Build a module" href="build-a-module.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="developing-with-invenio">
+<span id="id1"></span><h1>Developing with Invenio<a class="headerlink" href="#developing-with-invenio" title="Permalink to this headline">¶</a></h1>
+<p>As described in the previous section <a class="reference internal" href="build-a-module.html#build-a-module"><span class="std std-ref">Build a module</span></a>, Invenio has a modular design.
+Therefore in order to extend the application, we need to develop new modules.
+After covering how to create modules with cookiecutter, in this section we will go through
+the details of the development process.</p>
+<div class="section" id="form-views-and-templates">
+<h2>Form, views and templates<a class="headerlink" href="#form-views-and-templates" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial we’ll see how to add data to our Invenio application.
+To accomplish this we will cover several parts of the development process such as:</p>
+<ul class="simple">
+<li><p>How to create a form.</p></li>
+<li><p>How to create a new view.</p></li>
+<li><p>How to add a utility function.</p></li>
+<li><p>How to add new templates.</p></li>
+<li><p>How to use Jinja2.</p></li>
+<li><p>How to define your own JSON Schema.</p></li>
+</ul>
+<div class="section" id="flask-extensions">
+<h3>Flask extensions<a class="headerlink" href="#flask-extensions" title="Permalink to this headline">¶</a></h3>
+<p>It is important to understand that Invenio modules are just regular
+<a class="reference external" href="http://flask.pocoo.org/docs/1.0/extensiondev/#extension-dev">Flask extensions</a>. The Flask
+documentation contains extensive documentation on the APIs, design patterns
+and in general how to develop with Flask, and it is highly recommended that you
+follow Flask tutorials to understand the basics of Flask.</p>
+</div>
+<div class="section" id="create-the-form">
+<h3>1. Create the form<a class="headerlink" href="#create-the-form" title="Permalink to this headline">¶</a></h3>
+<p>First, let’s create a Python module that contains the forms of our project, we
+will use <a class="reference external" href="http://flask-wtf.readthedocs.io/en/stable/">Flask-WTF</a>.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">invenio_foo/forms.py</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Forms module.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">flask_wtf</span> <span class="kn">import</span> <span class="n">FlaskForm</span>
+<span class="kn">from</span> <span class="nn">wtforms</span> <span class="kn">import</span> <span class="n">StringField</span><span class="p">,</span> <span class="n">TextAreaField</span><span class="p">,</span> <span class="n">validators</span>
+
+
+<span class="k">class</span> <span class="nc">RecordForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Custom record form.&quot;&quot;&quot;</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span>
+        <span class="s1">&#39;Title&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">DataRequired</span><span class="p">()]</span>
+    <span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">TextAreaField</span><span class="p">(</span>
+        <span class="s1">&#39;Description&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">DataRequired</span><span class="p">()]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-the-views">
+<h3>2. Create the views<a class="headerlink" href="#create-the-views" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">invenio_foo/views.py</span></code> we’ll create the endpoints for</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">create</span></code>: Form template</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">success</span></code>: Success template</p></li>
+</ul>
+<p>and register all the views to our application.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Invenio module that adds more fun to the platform.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_for</span>
+<span class="kn">from</span> <span class="nn">flask_babelex</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">invenio_records</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">invenio_records.models</span> <span class="kn">import</span> <span class="n">RecordMetadata</span>
+
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">RecordForm</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">create_record</span>
+
+<span class="n">blueprint</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span>
+    <span class="s1">&#39;invenio_foo&#39;</span><span class="p">,</span>
+    <span class="vm">__name__</span><span class="p">,</span>
+    <span class="n">template_folder</span><span class="o">=</span><span class="s1">&#39;templates&#39;</span><span class="p">,</span>
+    <span class="n">static_folder</span><span class="o">=</span><span class="s1">&#39;static&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="nd">@blueprint</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Basic view.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+        <span class="s2">&quot;invenio_foo/index.html&quot;</span><span class="p">,</span>
+        <span class="n">module_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;invenio-foo&#39;</span><span class="p">))</span>
+
+
+<span class="nd">@blueprint</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/create&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">create</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The create view.&quot;&quot;&quot;</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">RecordForm</span><span class="p">()</span>
+    <span class="c1"># if the form is valid</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+        <span class="c1"># create the record</span>
+        <span class="n">create_record</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="n">description</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">data</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1"># redirect to the success page</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;invenio_foo.success&#39;</span><span class="p">))</span>
+
+    <span class="n">records</span> <span class="o">=</span> <span class="n">_get_all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;invenio_foo/create.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">records</span><span class="o">=</span><span class="n">records</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_all</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return all records.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Record</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">obj</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">RecordMetadata</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+
+
+<span class="nd">@blueprint</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/success&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">success</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The success view.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;invenio_foo/success.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-the-templates">
+<h3>3. Create the templates<a class="headerlink" href="#create-the-templates" title="Permalink to this headline">¶</a></h3>
+<p>And now, let’s create the templates.</p>
+<p>We create a <code class="docutils literal notranslate"><span class="pre">create.html</span></code> template in <code class="docutils literal notranslate"><span class="pre">invenio_foo/templates/invenio_foo/</span></code>
+where we can override the <code class="docutils literal notranslate"><span class="pre">page_body</span></code> block, to place our form:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% extends config.FOO_BASE_TEMPLATE %}
+
+{% macro errors(field) %}
+  {% if field.errors %}
+  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;help-block&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">errors</span><span class="p">&gt;</span>
+    {% for error in field.errors %}
+      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>{{ error }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+    {% endfor %}
+    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+  {% endif %}
+{% endmacro %}
+
+{% block page_body %}
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-md-12&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;alert alert-warning&quot;</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">b</span><span class="p">&gt;</span>Heads up!<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span> This example is for demo proposes only
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Create record<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-md-offset-3 col-md-6 well&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;{{ url_for(&#39;invenio_foo.create&#39;) }}&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;POST&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;form-group {{ &#39;has-error&#39; if form.title.errors }}&quot;</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;title&quot;</span><span class="p">&gt;</span>{{ form.title.label }}<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+              {{ form.title(class_=&quot;form-control&quot;)|safe }}
+              {{ errors(form.title) }}
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;form-group {{ &#39;has-error&#39; if form.description.errors }}&quot;</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;description&quot;</span><span class="p">&gt;</span>{{ form.description.label }}<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+              {{ form.description(class_=&quot;form-control&quot;)|safe }}
+              {{ errors(form.description) }}
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+            {{ form.csrf_token }}
+            <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-default&quot;</span><span class="p">&gt;</span>Submit<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">hr</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-md-12&quot;</span><span class="p">&gt;</span>
+        {% if records %}
+        <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Records created<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">ol</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;custom-records&quot;</span><span class="p">&gt;</span>
+            {% for record in records %}
+            <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>{{record.title}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+            {% endfor %}
+        <span class="p">&lt;/</span><span class="nt">ol</span><span class="p">&gt;</span>
+        {% endif %}
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+{% endblock page_body %}
+</pre></div>
+</div>
+<p>And finally, the <code class="docutils literal notranslate"><span class="pre">success.html</span></code> page in
+<cite>invenio_foo/templates/invenio_foo/</cite> which will be rendered after a
+record is created.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% extends config.FOO_BASE_TEMPLATE %}
+
+{% block page_body %}
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-md-12&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;alert alert-success&quot;</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">b</span><span class="p">&gt;</span>Success!<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{{ url_for(&#39;invenio_foo.create&#39;) }}&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-warning&quot;</span><span class="p">&gt;</span>Create more<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">hr</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nt">center</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">iframe</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;//giphy.com/embed/WZmgVLMt7mp44&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;480&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;480&quot;</span> <span class="na">frameBorder</span><span class="o">=</span><span class="s">&quot;0&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;giphy-embed&quot;</span> <span class="na">allowFullScreen</span><span class="p">&gt;&lt;/</span><span class="nt">iframe</span><span class="p">&gt;&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://giphy.com/gifs/kawaii-colorful-unicorn-WZmgVLMt7mp44&quot;</span><span class="p">&gt;</span>via GIPHY<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">center</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+{% endblock page_body %}
+</pre></div>
+</div>
+</div>
+<div class="section" id="write-the-record-creation-function">
+<h3>4. Write the record creation function<a class="headerlink" href="#write-the-record-creation-function" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">utils.py</span></code> file contains all helper functions of our module,
+so let’s write the first utility that will create a record.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">invenio_foo/utils.py</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Utils module.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">current_app</span>
+
+<span class="kn">from</span> <span class="nn">invenio_db</span> <span class="kn">import</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">invenio_indexer.api</span> <span class="kn">import</span> <span class="n">RecordIndexer</span>
+<span class="kn">from</span> <span class="nn">invenio_pidstore</span> <span class="kn">import</span> <span class="n">current_pidstore</span>
+<span class="kn">from</span> <span class="nn">invenio_records.api</span> <span class="kn">import</span> <span class="n">Record</span>
+
+
+<span class="k">def</span> <span class="nf">create_record</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a record.</span>
+
+<span class="sd">    :param dict data: The record data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indexer</span> <span class="o">=</span> <span class="n">RecordIndexer</span><span class="p">()</span>
+    <span class="c1"># create uuid</span>
+    <span class="n">rec_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span>
+    <span class="c1"># add the schema</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;$schema&quot;</span><span class="p">]</span> <span class="o">=</span> \
+        <span class="n">current_app</span><span class="o">.</span><span class="n">extensions</span><span class="p">[</span><span class="s1">&#39;invenio-jsonschemas&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">path_to_url</span><span class="p">(</span>
+            <span class="s1">&#39;records/custom-record-v1.0.0.json&#39;</span>
+        <span class="p">)</span>
+    <span class="c1"># create PID</span>
+    <span class="n">current_pidstore</span><span class="o">.</span><span class="n">minters</span><span class="p">[</span><span class="s1">&#39;recid&#39;</span><span class="p">](</span><span class="n">rec_uuid</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="c1"># create record</span>
+    <span class="n">created_record</span> <span class="o">=</span> <span class="n">Record</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">id_</span><span class="o">=</span><span class="n">rec_uuid</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="c1"># index the record</span>
+    <span class="n">indexer</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">created_record</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-the-custom-record-json-schema">
+<h3>5. Create the custom-record JSON Schema<a class="headerlink" href="#create-the-custom-record-json-schema" title="Permalink to this headline">¶</a></h3>
+<p>Our records can use a custom schema. To define and use this schema,
+we create the <code class="docutils literal notranslate"><span class="pre">custom-record-v1.0.0.json</span></code> file inside the <code class="docutils literal notranslate"><span class="pre">records</span></code>
+folder of your data model project (<code class="docutils literal notranslate"><span class="pre">my-datamodel</span></code> from the Quickstart
+tutorial <a class="reference internal" href="understanding-data-models.html#understanding-data-models"><span class="std std-ref">Understanding data models</span></a>).</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">my-datamodel/my-datamodel/jsonschemas/records/custom-record-v1.0.0.json</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-04/schema#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost/schemas/records/custom-record-v1.0.0.json&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;my-datamodel v1.0.0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Record title.&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Record description.&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Invenio record identifier (integer).&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="demo-time">
+<h2>Demo time<a class="headerlink" href="#demo-time" title="Permalink to this headline">¶</a></h2>
+<p>Let’s now see our Invenio module in action after it has been integrated in our
+Invenio instance.</p>
+<p>First, install the new invenio-foo module in the virtual enviroment of the
+Invenio instance:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pipenv shell  <span class="c1"># activate the app virtual env</span>
+<span class="gp gp-VirtualEnv">(my-site)</span> <span class="gp">$</span> <span class="nb">cd</span> ../invenio-foo
+<span class="gp gp-VirtualEnv">(my-site)</span> <span class="gp">$</span> pip install --editable .
+</pre></div>
+</div>
+<p>Then, if you’ve followed the steps in the <a class="reference internal" href="../quickstart/index.html#quickstart"><span class="std std-ref">Quickstart</span></a> guide, you can go to the
+instance folder, <cite>my-site</cite>, and start the <code class="docutils literal notranslate"><span class="pre">server</span></code> script:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my-site)</span> <span class="gp">$</span> <span class="nb">cd</span> ../my-site
+<span class="gp gp-VirtualEnv">(my-site)</span> <span class="gp">$</span> ./scripts/server
+</pre></div>
+</div>
+<p>Then go to <code class="docutils literal notranslate"><span class="pre">http://localhost:5000/create</span></code> and you will see the form we just
+created. There are two fields <code class="docutils literal notranslate"><span class="pre">Title</span></code> and <code class="docutils literal notranslate"><span class="pre">Description</span></code>.</p>
+<p>Let’s try the form. Add something in the <code class="docutils literal notranslate"><span class="pre">Title</span></code> field and click on submit:
+you will see a validation error on the form. Fill in the <code class="docutils literal notranslate"><span class="pre">Description</span></code>
+field and click on submit: the form is now valid and it navigates you to the
+<code class="docutils literal notranslate"><span class="pre">/success</span></code> page.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="build-a-module.html">Build a module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developing with Invenio</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#form-views-and-templates">Form, views and templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#flask-extensions">Flask extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-form">1. Create the form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-views">2. Create the views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-templates">3. Create the templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-the-record-creation-function">4. Write the record creation function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-custom-record-json-schema">5. Create the custom-record JSON Schema</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#demo-time">Demo time</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="build-a-module.html" title="previous chapter">Build a module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/tutorials/developing-with-invenio.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

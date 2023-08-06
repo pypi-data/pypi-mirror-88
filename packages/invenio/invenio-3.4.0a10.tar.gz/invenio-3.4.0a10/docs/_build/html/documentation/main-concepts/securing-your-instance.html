@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Securing your instance &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Module Reference" href="../bundles/index.html" />
+    <link rel="prev" title="Application architecture" href="architecture-application.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="securing-your-instance">
+<span id="id1"></span><h1>Securing your instance<a class="headerlink" href="#securing-your-instance" title="Permalink to this headline">¶</a></h1>
+<p>Invenio has a core principle to always have secure defaults for settings, thus
+we have already done a lot in order to secure your installation. It is however
+still important to be aware of some important settings and risks.</p>
+<div class="section" id="secret-key">
+<h2>Secret key<a class="headerlink" href="#secret-key" title="Permalink to this headline">¶</a></h2>
+<p>Probably the most important security measure is to have a strong random secret
+key set for you Invenio instance. The secret key is used for instance to sign
+user session ids and encrypt certain database fields.</p>
+<p>The secret key must be kept secret. If the key is leaked or stolen somehow, you
+should immediately change it to a new key.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># config.py</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s1">&#39;..put a long random value here..&#39;</span>
+</pre></div>
+</div>
+<p>Good practices:</p>
+<ul class="simple">
+<li><p>Never commit your secret key in the source code repository (or any other
+password for that sake).</p></li>
+<li><p>Use different secret keys for different deployments (testing, staging,
+production)</p></li>
+</ul>
+</div>
+<div class="section" id="allowed-hosts">
+<h2>Allowed hosts<a class="headerlink" href="#allowed-hosts" title="Permalink to this headline">¶</a></h2>
+<p>Invenio has a configuration option called <code class="docutils literal notranslate"><span class="pre">APP_ALLOWED_HOSTS</span></code> which controls
+which hosts/domain names that can be served. A client request to a web server
+usually includes the domain name in the <code class="docutils literal notranslate"><span class="pre">Host</span></code> HTTP header:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">GET</span> <span class="o">/</span>
+<span class="n">Host</span><span class="p">:</span> <span class="n">example</span><span class="o">.</span><span class="n">org</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>The web server uses that for instance to host several website on the same
+domain. Also, the host header is usually used in a load balanced environment
+to generate links with the right domain name.</p>
+<p>An attacker has full control of the host header and can thus change it to
+whatever they like, and for instance have the application generate links to a
+completely different domain.</p>
+<p>Normally your load balancer/web server should only route requests with a
+white-listed set of host to your application. It is however very easy to
+misconfigure this in your web server, and thus Invenio includes a protective
+measure.</p>
+<p>Simply set <code class="docutils literal notranslate"><span class="pre">APP_ALLOWED_HOSTS</span></code> to a list of allowed hosts/domain names:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># config.py</span>
+<span class="n">APP_ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;www.example.org&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="number-of-proxies">
+<h2>Number of proxies<a class="headerlink" href="#number-of-proxies" title="Permalink to this headline">¶</a></h2>
+<p>Invenio is commonly used with both a load balancer and a web server in front
+of the application server. The load balancer and web server both works as
+proxies, which means that the clients remote address usually get’s added in
+the <code class="docutils literal notranslate"><span class="pre">X-Forwarded-For</span></code> HTTP header. Invenio will automatically extract the
+clients IP address from the HTTP header, however to prevent clients from doing
+IP spoofing you need to specify exactly how many proxies you have in front
+of you application server:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># config.py</span>
+<span class="n">WSGI_PROXIES</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="csrf-protection">
+<h2>CSRF protection<a class="headerlink" href="#csrf-protection" title="Permalink to this headline">¶</a></h2>
+<p>Invenio has different ways of protecting your application from Cross Site
+Forgery (CSRF) attacks.</p>
+<p>In the UI application, <a class="reference external" href="https://flask-wtf.readthedocs.io/en/stable/csrf.html">Flask-WTF</a>
+is used to protect against these type of attacks.</p>
+<p>In the REST application, Invenio has a configuration
+option called <code class="docutils literal notranslate"><span class="pre">REST_CSRF_ENABLED</span></code> which controls if it should apply the CSRF
+check or not. It uses the <code class="docutils literal notranslate"><span class="pre">invenio_rest.csrf.CSRFProtectMiddleware</span></code>
+to validate the <code class="docutils literal notranslate"><span class="pre">csrftoken</span></code> cookie and the request’s <code class="docutils literal notranslate"><span class="pre">HTTP_X_CSRFTOKEN</span></code>
+header.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">REST_CSRF_ENABLED</span></code> is enabled, if your REST call is using an OAuth
+Access API Token e.g</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">POST /</span>
+<span class="go">Authorization: Bearer &lt;token&gt;</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>then the CSRF checks are skipped.</p>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="architecture-application.html" title="Previous document">Application architecture</a>
+        </li>
+        <li>
+          <a href="../bundles/index.html" title="Next document">Module Reference</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Main concepts</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="repository-structure.html">Repository structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="managing-access.html">Managing access to records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handling-files.html">Integrating Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture-infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture-application.html">Application architecture</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Securing your instance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#secret-key">Secret key</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#allowed-hosts">Allowed hosts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#number-of-proxies">Number of proxies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#csrf-protection">CSRF protection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bundles/index.html">Module Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../community/index.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Documentation</a><ul>
+  <li><a href="index.html">Main concepts</a><ul>
+      <li>Previous: <a href="architecture-application.html" title="previous chapter">Application architecture</a></li>
+      <li>Next: <a href="../bundles/index.html" title="next chapter">Module Reference</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../_sources/documentation/main-concepts/securing-your-instance.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

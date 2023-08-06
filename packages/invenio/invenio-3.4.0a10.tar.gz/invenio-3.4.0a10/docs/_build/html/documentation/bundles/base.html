@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Base bundle &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Auth bundle" href="auth.html" />
+    <link rel="prev" title="Module Reference" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="base-bundle">
+<h1>Base bundle<a class="headerlink" href="#base-bundle" title="Permalink to this headline">¶</a></h1>
+<p>The base bundle contains all modules related to the generic web application.
+This includes the Flask/Celery application factories, configuration management,
+I18N, logging, database management, assets/theme management, mail handling and
+administration interface.</p>
+<p>Included modules:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-admin.readthedocs.io">invenio-admin</a></dt><dd><ul>
+<li><p>Administration interface for Invenio based on Flask-Admin.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-app.readthedocs.io">invenio-app</a></dt><dd><ul>
+<li><p>Flask, WSGI, Celery and CLI applications for Invenio including
+security-related headers and rate limiting.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-assets.readthedocs.io">invenio-assets</a></dt><dd><ul>
+<li><p>Static files management and Webpack integration for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-base.readthedocs.io">invenio-base</a></dt><dd><ul>
+<li><p>Flask application factories implementing the application loading patterns
+with entry points in Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-cache.readthedocs.io">invenio-cache</a></dt><dd><ul>
+<li><p>Caching module for Invenio, supporting Redis and Memcached as backends.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-celery.readthedocs.io">invenio-celery</a></dt><dd><ul>
+<li><p>Task discovery and default configuration of Celery for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-config.readthedocs.io">invenio-config</a></dt><dd><ul>
+<li><p>Configuration loading pattern responsible for loading configuration from
+Python modules, instance folder and environment variables.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-db.readthedocs.io">invenio-db</a></dt><dd><ul>
+<li><p>Database connection management for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-formatter.readthedocs.io">invenio-formatter</a></dt><dd><ul>
+<li><p>Jinja template engine utilities for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-i18n.readthedocs.io">invenio-i18n</a></dt><dd><ul>
+<li><p>I18N utilities like user locale detection, message catalog merging and
+views for language change.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-logging.readthedocs.io">invenio-logging</a></dt><dd><ul>
+<li><p>Configuration of logging to both console, files and log aggregation
+engines like <a class="reference external" href="https://sentry.io/">sentry.io</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-mail.readthedocs.io">invenio-mail</a></dt><dd><ul>
+<li><p>Mail sending for Invenio using Flask-Mail.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-rest.readthedocs.io">invenio-rest</a></dt><dd><ul>
+<li><p>REST API utilities including Cross Origin Resource Sharing (CORS) and
+Content Negotiation versioning support.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-theme.readthedocs.io">invenio-theme</a></dt><dd><ul>
+<li><p>Jinja templates implementing a basic theme for Invenio as well as menus
+and breadcrumbs support.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://docker-invenio.readthedocs.io">docker-invenio</a></dt><dd><ul>
+<li><p>Docker base images based on CentOS 7 for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://pytest-invenio.readthedocs.io">pytest-invenio</a></dt><dd><ul>
+<li><p>Testing utilities for Invenio modules and applications.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="index.html" title="Previous document">Module Reference</a>
+        </li>
+        <li>
+          <a href="auth.html" title="Next document">Auth bundle</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main-concepts/index.html">Main concepts</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Module Reference</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Base bundle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth.html">Auth bundle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metadata.html">Metadata bundle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="files.html">Files bundle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="statistics.html">Statistics bundle (beta)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deposit.html">Deposit bundle (alpha)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="alpha.html">Invenio modules (alpha)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.html">Utility libraries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scaffolding.html">Scaffolding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#notes-on-license">Notes on license</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../community/index.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Documentation</a><ul>
+  <li><a href="index.html">Module Reference</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Module Reference</a></li>
+      <li>Next: <a href="auth.html" title="next chapter">Auth bundle</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../_sources/documentation/bundles/base.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

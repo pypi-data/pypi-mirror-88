@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Version 3.1.0 &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Version 3.0.2" href="v3.0.2.html" />
+    <link rel="prev" title="Version 3.1.1" href="v3.1.1.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="version-3-1-0">
+<h1>Version 3.1.0<a class="headerlink" href="#version-3-1-0" title="Permalink to this headline">¶</a></h1>
+<p><em>Released 2019-03-11</em></p>
+<p>We are proud to announce the release of Invenio v3.1.0.</p>
+<p><strong>Python compatibility</strong></p>
+<p>Invenio v3.1 supports Python 2.7 (until 2019-12-31), Python 3.5 and Python 3.6.
+We expect to add support for Python 3.7 in the near-term future once Celery
+v4.3 has been released.</p>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>See our <a class="reference internal" href="../quickstart/index.html#quickstart"><span class="std std-ref">Quickstart</span></a> guide.</p>
+</div>
+<div class="section" id="what-s-new-in-invenio-v3-1">
+<h2>What’s new in Invenio v3.1?<a class="headerlink" href="#what-s-new-in-invenio-v3-1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="webpack-build-system">
+<h3>Webpack build system<a class="headerlink" href="#webpack-build-system" title="Permalink to this headline">¶</a></h3>
+<p>Invenio v3.1 comes with a new assets build system based on Webpack for building
+and packaging your JavaScript applications, stylesheets and much more. The
+system replaces the previous AMD/RequireJS based system which was deprecated in
+v3.0.</p>
+<p>The old build system is still available to allow users to upgrade to Invenio
+v3.1 without first migrating to Webpack. The old build system will be removed
+in Invenio v3.3</p>
+<p>For more information about the new build system, please see:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://invenio-assets.readthedocs.io/">Invenio-Assets</a></p></li>
+<li><p><a class="reference external" href="https://invenio-assets.readthedocs.io/en/latest/upgrade.html">Upgrade to Webpack</a></p></li>
+</ul>
+<p>The new Webpack build system is based on:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://flask-webpackext.readthedocs.io/">Flask-WebpackExt</a></p></li>
+<li><p><a class="reference external" href="https://pywebpack.readthedocs.io/">Pywebpack</a></p></li>
+</ul>
+</div>
+<div class="section" id="simplified-scaffolding">
+<h3>Simplified scaffolding<a class="headerlink" href="#simplified-scaffolding" title="Permalink to this headline">¶</a></h3>
+<p>We have simplified the scaffolding of new Invenio instances by merging the
+data model template into the main Cookiecutter-Invenio-Instance.</p>
+<p>You can try the new approach by following our <a class="reference internal" href="../quickstart/index.html#quickstart"><span class="std std-ref">Quickstart</span></a>.</p>
+<p>The previous approach of two separate packages – one for the application
+and one for the data model – caused friction and confusion for new users and
+we therefore decided to merge both.</p>
+<p>This also fits with our <em>long-term</em> goal, where we want to provide standard
+data models (such as DataCite, Dublin Core, MARC21) so that users don’t have
+write their own data model.</p>
+<p><strong>Docker base image</strong></p>
+<p>We have released a new Docker image that can serve as a base image for your
+Invenio instances. The image is based on CentOS 7 and comes with Python 3.6,
+Node.JS, NPM and some standard libraries often needed by Invenio.</p>
+<p>See <a class="reference external" href="https://cloud.docker.com/u/inveniosoftware/repository/docker/inveniosoftware/centos7-python">inveniosoftware/centos7-python</a>
+on DockerHub.</p>
+<p>The new image is being used by our <a class="reference internal" href="../quickstart/index.html#quickstart"><span class="std std-ref">Quickstart</span></a> guide, and the image is
+usable in production environments like OpenShift.</p>
+<p><strong>Pipenv</strong></p>
+<p>In order to manage Python dependencies more reliable and securely for your
+Invenio instance we have moved to use <a class="reference external" href="http://pipenv.readthedocs.io">Pipenv</a>
+which also handles the virtualenv creation.</p>
+<p>Pipenv has been integrated into the scaffolded Invenio instance, and you can
+read more about it in <a class="reference internal" href="../tutorials/build-a-repository.html#build-repository"><span class="std std-ref">Build a repository</span></a>.</p>
+</div>
+<div class="section" id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
+<p>New sections where added to the documentation specifically on:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../general/bundles.html#bundles"><span class="std std-ref">Bundles</span></a> and <a class="reference internal" href="../general/requirements.html#requirements"><span class="std std-ref">Requirements</span></a></p></li>
+<li><p><a class="reference internal" href="../tutorials/build-a-repository.html#build-repository"><span class="std std-ref">Build a repository</span></a></p></li>
+<li><p><a class="reference internal" href="../tutorials/managing-access.html#managing-access"><span class="std std-ref">Managing access to records</span></a></p></li>
+<li><p><a class="reference internal" href="../deployment/securing-your-instance.html#securing-your-instance"><span class="std std-ref">Securing your instance</span></a></p></li>
+<li><p><a class="reference internal" href="../architecture/infrastructure.html#infrastructure"><span class="std std-ref">Infrastructure architecture</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="request-tracing">
+<h3>Request tracing<a class="headerlink" href="#request-tracing" title="Permalink to this headline">¶</a></h3>
+<p>Invenio v3.1 has added new features for improved request tracing to allow for
+better troubleshooting and auditing of problems. The feature allows logging a
+request id, session id and user id across multiple services such as Nginx and
+Invenio error logs. This enables e.g. system administrators to identify exactly
+which Nginx access log line caused a specific error logged by Invenio.</p>
+<p>If combined with e.g. centralised log aggregation, this can be used for e.g.
+viewing requests by a user in real-time, request performance statistics and
+many other metrics. Please note that in order to be compliant with EU General
+Data Protection Regulation (GDPR), you must ensure that these logs are
+automatically deleted after 3 months (the same is the case if you only log an
+IP address).</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>Cookiecutter-Invenio-Instance</strong>:</dt><dd><ul>
+<li><p>Nginx configuration has been updated to automatically generate a random
+request id and add is as <code class="docutils literal notranslate"><span class="pre">X-Request-ID</span></code> header.</p></li>
+<li><p>Nginx log format has been updated to log timing information, request id,
+session id and user id if provided by the application server in the
+<code class="docutils literal notranslate"><span class="pre">X-Session-ID</span></code> and <code class="docutils literal notranslate"><span class="pre">X-User-ID</span></code> HTTP headers. Nginx will remove both
+headers prior to sending the response to the client.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Invenio-App</strong>:</dt><dd><ul>
+<li><p>Extracts the <code class="docutils literal notranslate"><span class="pre">X-Request-ID</span></code> header (max 200 chars) if set in the HTTP
+request and makes it available on the Flask <code class="docutils literal notranslate"><span class="pre">g</span></code> object as
+<code class="docutils literal notranslate"><span class="pre">g.request_id</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Invenio-Logging</strong>:</dt><dd><ul>
+<li><p>The request id is made available to all log handlers.</p></li>
+<li><p>The Sentry log handler will add the request ID as a tag if available.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Invenio-Accounts</strong></dt><dd><ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">X-Session-ID</span></code> and <code class="docutils literal notranslate"><span class="pre">X-User-ID</span></code> HTTP headers will be added to the
+HTTP repsponse if the configuration variable
+<code class="docutils literal notranslate"><span class="pre">ACCOUNTS_USERINFO_HEADERS</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>. This makes the session
+and user id available to upstream servers like Nginx.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="minor-changes-in-v3-1">
+<h2>Minor changes in v3.1<a class="headerlink" href="#minor-changes-in-v3-1" title="Permalink to this headline">¶</a></h2>
+<p><strong>Token expiration</strong></p>
+<p>The token expiration was changed from 5 days to 30 minutes for the password
+reset token and email confirmation token. Using the tokens will as a
+side-effect login in the user, which means that if the link is leaked (e.g.
+forwarded by the users themselves), then another person can use the link to
+access the account. Flask-Security v3.1.0 addresses this issue, but has not
+yet been released.</p>
+<p><strong>Globus.org OAuth Login</strong></p>
+<p>Invenio v3.1 now comes with support for login with your Globus.org account.
+The feature was contributed by University of Chicago.</p>
+<p>See <a class="reference external" href="https://invenio-oauthclient.readthedocs.io/en/latest/usage.html#module-invenio_oauthclient.contrib.globus">Invenio-OAuthClient</a> for details.</p>
+<p><strong>Health-check view</strong></p>
+<p>A <code class="docutils literal notranslate"><span class="pre">/ping</span></code> view that can be enabled via the
+<code class="docutils literal notranslate"><span class="pre">APP_HEALTH_BLUEPRINT_ENABLED</span></code> configuration variable has been added to
+support load balancers like HAProxy to check if the application server is
+responsive.</p>
+</div>
+<div class="section" id="backwards-incompatible-changes">
+<h2>Backwards incompatible changes<a class="headerlink" href="#backwards-incompatible-changes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Pytest-Invenio:</strong> The <code class="docutils literal notranslate"><span class="pre">celery_config</span></code> fixture has been renamed to
+<code class="docutils literal notranslate"><span class="pre">celery_config_ext</span></code> due to naming conflict with fixture provided by
+Celery.</p></li>
+</ul>
+</div>
+<div class="section" id="deprecations-in-v3-1">
+<h2>Deprecations in v3.1<a class="headerlink" href="#deprecations-in-v3-1" title="Permalink to this headline">¶</a></h2>
+<p>The following list of features have been deprecated and will be removed in either
+Invenio v3.2 or Invenio v3.3:</p>
+<div class="section" id="elasticsearch-v2-support">
+<h3>Elasticsearch v2 support<a class="headerlink" href="#elasticsearch-v2-support" title="Permalink to this headline">¶</a></h3>
+<p>Elasticsearch v2 support will be removed in Invenio v3.2. Elasticsearch v2 has
+reached end of life and no longer receives any bug or security fixes.</p>
+<p>Both the support in Invenio-Search for creating indexes for v2 as well as any
+v2 Elasticsearch mappings in other Invenio modules will be removed.</p>
+</div>
+<div class="section" id="amd-requirejs">
+<h3>AMD/RequireJS<a class="headerlink" href="#amd-requirejs" title="Permalink to this headline">¶</a></h3>
+<p>Invenio’s assets build system based on AMD/RequireJS will be removed in
+Invenio v3.3.</p>
+<p>This involves e.g. the two CLI commands:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ invenio npm
+$ invenio assets build
+</pre></div>
+</div>
+<p>Several Python modules in Invenio-Assets will be removed, including (but not
+limited to):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_assets.npm</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_assets.filters</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_assets.glob</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_assets.proxies</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Also, bundle definitions in other Invenio modules will be removed. These are
+usually located in <code class="docutils literal notranslate"><span class="pre">bundles.py</span></code> files, e.g.:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_theme.bundles</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Also, some static files will be removed from bundles, e.g.:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_theme/static/js/*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_theme/static/scss/*</span></code></p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dynamicpermission-class">
+<h3>DynamicPermission class<a class="headerlink" href="#dynamicpermission-class" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">invenio_access.DynamicPermission</span></code> class will be removed in Invenio v3.2.
+It has been superseded by the <code class="docutils literal notranslate"><span class="pre">invenio_access.Permission</span></code> class. The
+<code class="docutils literal notranslate"><span class="pre">Permission</span></code> class by default deny an action in case no user/role is
+assigned. The <code class="docutils literal notranslate"><span class="pre">DynamicPermission</span></code> instead allowed an action if no user/role
+was assigned.</p>
+</div>
+<div class="section" id="records-cli">
+<h3>Records CLI<a class="headerlink" href="#records-cli" title="Permalink to this headline">¶</a></h3>
+<p>The following CLI commands will be removed in Invenio v3.2:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ invenio records create
+$ invenio records delete
+$ invenio records patch
+</pre></div>
+</div>
+<p>Please use the REST API instead to create, patch and delete records.</p>
+</div>
+<div class="section" id="angularjs-reminder-from-v3-0">
+<h3>AngularJS (reminder from v3.0)<a class="headerlink" href="#angularjs-reminder-from-v3-0" title="Permalink to this headline">¶</a></h3>
+<p>In Invenio v3.0 we deprecated the AngularJS 1.4 application Invenio-Search-JS
+as AngularJS by that time was already outdated. We have selected React and
+SemanticUI as the replacement framework for AngularJS.</p>
+<p>The new Webpack build system released in Invenio v3.1 is part of the strategy
+to move from AngularJS to React (note however that you can use Webpack with
+your favorite framework, including AngularJS).</p>
+<p>We have started the rewrite of Invenio-Search-JS and have already released the
+first version of
+<a class="reference external" href="https://inveniosoftware.github.io/react-searchkit/">React-SearchKit</a> which
+eventually will replace Invenio-Search-JS.</p>
+</div>
+</div>
+<div class="section" id="features-removed-in-v3-1">
+<h2>Features removed in v3.1<a class="headerlink" href="#features-removed-in-v3-1" title="Permalink to this headline">¶</a></h2>
+<p>The following already deprecated features have been removed in Invenio v3.1.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_records.tasks</span></code> was removed from the Invenio-Records module.</p></li>
+</ul>
+</div>
+<div class="section" id="maintenance-policy">
+<h2>Maintenance policy<a class="headerlink" href="#maintenance-policy" title="Permalink to this headline">¶</a></h2>
+<p>Invenio v3.1 will be supported with bug and security fixes until the release of
+Invenio v3.3 and minimum until 2020-03-31.</p>
+<p>See our <a class="reference internal" href="maintenance-policy.html#maintenance-policy"><span class="std std-ref">Maintenance Policy</span></a>.</p>
+</div>
+<div class="section" id="what-s-next">
+<h2>What’s next?<a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
+<p>We originally planned to release the Files and Statistics bundle in Invenio
+v3.1. We however decided it was more urgent to release the new Webpack build
+system in order to avoid too much code being written against the old build
+system.</p>
+<p>In Invenio v3.2 we are planning to release the <strong>Files</strong> bundle including:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-files-rest.readthedocs.io">invenio-files-rest</a></dt><dd><ul>
+<li><p>Object storage REST API for Invenio with many supported backend storage
+protocols and file integrity checking.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-iiif.readthedocs.io">invenio-iiif</a></dt><dd><ul>
+<li><p>International Image Interoperability Framework (IIIF) server for making
+thumbnails and zooming images.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-previewer.readthedocs.io">invenio-previewer</a></dt><dd><ul>
+<li><p>Previewer for Markdown, JSON/XML, CSV, PDF, JPEG, PNG, TIFF, GIF and ZIP
+files.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-records-files.readthedocs.io">invenio-records-files</a></dt><dd><ul>
+<li><p>Integration layer between object storage and records.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Releases</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="maintenance-policy.html">Maintenance Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v3.1.2.html">Version 3.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v3.1.1.html">Version 3.1.1</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Version 3.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v3.0.2.html">Version 3.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v3.0.1.html">Version 3.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v3.0.0.html">Version 3.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v2.html">Version 2.x</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v1.html">Version 1.x</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v0.html">Version 0.x</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Releases</a><ul>
+      <li>Previous: <a href="v3.1.1.html" title="previous chapter">Version 3.1.1</a></li>
+      <li>Next: <a href="v3.0.2.html" title="next chapter">Version 3.0.2</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/releases/v3.1.0.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

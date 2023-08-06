@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Version 3.2.0 &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Version 3.1.2" href="v3.1.2.html" />
+    <link rel="prev" title="Version 3.2.1" href="v3.2.1.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="version-3-2-0">
+<h1>Version 3.2.0<a class="headerlink" href="#version-3-2-0" title="Permalink to this headline">¶</a></h1>
+<p><em>Released 2019-12-20</em></p>
+<p>We are proud to announce the release of Invenio v3.2.0.</p>
+<p><strong>Python compatibility</strong></p>
+<p>Invenio v3.2 supports Python 2.7 (until 2019-12-31), Python 3.5 and Python 3.6.</p>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>See our <a class="reference internal" href="../../../getting-started/quickstart/index.html#quickstart"><span class="std std-ref">Quickstart</span></a> guide.</p>
+</div>
+<div class="section" id="what-s-new-in-invenio-v3-2">
+<h2>What’s new in Invenio v3.2?<a class="headerlink" href="#what-s-new-in-invenio-v3-2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="files-bundle">
+<h3>Files bundle<a class="headerlink" href="#files-bundle" title="Permalink to this headline">¶</a></h3>
+<p>We have released four new modules as part of the new Files bundle:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://invenio-files-rest.readthedocs.io">Invenio-Files-REST</a>: Object store REST API for managing files in Invenio.</p></li>
+<li><p><a class="reference external" href="http://invenio-records-files.readthedocs.io">Invenio-Records-Files</a>: Integration layer between records and files.</p></li>
+<li><p><a class="reference external" href="http://invenio-previewer.readthedocs.io">Invenio-Previewer</a>: File previewers support.</p></li>
+<li><p><a class="reference external" href="http://invenio-iiif.readthedocs.io">Invenio-IIIF</a>: IIIF Image API support for thumbnail and zooming on images.</p></li>
+</ul>
+<p>To understand more about how to use the new Files bundle see our integration
+guide in <a class="reference internal" href="../../main-concepts/handling-files.html#integrating-files"><span class="std std-ref">Integrating Files</span></a>.</p>
+</div>
+<div class="section" id="elasticsearch-v7-support">
+<h3>Elasticsearch v7 support<a class="headerlink" href="#elasticsearch-v7-support" title="Permalink to this headline">¶</a></h3>
+<p>Invenio now supports Elasticsearch v7.</p>
+</div>
+<div class="section" id="marshmallow-3-compatibility">
+<h3>Marshmallow 3 compatibility<a class="headerlink" href="#marshmallow-3-compatibility" title="Permalink to this headline">¶</a></h3>
+<p>Invenio now support both Marshmallow v2 or v3. The support is done via a
+compatibility layer, that allows Invenio to work with either schemas from v2 or
+v3. This should allow users to upgrade to Invenio v3.2 without being forced to
+upgrade their Marshmallow schemas immediately to v3.</p>
+<p>We advice all users to start planning an upgrade of their Marshmallow schemas
+from v2 to v3 as the upgrade is non-trivial and needs proper testing due to
+significant differences between Marshmallow v2 and v3.</p>
+<p>Invenio will continue support for both Marshmallow v2 and v3 for a transition
+period to allow users to upgrade at their own pace. After the transition period
+Marshmallow v2 support will be deprecated and removed from Invenio.</p>
+<p>For information about how to upgrade see <a class="reference internal" href="../upgrading/upgrade-marshmallow.html#marshmallow"><span class="std std-ref">Marshmallow v2/v3 compatibility</span></a>.</p>
+</div>
+<div class="section" id="search-index-prefixing">
+<h3>Search index prefixing<a class="headerlink" href="#search-index-prefixing" title="Permalink to this headline">¶</a></h3>
+<p>Elasticsearch does not support the concept of virtual hosts and thus with
+previous versions of Invenio it was not possible to share an Elasticsearch
+cluster between multiple Invenio instances.</p>
+<p>We have now added support for index/alias/template prefixing, so that all
+names can be prefixed with a string and thus allows multiple Invenio instances
+to share an Elasticsearch cluster. Note, that this is only name prefixing, thus
+technically two Invenio instances will can read each other indexes and thus
+must trust each other.</p>
+<p>Read more about the new feature on
+<a class="reference external" href="https://invenio-search.readthedocs.io/en/latest/configuration.html#index-prefixing">https://invenio-search.readthedocs.io/en/latest/configuration.html#index-prefixing</a>.</p>
+</div>
+</div>
+<div class="section" id="minor-changes-in-v3-2">
+<h2>Minor changes in v3.2<a class="headerlink" href="#minor-changes-in-v3-2" title="Permalink to this headline">¶</a></h2>
+<p><strong>Documentation improvements</strong></p>
+<p>We’ve improved documentation for a couple of modules:</p>
+<ul class="simple">
+<li><p>Invenio-Search: <a class="reference external" href="https://invenio-search.readthedocs.io/en/latest/configuration.html">Configuring your Elasticsearch connection</a></p></li>
+<li><p>Invenio-Records: <a class="reference external" href="https://invenio-records.readthedocs.io/en/latest/concurrency.html">Optimistic concurrency control</a></p></li>
+<li><p>Invenio-DB: <a class="reference external" href="https://invenio-db.readthedocs.io/en/latest/session_management.html">Database session management</a></p></li>
+</ul>
+<p><strong>Elasticsearch request library changed</strong></p>
+<p>Previously Invenio was using the Python library <code class="docutils literal notranslate"><span class="pre">requests</span></code> for connecting via
+HTTP to Elasticsearch. The library has now been changed to use <code class="docutils literal notranslate"><span class="pre">urllib3</span></code>
+instead as recommended by Elasticsearch.</p>
+<p>The old behavior can be restored by configuring the <code class="docutils literal notranslate"><span class="pre">connection_class</span></code> in
+the Elasticsearch client configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">elasticsearch.connection</span> <span class="kn">import</span> <span class="n">RequestsHttpConnection</span>
+
+<span class="n">SEARCH_CLIENT_CONFIG</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">connection_class</span><span class="o">=</span><span class="n">RequestsHttpConnection</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Hide webpack warnings</strong></p>
+<p>Webpack warnings are now by default hidden.</p>
+<p><strong>HTML sanitization improvements</strong></p>
+<p>Invenio-Formatter has a new template filter
+<a class="reference external" href="https://invenio-formatter.readthedocs.io/en/latest/api.html#invenio_formatter.filters.html.sanitize_html" title="(in Invenio-Formatter v1.1.0a1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sanitize_html()</span></code></a> to use for HTML
+sanitization.</p>
+<p>The default configuration provided by Invenio-Config now sets default values
+for <a class="reference external" href="https://invenio-config.readthedocs.io/en/latest/api.html#invenio_config.default.ALLOWED_HTML_TAGS" title="(in Invenio-Config v1.0.3)"><code class="xref py py-data docutils literal notranslate"><span class="pre">ALLOWED_HTML_TAGS</span></code></a> and
+<a class="reference external" href="https://invenio-config.readthedocs.io/en/latest/api.html#invenio_config.default.ALLOWED_HTML_ATTRS" title="(in Invenio-Config v1.0.3)"><code class="xref py py-data docutils literal notranslate"><span class="pre">ALLOWED_HTML_ATTRS</span></code></a> which is used by the
+<code class="docutils literal notranslate"><span class="pre">bleach</span></code> library for HTML sanitization. Please be careful if you change these
+values as it is very easy to open up for Cross-Site Scripting (XSS) attacks.</p>
+<p><strong>Sentry now supported via Sentry SDK instead of Raven</strong></p>
+<p>Invenio-Logging still has support for Raven, but being moved to Sentry SDK.
+To use the old Raven library set the following variable in your</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SENTRY_SDK</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p><strong>Rate limiting improvements</strong></p>
+<p>There are now differentiated rate limits for authenticated (5000 per hour,
+100 per minute) vs anonymous users (1000 per hour, 60 per minute). The
+limits can be changed via
+<a class="reference external" href="https://invenio-app.readthedocs.io/en/latest/configuration.html#invenio_app.config.RATELIMIT_AUTHENTICATED_USER" title="(in Invenio-App v1.3.0)"><code class="xref py py-data docutils literal notranslate"><span class="pre">RATELIMIT_AUTHENTICATED_USER</span></code></a> and
+<a class="reference external" href="https://invenio-app.readthedocs.io/en/latest/configuration.html#invenio_app.config.RATELIMIT_GUEST_USER" title="(in Invenio-App v1.3.0)"><code class="xref py py-data docutils literal notranslate"><span class="pre">RATELIMIT_GUEST_USER</span></code></a> configuration variables.
+You can also setup per endpoint rate limits via the
+<a class="reference external" href="https://invenio-app.readthedocs.io/en/latest/configuration.html#invenio_app.config.RATELIMIT_PER_ENDPOINT" title="(in Invenio-App v1.3.0)"><code class="xref py py-data docutils literal notranslate"><span class="pre">RATELIMIT_PER_ENDPOINT</span></code></a> configuration variable.</p>
+<p>There is also a new error template for when HTTP 429 (rate limited) error code
+is being returned. It can be changed via
+<a class="reference external" href="https://invenio-theme.readthedocs.io/en/latest/configuration.html#invenio_theme.config.THEME_429_TEMPLATE" title="(in Invenio Theme v1.3.0a15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">THEME_429_TEMPLATE</span></code></a> configuration variable.</p>
+<p><strong>Records REST API improvements</strong></p>
+<p>Two new query parameters was added to the search REST API in order to make
+implementation of infinite scroll on a frontend application easier:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from</span></code>: For pagination you can now use <code class="docutils literal notranslate"><span class="pre">from</span></code> (an item index) and
+<code class="docutils literal notranslate"><span class="pre">size</span></code>  instead of <code class="docutils literal notranslate"><span class="pre">page</span></code> (a page index) and <code class="docutils literal notranslate"><span class="pre">size</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aggs</span></code>: The parameter can be used to completely turn-off computation of all
+aggregations (<code class="docutils literal notranslate"><span class="pre">?aggs=</span></code>) or select only specific aggregations to be show
+<code class="docutils literal notranslate"><span class="pre">?aggs=year</span></code>).</p></li>
+</ul>
+<p><strong>CSV serializer</strong></p>
+<p>A new CSV serializer (
+<a class="reference external" href="https://invenio-records-rest.readthedocs.io/en/latest/api.html#invenio_records_rest.serializers.csv.CSVSerializer" title="(in Invenio-Records-REST v1.7.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSVSerializer</span></code></a>) has been added
+to Invenio-Records-REST.</p>
+<p><strong>Improved indexing signal</strong></p>
+<p>Introduced a new method <code class="docutils literal notranslate"><span class="pre">.dynamic_connect()</span></code> on the signal
+<a class="reference external" href="https://invenio-indexer.readthedocs.io/en/latest/api.html#invenio_indexer.signals.before_record_index" title="(in Invenio-Indexer v1.1.2)"><code class="xref py py-data docutils literal notranslate"><span class="pre">before_record_index</span></code></a> which allows
+conditional indexing. This is useful to e.g. only connect a receiver to a
+specific index.</p>
+<p><strong>Bug fixes</strong></p>
+<ul class="simple">
+<li><p>Invenio-OAuthClient: The <code class="docutils literal notranslate"><span class="pre">next</span></code> parameter which determines where to
+redirect after an successful authentication could not have query string
+parameters in the URL.</p></li>
+</ul>
+</div>
+<div class="section" id="deprecations-in-v3-2">
+<h2>Deprecations in v3.2<a class="headerlink" href="#deprecations-in-v3-2" title="Permalink to this headline">¶</a></h2>
+<p>Following list of features have been deprecated and will be removed in either
+Invenio v3.2 or Invenio v3.3:</p>
+<div class="section" id="elasticsearch-v2-and-v5-support">
+<h3>Elasticsearch v2 and v5 support<a class="headerlink" href="#elasticsearch-v2-and-v5-support" title="Permalink to this headline">¶</a></h3>
+<p>We did not remove Elasticsearch v2 support in Invenio v3.2 as originally
+announced due to not having a user-friendly solution for upgrading
+Elasticsearch indexes. In Invenio v3.3 we plan to release the
+Invenio-Index-Migrator module which makes migrating/upgrading Elasticsearch
+indexes easy, and we thus plan to fully remove Elasticsearvh v2 and v5 support
+in either Invenio v3.3 or v3.4.</p>
+<p>Both Elasticsearch v2 and v5 have reached end of life and no longer receives
+any bug or security fixes from Elastic.</p>
+<p>Both the support in Invenio-Search for creating indexes for v2/v5 as well as
+any v2/v5 Elasticsearch mappings in other Invenio modules will be removed.</p>
+</div>
+<div class="section" id="amd-requirejs-reminder-from-v3-1">
+<h3>AMD/RequireJS (reminder from v3.1)<a class="headerlink" href="#amd-requirejs-reminder-from-v3-1" title="Permalink to this headline">¶</a></h3>
+<p>Invenio’s assets build system based on AMD/RequireJS will be removed in
+Invenio v3.3 or v3.4.</p>
+<p>This involves e.g. the two CLI commands:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ invenio npm
+$ invenio assets build
+</pre></div>
+</div>
+<p>Several Python modules in Invenio-Assets will be removed, including (but not
+limited to):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_assets.npm</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_assets.filters</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_assets.glob</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_assets.proxies</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Also, bundle definitions in other Invenio modules will be removed. These are
+usually located in <code class="docutils literal notranslate"><span class="pre">bundles.py</span></code> files, e.g.:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_theme.bundles</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Also, some static files will be removed from bundles, e.g.:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_theme/static/js/*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invenio_theme/static/scss/*</span></code></p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="angularjs-reminder-from-v3-0">
+<h3>AngularJS (reminder from v3.0)<a class="headerlink" href="#angularjs-reminder-from-v3-0" title="Permalink to this headline">¶</a></h3>
+<p>In Invenio v3.0 we deprecated the AngularJS 1.4 application Invenio-Search-JS
+as AngularJS by that time was already outdated. We have selected React and
+SemanticUI as the replacement framework for AngularJS.</p>
+<p>The new Webpack build system released in Invenio v3.1 is part of the strategy
+to move from AngularJS to React (note however that you can use Webpack with
+your favorite framework, including AngularJS).</p>
+<p>We have started the rewrite of Invenio-Search-JS and have already released the
+first version of
+<a class="reference external" href="https://inveniosoftware.github.io/react-searchkit/">React-SearchKit</a> which
+eventually will replace Invenio-Search-JS.</p>
+</div>
+</div>
+<div class="section" id="features-removed-in-v3-2">
+<h2>Features removed in v3.2<a class="headerlink" href="#features-removed-in-v3-2" title="Permalink to this headline">¶</a></h2>
+<p>These following <em>already</em> deprecated features have been removed in Invenio
+v3.2.</p>
+<p><strong>Records CLI</strong></p>
+<p>The CLI in Invenio-Records module was removed.</p>
+<p><strong>DynamicPermission class</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">DynamicPermission</span></code> class was removed from Invenio-Access. The
+functionality provided by the class is still available via the
+<a class="reference external" href="https://invenio-access.readthedocs.io/en/latest/api.html#invenio_access.permissions.Permission" title="(in Invenio-Access v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Permission</span></code></a> class.</p>
+</div>
+<div class="section" id="maintenance-policy">
+<h2>Maintenance policy<a class="headerlink" href="#maintenance-policy" title="Permalink to this headline">¶</a></h2>
+<p>Invenio v3.2 will be supported with bug and security fixes until the release of
+Invenio v3.4 and minimum until 2020-12-20.</p>
+<p>See our <a class="reference internal" href="maintenance-policy.html#maintenance-policy"><span class="std std-ref">Maintenance Policy</span></a>.</p>
+</div>
+<div class="section" id="what-s-next">
+<h2>What’s next?<a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
+<p>In Invenio v3.3 we are planning to release the <strong>Statistics</strong> bundle including:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-stats.readthedocs.io">invenio-stats</a></dt><dd><ul>
+<li><p>Invenio module for statistical data processing and querying with support
+for collecting COUNTER Research Data Usage Metrics compliant statistics.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://counter-robots.readthedocs.io">counter-robots</a></dt><dd><ul>
+<li><p>Library for COUNTER-compliant detection of machines and robots.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>In addition to the Statistics bundle, we will also release final versions of
+the following two modules:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-index-migrator.readthedocs.io">invenio-index-migrator</a></dt><dd><ul>
+<li><p>Elasticsearch index migrator for Invenio (aka zero down-time reindexing
+and index migration).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="v3.2.1.html" title="Previous document">Version 3.2.1</a>
+        </li>
+        <li>
+          <a href="v3.1.2.html" title="Next document">Version 3.1.2</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../requirements.html">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../main-concepts/index.html">Main concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bundles/index.html">Module Reference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Life cycle</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Releases</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="maintenance-policy.html">Maintenance Policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.3.0.html">Version 3.3.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.2.2.html">Version 3.2.2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.2.1.html">Version 3.2.1</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Version 3.2.0</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#getting-started">Getting started</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#what-s-new-in-invenio-v3-2">What’s new in Invenio v3.2?</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#files-bundle">Files bundle</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#elasticsearch-v7-support">Elasticsearch v7 support</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#marshmallow-3-compatibility">Marshmallow 3 compatibility</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#search-index-prefixing">Search index prefixing</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#minor-changes-in-v3-2">Minor changes in v3.2</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#deprecations-in-v3-2">Deprecations in v3.2</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#elasticsearch-v2-and-v5-support">Elasticsearch v2 and v5 support</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#amd-requirejs-reminder-from-v3-1">AMD/RequireJS (reminder from v3.1)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#angularjs-reminder-from-v3-0">AngularJS (reminder from v3.0)</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#features-removed-in-v3-2">Features removed in v3.2</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#maintenance-policy">Maintenance policy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#what-s-next">What’s next?</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="v3.1.2.html">Version 3.1.2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.1.1.html">Version 3.1.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.1.0.html">Version 3.1.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.0.2.html">Version 3.0.2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.0.1.html">Version 3.0.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v3.0.0.html">Version 3.0.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v2.html">Version 2.x</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v1.html">Version 1.x</a></li>
+<li class="toctree-l4"><a class="reference internal" href="v0.html">Version 0.x</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../upgrading/index.html">Upgrading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../community/index.html">Community</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Documentation</a><ul>
+  <li><a href="../index.html">Life cycle</a><ul>
+  <li><a href="index.html">Releases</a><ul>
+      <li>Previous: <a href="v3.2.1.html" title="previous chapter">Version 3.2.1</a></li>
+      <li>Next: <a href="v3.1.2.html" title="next chapter">Version 3.1.2</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../../_sources/documentation/life-cycle/releases/v3.2.0.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

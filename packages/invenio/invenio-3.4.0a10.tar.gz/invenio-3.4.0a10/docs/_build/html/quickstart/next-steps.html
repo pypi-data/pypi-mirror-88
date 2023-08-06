@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Next Steps &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorials" href="../tutorials/bootcamp.html" />
+    <link rel="prev" title="Create, Display, Search Records" href="crud-operations.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="next-steps">
+<span id="id1"></span><h1>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h1>
+<p>Although we can run and interact with the instance, we’re not quite there yet
+in terms of having a proper Python package that’s ready to be tested and
+deployed to a production environment.</p>
+<p>You may have noticed that after running the <code class="docutils literal notranslate"><span class="pre">cookiecutter</span></code> command for the
+instance and the data model, there was a note for checking out some of the
+TODOs. You can run the following command in the code repository directory
+to see a summary of the TODOs again:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> grep --color<span class="o">=</span>always --recursive --context<span class="o">=</span><span class="m">3</span> --line-number TODO .
+</pre></div>
+</div>
+<p>Let’s have a look at some of them one-by-one and explain what they are for:</p>
+<ol class="arabic">
+<li><p>Python packages require a <code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> which specifies what files are
+part of the distributed package. You can update the existing file by running
+the following commands in your site directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my-site)</span><span class="gp">$</span> git init
+<span class="gp gp-VirtualEnv">(my-site)</span><span class="gp">$</span> git add --all
+<span class="gp gp-VirtualEnv">(my-site)</span><span class="gp">$</span> check-manifest --update
+</pre></div>
+</div>
+</li>
+<li><p>Translations configuration (<code class="docutils literal notranslate"><span class="pre">.tx/config</span></code>): You might also want to generate
+the necessary files to allow localization of the instance in different
+languages via the <a class="reference external" href="https://www.transifex.com/">Transifex platform</a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> <span class="k">if</span> you have activated the virtual environment skip <span class="sb">`</span>pipenv shell<span class="sb">`</span>
+<span class="gp">$</span> pipenv shell
+<span class="gp gp-VirtualEnv">(my-site)</span><span class="gp">$</span> python setup.py extract_messages
+<span class="gp gp-VirtualEnv">(my-site)</span><span class="gp">$</span> python setup.py init_catalog -l en
+<span class="gp gp-VirtualEnv">(my-site)</span><span class="gp">$</span> python setup.py compile_catalog
+</pre></div>
+</div>
+<p><strong>Transifex</strong></p>
+<p>Make sure you edit <code class="docutils literal notranslate"><span class="pre">.tx/config</span></code> and sign-up for Transifex before trying
+below steps.</p>
+<p>Install the transifex-client</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my-site)</span><span class="gp">$</span> pipenv install transifex-client
+</pre></div>
+</div>
+<p>Push source (.pot) and translations (.po) to Transifex:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my-site)</span><span class="gp">$</span> tx push --skip --translations
+</pre></div>
+</div>
+<p>Pull translations for a single language from Transifex</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my-site)</span><span class="gp">$</span> tx pull --language en
+</pre></div>
+</div>
+</li>
+<li><p>REST API permissions: By default your Invenio instance have no permissions
+enabled, which means that any user will be allowed to perform any operation
+(read, update, create and delete) over the records. Check
+<a class="reference internal" href="../tutorials/managing-access.html#managing-access"><span class="std std-ref">Managing access to records</span></a> for information on how to adapt the permissions to
+your needs.</p></li>
+</ol>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>In order to run tests for the instance, you can run:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># run all the tests...</span>
+<span class="o">(</span>my-site<span class="o">)</span>$ ./run-tests.sh
+<span class="c1"># ...or to run individual tests</span>
+<span class="o">(</span>my-site<span class="o">)</span>$ pytest tests/test_version.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>In order to build and preview the instance’s documentation, you can run the
+<cite>python setup.py build_sphinx</cite> command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>my-site<span class="o">)</span>$ python setup.py build_sphinx
+</pre></div>
+</div>
+<p>Open up <code class="docutils literal notranslate"><span class="pre">docs/_build/html/index.html</span></code> in your browser to see the
+documentation.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Quickstart</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Launch an Invenio instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crud-operations.html">Create, Display, Search Records</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Quickstart</a><ul>
+      <li>Previous: <a href="crud-operations.html" title="previous chapter">Create, Display, Search Records</a></li>
+      <li>Next: <a href="../tutorials/bootcamp.html" title="next chapter">Tutorials</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/quickstart/next-steps.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

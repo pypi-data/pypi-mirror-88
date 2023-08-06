@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Build a module &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developing with Invenio" href="developing-with-invenio.html" />
+    <link rel="prev" title="License" href="../community/license.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="build-a-module">
+<span id="id1"></span><h1>Build a module<a class="headerlink" href="#build-a-module" title="Permalink to this headline">¶</a></h1>
+<p>Invenio modules are independent, interchangeable components that add functionalities.
+Each module exposes its own APIs and uses APIs of other modules.
+A full invenio application consists of a set of modules, and can be easily customized by adding or
+removing specific modules.</p>
+<p>A module is usually called:</p>
+<ol class="arabic simple">
+<li><p>with plural noun, meaning “database (of things)”, for example
+<code class="docutils literal notranslate"><span class="pre">invenio-records</span></code>, <code class="docutils literal notranslate"><span class="pre">invenio-tags</span></code>, <code class="docutils literal notranslate"><span class="pre">invenio-annotations</span></code>,</p></li>
+<li><p>with singular noun, meaning “worker (using things)”, for example
+<code class="docutils literal notranslate"><span class="pre">invenio-checker</span></code>, <code class="docutils literal notranslate"><span class="pre">invenio-editor</span></code>.</p></li>
+</ol>
+<p>The user interface and the REST API interface of a module may be split into separate modules,
+for example <code class="docutils literal notranslate"><span class="pre">invenio-records-ui</span></code> and <code class="docutils literal notranslate"><span class="pre">invenio-records-rest</span></code>, to clarify dependencies and
+offer an easier customization.</p>
+<p>All modules have the same structure, which is defined in the
+<a class="reference external" href="https://github.com/inveniosoftware/cookiecutter-invenio-module">cookiecutter-invenio-module</a>
+template.</p>
+<div class="section" id="first-steps">
+<h2>First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h2>
+<p>To create a new module, make sure you have
+<a class="reference external" href="https://cookiecutter.readthedocs.io/en/latest/installation.html">cookiecutter</a>
+installed and run the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cookiecutter gh:inveniosoftware/cookiecutter-invenio-module
+<span class="go">project_name [Invenio-FunGenerator]: Invenio-Foo</span>
+<span class="go">project_shortname [invenio-foo]:</span>
+<span class="go">package_name [invenio_foo]:</span>
+<span class="go">github_repo [inveniosoftware/invenio-foo]:</span>
+<span class="go">description [Invenio module that adds more fun to the platform.]:</span>
+<span class="go">author_name [CERN]:</span>
+<span class="go">author_email [info@inveniosoftware.org]:</span>
+<span class="go">year [2018]:</span>
+<span class="go">copyright_holder [CERN]:</span>
+<span class="go">copyright_by_intergovernmental [True]:</span>
+<span class="go">superproject [Invenio]:</span>
+<span class="go">transifex_project [invenio-foo]:</span>
+<span class="go">extension_class [InvenioFoo]:</span>
+<span class="go">config_prefix [FOO]:</span>
+</pre></div>
+</div>
+<p>The newly scaffolded module will have the following folder structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">invenio</span><span class="o">-</span><span class="n">foo</span><span class="o">/</span>
+    <span class="n">docs</span><span class="o">/</span>
+    <span class="n">examples</span><span class="o">/</span>
+    <span class="n">invenio_foo</span><span class="o">/</span>
+        <span class="n">templates</span><span class="o">/</span><span class="n">invenio_foo</span><span class="o">/</span>
+        <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">ext</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">version</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">views</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">tests</span><span class="o">/</span>
+    <span class="o">*.</span><span class="n">rst</span>
+    <span class="n">run</span><span class="o">-</span><span class="n">tests</span><span class="o">.</span><span class="n">sh</span>
+    <span class="n">setup</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>These files are described in the sections below.</p>
+<div class="section" id="rst-files">
+<h3>*.rst files<a class="headerlink" href="#rst-files" title="Permalink to this headline">¶</a></h3>
+<p>All these files are used by people who want to know more about your module (mainly developers).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">README.rst</span></code> is used to describe your module. You can see the short
+description written in the Cookiecutter here. You should update it with
+more details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AUTHORS.rst</span></code> should list all contributors to this module.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CHANGES.rst</span></code> should be updated at every release and store the list of
+versions with the list of changes (changelog).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONTRIBUTING.rst</span></code> presents the rules to contribute to your module.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INSTALL.rst</span></code> describes how to install your module.</p></li>
+</ul>
+</div>
+<div class="section" id="setup-py">
+<h3>setup.py<a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h3>
+<p>First, there is the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file, one of the most important: this file is
+executed when you install your module with <em>pip</em>. If you open it, you can see
+several parts.</p>
+<p>On the top, the list of the requirements:</p>
+<ul class="simple">
+<li><p>For normal use.</p></li>
+<li><p>For development.</p></li>
+<li><p>For tests.</p></li>
+</ul>
+<p>Depending on your needs, you can install only part of the requirements, or
+everything (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">invenio-foo[all]</span></code>).</p>
+<p>Then, in the <code class="docutils literal notranslate"><span class="pre">setup()</span></code> function, you can find the description of your module with
+the values entered in cookiecutter. At the end, you can find the
+<code class="docutils literal notranslate"><span class="pre">entrypoints</span></code> section.</p>
+</div>
+<div class="section" id="run-tests-sh">
+<h3>run-tests.sh<a class="headerlink" href="#run-tests-sh" title="Permalink to this headline">¶</a></h3>
+<p>This is used to run a list of tests locally, to make sure that your module works
+as intended. It will generate the documentation, run <em>pytest</em> and any remaining
+checks.</p>
+</div>
+<div class="section" id="docs-folder">
+<h3>docs folder<a class="headerlink" href="#docs-folder" title="Permalink to this headline">¶</a></h3>
+<p>This folder contains the settings to generate documentation for your module,
+along with files where you can write the documentation. When you run the
+<code class="docutils literal notranslate"><span class="pre">run-tests.sh</span></code> script, it will create the documentation in HTML files in a
+sub-folder.</p>
+</div>
+<div class="section" id="examples-folder">
+<h3>examples folder<a class="headerlink" href="#examples-folder" title="Permalink to this headline">¶</a></h3>
+<p>Here you can find a small example of how to use your module. You can test it
+following the steps described in the <a class="reference internal" href="#run-the-example-app"><span class="std std-ref">Run the example application</span></a> section.</p>
+</div>
+<div class="section" id="tests-folder">
+<h3>tests folder<a class="headerlink" href="#tests-folder" title="Permalink to this headline">¶</a></h3>
+<p>Here are all the tests for your application, that will be run when
+you execute the <code class="docutils literal notranslate"><span class="pre">run-tests.sh</span></code> script. If all these tests pass, you can
+safely commit your work.</p>
+<p>See <a class="reference external" href="https://pytest-invenio.readthedocs.io/en/latest/">pytest-invenio</a> for
+how to structure your tests.</p>
+</div>
+<div class="section" id="invenio-foo-folder">
+<h3>invenio_foo folder<a class="headerlink" href="#invenio-foo-folder" title="Permalink to this headline">¶</a></h3>
+<p>This folder has the name of your module, in lower case with the dash changed
+to an underscore. It contains the code of your module. You can add any code files
+here, organized as you wish.</p>
+<p>The files that already exist are standard, and are covered
+in the following sections. A rule of thumb is that if you need multiple
+files for one action (for instance, 2 <code class="docutils literal notranslate"><span class="pre">views</span></code>: one for the API and a standard
+one), create a folder having the name of the file you want to split (here, a
+<code class="docutils literal notranslate"><span class="pre">views</span></code> folder with <code class="docutils literal notranslate"><span class="pre">ui.py</span></code> and <code class="docutils literal notranslate"><span class="pre">api.py</span></code> inside).</p>
+<div class="section" id="manifest-in">
+<h4>MANIFEST.in<a class="headerlink" href="#manifest-in" title="Permalink to this headline">¶</a></h4>
+<p>This file lists all the files included in the sub-folders. It should
+be updated before the first commit.</p>
+</div>
+<div class="section" id="config-py">
+<h4>config.py<a class="headerlink" href="#config-py" title="Permalink to this headline">¶</a></h4>
+<p>All configuration variables should be declared in this file.</p>
+</div>
+<div class="section" id="ext-py">
+<h4>ext.py<a class="headerlink" href="#ext-py" title="Permalink to this headline">¶</a></h4>
+<p>This file contains a class that extends the Invenio application
+with your module. It registers the module during the initialization of the application
+and loads the default configuration from <code class="docutils literal notranslate"><span class="pre">config.py</span></code>.</p>
+</div>
+<div class="section" id="version-py">
+<h4>version.py<a class="headerlink" href="#version-py" title="Permalink to this headline">¶</a></h4>
+<p>File containing the version of your module.</p>
+</div>
+<div class="section" id="views-py">
+<h4>views.py<a class="headerlink" href="#views-py" title="Permalink to this headline">¶</a></h4>
+<p>Here you declare the views or endpoints you want to expose. By default, it creates a
+simple view on the root end point that renders a template.</p>
+</div>
+<div class="section" id="templates">
+<h4>templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h4>
+<p>All your Jinja templates should be stored in this folder. A Jinja template is an HTML file that can be modified according to some parameters.</p>
+</div>
+<div class="section" id="static">
+<h4>static<a class="headerlink" href="#static" title="Permalink to this headline">¶</a></h4>
+<p>If your module contains JavaScript or CSS files, they should go in a folder called <code class="docutils literal notranslate"><span class="pre">static</span></code>. Also, if you want to group them in bundles,
+you should add a <code class="docutils literal notranslate"><span class="pre">bundles.py</span></code> file next to the <code class="docutils literal notranslate"><span class="pre">static</span></code> folder.</p>
+</div>
+</div>
+</div>
+<div class="section" id="install-a-module">
+<span id="install-module"></span><h2>Install a module<a class="headerlink" href="#install-a-module" title="Permalink to this headline">¶</a></h2>
+<p>First of all, create a virtualenv for the module:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkvirtualenv my_venv
+</pre></div>
+</div>
+<p>Installing the module is very easy, you just need to go to its root directory
+and <cite>pip install</cite> it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> <span class="nb">cd</span> invenio-foo/
+<span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> pip install --editable .<span class="o">[</span>all<span class="o">]</span>
+</pre></div>
+</div>
+<p>Some explanations about the command:</p>
+<ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">--editable</span></code> option is used for development. It means that if you change the
+files in the module, you won’t have to reinstall it to see the changes. In a
+production environment, this option shouldn’t be used.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">.</span></code> is in fact the path to your module. As we are in the root folder of
+the module, we can just say <em>here</em>, which is what the dot means.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">[all]</span></code> after the dot means we want to install all dependencies, which
+is common when developing. Depending on your use of the module, you can
+install only parts of it:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The default (nothing after the dot) installs the minimum to make the
+module run.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[tests]</span></code> installs the requirements to test the module.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[docs]</span></code> installs the requirements to build the documentation.</p></li>
+<li><p>Some modules have extra options.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>If you need multiple options, you can chain them: <code class="docutils literal notranslate"><span class="pre">[tests,docs]</span></code>.</p>
+</div>
+<div class="section" id="run-the-tests">
+<span id="id2"></span><h2>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h2>
+<p>In order to run the tests, you need to have a valid git repository. The
+following steps need to be run only once. Go into the root folder of the module:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> git init
+<span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> git add --all
+<span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> check-manifest --update
+</pre></div>
+</div>
+<p>What we have done:</p>
+<ul class="simple">
+<li><p>Change the folder into a git repository, so it can record the changes made to
+the files.</p></li>
+<li><p>Add all the files to this repository.</p></li>
+<li><p>Update the file <code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> (this file controls which files are included
+in your Python package when it is created and installed).</p></li>
+</ul>
+<p>Now, we are able to run the tests:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> ./run-tests.sh
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-the-documentation">
+<h2>Build the documentation<a class="headerlink" href="#build-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>The documentation can be built with the <code class="docutils literal notranslate"><span class="pre">run-tests.sh</span></code> script, but you need
+to have the package installed with its <em>tests</em> requirements. If you just want
+to build the documentation, you will only need the <em>docs</em> requirements (see
+the <a class="reference internal" href="#install-module"><span class="std std-ref">Install a module</span></a> section above). Make sure you are at the root directory
+of the module and run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> python setup.py build_sphinx
+</pre></div>
+</div>
+<p>Open <code class="docutils literal notranslate"><span class="pre">docs/_build/html/index.html</span></code> in the browser and voilà, the documentation is
+there.</p>
+</div>
+<div class="section" id="run-the-example-application">
+<span id="run-the-example-app"></span><h2>Run the example application<a class="headerlink" href="#run-the-example-application" title="Permalink to this headline">¶</a></h2>
+<p>The example application is a minimal application that presents the features of your
+module. The example application is useful during development for testing.
+By default, it simply prints a welcome page.
+To try it, go into the <code class="docutils literal notranslate"><span class="pre">examples</span></code> folder and run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> ./app-setup.sh
+<span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> ./app-fixtures.sh
+<span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> <span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>app.py <span class="nv">FLASK_DEBUG</span><span class="o">=</span><span class="m">1</span>
+<span class="gp gp-VirtualEnv">(my_venv)</span><span class="gp">$</span> flask run
+</pre></div>
+</div>
+<p>You can now open a browser and go to the URL <a class="reference external" href="http://localhost:5000/">http://localhost:5000/</a> where you
+should be able to see a welcome page.</p>
+<p>To clean the server, run the <code class="docutils literal notranslate"><span class="pre">./app-teardown.sh</span></code> script after stopping the
+server.</p>
+</div>
+<div class="section" id="publishing-on-github">
+<h2>Publishing on GitHub<a class="headerlink" href="#publishing-on-github" title="Permalink to this headline">¶</a></h2>
+<p>Before going further in the tutorial, we can publish your repository to GitHub.
+This allows to integrate a continuous integration system such as TravisCI and allows an
+easy publishing of your module to PyPI afterwards.</p>
+<p>First, create an empty repository in your GitHub account. Be sure not to
+generate any <em>.gitignore</em> or <em>README</em> files, as our code already has them. If
+you don’t have a GitHub account, you can skip this step, it is only necessary
+if you plan to publish your module on PyPI.</p>
+<p>Now, go into the root directory of your module, and run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git remote add origin URL-OF-YOUR-GITHUB-REPO
+</pre></div>
+</div>
+<p>We can commit and push the generated files:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git commit -am <span class="s2">&quot;Initial module structure&quot;</span>
+<span class="gp">$</span> git push --set-upstream origin master
+</pre></div>
+</div>
+<p>Finally, we create a new branch to develop on it.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git checkout -b dev
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-the-module-in-your-application">
+<h2>Use the module in your application<a class="headerlink" href="#use-the-module-in-your-application" title="Permalink to this headline">¶</a></h2>
+<p>Integrating a new module to a full Invenio application comes down to adding it as a dependency
+in the central <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>. In order to do that, you should have published your module on GitHub and
+run the following command from the root folder of your Invenio application:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pipenv install URL-OF-YOUR-GITHUB-REPO
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pipenv</span></code> will update the <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> and install your module in the virtual enviroment of your application.</p>
+<p>If your module has been released on PyPI, you can install it in your application by running the following
+command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pipenv install invenio-foo
+</pre></div>
+</div>
+</div>
+<div class="section" id="next-steps">
+<h2>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>To learn more about the development process in Invenio, follow the next guide <a class="reference internal" href="developing-with-invenio.html#developing-with-invenio"><span class="std std-ref">Developing with Invenio</span></a>.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Build a module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#first-steps">First steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rst-files">*.rst files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-py">setup.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-tests-sh">run-tests.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docs-folder">docs folder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples-folder">examples folder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tests-folder">tests folder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#invenio-foo-folder">invenio_foo folder</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#manifest-in">MANIFEST.in</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config-py">config.py</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ext-py">ext.py</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#version-py">version.py</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views-py">views.py</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#templates">templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#static">static</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#install-a-module">Install a module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-the-tests">Run the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-the-documentation">Build the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-the-example-application">Run the example application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#publishing-on-github">Publishing on GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-the-module-in-your-application">Use the module in your application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../community/license.html" title="previous chapter">License</a></li>
+      <li>Next: <a href="developing-with-invenio.html" title="next chapter">Developing with Invenio</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/tutorials/build-a-module.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

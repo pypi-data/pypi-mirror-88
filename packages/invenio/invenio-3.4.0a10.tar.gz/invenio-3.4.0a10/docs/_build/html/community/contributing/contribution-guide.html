@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contribution guide &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Style guide" href="style-guide.html" />
+    <link rel="prev" title="Contributing" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="contribution-guide">
+<h1>Contribution guide<a class="headerlink" href="#contribution-guide" title="Permalink to this headline">¶</a></h1>
+<p>Interested in contributing to the Invenio project? There are lots of ways to
+help.</p>
+<p class="rubric">Code of conduct</p>
+<p>Overall, we’re <strong>open, considerate, respectful and good to each other</strong>. We
+contribute to this community not because we have to, but because we want to.
+If we remember that, our <a class="reference internal" href="../code-of-conduct.html#code-of-conduct"><span class="std std-ref">Code of Conduct</span></a> will come naturally.</p>
+<p class="rubric">Get in touch</p>
+<p>See <a class="reference internal" href="../../getting-started/getting-help.html#getting-help"><span class="std std-ref">Link</span></a>. Don’t hesitate to get in touch with the
+Invenio maintainers. The maintainers can help you kick start your contribution.</p>
+<div class="section" id="types-of-contributions">
+<h2>Types of contributions<a class="headerlink" href="#types-of-contributions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="report-bugs">
+<h3>Report bugs<a class="headerlink" href="#report-bugs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Found a bug? Want a new feature?</strong> Open a GitHub issue on the applicable
+repository and get the conversation started (do search if the issue has
+already been reported). Not sure exactly where, how, or what to do?
+See <a class="reference internal" href="../../getting-started/getting-help.html#getting-help"><span class="std std-ref">Link</span></a>.</p></li>
+<li><p><strong>Found a security issue?</strong> Alert us privately at
+<a class="reference external" href="mailto:info&#37;&#52;&#48;inveniosoftware&#46;org">info<span>&#64;</span>inveniosoftware<span>&#46;</span>org</a>, this will allow us to
+distribute a security patch before potential attackers look at the issue.</p></li>
+</ul>
+</div>
+<div class="section" id="translate">
+<h3>Translate<a class="headerlink" href="#translate" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Missing your favourite language?</strong> Translate Invenio on
+<a class="reference external" href="https://www.transifex.com/inveniosoftware/invenio/">Transifex</a></p></li>
+<li><p><strong>Missing context for a text string?</strong> Add context notes to
+translation strings or report the issue as a bug (see above).</p></li>
+<li><p><strong>Need help getting started?</strong> See our <a class="reference internal" href="translation-guide.html#translation-guide"><span class="std std-ref">Translation guide</span></a>.</p></li>
+</ul>
+</div>
+<div class="section" id="write-documentation">
+<h3>Write documentation<a class="headerlink" href="#write-documentation" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Found a typo?</strong> You can edit the file and submit a pull request directly on
+GitHub.</p></li>
+<li><p><strong>Debugged something for hours?</strong> Spare others time by writing up a short
+troubleshooting piece on
+<a class="reference external" href="https://github.com/inveniosoftware/troubleshooting/">https://github.com/inveniosoftware/troubleshooting/</a>.</p></li>
+<li><p><strong>Wished you knew earlier what you know now?</strong> Help write both non-technical
+and technical topical guides.</p></li>
+</ul>
+</div>
+<div class="section" id="write-code">
+<h3>Write code<a class="headerlink" href="#write-code" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Need help getting started?</strong> See our <a class="reference internal" href="../../getting-started/quickstart/index.html#quickstart"><span class="std std-ref">Quickstart</span></a>.</p></li>
+<li><p><strong>Need help setting up your editor?</strong> See our
+<a class="reference internal" href="../../getting-started/development-environment.html#setting-up-your-environment"><span class="std std-ref">Setting up your system</span></a> guide which helps your automate the
+tedious tasks.</p></li>
+<li><p><strong>Want to refactor APIs?</strong> Get in touch with the maintainers and get the
+conversation started.</p></li>
+<li><p><strong>Troubles getting green light on Travis?</strong> Be sure to check our
+<a class="reference internal" href="style-guide.html#style-guide"><span class="std std-ref">Style guide</span></a> and the <a class="reference internal" href="../../getting-started/development-environment.html#setting-up-your-environment"><span class="std std-ref">Setting up your system</span></a>. It will make
+your contributor life easier.</p></li>
+<li><p><strong>Bootstrapping a new awesome module?</strong> Use our Invenio cookiecutter
+templates for <a class="reference external" href="http://github.com/inveniosoftware/cookiecutter-invenio-module">modules</a>,
+<a class="reference external" href="http://github.com/inveniosoftware/cookiecutter-invenio-instance">instances</a>
+or <a class="reference external" href="http://github.com/inveniosoftware/cookiecutter-invenio-datamodel">data models</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="style-guide-tl-dr">
+<h2>Style guide (TL;DR)<a class="headerlink" href="#style-guide-tl-dr" title="Permalink to this headline">¶</a></h2>
+<p>Travis CI is our style police officer who will check your pull
+request against most of our <a class="reference internal" href="style-guide.html#style-guide"><span class="std std-ref">Style guide</span></a>, so do make sure you get a green
+light from him.</p>
+<p><strong>ProTip:</strong> Make sure your editor is setup to do checking, linting, static
+analysis etc. so you don’t have to think. Need help setting up your editor? See
+<a class="reference internal" href="../../getting-started/development-environment.html#setting-up-your-environment"><span class="std std-ref">Setting up your system</span></a>.</p>
+<div class="section" id="commit-messages">
+<h3>Commit messages<a class="headerlink" href="#commit-messages" title="Permalink to this headline">¶</a></h3>
+<p>Commit message is first and foremost about the content. You are communicating
+with fellow developers, so be clear and brief.</p>
+<p>(Inspired by <a class="reference external" href="https://chris.beams.io/posts/git-commit/">How to Write a Git Commit Message</a>)</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://chris.beams.io/posts/git-commit/#separate">Separate subject from body with a blank line</a></p></li>
+<li><p><a class="reference external" href="https://chris.beams.io/posts/git-commit/#limit-50">Limit the subject line to 50 characters</a></p></li>
+<li><p>Indicate the component follow by a short description</p></li>
+<li><p><a class="reference external" href="https://chris.beams.io/posts/git-commit/#end">Do not end the subject line with a period</a></p></li>
+<li><p><a class="reference external" href="https://chris.beams.io/posts/git-commit/#imperative">Use the imperative mood in the subject line</a></p></li>
+<li><p><a class="reference external" href="https://chris.beams.io/posts/git-commit/#wrap-72">Wrap the body at 72 characters</a></p></li>
+<li><p><a class="reference external" href="https://chris.beams.io/posts/git-commit/#why-not-how">Use the body to explain what and why vs. how, using bullet points</a></p></li>
+</ol>
+<p><strong>ProTip</strong>: Really! Spend some time to ensure your editor is top tuned. It will
+pay off many-fold in the long run. See <a class="reference internal" href="../../getting-started/development-environment.html#setting-up-your-environment"><span class="std std-ref">Setting up your system</span></a>.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>component: summarize changes in 50 char or less
+
+* More detailed explanatory text, if necessary. Formatted using
+  bullet points, preferably `*`. Wrapped to 72 characters.
+
+* Explain the problem that this commit is solving. Focus on why you
+  are making this change as opposed to how (the code explains that).
+  Are there side effects or other unintuitive consequences of this
+  change? Here&#39;s the place to explain them.
+
+* The blank line separating the summary from the body is critical
+  (unless you omit the body entirely); various tools like `log`,
+  `shortlog` and `rebase` can get confused if you run the two
+  together.
+
+* Use words like &quot;Adds&quot;, &quot;Fixes&quot; or &quot;Breaks&quot; in the listed bullets to help
+  others understand what you did.
+
+* If your commit closes or addresses an issue, you can mention
+  it in any of the bullets after the dot. (closes #XXX) (addresses
+  #YYY)
+
+Co-authored-by: John Doe &lt;john.doe@example.com&gt;
+</pre></div>
+</div>
+<p><strong>Git signature:</strong> The only signature we use is <code class="docutils literal notranslate"><span class="pre">Co-authored-by</span></code> (see above)
+to provide credit to co-authors. Previously we required a <code class="docutils literal notranslate"><span class="pre">Signed-off-by</span></code>
+signature, however this is no longer required.</p>
+</div>
+</div>
+<div class="section" id="pull-requests">
+<h2>Pull requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h2>
+<p>Need help making your first pull request? Check out the GitHub guide
+<a class="reference external" href="https://guides.github.com/activities/forking/">Forking Projects</a>.</p>
+<p>When making your pull request, please keep the following in mind:</p>
+<ul class="simple">
+<li><p>Create logically separate commits for logically separate things.</p></li>
+<li><p>Include tests and don’t decrease test coverage.</p></li>
+<li><p>Do write documentation. We all love well-documented frameworks, right?</p></li>
+<li><p>Run tests locally using <code class="docutils literal notranslate"><span class="pre">run-tests.sh</span></code> script.</p></li>
+<li><p>Make sure you have the rights if you include third-party code (and do credit
+the original creator). Note, you cannot include GPL or AGPL licensed code.
+LGPL and other more permissive open source license or fine.</p></li>
+<li><p>Green light on all GitHub status checks is required in order to merge your
+PR.</p></li>
+</ul>
+<p class="rubric">Work in progress (WIP)</p>
+<p>Do publish your code as pull request sooner than later. Just prefix the pull
+request title with <code class="docutils literal notranslate"><span class="pre">WIP</span></code> (=work in progress) if it is not quite ready.</p>
+<p class="rubric">Allow edits from maintainers</p>
+<p>To speed up the integration process, it helps if on GitHub you <a class="reference external" href="https://help.github.com/articles/allowing-changes-to-a-pull-request-branch-created-from-a-fork/">allow
+maintainers to edit your pull request</a>
+so they can fix small issues autonomously.</p>
+<p>A pull request will probably be reviewed by someone in a different location,
+maybe even a different time zone. Therefore, avoiding blockings and
+misunderstandings is key. The following ideas could help ease and speed
+up the review process:</p>
+<ul class="simple">
+<li><p>Be clear when something is ready to be reviewed (see <cite>WIP</cite> above).</p></li>
+<li><p>If a PR requires changes, say so explicitly, but politely (use emojis!).</p></li>
+<li><p>When something is ready to be merged say it explicitly. If the reviewer does
+not have permission to merge, (s)he should ping the corresponding person.</p></li>
+<li><p>When reviewing, rate your comments. This would help to understand if
+a comment must be addressed (e.g. it has substantial implications) or it is
+something the reviewer thought of but is a matter of “take it or leave it”. A
+proposed scale is:
+1. Comment/Doubt/Question: exactly that. A doubt, a question or a comment.
+2. Minor: a change that the reviewer thinks might need change. However, it
+is not blocking, it is up to the developer to choose if and how to change
+it. It can be merged!
+3. Moderate/Normal (Default): a change that requires further discussion
+(e.g. breaking changes). It cannot be merged, unless explicitly stated by
+the reviewer (e.g. choose a solution proposed by the reviewer and implement
+it). Depending on the nature of the change a new review
+might be needed, use common sense.
+4. Major: a change that needs further discussion, probably a chat. Even the
+opinion of an architect. It has high implications. It cannot be merged.
+5. Shelved: a suggestion that will be treated later on as part of a
+different issue. It is a good practice to reference the issue. Note that
+any of the previous (comment, minor, moderate and major) can be shelved if
+agreed by the PR creator and the reviewer.</p></li>
+</ul>
+<p>Here is an example:</p>
+<blockquote>
+<div><p>minor: I think this variable name should be plural since it refers to a list.</p>
+</div></blockquote>
+<p>If no level is given, assume it is of “moderate” level within reason (might
+clearly be minor or major). GitHub suggestions for instance are typically
+minor, so no need to tag them all the time.</p>
+<p>Following these guidelines builds trust over time. As a reviewer, you know
+your comments will be heard and as a submitter, you know someone has taken the
+time to go over your work and help you solve the problem you were tackling. In
+both cases, it’s done in a friendly and efficient manner.</p>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="index.html" title="Previous document">Contributing</a>
+        </li>
+        <li>
+          <a href="style-guide.html" title="Next document">Style guide</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Community</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Contributing</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Contribution guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#types-of-contributions">Types of contributions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#report-bugs">Report bugs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#translate">Translate</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#write-documentation">Write documentation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#write-code">Write code</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#style-guide-tl-dr">Style guide (TL;DR)</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#commit-messages">Commit messages</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#pull-requests">Pull requests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="style-guide.html">Style guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translation-guide.html">Translation guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maintainers-guide/index.html">Maintainer’s guide</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../security-policy.html">Security policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-of-conduct.html">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Community</a><ul>
+  <li><a href="index.html">Contributing</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Contributing</a></li>
+      <li>Next: <a href="style-guide.html" title="next chapter">Style guide</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../_sources/community/contributing/contribution-guide.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

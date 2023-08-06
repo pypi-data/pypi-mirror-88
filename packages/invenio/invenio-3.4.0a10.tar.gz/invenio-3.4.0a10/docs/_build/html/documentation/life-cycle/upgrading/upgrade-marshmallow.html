@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marshmallow v2/v3 compatibility &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Migrating to v3" href="../migrating.html" />
+    <link rel="prev" title="Upgrading from Invenio v3.1 to v3.2" href="upgrade-3_1-3_2.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="marshmallow-v2-v3-compatibility">
+<span id="marshmallow"></span><h1>Marshmallow v2/v3 compatibility<a class="headerlink" href="#marshmallow-v2-v3-compatibility" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Marshmallow<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Marshmallow is a package for serialization and deserialization of complex data
+structures from and to Python types. You can discover its usage within
+Invenio in the <a class="reference external" href="https://invenio.readthedocs.io/en/latest/tutorials/understanding-data-models.html?highlight=marshmallow#define-a-marshmallow-schema">documentation</a>.</p>
+</div>
+<div class="section" id="compatibility-of-v2-and-v3">
+<h2>Compatibility of v2 and v3<a class="headerlink" href="#compatibility-of-v2-and-v3" title="Permalink to this headline">¶</a></h2>
+<p>If you are using or you are about to use Marshmallow in your repository
+implementation, you should know that the package is about to be upgraded
+to version 3.x. There have been significant changes in the code which will
+influence already existing code and you should be aware of them.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The full guide is available in the Marshmallow <a class="reference external" href="https://invenio.readthedocs.io/en/latest/tutorials/understanding-data-models.html?highlight=marshmallow#define-a-marshmallow-schema">documentation</a>.</p>
+</div>
+<p>We are upgrading the Invenio modules to be compatible with Marshmallow v3.x.
+<strong>We will provide a transition period in which modules will support both
+v2.3.x and v3.x implementations of Marshmallow</strong>.
+Deprecated methods will be marked with warnings to provide you with
+time to adjust your code to the latest changes.</p>
+<p>There are two options you could follow if you are using
+schemas from Marshmallow 2:</p>
+<p>1. Stay with Marshmallow 2 for now by pinning the Marshmallow version
+in your instance.</p>
+<p>2. Upgrade to Marshmallow 3. Follow the guide below and the Marshmallow
+<a class="reference external" href="https://invenio.readthedocs.io/en/latest/tutorials/understanding-data-models.html?highlight=marshmallow#define-a-marshmallow-schema">documentation</a></p>
+</div>
+<div class="section" id="guide">
+<h2>Guide<a class="headerlink" href="#guide" title="Permalink to this headline">¶</a></h2>
+<p>After upgrading Marshmallow 3 in your dependencies you might find some of your
+code failing. Mostly it will be connected with schema validation and the <a class="reference external" href="https://webargs.readthedocs.io/en/latest/quickstart.html">webargs</a>
+package. Webargs in version 5.4.0 is compatible with Marshmallow 3.x.</p>
+<p>The biggest change is the return type of <code class="docutils literal notranslate"><span class="pre">Schema().dump()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Schema().load()</span></code>, <code class="docutils literal notranslate"><span class="pre">Schema().dumps()</span></code> and <code class="docutils literal notranslate"><span class="pre">Schema().loads()</span></code>.
+They do not return the <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">errors)</span></code> named tuple
+and the <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> is raised instead.
+In this case if you were using <code class="docutils literal notranslate"><span class="pre">.errors</span></code> attribute, it will no longer work
+- you need to implement your own handlers for the type
+<code class="docutils literal notranslate"><span class="pre">marshmallow.ValidationError</span></code>.
+Alternatively by doing <code class="docutils literal notranslate"><span class="pre">Schema.validate()</span></code> you can still get a list
+of the errors, an example is
+located in the <a class="reference external" href="https://marshmallow.readthedocs.io/en/3.0/quickstart.html#schema-validate">Marshmallow documentation</a>.</p>
+<p>Other significant changes and solutions:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> is the Exception raised when marshmallow encounters an</dt><dd><p>error during the validation, since the ValidationError is raised listing
+all the errors you can catch the Exception and then process them as a
+dictionary to mimic the previous behaviour.</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Unknown</span> <span class="pre">field.</span></code> indicates that your schema is trying to validate
+data containing a field which was not defined in the schema.
+You can either add this field to the schema or use the <code class="docutils literal notranslate"><span class="pre">unknown</span></code> option
+of the <a class="reference external" href="https://marshmallow.readthedocs.io/en/stable/api_reference.html#marshmallow.Schema.Meta">Schema options</a>
+to restore the previous, non-strict, behaviour.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">a</span> <span class="pre">valid</span> <span class="pre">type.</span></code> indicates that the field has data of
+a different type than defined in the schema.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Missing</span> <span class="pre">field.</span></code> indicates that a field defined as required
+is missing from the data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JSON</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">data</span></code>
+Marshmallow schema provides methods <code class="docutils literal notranslate"><span class="pre">.dump(..)</span></code>, <code class="docutils literal notranslate"><span class="pre">.dumps(..)</span></code>
+which no longer return namedtuple of <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">errors)</span></code>.
+They return json object only (formerly <code class="docutils literal notranslate"><span class="pre">data</span></code>). All the errors
+are raised, not returned.</p></li>
+<li><p>If your test data is not read properly when using webargs you are probably
+using old parameters when initialising the arguments.
+You should change the <code class="docutils literal notranslate"><span class="pre">load_from</span></code> argument to <code class="docutils literal notranslate"><span class="pre">data_key</span></code>.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Marhsmallow 2.x</span>
+<span class="s1">&#39;part_number&#39;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span>
+    <span class="n">load_from</span><span class="o">=</span><span class="s1">&#39;partNumber&#39;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;query&#39;</span><span class="p">,</span>
+    <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">),</span>
+
+<span class="c1"># Marhsmallow 3.x</span>
+<span class="s1">&#39;part_number&#39;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span>
+    <span class="n">data_key</span><span class="o">=</span><span class="s1">&#39;partNumber&#39;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;query&#39;</span><span class="p">,</span>
+    <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">),</span>
+</pre></div>
+</div>
+<p>The full list of Marshmallow v3 changes can be found in the Marshmallow
+<a class="reference external" href="https://marshmallow.readthedocs.io/en/stable/upgrading.html">upgrade guide</a>.</p>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="upgrade-3_1-3_2.html" title="Previous document">Upgrading from Invenio v3.1 to v3.2</a>
+        </li>
+        <li>
+          <a href="../migrating.html" title="Next document">Migrating to v3</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../requirements.html">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../main-concepts/index.html">Main concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bundles/index.html">Module Reference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Life cycle</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Upgrading</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="upgrade-3_2-3_3.html">Upgrading from Invenio v3.2 to v3.3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="upgrade-3_1-3_2.html">Upgrading from Invenio v3.1 to v3.2</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Marshmallow v2/v3 compatibility</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id1">Marshmallow</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#compatibility-of-v2-and-v3">Compatibility of v2 and v3</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#guide">Guide</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../community/index.html">Community</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Documentation</a><ul>
+  <li><a href="../index.html">Life cycle</a><ul>
+  <li><a href="index.html">Upgrading</a><ul>
+      <li>Previous: <a href="upgrade-3_1-3_2.html" title="previous chapter">Upgrading from Invenio v3.1 to v3.2</a></li>
+      <li>Next: <a href="../migrating.html" title="next chapter">Migrating to v3</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../../_sources/documentation/life-cycle/upgrading/upgrade-marshmallow.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

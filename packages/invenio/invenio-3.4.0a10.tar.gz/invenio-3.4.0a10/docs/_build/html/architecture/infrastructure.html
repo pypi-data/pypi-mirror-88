@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Infrastructure architecture &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Application architecture" href="application.html" />
+    <link rel="prev" title="Securing your instance" href="../deployment/securing-your-instance.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="infrastructure-architecture">
+<span id="infrastructure"></span><h1>Infrastructure architecture<a class="headerlink" href="#infrastructure-architecture" title="Permalink to this headline">¶</a></h1>
+<p>This guide provides a general overview of the Invenio infrastructure
+architecture. It is not meant to be a comprehensive guide for each subsystem.</p>
+<p>Over all, the Invenio infrastructure is a pretty standard web application
+infrastructure. It consists of:</p>
+<ul class="simple">
+<li><p><strong>Load balancers:</strong> HAProxy, Nginx or others.</p></li>
+<li><p><strong>Web servers:</strong> Nginx, Apache or others.</p></li>
+<li><p><strong>Application servers:</strong> UWSGI, Gunicorn or mod_wsgi.</p></li>
+<li><p><strong>Distributed task queue:</strong> Celery</p></li>
+<li><p><strong>Database:</strong> PostgreSQL, MySQL or SQLite.</p></li>
+<li><p><strong>Search engine:</strong> Elasticsearch (v5 and v6).</p></li>
+<li><p><strong>Message queue:</strong> RabbitMQ, Redis or Amazon SQS.</p></li>
+<li><p><strong>Cache system:</strong> Redis or Memcache.</p></li>
+<li><p><strong>Storage system:</strong> Local, S3, XRootD, WebDAV and more.</p></li>
+</ul>
+<img alt="../_images/infrastructure.png" class="align-center" src="../_images/infrastructure.png" />
+<div class="section" id="request-handling">
+<h2>Request handling<a class="headerlink" href="#request-handling" title="Permalink to this headline">¶</a></h2>
+<p>A client making a request to Invenio will usually first hit a load balancer.
+For high availability you can have more load balancers and balance traffic
+between them with e.g. DNS load balancing.</p>
+<div class="section" id="load-balancer">
+<h3>Load balancer<a class="headerlink" href="#load-balancer" title="Permalink to this headline">¶</a></h3>
+<p><strong>Request types</strong></p>
+<p>The load balancer usually (if it supports SSL termination) allows you to split
+traffic into three categories of requests:</p>
+<ul class="simple">
+<li><p>static files requests: e.g. javascript assets</p></li>
+<li><p>application requests: e.g. search queries</p></li>
+<li><p>record files requests: e.g. downloading very large files</p></li>
+</ul>
+<p>This way you can dimension the number connection slots between different types
+of requests according to available resources. For instance a static file
+request can usually be served extremely efficiently, while an application request
+usually takes longer and requires more memory.</p>
+<p>Similar, downloading a very file depends on the client’s available bandwidth
+and can thus take up a connection slot for a significant amount time. If your
+storage system supports it, it is possible with Invenio to completely offload
+the serving of large files to your storage system (e.g. S3).</p>
+<p>All in all, the primary job of the load balancer is to manage traffic to your
+servers according to available resources. For instance during traffic floods
+the load balancer takes care of queue requests to the web servers.</p>
+<p><strong>Backup pages</strong></p>
+<p>A load balancer can also direct traffic to a static backup site in case your
+main web server is down. This is useful in order to communicate with users
+during major incidents.</p>
+</div>
+<div class="section" id="web-servers">
+<h3>Web servers<a class="headerlink" href="#web-servers" title="Permalink to this headline">¶</a></h3>
+<p>The load balancer proxies traffic to one of several web servers. The web
+server’s primary job is to manage the connections into your application server.
+A web server like Apache and Nginx is usually much better than an application
+server to manage connections. Also, you can use the web server to configure
+limits on specific parts of your application so that for instance you can
+upload a 1TB file on the Files REST API, but not on the search REST API.</p>
+</div>
+<div class="section" id="application-servers">
+<h3>Application servers<a class="headerlink" href="#application-servers" title="Permalink to this headline">¶</a></h3>
+<p>The web server proxies traffic usually (but not necessarily) to a single
+application server running on the same machine. The application server
+is responsible for handling the application requests. Invenio is a Python
+application, and thus make use of the WSGI standard. There exists several
+application servers capable of running WSGI python application, e.g. Gunicorn,
+uWSGI and mod_wsgi.</p>
+</div>
+</div>
+<div class="section" id="storing-records">
+<h2>Storing records<a class="headerlink" href="#storing-records" title="Permalink to this headline">¶</a></h2>
+<p>Invenio store records as JSON documents in an SQL database. Most modern SQL
+databases today have a JSON type, that can efficiently store JSON documents in
+a binary format.</p>
+<p><strong>Transactional databases</strong></p>
+<p>The primary reason using an SQL database is that they provide transactions,
+which is very important since data consistency for a repository is of utmost
+importance. Also, database servers can handle very large amounts of data
+as long as they are scaled and configured properly. Last but not least, they
+are usually highly reliable as compared to some NoSQL solutions.</p>
+<p><strong>Primary key lookups</strong></p>
+<p>Most access from Invenio to the database is via primary key look ups, which
+are usually very efficient in database. Search queries and the like are all
+sent to the search engine cluster which can provide much better performance
+than a database.</p>
+</div>
+<div class="section" id="search-and-indexing">
+<h2>Search and indexing<a class="headerlink" href="#search-and-indexing" title="Permalink to this headline">¶</a></h2>
+<p>Invenio uses Elasticsearch as its underlying search engine since Elasticsearch
+is fully JSON-based, and thus fit well together with storing records internally
+in the database as JSON documents.</p>
+<p>Elasticsearch furthermore is highly scalable and provides very powerful search
+and aggregation capabilities. You can for instance make geospatial queries with
+Elasticsearch.</p>
+<div class="section" id="direct-indexing">
+<h3>Direct indexing<a class="headerlink" href="#direct-indexing" title="Permalink to this headline">¶</a></h3>
+<p>Invenio has the option to directly index a record in Elasticsearch when
+handling a request, and thus make the record immediately available for
+searches.</p>
+<p><strong>Bulk indexing</strong></p>
+<p>In addition to direct indexing, Invenio can also do bulk indexing which is
+significantly more efficient when indexing large number of records. The bulk
+indexing works by the application sending a message to the message queue, and
+at regular intervals a background job will consume the queue and index the
+records. Also, several bulk indexing jobs can run concurrently at the same time
+on multiple worker nodes and thus you can achieve very high indexing rates
+during bulk indexing.</p>
+</div>
+</div>
+<div class="section" id="background-processing">
+<h2>Background processing<a class="headerlink" href="#background-processing" title="Permalink to this headline">¶</a></h2>
+<p>Invenio relies on an application called Celery for distributed background
+processing. In order for an application server to reply faster to a request,
+it can offload some task to asynchronous jobs. It works by the application
+sending a message to the message queue (e.g. RabbitMQ), which several Celery
+worker nodes continuously consume tasks from.</p>
+<p>An example of background tasks can for instance be sending an email or
+registering a DOI.</p>
+<p><strong>Multiple queues</strong></p>
+<p>The background processing supports multiple queues and advanced
+workflows. You could for instance have a low priority queue that constantly
+runs x number of file integrity checks per day, and another normal queue
+for other tasks like DOI registration.</p>
+<p><strong>Cronjobs and retries</strong></p>
+<p>Celery also supports running jobs at scheduled intervals as well as
+retrying tasks in case the fail (e.g. if a remote service is temporarily down).</p>
+</div>
+<div class="section" id="caching-and-temporary-storage">
+<h2>Caching and temporary storage<a class="headerlink" href="#caching-and-temporary-storage" title="Permalink to this headline">¶</a></h2>
+<p>Invenio uses an in-memory cache like Redis or Memcache for fast temporary
+storage. The cache is for instance used for:</p>
+<ul class="simple">
+<li><p>User session storage</p></li>
+<li><p>Results from background jobs</p></li>
+<li><p>Caching rendered pages</p></li>
+</ul>
+</div>
+<div class="section" id="storing-files">
+<h2>Storing files<a class="headerlink" href="#storing-files" title="Permalink to this headline">¶</a></h2>
+<p>Invenio comes with a default object storage REST API to expose files.
+Underneath the hood, Invenio can however store files in multiple different
+storage systems due to a simple storage abstraction layer. Also, it is possible
+to completely by-pass the Invenio object storage and directly use another
+storage system like S3. In this case, you just have to be careful to manage
+access correctly on the external system.</p>
+<p><strong>Multiple storage systems</strong></p>
+<p>One strength of Invenio is that you can store files on multiple systems at the
+same time. This is useful if you for instance need to use multiple systems or
+do live migration from one system to another.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Infrastructure architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#request-handling">Request handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storing-records">Storing records</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#search-and-indexing">Search and indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#background-processing">Background processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caching-and-temporary-storage">Caching and temporary storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storing-files">Storing files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../deployment/securing-your-instance.html" title="previous chapter">Securing your instance</a></li>
+      <li>Next: <a href="application.html" title="next chapter">Application architecture</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/architecture/infrastructure.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Introduction &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bundles" href="bundles.html" />
+    <link rel="prev" title="Overview" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Invenio is an open source framework for building large-scale digital
+repositories.</p>
+<div class="section" id="a-framework">
+<h2>A framework<a class="headerlink" href="#a-framework" title="Permalink to this headline">¶</a></h2>
+<p>Invenio is first and foremost a framework. It’s a framework that you can use
+to build a turn-key repository solution, but it is not by itself a final
+turn-key repository software. Using Invenio requires you to develop code.</p>
+<p>Several repositories have been built on top of Invenio v3, including e.g.:</p>
+<ul class="simple">
+<li><p>Zenodo - General purpose research data repository.</p></li>
+<li><p>CERN Open Data - Open data repository for CERN.</p></li>
+<li><p>CERN Videos - Digital Assets Management system with video encoding support.</p></li>
+</ul>
+<p>Several repository software solutions are in the progress of being written on
+top of Invenio, including e.g.:</p>
+<ul class="simple">
+<li><p>RERO ILS and Invenio ILS - Integrated Library System.</p></li>
+<li><p>WEKO3 - Repository infrastructure for 500+ japanese universities.</p></li>
+</ul>
+</div>
+<div class="section" id="scalability-safety">
+<h2>Scalability &amp; Safety<a class="headerlink" href="#scalability-safety" title="Permalink to this headline">¶</a></h2>
+<p>Two of the main strengths of Invenio is the scalability and safety. Invenio is
+built to run on anything from a single machine to clusters of 100s of machines,
+to handle 100 records or 100 million records as well as to handle a 1 megabyte
+or a 1 petabyte.</p>
+<p>That’s why we say Invenio is a framework for large-scale digital repositories.
+Often, large-scale repositories does not fit in a standard box, which is why
+Invenio is first and foremost a framework that helps you build your repository
+faster and on a high-quality reliable foundation.</p>
+</div>
+<div class="section" id="flexible-metadata">
+<h2>Flexible metadata<a class="headerlink" href="#flexible-metadata" title="Permalink to this headline">¶</a></h2>
+<p>In its core, Invenio provides you with a flexible record and persistent
+identifier store capable of handling 100 millions of records. Records can
+use existing metadata formats such as JSON-LD, MARC21, DublinCore, DataCite, as
+well as your own custom or derived metadata format. Invenio easily handle
+multiple types of records such as bibliographic records, authority records,
+people, grants, funders, books and photos to name a few.</p>
+<p>Internally Invenio natively store records as JSON documents whose structure
+can be validated and described with JSONSchemas. Records can easily be linked
+via JSONRef providing you with powerful tools to model your records. Invenio
+further comes with robust metadata transformation layer that can serialize
+records to e.g. MARCXML, DataCite XML, JSON-LD, Citation Style Langauge (CSL)
+JSON and many other formats.</p>
+<p>In addition Invenio provides a persistent identifier store and a resolver
+that allows you to use your preferred persistent identifier scheme for
+identifying records such as DOIs (Digital Object Identifiers), Handles, PURLs,
+URNs or your own local identifier. The persistent identifer resolver further
+has support for advanced features such as tombstone pages, redirection and
+merged records.</p>
+</div>
+<div class="section" id="powerful-search">
+<h2>Powerful search<a class="headerlink" href="#powerful-search" title="Permalink to this headline">¶</a></h2>
+<p>Under the hood, Invenio uses Elasticsearch, the world’s most popular open
+source search engine that provides powerful distributed and massively scalable
+search engine. Invenio provides all the features of Elasticsearch such as
+full-text search, powerful query syntax, advanced stemming and aggregations,
+super-fast auto-completion suggesters as well as geospatial search.</p>
+<p>Invenio further leverages both instant indexing as well as extremely fast
+distributed bulk indexing with rates beyond 10,0000 records/second.</p>
+</div>
+<div class="section" id="file-management">
+<h2>File management<a class="headerlink" href="#file-management" title="Permalink to this headline">¶</a></h2>
+<p>Invenio handles both millions of files and petabytes of data. Invenio provides
+natively on object storage REST API that concurrently can use multiple
+underlying storage systems such as S3, XRootD, NAS, WebDAV.</p>
+<p>The file store further handles integrity checking according to desired
+schedules and supports even checking close to 1M files in less than an hour
+if your storage backend can support it.</p>
+<p>The file store further comes with quota management that allows you detailed
+control of max file sizes and upload limits.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Overview</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bundles.html">Bundles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-help.html">Getting help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Overview</a></li>
+      <li>Next: <a href="bundles.html" title="next chapter">Bundles</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/general/introduction.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

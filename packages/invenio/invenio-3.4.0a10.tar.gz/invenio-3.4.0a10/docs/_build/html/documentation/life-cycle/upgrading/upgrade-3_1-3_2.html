@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upgrading from Invenio v3.1 to v3.2 &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Marshmallow v2/v3 compatibility" href="upgrade-marshmallow.html" />
+    <link rel="prev" title="Upgrading from Invenio v3.2 to v3.3" href="upgrade-3_2-3_3.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="upgrading-from-invenio-v3-1-to-v3-2">
+<h1>Upgrading from Invenio v3.1 to v3.2<a class="headerlink" href="#upgrading-from-invenio-v3-1-to-v3-2" title="Permalink to this headline">¶</a></h1>
+<p>If you have your instance of Invenio v3.1 already up and running and
+you would like to upgrade to version v3.2 you don’t need to set up your
+project from scratch. The goal of this guide is to show the steps to upgrade
+your project without losing any of your work.</p>
+<div class="section" id="pipfile-modifications">
+<h2>Pipfile modifications<a class="headerlink" href="#pipfile-modifications" title="Permalink to this headline">¶</a></h2>
+<p>The most important changes that you will have to make are in <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>.</p>
+<p>First you need to change the Invenio version:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">invenio</span> <span class="o">=</span> <span class="p">{</span> <span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;==3.2.0&quot;</span><span class="p">,</span> <span class="n">extras</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="s2">&quot;auth&quot;</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="s2">&quot;postgresql&quot;</span><span class="p">,</span> <span class="s2">&quot;elasticsearch7&quot;</span> <span class="p">]}</span>
+</pre></div>
+</div>
+<p>If you want to use the new files bundle make sure you include the <code class="docutils literal notranslate"><span class="pre">files</span></code>
+bundle. Add any additional <a class="reference internal" href="../../bundles/overview.html#bundles"><span class="std std-ref">Overview</span></a> you would like in your project in
+<code class="docutils literal notranslate"><span class="pre">extras</span></code>.</p>
+<p>Make sure that your database and Elasticsearch version matches your
+installation. In above example the database is <code class="docutils literal notranslate"><span class="pre">postgresql</span></code> and the
+Elasticsearch version is <code class="docutils literal notranslate"><span class="pre">elasticsearch7</span></code>.</p>
+<p>To install the new packages in <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> run the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update Pipfile.lock</span>
+pipenv lock --dev
+
+<span class="c1"># Install packages specified in Pipfile.lock</span>
+pipenv sync --dev
+
+<span class="c1"># Install application code and entrypoints from &#39;setup.py&#39;</span>
+pipenv run pip install -e .
+
+<span class="c1"># Build assets</span>
+pipenv run invenio collect -v
+pipenv run invenio webpack buildall
+</pre></div>
+</div>
+</div>
+<div class="section" id="database-tables">
+<h2>Database tables<a class="headerlink" href="#database-tables" title="Permalink to this headline">¶</a></h2>
+<p>Changes have been made to the database from Invenio 3.1 so you will need to
+upgrade the database by running the latest Alembic recipes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>invenio alembic upgrade
+</pre></div>
+</div>
+<p>Your database should now have the latest changes.</p>
+</div>
+<div class="section" id="files">
+<h2>Files<a class="headerlink" href="#files" title="Permalink to this headline">¶</a></h2>
+<p>To integrate the files bundle with your Invenio instance, please see the guide
+to configure files for Invenio 3.2.</p>
+<p>For files to work properly ensure that the config variables
+<code class="docutils literal notranslate"><span class="pre">RECORDS_FILES_REST_ENDPOINTS</span></code> and <code class="docutils literal notranslate"><span class="pre">FILES_REST_PERMISSION_FACTORY</span></code> have
+been configured properly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are upgrading from a previous cookiecutter instance and you updated
+<code class="docutils literal notranslate"><span class="pre">records/config.py</span></code>, please remember to update the changed config keys in
+<code class="docutils literal notranslate"><span class="pre">records/ext.py</span></code>.</p>
+</div>
+<div class="section" id="uploading-files">
+<h3>Uploading files<a class="headerlink" href="#uploading-files" title="Permalink to this headline">¶</a></h3>
+<p>Records created after you upgraded to Invenio 3.2 will support files
+out-of-the-box as long as files are configured properly.</p>
+<p>However, if you have records created by previous versions of Invenio they will
+not work with files because there is no bucket attached to the record.
+To support uploading files to an old record you first need to create
+a bucket for each record you want to enable files support for and update the
+record’s metadata.</p>
+<p>Invenio currently doesn’t provide a script for this migration. However, here a
+snippet that can help with the migration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">invenio_db</span> <span class="kn">import</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">invenio_records_files.api</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">invenio_records_files.models</span> <span class="kn">import</span> <span class="n">RecordsBuckets</span>
+
+<span class="c1"># Get all old records as invenio_records_files.api:Record objects</span>
+<span class="n">old_records</span> <span class="o">=</span> <span class="c1"># ...</span>
+<span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">old_records</span><span class="p">:</span>
+    <span class="c1"># Create a bucket</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">record</span><span class="o">.</span><span class="n">bucket_id</span><span class="p">:</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="n">Record</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bucket</span><span class="p">:</span>
+            <span class="c1"># Attach bucket to the record</span>
+            <span class="n">Record</span><span class="o">.</span><span class="n">dump_bucket</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">bucket</span><span class="p">)</span>
+            <span class="n">RecordsBuckets</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">record</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="elasticsearch">
+<h2>Elasticsearch<a class="headerlink" href="#elasticsearch" title="Permalink to this headline">¶</a></h2>
+<p>Invenio 3.2 comes with support for Elasticsearch 6 and 7. Support for
+Elasticsearch v2 and v5 has been deprecated and will be removed in future
+releases. It’s recommended to upgrade your Elasticsearch version to stay
+up-to-date.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you’re upgrading to Elasticsearch v7, don’t forget to add mappings for
+v7.</p>
+</div>
+<p>There are currently two paths to upgrade to Elasticsearch v7: upgrade by
+reindexing all your records or by using Elasticsearch rolling upgrades.</p>
+<div class="section" id="upgrade-to-v7-by-reindexing">
+<h3>Upgrade to v7 by reindexing<a class="headerlink" href="#upgrade-to-v7-by-reindexing" title="Permalink to this headline">¶</a></h3>
+<p>The easiest way to upgrade to v7 is to upgrade your Invenio installation,
+install Elasticsearch v7 and then reindex all your records stored in the
+database with the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> invenio index reindex -t &lt;pid_type&gt;
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This command will destroy your indexed records with the provided
+<code class="docutils literal notranslate"><span class="pre">pid_type</span></code> and reindex all records.</p>
+</div>
+<p>However, this means you have to reindex everything and will require some
+downtime</p>
+</div>
+<div class="section" id="upgrade-by-elasticsearch-rolling-upgrades">
+<span id="rolling-upgrades"></span><h3>Upgrade by Elasticsearch rolling upgrades<a class="headerlink" href="#upgrade-by-elasticsearch-rolling-upgrades" title="Permalink to this headline">¶</a></h3>
+<p>Elasticsearch supports <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html">rolling upgrades</a>
+which can upgrade your Elasticsearch installation between certain versions
+without any interruption to your service. This will allow you to upgrade from
+v5 to v6 or v6 to v7, but not from v5 to v7 due to index incompatibilities.</p>
+</div>
+<div class="section" id="upgrade-by-index-migration">
+<h3>Upgrade by index migration<a class="headerlink" href="#upgrade-by-index-migration" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section describes an unreleased feature.</p>
+</div>
+<p>Invenio v3.3 will add support for online index migration. This will allow you
+to upgrade between Elasticsearch versions, migrate indexes between clusters as
+well as upgrade Elasticsearch mappings. You can read more about this upcoming
+feature on:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://inveniosoftware.org/blog/2019-05-24-sprint-report/">Keeping up with Elasticsearch</a></p></li>
+<li><p><a class="reference external" href="https://github.com/inveniosoftware/invenio-index-migrator">Invenio-Index-Migrator</a></p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="upgrade-3_2-3_3.html" title="Previous document">Upgrading from Invenio v3.2 to v3.3</a>
+        </li>
+        <li>
+          <a href="upgrade-marshmallow.html" title="Next document">Marshmallow v2/v3 compatibility</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../requirements.html">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../main-concepts/index.html">Main concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bundles/index.html">Module Reference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Life cycle</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Upgrading</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="upgrade-3_2-3_3.html">Upgrading from Invenio v3.2 to v3.3</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Upgrading from Invenio v3.1 to v3.2</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#pipfile-modifications">Pipfile modifications</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#database-tables">Database tables</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#files">Files</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#uploading-files">Uploading files</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#elasticsearch">Elasticsearch</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#upgrade-to-v7-by-reindexing">Upgrade to v7 by reindexing</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#upgrade-by-elasticsearch-rolling-upgrades">Upgrade by Elasticsearch rolling upgrades</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#upgrade-by-index-migration">Upgrade by index migration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="upgrade-marshmallow.html">Marshmallow v2/v3 compatibility</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../community/index.html">Community</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Documentation</a><ul>
+  <li><a href="../index.html">Life cycle</a><ul>
+  <li><a href="index.html">Upgrading</a><ul>
+      <li>Previous: <a href="upgrade-3_2-3_3.html" title="previous chapter">Upgrading from Invenio v3.2 to v3.3</a></li>
+      <li>Next: <a href="upgrade-marshmallow.html" title="next chapter">Marshmallow v2/v3 compatibility</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../../_sources/documentation/life-cycle/upgrading/upgrade-3_1-3_2.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

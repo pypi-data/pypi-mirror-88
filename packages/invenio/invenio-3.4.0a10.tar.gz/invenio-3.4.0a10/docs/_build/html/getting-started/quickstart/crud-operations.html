@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create, display and search records &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Final steps" href="final-steps.html" />
+    <link rel="prev" title="Launch an Invenio instance" href="installation.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="create-display-and-search-records">
+<span id="crud-operations"></span><h1>Create, display and search records<a class="headerlink" href="#create-display-and-search-records" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="create-a-record">
+<span id="id1"></span><h2>Create a record<a class="headerlink" href="#create-a-record" title="Permalink to this headline">¶</a></h2>
+<p>Invenio provides REST APIs to perform operations on records, such as
+create, search or retrieve.</p>
+<p>Let’s create a simple record via <code class="docutils literal notranslate"><span class="pre">curl</span></code>, by sending a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request to
+the <code class="docutils literal notranslate"><span class="pre">/api/records</span></code> endpoint with some sample data:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -k --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+    --request POST <span class="se">\</span>
+    --data <span class="s1">&#39;{&quot;title&quot;:&quot;Some title&quot;, &quot;contributors&quot;: [{&quot;name&quot;: &quot;Doe, John&quot;}]}&#39;</span> <span class="se">\</span>
+    https://127.0.0.1:5000/api/records/?prettyprint<span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+<p>The response of the request contains the newly created record metadata:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">  &quot;created&quot;: &quot;2019-11-22T10:30:06.135431+00:00&quot;,</span>
+<span class="go">  &quot;id&quot;: &quot;1&quot;,</span>
+<span class="go">  &quot;links&quot;: {</span>
+<span class="go">    &quot;files&quot;: &quot;https://127.0.0.1:5000/api/records/1/files&quot;,</span>
+<span class="go">    &quot;self&quot;: &quot;https://127.0.0.1:5000/api/records/1&quot;</span>
+<span class="go">  },</span>
+<span class="go">  &quot;metadata&quot;: {</span>
+<span class="go">    &quot;contributors&quot;: [</span>
+<span class="go">      {</span>
+<span class="go">        &quot;name&quot;: &quot;Doe, John&quot;</span>
+<span class="go">      }</span>
+<span class="go">    ],</span>
+<span class="go">    &quot;id&quot;: &quot;1&quot;,</span>
+<span class="go">    &quot;title&quot;: &quot;Some title&quot;</span>
+<span class="go">  },</span>
+<span class="go">  &quot;revision&quot;: 0,</span>
+<span class="go">  &quot;updated&quot;: &quot;2019-11-22T10:30:06.135438+00:00&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="display-a-record">
+<span id="id2"></span><h2>Display a record<a class="headerlink" href="#display-a-record" title="Permalink to this headline">¶</a></h2>
+<p>You can now visit the record’s page at <a class="reference external" href="https://127.0.0.1:5000/records/1">https://127.0.0.1:5000/records/1</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To enable HTTPS, Invenio uses a self-signed SSL certificate.
+Your web browser should display a warning when accessing the website
+since it will consider it insecure. You can safely ignore it when
+developing locally.</p>
+</div>
+<p>You can also fetch the record via REST APIs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -k --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+    https://127.0.0.1:5000/api/records/1?prettyprint<span class="o">=</span><span class="m">1</span>
+
+<span class="go">{</span>
+<span class="go">  &quot;created&quot;: &quot;2019-11-22T10:30:06.135431+00:00&quot;,</span>
+<span class="go">  &quot;id&quot;: &quot;1&quot;,</span>
+<span class="go">  &quot;links&quot;: {</span>
+<span class="go">    &quot;files&quot;: &quot;https://127.0.0.1:5000/api/records/1/files&quot;,</span>
+<span class="go">    &quot;self&quot;: &quot;https://127.0.0.1:5000/api/records/1&quot;</span>
+<span class="go">  },</span>
+<span class="go">  &quot;metadata&quot;: {</span>
+<span class="go">    &quot;contributors&quot;: [</span>
+<span class="go">      {</span>
+<span class="go">        &quot;name&quot;: &quot;Doe, John&quot;</span>
+<span class="go">      }</span>
+<span class="go">    ],</span>
+<span class="go">    &quot;id&quot;: &quot;1&quot;,</span>
+<span class="go">    &quot;title&quot;: &quot;Some title&quot;</span>
+<span class="go">  },</span>
+<span class="go">  &quot;revision&quot;: 0,</span>
+<span class="go">  &quot;updated&quot;: &quot;2019-11-22T10:30:06.135438+00:00&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="search-for-records">
+<span id="id3"></span><h2>Search for records<a class="headerlink" href="#search-for-records" title="Permalink to this headline">¶</a></h2>
+<p>The record that you have created is safely stored in the database but
+also indexed in Elasticsearch for fast searching. You can see the list of
+records and perform search queries at <a class="reference external" href="https://127.0.0.1:5000/search">https://127.0.0.1:5000/search</a>,
+or via the REST API from the <code class="docutils literal notranslate"><span class="pre">/api/records</span></code> endpoint:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -k --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+    https://127.0.0.1:5000/api/records/?prettyprint<span class="o">=</span><span class="m">1</span>
+
+<span class="go">{</span>
+<span class="go">  &quot;aggregations&quot;: {</span>
+<span class="go">    &quot;keywords&quot;: {</span>
+<span class="go">      &quot;buckets&quot;: [],</span>
+<span class="go">      &quot;doc_count_error_upper_bound&quot;: 0,</span>
+<span class="go">      &quot;sum_other_doc_count&quot;: 0</span>
+<span class="go">    },</span>
+<span class="go">    &quot;type&quot;: {</span>
+<span class="go">      &quot;buckets&quot;: [],</span>
+<span class="go">      &quot;doc_count_error_upper_bound&quot;: 0,</span>
+<span class="go">      &quot;sum_other_doc_count&quot;: 0</span>
+<span class="go">    }</span>
+<span class="go">  },</span>
+<span class="go">  &quot;hits&quot;: {</span>
+<span class="go">    &quot;hits&quot;: [</span>
+<span class="go">      {</span>
+<span class="go">        &quot;created&quot;: &quot;2019-11-22T10:30:06.135431+00:00&quot;,</span>
+<span class="go">        &quot;id&quot;: &quot;1&quot;,</span>
+<span class="go">        &quot;links&quot;: {</span>
+<span class="go">          &quot;files&quot;: &quot;https://127.0.0.1:5000/api/records/1/files&quot;,</span>
+<span class="go">          &quot;self&quot;: &quot;https://127.0.0.1:5000/api/records/1&quot;</span>
+<span class="go">        },</span>
+<span class="go">        &quot;metadata&quot;: {</span>
+<span class="go">          &quot;contributors&quot;: [</span>
+<span class="go">            {</span>
+<span class="go">              &quot;name&quot;: &quot;Doe, John&quot;</span>
+<span class="go">            }</span>
+<span class="go">          ],</span>
+<span class="go">          &quot;id&quot;: &quot;1&quot;,</span>
+<span class="go">          &quot;title&quot;: &quot;Some title&quot;</span>
+<span class="go">        },</span>
+<span class="go">        &quot;revision&quot;: 0,</span>
+<span class="go">        &quot;updated&quot;: &quot;2019-11-22T10:30:06.135438+00:00&quot;</span>
+<span class="go">      }</span>
+<span class="go">    ],</span>
+<span class="go">    &quot;total&quot;: 1</span>
+<span class="go">  },</span>
+<span class="go">  &quot;links&quot;: {</span>
+<span class="go">    &quot;self&quot;: &quot;https://127.0.0.1:5000/api/records/?sort=mostrecent&amp;size=10&amp;page=1&quot;</span>
+<span class="go">  }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload-a-file">
+<span id="id4"></span><h2>Upload a file<a class="headerlink" href="#upload-a-file" title="Permalink to this headline">¶</a></h2>
+<p>Invenio allows you to attach files to a record. Let’s upload a file
+to the previously created record.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> create a sample file
+
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s1">&#39;my file content&#39;</span> &gt; example.txt
+
+<span class="gp">#</span> Upload the file to the record with PID <span class="m">1</span>
+
+<span class="gp">$</span> curl -k -X PUT https://127.0.0.1:5000/api/records/1/files/example.txt <span class="se">\</span>
+    -H <span class="s2">&quot;Content-Type: application/octet-stream&quot;</span> <span class="se">\</span>
+    --data-binary @example.txt
+</pre></div>
+</div>
+<p>The response of the request contains the uploaded file’s metadata:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">  &quot;version_id&quot;: &quot;059a6706-632f-403a-beab-36e31e370737&quot;,</span>
+<span class="go">  &quot;is_head&quot;: true,</span>
+<span class="go">  &quot;mimetype&quot;: &quot;text/plain&quot;,</span>
+<span class="go">  &quot;size&quot;: 8,</span>
+<span class="go">  &quot;key&quot;: &quot;example.txt&quot;,</span>
+<span class="go">  &quot;delete_marker&quot;: false,</span>
+<span class="go">  &quot;links&quot;: {</span>
+<span class="go">    &quot;self&quot;: &quot;https://127.0.0.1:5000/api/records/1/files/example.txt&quot;,</span>
+<span class="go">    &quot;version&quot;: &quot;https://127.0.0.1:5000/api/records/1/files/example.txt?versionId=059a6706-632f-403a-beab-36e31e370737&quot;,</span>
+<span class="go">    &quot;uploads&quot;: &quot;https://127.0.0.1:5000/api/records/1/files/example.txt?uploads&quot;</span>
+<span class="go">  },</span>
+<span class="go">  &quot;checksum&quot;: &quot;md5:ddce269a1e3d054cae349621c198dd52&quot;,</span>
+<span class="go">  &quot;created&quot;: &quot;2019-11-22T10:34:08.944425&quot;,</span>
+<span class="go">  &quot;tags&quot;: {},</span>
+<span class="go">  &quot;updated&quot;: &quot;2019-11-22T10:34:08.951942&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="list-the-files-of-a-record">
+<span id="list-files-of-a-record"></span><h2>List the files of a record<a class="headerlink" href="#list-the-files-of-a-record" title="Permalink to this headline">¶</a></h2>
+<p>You can use REST APIs to retrieve all the files attached to a record:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -k -X GET https://127.0.0.1:5000/api/records/1/files?prettyprint<span class="o">=</span><span class="m">1</span>
+
+<span class="go">{</span>
+<span class="go">  &quot;contents&quot;: [</span>
+<span class="go">  {</span>
+<span class="go">    &quot;version_id&quot;: &quot;059a6706-632f-403a-beab-36e31e370737&quot;,</span>
+<span class="go">    &quot;is_head&quot;: true,</span>
+<span class="go">    &quot;mimetype&quot;: &quot;text/plain&quot;,</span>
+<span class="go">    &quot;size&quot;: 8,</span>
+<span class="go">    &quot;key&quot;: &quot;example.txt&quot;,</span>
+<span class="go">    &quot;delete_marker&quot;: false,</span>
+<span class="go">    &quot;links&quot;: {</span>
+<span class="go">      &quot;self&quot;: &quot;https://127.0.0.1:5000/api/records/1/files?key=example.txt&quot;,</span>
+<span class="go">      &quot;version&quot;: &quot;https://127.0.0.1:5000/api/records/1/files?key=example.txt&amp;versionId=059a6706-632f-403a-beab-36e31e370737&quot;,</span>
+<span class="go">      &quot;uploads&quot;: &quot;https://127.0.0.1:5000/api/records/1/files?key=example.txt?uploads&quot;</span>
+<span class="go">    },</span>
+<span class="go">    &quot;checksum&quot;: &quot;md5:ddce269a1e3d054cae349621c198dd52&quot;,</span>
+<span class="go">    &quot;created&quot;: &quot;2019-11-22T10:34:08.944425&quot;,</span>
+<span class="go">    &quot;tags&quot;: {},</span>
+<span class="go">    &quot;updated&quot;: &quot;2019-11-22T10:34:08.951942&quot;</span>
+<span class="go">  }</span>
+<span class="go">  ],</span>
+<span class="go">  &quot;id&quot;: &quot;9ae1c979-9c6a-4603-afb2-38074eb48a54&quot;,</span>
+<span class="go">  &quot;size&quot;: 16,</span>
+<span class="go">  &quot;locked&quot;: false,</span>
+<span class="go">  &quot;max_file_size&quot;: null,</span>
+<span class="go">  &quot;links&quot;: {</span>
+<span class="go">    &quot;self&quot;: &quot;https://127.0.0.1:5000/api/records/1/files&quot;,</span>
+<span class="go">    &quot;versions&quot;: &quot;https://127.0.0.1:5000/api/records/1/files?versions&quot;,</span>
+<span class="go">    &quot;uploads&quot;: &quot;https://127.0.0.1:5000/api/records/1/files?uploads&quot;</span>
+<span class="go">  },</span>
+<span class="go">  &quot;quota_size&quot;: null,</span>
+<span class="go">  &quot;created&quot;: &quot;2019-11-22T10:30:06.118477&quot;,</span>
+<span class="go">  &quot;updated&quot;: &quot;2019-11-22T10:34:08.962336&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="download-a-file">
+<span id="id5"></span><h2>Download a file<a class="headerlink" href="#download-a-file" title="Permalink to this headline">¶</a></h2>
+<p>Let’s download the file that we have just uploaded:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -k -X GET https://127.0.0.1:5000/api/records/1/files/example.txt -o example.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="final-steps">
+<h2>Final steps<a class="headerlink" href="#final-steps" title="Permalink to this headline">¶</a></h2>
+<p>Complete the initialisation of your Invenio application: <a class="reference internal" href="final-steps.html#final-steps"><span class="std std-ref">Final steps</span></a>.</p>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="installation.html" title="Previous document">Launch an Invenio instance</a>
+        </li>
+        <li>
+          <a href="final-steps.html" title="Next document">Final steps</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview.html">What is Invenio Framework?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development-environment.html">Setting up your system</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Quickstart</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="installation.html">Launch an Invenio instance</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Create, display and search records</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-record">Create a record</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#display-a-record">Display a record</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#search-for-records">Search for records</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upload-a-file">Upload a file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-the-files-of-a-record">List the files of a record</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#download-a-file">Download a file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#final-steps">Final steps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="final-steps.html">Final steps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-help.html">Getting help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community/index.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Getting started</a><ul>
+  <li><a href="index.html">Quickstart</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Launch an Invenio instance</a></li>
+      <li>Next: <a href="final-steps.html" title="next chapter">Final steps</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../_sources/getting-started/quickstart/crud-operations.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

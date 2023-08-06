@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Setting up a repository &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Copyright and license policy" href="copyright-policy.html" />
+    <link rel="prev" title="Overview" href="overview.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="setting-up-a-repository">
+<h1>Setting up a repository<a class="headerlink" href="#setting-up-a-repository" title="Permalink to this headline">¶</a></h1>
+<p>First, reach out to the Invenio architects and agree on scope and name of
+the new repository. The architects are their to help you and to ensure that
+the module fits into the larger Invenio ecosystem.</p>
+<p>New repositories can be created in either the
+<a class="reference external" href="https://github.com/inveniosoftware">inveniosoftware</a> or the
+<a class="reference external" href="https://github.com/inveniosoftware-contrib">inveniosoftware-contrib</a>  GitHub
+organisations. Repositories in inveniosoftware must be managed according to the
+contributor, style and maintainers guides. Repositories in
+inveniosoftware-contrib are free to apply any rules they like.</p>
+<div class="section" id="github">
+<h2>GitHub<a class="headerlink" href="#github" title="Permalink to this headline">¶</a></h2>
+<p>Once scope and name has been agreed upon, the product manager will create the
+repository which will be setup in the following manner:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>Settings</strong>: The repository settings must be set in the following manner:</dt><dd><ul>
+<li><p>Description and homepage (link to readthedocs.io) <em>must</em> be set.</p></li>
+<li><p>Issues <em>must</em> be enabled.</p></li>
+<li><p>Wiki <em>should</em> be disabled (except in rare circumstances such as the main
+Invenio repository).</p></li>
+<li><p>Merge button: <em>must</em> disallow merge commits, allow squash and allow
+rebase merging.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>Teams</strong>: A team named <code class="docutils literal notranslate"><span class="pre">&lt;repository-name&gt;-maintainers</span></code> <em>must</em> exists with
+all repository maintainers as members and with <code class="docutils literal notranslate"><span class="pre">push</span></code> permission on the
+repository.</p></li>
+<li><p><strong>Branch protection</strong>: The default branch, all maintenance branches and
+optionally some feature branches must have branch protection enabled in the
+following manner:</p>
+<ul>
+<li><p>Pull requests reviews <em>must not</em> be required. Enabling this feature
+prevents maintainers from merging their own PRs without approval from
+another reviewer. This is not a carte blanche for maintainers to merge
+their own PRs without reviews, but empowers them to get the job done
+when really need!</p></li>
+<li><p>Status checks for TravisCI <em>must</em> be required. Status checks for
+Coveralls, QuantifiedCode and other status checks <em>must not</em> be
+required. The maintainer is responsible for manually verifing these
+checks.</p></li>
+<li><p>Branches <em>must</em> be up to date before merging.</p></li>
+<li><p>Push access <em>must</em> be restricted to the repository maintainers team.</p></li>
+</ul>
+</li>
+<li><p><strong>Repository files</strong>: A <code class="docutils literal notranslate"><span class="pre">MAINTAINERS</span></code> file with list of GitHub usernames
+<em>must</em> be present in the repository.</p></li>
+</ul>
+<p>The repository setup and manage is fully automated via the
+<a class="reference external" href="https://github.com/inveniosoftware/metainvenio">MetaInvenio</a> scripts.</p>
+</div>
+<div class="section" id="other-services">
+<h2>Other services<a class="headerlink" href="#other-services" title="Permalink to this headline">¶</a></h2>
+<p>We use the following other external services:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://travis-ci.org">TravisCI</a> for continues integration testing.</p></li>
+<li><p><a class="reference external" href="https://coveralls.io">Coveralls</a> to test coverage tracking.</p></li>
+<li><p><a class="reference external" href="https://www.quantifiedcode.com">QuantifiedCode</a> for Python static
+analysis.</p></li>
+<li><p><a class="reference external" href="https://pypi.org">Python Package Index</a> for releasing Python packages.</p></li>
+<li><p><a class="reference external" href="https://npmjs.com">NPM</a> for releasing JavaScript packags.</p></li>
+<li><p><a class="reference external" href="https://readthedocs.org">ReadTheDocs</a> for hosting documentation.</p></li>
+<li><p><a class="reference external" href="https://www.transifex.com">Transifex</a> for translating Invenio.</p></li>
+</ul>
+</div>
+<div class="section" id="bootstrapping">
+<h2>Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">¶</a></h2>
+<p>New repositories should in most cases be bootstrapped using one of our
+templates. These templates encodes many best practices, setups above external
+services correctly and ensure a coherent package structure throughout the
+Invenio project.</p>
+<div class="section" id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<p>Python-based repositories must be bootstraped using the
+<a class="reference external" href="https://github.com/inveniosoftware/cookiecutter-invenio-module">cookiecutter-invenio-module</a>.</p>
+</div>
+<div class="section" id="javascript">
+<h3>JavaScript<a class="headerlink" href="#javascript" title="Permalink to this headline">¶</a></h3>
+<p>JavaScript-based repositories must be boostraped using the
+<a class="reference external" href="https://github.com/inveniosoftware/generator-invenio-js-module/">generator-invenio-js-module</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Community</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting-help.html">Getting help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../channels.html">Communication channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution-guide.html">Contribution guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../style-guide.html">Style guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development-environment.html">Developer environment guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation-guide.html">Translation guide</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Maintainer’s guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security-policy.html">Security policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-of-conduct.html">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Community</a><ul>
+  <li><a href="index.html">Maintainer’s guide</a><ul>
+      <li>Previous: <a href="overview.html" title="previous chapter">Overview</a></li>
+      <li>Next: <a href="copyright-policy.html" title="next chapter">Copyright and license policy</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../../_sources/community/maintainers-guide/repositories.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

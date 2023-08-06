@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Migrating to v3 &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Community" href="../../community/index.html" />
+    <link rel="prev" title="Marshmallow v2/v3 compatibility" href="upgrading/upgrade-marshmallow.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="migrating-to-v3">
+<h1>Migrating to v3<a class="headerlink" href="#migrating-to-v3" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Invenio v3 is significantly different from v1 and thus migrating from v1 to
+v3 is a complex operation.</p>
+<p>This guide will help you dump records and files from your v1 installation.
+You will need to write code to import the dumped data into your v3
+installation. This is necessary because v3 support many different data
+models and thus you need to map your v1 MARC21 records into your new data
+model in v3.</p>
+</div>
+<div class="section" id="dumping-data-from-v1-2">
+<h2>Dumping data from v1.2<a class="headerlink" href="#dumping-data-from-v1-2" title="Permalink to this headline">¶</a></h2>
+<p>The module <a class="reference external" href="http://invenio-migrator.readthedocs.io/en/latest/">Invenio-Migrator</a> will help you dump your
+v1 data and as well import the data in v3.</p>
+<div class="section" id="install-invenio-migrator-in-v1">
+<h3>Install Invenio-Migrator in v1<a class="headerlink" href="#install-invenio-migrator-in-v1" title="Permalink to this headline">¶</a></h3>
+<p>There are several ways of installing Invenio-Migrator in your Invenio v1.2 or
+v2.1 production environment, the one we recommend is using <a class="reference external" href="https://virtualenv.pypa.io/en/stable/">Virtualenv</a> to avoid any interference with the
+currently installed libraries:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sudo pip install virtualenv virtualenvwrapper
+$ <span class="nb">source</span> /usr/local/bin/virtualenvwrapper.sh
+$ mkvirtualenv migration --system-site-packages
+$ workon migration
+$ pip install invenio-migrator --pre
+$ inveniomigrator dump --help
+</pre></div>
+</div>
+<p>It is important to use the option <code class="docutils literal notranslate"><span class="pre">--system-site-packages</span></code> as
+Invenio-Migrator will use Invenio legacy python APIs to perform the dump.
+The package <code class="docutils literal notranslate"><span class="pre">virtualenvwrapper</span></code> is not required but it is quite convenient.</p>
+</div>
+<div class="section" id="dump-records-and-files">
+<h3>Dump records and files<a class="headerlink" href="#dump-records-and-files" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mkdir /vagrant/dump
+$ <span class="nb">cd</span> /vagrant/dump/
+$ inveniomigrator dump records
+</pre></div>
+</div>
+<p>This will generate one or more JSON files containing 1000 records each,
+with the following information:</p>
+<ul class="simple">
+<li><p>The record id.</p></li>
+<li><p>The record metadata, stored in the <code class="docutils literal notranslate"><span class="pre">record</span></code> key there is a list with one
+item for each of the revisions of the record, and each item of the list
+contains the MARC21 representation of the record plus the optional JSON.</p></li>
+<li><p>The files linked with the record, like for the record metadata it is a list
+with all the revisions of the files.</p></li>
+<li><p>Optionally it also contains the collections the record belongs to.</p></li>
+</ul>
+<p>For more information about how to dump records and files see the <a class="reference external" href="http://invenio-migrator.readthedocs.io/en/latest/usage.html">Usage section</a> of the
+Invenio-Migrator documentation.</p>
+<p>The file path inside the Invenio legacy installation will be included
+in the dump and used as file location for the new Invenio v3 installation.
+If you are able to mount the file system following the same pattern in your
+Invenio v3 machines, there shouldn’t be any problem, but if you can’t do it,
+then you need to copy over the files folder manually using your favorite method,
+i.e.:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/invenio/var/data
+$ tar -zcvf /vagrant/dump/files.tar.gz files
+</pre></div>
+</div>
+<p><strong>Pro-tip</strong>: Maybe you want to have different data models in your new
+installation depending on the nature of the record, i.e. bibliographic records
+vs authority records. In this case one option is to dump them in different files
+using the <code class="docutils literal notranslate"><span class="pre">--query</span></code> argument when dumping from your legacy installation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ inveniomigrator dump records --query <span class="s1">&#39;-980__a:AUTHORITY&#39;</span> --file-prefix bib
+$ inveniomigrator dump records --query <span class="s1">&#39;980__a:AUTHORITY&#39;</span> --file-prefix auth
+</pre></div>
+</div>
+</div>
+<div class="section" id="things">
+<h3>Things<a class="headerlink" href="#things" title="Permalink to this headline">¶</a></h3>
+<p>The dump command of the Invenio-Migrator works with, what we called, <em>things</em>.
+A <em>thing</em> is an entity you want to dump from your Invenio legacy installation,
+e.g. in the previous example the <em>thing</em> was <em>records</em>.</p>
+<p>The list of <em>things</em> Invenio-Migrator can dump by default is listed via
+entry-points in the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>, this not only help us add new dump scripts
+easily, but also allows anyone to create their own dumpscripts from outside the
+Invenio-Migrator.</p>
+<p>You can read more about which <em>things</em> are already supported by the
+<a class="reference external" href="http://invenio-migrator.readthedocs.io">Invenio-Migrator documentation</a>.</p>
+</div>
+</div>
+<div class="section" id="loading-data-in-v3">
+<h2>Loading data in v3<a class="headerlink" href="#loading-data-in-v3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="install-invenio-migrator-in-v3">
+<h3>Install Invenio-Migrator in v3<a class="headerlink" href="#install-invenio-migrator-in-v3" title="Permalink to this headline">¶</a></h3>
+<p>Invenio-Migrator can be installed in any Invenio v3 environment using PyPI and
+the extra dependencies <code class="docutils literal notranslate"><span class="pre">loader</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install invenio-migrator<span class="o">[</span>loader<span class="o">]</span>
+</pre></div>
+</div>
+<p>Depending on what you want to load you might need to have installed other
+packages, i.e. to load communities from Invenio v2.1 you need
+<code class="docutils literal notranslate"><span class="pre">invenio-communities</span></code> installed.</p>
+<p>This will add to your Invenio application a new set of commands under
+<code class="docutils literal notranslate"><span class="pre">dumps</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ invenio dumps --help
+</pre></div>
+</div>
+</div>
+<div class="section" id="load-records-and-files">
+<h3>Load records and files<a class="headerlink" href="#load-records-and-files" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ invenio dumps loadrecords /vagrant/dump/records_dump_0.json
+</pre></div>
+</div>
+<p>This will generate one celery task to import each of the records inside the
+dump.</p>
+<p><strong>Pro-tip</strong>: By default Invenio-Migrator uses the bibliographic MARC21 standard
+to transform and load the records, we now that this might not be the case to all
+Invenio v3 installation, i.e authority records. By changing
+<code class="docutils literal notranslate"><span class="pre">MIGRATOR_RECORDS_DUMP_CLS</span></code> and <code class="docutils literal notranslate"><span class="pre">MIGRATOR_RECORDS_DUMPLOADER_CLS</span></code> you can
+customize the behavior of the loading command. There is a full chapter in the
+Invenio-Migrator documentation about <a class="reference external" href="http://invenio-migrator.readthedocs.io/en/latest/usage.html#customizing-loading">customizing loading</a>
+if you want more information.</p>
+</div>
+<div class="section" id="loaders">
+<h3>Loaders<a class="headerlink" href="#loaders" title="Permalink to this headline">¶</a></h3>
+<p>Each of the entities that can be loaded by Invenio-Migrator have a companion
+command generally prefixed by <em>load</em>, e.g. <code class="docutils literal notranslate"><span class="pre">loadrecords</span></code>.</p>
+<p>The loaders are similar to the things we describe previously, but in this case,
+instead of entry-points, if you want to extend the default list of loaders it
+can be done adding a new command to <code class="docutils literal notranslate"><span class="pre">dumps</span></code>, more information about the
+loaders can be found in the <a class="reference external" href="http://invenio-migrator.readthedocs.io">Invenio-Migrator documentation</a> and on how to add more commands in
+the <a class="reference external" href="http://click.pocoo.org/5/">click documentation</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="upgrading/upgrade-marshmallow.html" title="Previous document">Marshmallow v2/v3 compatibility</a>
+        </li>
+        <li>
+          <a href="../../community/index.html" title="Next document">Community</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main-concepts/index.html">Main concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bundles/index.html">Module Reference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Life cycle</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="releases/index.html">Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading/index.html">Upgrading</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Migrating to v3</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dumping-data-from-v1-2">Dumping data from v1.2</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#install-invenio-migrator-in-v1">Install Invenio-Migrator in v1</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dump-records-and-files">Dump records and files</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#things">Things</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#loading-data-in-v3">Loading data in v3</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#install-invenio-migrator-in-v3">Install Invenio-Migrator in v3</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#load-records-and-files">Load records and files</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#loaders">Loaders</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../community/index.html">Community</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Documentation</a><ul>
+  <li><a href="index.html">Life cycle</a><ul>
+      <li>Previous: <a href="upgrading/upgrade-marshmallow.html" title="previous chapter">Marshmallow v2/v3 compatibility</a></li>
+      <li>Next: <a href="../../community/index.html" title="next chapter">Community</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../_sources/documentation/life-cycle/migrating.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

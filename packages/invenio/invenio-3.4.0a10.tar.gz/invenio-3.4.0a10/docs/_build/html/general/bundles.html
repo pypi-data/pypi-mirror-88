@@ -1,0 +1,868 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Bundles &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Requirements" href="requirements.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="bundles">
+<span id="id1"></span><h1>Bundles<a class="headerlink" href="#bundles" title="Permalink to this headline">¶</a></h1>
+<p>Invenio is a highly modular framework with many modules that provide various
+different functionality. We are packing related modules into bundles which is
+released together at the same time.</p>
+<p>Each module has a separate documentation which you can find linked below.</p>
+<div class="section" id="base-bundle">
+<h2>Base bundle<a class="headerlink" href="#base-bundle" title="Permalink to this headline">¶</a></h2>
+<p>The base bundle contains all modules related to the generic web application.
+This includes the Flask/Celery application factories, configuration management,
+I18N, logging, database management, assets/theme management, mail handling and
+administration interface.</p>
+<p>Included modules:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-admin.readthedocs.io">invenio-admin</a></dt><dd><ul>
+<li><p>Administration interface for Invenio based on Flask-Admin.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-app.readthedocs.io">invenio-app</a></dt><dd><ul>
+<li><p>Flask, WSGI, Celery and CLI applications for Invenio including
+security-related headers and rate limiting.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-assets.readthedocs.io">invenio-assets</a></dt><dd><ul>
+<li><p>Static files management and Webpack integration for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-base.readthedocs.io">invenio-base</a></dt><dd><ul>
+<li><p>Flask application factories implementing the application loading patterns
+with entry points in Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-cache.readthedocs.io">invenio-cache</a></dt><dd><ul>
+<li><p>Caching module for Invenio, supporting Reddis and Memcached as backends.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-celery.readthedocs.io">invenio-celery</a></dt><dd><ul>
+<li><p>Task discovery and default configuration of Celery for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-config.readthedocs.io">invenio-config</a></dt><dd><ul>
+<li><p>Configuration loading pattern responsible for loading configuration from
+Python modules, instance folder and environment variables.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-db.readthedocs.io">invenio-db</a></dt><dd><ul>
+<li><p>Database connection management for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-formatter.readthedocs.io">invenio-formatter</a></dt><dd><ul>
+<li><p>Jinja template engine utilities for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-i18n.readthedocs.io">invenio-i18n</a></dt><dd><ul>
+<li><p>I18N utilities like user locale detection, message catalog merging and
+views for language change.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-logging.readthedocs.io">invenio-logging</a></dt><dd><ul>
+<li><p>Configuration of logging to both console, files and log aggregation
+engines like <a class="reference external" href="https://sentry.io/">sentry.io</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-mail.readthedocs.io">invenio-mail</a></dt><dd><ul>
+<li><p>Mail sending for Invenio using Flask-Mail.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-rest.readthedocs.io">invenio-rest</a></dt><dd><ul>
+<li><p>REST API utilities including Cross Origin Resource Sharing (CORS) and
+Content Negotiation versioning support.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-theme.readthedocs.io">invenio-theme</a></dt><dd><ul>
+<li><p>Jinja templates implementing a basic theme for Invenio as well as menus
+and breadcrumbs support.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://docker-invenio.readthedocs.io">docker-invenio</a></dt><dd><ul>
+<li><p>Docker base images based on CentOS 7 for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://pytest-invenio.readthedocs.io">pytest-invenio</a></dt><dd><ul>
+<li><p>Testing utilities for Invenio modules and applications.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="auth-bundle">
+<h2>Auth bundle<a class="headerlink" href="#auth-bundle" title="Permalink to this headline">¶</a></h2>
+<p>The auth bundle contains all modules related to account and access management,
+user profiles, session management and OAuth (provider and client)</p>
+<p>Included modules:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-access.readthedocs.io">invenio-access</a></dt><dd><ul>
+<li><p>Role Based Access Control (RBAC) with object level permissions.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-accounts.readthedocs.io">invenio-accounts</a></dt><dd><ul>
+<li><p>User/role management, registration, password recovery, email
+verification, session theft protection, strong cryptographic hashing of
+passwords, hash migration, session activity tracking and CSRF protection
+of REST API via JSON Web Tokens.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-oauth2server.readthedocs.io">invenio-oauth2server</a></dt><dd><ul>
+<li><p>OAuth 2.0 Provider for REST API authentication via access tokens.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-oauthclient.readthedocs.io">invenio-oauthclient</a></dt><dd><ul>
+<li><p>User identity management and support for login via ORCID, GitHub, Google
+or other OAuth providers.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-userprofiles.readthedocs.io">invenio-userprofiles</a></dt><dd><ul>
+<li><p>User profiles for integration into registration forms.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>The modules relies heavily on a suite of open source community projects:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pythonhosted.org/Flask-Security/">flask-security</a></p></li>
+<li><p><a class="reference external" href="https://flask-login.readthedocs.io/">flask-login</a></p></li>
+<li><p><a class="reference external" href="https://pythonhosted.org/Flask-Principal/">flask-principal</a></p></li>
+<li><p><a class="reference external" href="https://flask-oauthlib.readthedocs.io/">flask-oauthlib</a></p></li>
+<li><p><a class="reference external" href="https://passlib.readthedocs.io/en/stable/">passlib</a></p></li>
+</ul>
+</div>
+<div class="section" id="metadata-bundle">
+<h2>Metadata bundle<a class="headerlink" href="#metadata-bundle" title="Permalink to this headline">¶</a></h2>
+<p>The metadata bundle contains all modules related to records and metadata
+management including e.g. records storage, persistent identifier management,
+search engine indexing, an OAI-PMH server and REST APIs for records.</p>
+<p>Included modules:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-indexer.readthedocs.io">invenio-indexer</a></dt><dd><ul>
+<li><p>Highly scalable record bulk indexing.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-jsonschemas.readthedocs.io">invenio-jsonschemas</a></dt><dd><ul>
+<li><p>JSONSchema registry for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-oaiserver.readthedocs.io">invenio-oaiserver</a></dt><dd><ul>
+<li><p>OAI-PMH server implementation for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-pidstore.readthedocs.io">invenio-pidstore</a></dt><dd><ul>
+<li><p>Management, registration and resolution of persistent identifiers
+including e.g DOIs.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-records.readthedocs.io">invenio-records</a></dt><dd><ul>
+<li><p>JSON document storage with revision history and JSONSchema validation.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-records-rest.readthedocs.io">invenio-records-rest</a></dt><dd><ul>
+<li><p>REST APIs for search and CRUD operations on records and persistent
+identifiers.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-records-ui.readthedocs.io">invenio-records-ui</a></dt><dd><ul>
+<li><p>User interface for displaying records.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-search.readthedocs.io">invenio-search</a></dt><dd><ul>
+<li><p>Elasticsearch integration module for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://inveniosoftware.github.io/invenio-search-js/">invenio-search-js</a></dt><dd><ul>
+<li><p>AngularJS search application for displaying records from the REST API.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-search-ui.readthedocs.io">invenio-search-ui</a></dt><dd><ul>
+<li><p>User interface for searching records.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="files-bundle-beta">
+<h2>Files bundle (beta)<a class="headerlink" href="#files-bundle-beta" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This bundle is in beta. The modules are being used in production systems
+but are still missing some minor changes as well as documentation.</p>
+</div>
+<p>The files bundle contains all modules related to management of files in
+Invenio, including an object storage REST API, multiple supported storage
+backends, file previewers, and IIIF image server and an integration layer between files and records.</p>
+<p>Included modules:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-files-rest.readthedocs.io">invenio-files-rest</a></dt><dd><ul>
+<li><p>Object storage REST API for Invenio with many supported backend storage
+protocols and file integrity checking.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-iiif.readthedocs.io">invenio-iiif</a></dt><dd><ul>
+<li><p>International Image Interoperability Framework (IIIF) server for making
+thumbnails and zooming images.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-previewer.readthedocs.io">invenio-previewer</a></dt><dd><ul>
+<li><p>Previewer for Markdown, JSON/XML, CSV, PDF, JPEG, PNG, TIFF, GIF and ZIP
+files.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-records-files.readthedocs.io">invenio-records-files</a></dt><dd><ul>
+<li><p>Integration layer between object storage and records.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-xrootd.readthedocs.io">invenio-xrootd</a></dt><dd><ul>
+<li><p>Support for the storage protocol XRootD in Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="statistics-bundle-beta">
+<h2>Statistics bundle (beta)<a class="headerlink" href="#statistics-bundle-beta" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This bundle is in beta. The modules are being used in production systems
+but are still missing some minor changes as well as documentation.</p>
+</div>
+<p>The statistics bundle contains all modules related to counting statistics such
+as file downloads, record views or any other type of events. It supports the
+COUNTER Code of Practice as well as Making Data Count Code of Practice
+including e.g. double-click detection.</p>
+<p>Included modules:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-stats.readthedocs.io">invenio-stats</a></dt><dd><ul>
+<li><p>Event collection, processing and aggregation in time-based indicies in
+Elasticsearch.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-queues.readthedocs.io">invenio-queues</a></dt><dd><ul>
+<li><p>Event queue management module.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://counter-robots.readthedocs.io">counter-robots</a></dt><dd><ul>
+<li><p>Module providing the list of robots according to the COUNTER Code of
+Practice.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="deposit-bundle-alpha">
+<h2>Deposit bundle (alpha)<a class="headerlink" href="#deposit-bundle-alpha" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This bundle is in alpha. The modules are being used in production systems
+but are very likely subject to change and are missing documentation.</p>
+</div>
+<p>Included modules:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-deposit.readthedocs.io">invenio-deposit</a></dt><dd><ul>
+<li><p>REST API for managing deposit of records into Invenio with support for
+in progress editing of records.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-xrootd.readthedocs.io">invenio-files-js</a></dt><dd><ul>
+<li><p>AngularJS application for uploading files to Invenio via streaming the
+binary files in an HTTP request.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-records-js.readthedocs.io">invenio-records-js</a></dt><dd><ul>
+<li><p>AngularJS application for interacting with the deposit REST API and
+rendering forms based on angular schema forms.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-sipstore.readthedocs.io">invenio-sipstore</a></dt><dd><ul>
+<li><p>Submission Information Package (SIP) store with bagit support.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="invenio-modules-alpha">
+<h2>Invenio modules (alpha)<a class="headerlink" href="#invenio-modules-alpha" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These modules are in alpha. The modules are being used in production
+systems but are most likely subject to changes and are missing
+documentation.</p>
+</div>
+<p>In addition to above bundles, we have a number of other individual modules
+which are all being used in production systems, but which are likely subject
+to change prior to final release and in most cases are missing documentation.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-accounts-rest.readthedocs.io">invenio-accounts-rest</a></dt><dd><ul>
+<li><p>REST APIs for account management.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-charts-js.readthedocs.io">invenio-charts-js</a></dt><dd><ul>
+<li><p>AngularJS application for producing charts.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-csl-js.readthedocs.io">invenio-csl-js</a></dt><dd><ul>
+<li><p>AngularJS application for rendering citation strings via the records
+REST API and the CSL REST API.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-csl-rest.readthedocs.io">invenio-csl-rest</a></dt><dd><ul>
+<li><p>REST API for retrieving Citation Style Language (CSL) style files.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-github.readthedocs.io">invenio-github</a></dt><dd><ul>
+<li><p>GitHub integration with automatic archiving of new releases in Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-openaire.readthedocs.io">invenio-openaire</a></dt><dd><ul>
+<li><p>Integration with OpenAIRE, including support for harvesting Open Funder
+Regsitry and the OpenAIRE grants database, as well as REST APIs for
+funders and grants.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-opendefinition.readthedocs.io">invenio-opendefinition</a></dt><dd><ul>
+<li><p>REST API for licenses from OpenDefinition and SPDX.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-pages.readthedocs.io">invenio-pages</a></dt><dd><ul>
+<li><p>Static pages module for Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-pidrelations.readthedocs.io">invenio-pidrelations</a></dt><dd><ul>
+<li><p>Persistent identifier relations management to support e.g. DOI
+versioning.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-previewer-ispy.readthedocs.io">invenio-previewer-ispy</a></dt><dd><ul>
+<li><p>ISPY previewer.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-query-parser.readthedocs.io">invenio-query-parser</a></dt><dd><ul>
+<li><p>Invenio v1 compatible query parser for Invenio v3. Note the module is GPL
+licensed due to a GPL-licensed dependency.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-records-editor.readthedocs.io">invenio-records-editor</a></dt><dd><ul>
+<li><p>JSON record editor.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-records-editor-js.readthedocs.io">invenio-records-editor-js</a></dt><dd><ul>
+<li><p>Angular 4 application for editing JSON records.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-s3.readthedocs.io">invenio-s3</a></dt><dd><ul>
+<li><p>Support for the S3 storage protocol in Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-sequencegenerator.readthedocs.io">invenio-sequencegenerator</a></dt><dd><ul>
+<li><p>Module for minting and tracking multiple sequences for e.g. report
+numbers, journals etc.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-sse.readthedocs.io">invenio-sse</a></dt><dd><ul>
+<li><p>Server-Sent Events (SSE) integration in Invenio.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-webhooks.readthedocs.io">invenio-webhooks</a></dt><dd><ul>
+<li><p>REST API for receiving and processing webhook calls from third-party
+services.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://invenio-react-searchkit.readthedocs.io">react-searchkit</a></dt><dd><ul>
+<li><p>Modular React library for implementing search interfaces on top of
+Invenio, Elasticsearch or other search APIs. Replacement for
+Invenio-Search-JS.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="core-libraries">
+<h2>Core libraries<a class="headerlink" href="#core-libraries" title="Permalink to this headline">¶</a></h2>
+<p>Above Invenio modules dependent on a number of smaller core libraries we have
+developed to take care of e.g. identifier normalization, DataCite/Dublin Core
+metadata generation, testing and citation formatting.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://citeproc-py-styles.readthedocs.io">citeproc-py-styles</a></dt><dd><ul>
+<li><p>Citation Style Language (CSL) style files packaged as a Python module</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://datacite.readthedocs.io">datacite</a></dt><dd><ul>
+<li><p>Python library for generating DataCite XML from Python dictionaries and
+registering DOIs with the DataCite DOI registration service.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://dcxml.readthedocs.io">dcxml</a></dt><dd><ul>
+<li><p>Python library for generating Dublin Core XML from Python dictionaries.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://dictdiffer.readthedocs.io">dictdiffer</a></dt><dd><ul>
+<li><p>Python library for diffing/patching/merging JSON documents.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://dojson.readthedocs.io">dojson</a></dt><dd><ul>
+<li><p>JSON to JSON rule-based transformation library.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://flask-breadcrumbs.readthedocs.io">flask-breadcrumbs</a></dt><dd><ul>
+<li><p>Flask extension for managing breadcrumbs in web applications.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://flask-celeryext.readthedocs.io">flask-celeryext</a></dt><dd><ul>
+<li><p>Celery integration for Flask.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://flask-iiif.readthedocs.io">flask-iiif</a></dt><dd><ul>
+<li><p>IIIF server for Flask.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://flask-menu.readthedocs.io">flask-menu</a></dt><dd><ul>
+<li><p>Menu generation support for Flask.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://flask-sitemap.readthedocs.io">flask-sitemap</a></dt><dd><ul>
+<li><p>Sitemaps XML generation for Flask.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://flask-webpack.readthedocs.io">flask-webpack</a></dt><dd><ul>
+<li><p>Webpack integration for Flask.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://idutils.readthedocs.io">idutils</a></dt><dd><ul>
+<li><p>Persistent identifier validation, identification and normalization.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://jsonresolver.readthedocs.io">jsonresolver</a></dt><dd><ul>
+<li><p>JSONRef resolver with support for local plugins.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://pynpm.readthedocs.io">pynpm</a></dt><dd><ul>
+<li><p>NPM integration for Python.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://pywebpack.readthedocs.io">pywebpack</a></dt><dd><ul>
+<li><p>Webpack integration library for Python.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://requirements-builder.readthedocs.io">requirements-builder</a></dt><dd><ul>
+<li><p>Python CLI tool for testing multiple versions of different Python
+libraries in you continuous integration system.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://xrootdpyfs.readthedocs.io">xrootdpyfs</a></dt><dd><ul>
+<li><p>PyFilesystem plugin adding XRootD support.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="scaffolding">
+<h2>Scaffolding<a class="headerlink" href="#scaffolding" title="Permalink to this headline">¶</a></h2>
+<p>Following modules provide templates for getting started with Invenio:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/inveniosoftware/cookiecutter-invenio-instance">cookiecutter-invenio-instance</a></dt><dd><ul>
+<li><p>Template for new Invenio instances.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/inveniosoftware/cookiecutter-invenio-datamodel">cookiecutter-invenio-datamodel</a></dt><dd><ul>
+<li><p>Template for new data models.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/inveniosoftware/cookiecutter-invenio-module">cookiecutter-invenio-module</a></dt><dd><ul>
+<li><p>Template for a reusable Invenio module.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="notes-on-license">
+<h2>Notes on license<a class="headerlink" href="#notes-on-license" title="Permalink to this headline">¶</a></h2>
+<p>Invenio is undergoing a change of license from GPLv2 to MIT License in most
+cases. Thus, you may especially for alpha and beta modules see that the license
+is still GPL v2 in the source code. This will be changed to MIT License for
+all repositories before being finally released. The only module we are
+currently aware of that can not be converted is Invenio-Query-Parser, which
+has a dependency on a GPL-licensed library. Invenio-Query-Parser is however not
+needed by most installations, as it only provides an Invenio v1.x compatible
+query parser.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Overview</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bundles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-help.html">Getting help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/understanding-data-models.html">Understanding data models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Overview</a><ul>
+      <li>Previous: <a href="introduction.html" title="previous chapter">Introduction</a></li>
+      <li>Next: <a href="requirements.html" title="next chapter">Requirements</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/general/bundles.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

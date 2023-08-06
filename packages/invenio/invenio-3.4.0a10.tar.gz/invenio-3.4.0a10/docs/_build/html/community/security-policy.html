@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Security policy &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Governance" href="governance.html" />
+    <link rel="prev" title="Copyright and license policy" href="contributing/maintainers-guide/copyright-policy.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="security-policy">
+<h1>Security policy<a class="headerlink" href="#security-policy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="reporting-security-issues">
+<h2>Reporting security issues<a class="headerlink" href="#reporting-security-issues" title="Permalink to this headline">¶</a></h2>
+<p>Normal bugs should be reported to the specific Invenio module’s GitHub
+repository. However, due to sensitive nature of security issues, we ask that
+you do <strong>not</strong> report in a public fashion. This will allow us to distribute a
+security patch before potential attackers look at the issue.</p>
+<p>If you believe you’ve found a security issue in Invenio, please send a
+description of the issue to
+<a class="reference external" href="mailto:info&#37;&#52;&#48;inveniosoftware&#46;org">info<span>&#64;</span>inveniosoftware<span>&#46;</span>org</a>. Mails sent to
+this email address is logged in our request tracking system where Invenio
+architects have access to them.</p>
+<p>You will first receive an automated notification from the request tracking
+system. Afterwards an Invenio architect will acknowledge the receipt (normally
+within 1-2 <em>working days</em>).</p>
+</div>
+<div class="section" id="supported-versions">
+<h2>Supported versions<a class="headerlink" href="#supported-versions" title="Permalink to this headline">¶</a></h2>
+<p>Please see our <a class="reference internal" href="../releases/maintenance-policy.html#maintenance-policy"><span class="std std-ref">Maintenance Policy</span></a>. Note that only supported versions
+are guaranteed to receive security fixes, and we only investigate if a given
+issue is affecting any of the currently supported versions of Invenio.</p>
+</div>
+<div class="section" id="disclosure-of-security-issues">
+<h2>Disclosure of security issues<a class="headerlink" href="#disclosure-of-security-issues" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="advance-notification">
+<h3>Advance notification<a class="headerlink" href="#advance-notification" title="Permalink to this headline">¶</a></h3>
+<p>We will notify 2-5 days in advance about an upcoming security release and the
+severity level of the issue. The notification will not disclose any information
+about the issue except the severity level, and the sole purpose of the
+notification is to aid organisations to ensure they have staff available to
+handle the issue.</p>
+<p>The notifications are sent to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Chatroom: <a class="reference external" href="https://discord.gg/8qatqBC">https://discord.gg/8qatqBC</a></p></li>
+<li><p>Mailing list: <a class="reference external" href="mailto:project-invenio-announce&#37;&#52;&#48;cern&#46;ch">project-invenio-announce<span>&#64;</span>cern<span>&#46;</span>ch</a></p></li>
+</ul>
+</div></blockquote>
+<p><strong>Time-sensitive issues</strong></p>
+<p>In case the issue is particularly time-sensitive (e.g. known exploits in the
+wild) we may omit the advance notification.</p>
+<p><strong>Upstream libraries/frameworks</strong></p>
+<p>If an issue reported to us is affecting another library/framework we may report
+the issue privately to the maintainers of the affected library/framework.</p>
+</div>
+<div class="section" id="public-announcement">
+<h3>Public announcement<a class="headerlink" href="#public-announcement" title="Permalink to this headline">¶</a></h3>
+<p>On the day of the disclosure we take the following steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Apply patches to the Invenio source code</p></li>
+<li><p>Issue new releases of Invenio and the affected modules to PyPI and/or
+NPM.</p></li>
+<li><p>Notify the chatroom and mailing list (see above).</p></li>
+<li><p>Post an entry to the <a class="reference external" href="https://inveniosoftware.org/blog/">Invenio blog</a>.</p></li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="severity-levels">
+<h2>Severity levels<a class="headerlink" href="#severity-levels" title="Permalink to this headline">¶</a></h2>
+<p>We classify security issues according to the following severity levels:</p>
+<ul class="simple">
+<li><p><strong>Critical</strong></p></li>
+<li><p><strong>High</strong></p></li>
+<li><p><strong>Moderate</strong></p></li>
+<li><p><strong>Low</strong></p></li>
+</ul>
+<p>The severity level is based on our self-calculated CVSS score for each specific
+vulnerability. CVSS is an industry standard vulnerability metric. You can learn
+more about CVSS at <a class="reference external" href="https://nvd.nist.gov/vuln-metrics/cvss">NIST NVD</a>.</p>
+<p><strong>Credit</strong></p>
+<p>This security policy have drawn heavy inspiration from Django’s
+<a class="reference external" href="https://docs.djangoproject.com/en/2.2/internals/security/">security policy</a>.</p>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="contributing/maintainers-guide/copyright-policy.html" title="Previous document">Copyright and license policy</a>
+        </li>
+        <li>
+          <a href="governance.html" title="Next document">Governance</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Community</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="contributing/index.html">Contributing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Security policy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reporting-security-issues">Reporting security issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-versions">Supported versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disclosure-of-security-issues">Disclosure of security issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#advance-notification">Advance notification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#public-announcement">Public announcement</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#severity-levels">Severity levels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="governance.html">Governance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code-of-conduct.html">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Community</a><ul>
+      <li>Previous: <a href="contributing/maintainers-guide/copyright-policy.html" title="previous chapter">Copyright and license policy</a></li>
+      <li>Next: <a href="governance.html" title="next chapter">Governance</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../_sources/community/security-policy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,740 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Understanding data models &#8212; Invenio 3.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Managing access to records" href="managing-access.html" />
+    <link rel="prev" title="Build a repository" href="build-a-repository.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="understanding-data-models">
+<span id="id1"></span><h1>Understanding data models<a class="headerlink" href="#understanding-data-models" title="Permalink to this headline">¶</a></h1>
+<p>An Invenio data model, a bit simply put, defines <em>a record type</em>. You can also
+think of a data model as a supercharged database table.</p>
+<p>In addition to storing records (aka documents or rows in a database) according
+to a specific structure, a data model also deals with:</p>
+<ul class="simple">
+<li><p>Access to records via REST APIs and landing pages.</p></li>
+<li><p>Internal storage, representation and retrieval of records and
+persistent identifiers.</p></li>
+<li><p>Mapping external representations to/from the internal representation via
+loaders and serializers.</p></li>
+</ul>
+<p>You can build data models that are both custom to your exact needs, or you can
+build data models that follow standard metadata formats such as Dublin Core,
+DataCite or MARC21. In fact, a data model does not put any restrictions on what
+you can store, except that a record must be stored internally as JSON.</p>
+<p>You can build data models for classic digital repository use cases such as
+bibliographic and author records, but Invenio is in no way limited to these
+classic use cases, and you could as well build your geographical research
+database on top of Invenio.</p>
+<div class="section" id="first-steps">
+<h2>First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h2>
+<p>First of all, make sure you have followed the <a class="reference internal" href="../quickstart/index.html#quickstart"><span class="std std-ref">Quickstart</span></a>, to ensure
+you have scaffolded an initial <em>Invenio instance</em> and <em>a data model package</em>.</p>
+<p>You should see a directory structure similar to the one below in the newly
+scaffolded data model package:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- ...
+<span class="p">|</span>-- docs
+<span class="p">|</span>   <span class="p">|</span>-- ...
+<span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- config.py
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- jsonschemas/
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- loaders/
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- mappings/
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- marshmallow/
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- serializers/
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- static/
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- templates/
+<span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- ...
+<span class="p">|</span>   <span class="sb">`</span>-- ...
+<span class="p">|</span>-- setup.py
+<span class="sb">`</span>-- tests
+    <span class="p">|</span>-- ...
+</pre></div>
+</div>
+<p><strong>Steps</strong></p>
+<p>Building a data model involves the following tasks:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Internal representation</dt><dd><ul>
+<li><p><a class="reference internal" href="#models-jsonschema"><span class="std std-ref">Define a JSONSchema</span></a> – used to validate the internal
+structure of your record.</p></li>
+<li><p><a class="reference internal" href="#models-mapping"><span class="std std-ref">Define an Elasticsearch mapping</span></a> –  used to specify how your
+records are indexed by the search engine.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>External representation</dt><dd><ul>
+<li><p><a class="reference internal" href="#models-serializers"><span class="std std-ref">Define serializers</span></a> – transform an <em>internal</em> representation to an external (e.g. JSON to DataCite XML).</p></li>
+<li><p><a class="reference internal" href="#models-loaders"><span class="std std-ref">Define loaders</span></a> – transform and validates an <em>external</em> representation to an internal (e.g. DataCite XML to JSON).</p></li>
+<li><p><a class="reference internal" href="#models-marshmallow"><span class="std std-ref">Define a Marshmallow schema</span></a> – used to build loaders and serializers.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Exposing records via the UI and REST API</dt><dd><ul>
+<li><p><a class="reference internal" href="#models-templates"><span class="std std-ref">Define templates</span></a> – used to render search results and landing pages.</p></li>
+<li><p><a class="reference internal" href="#models-ui"><span class="std std-ref">Configure the UI</span></a> – enables HTML landing pages for your records.</p></li>
+<li><p><a class="reference internal" href="#models-rest"><span class="std std-ref">Configure the REST API</span></a> – enables the REST API for your records.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="define-a-jsonschema">
+<span id="models-jsonschema"></span><h2>Define a JSONSchema<a class="headerlink" href="#define-a-jsonschema" title="Permalink to this headline">¶</a></h2>
+<p>Internally records are stored as JSON, and in order to validate the structure of
+the stored JSON you must write a <a class="reference external" href="http://json-schema.org">JSONSchema</a>.</p>
+<p>The scaffolded data model package includes an example of a simple JSONSchema,
+that you can use to get a feeling of what a JSONSchema looks like.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- jsonschemas
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- record-v1.0.0.json
+</pre></div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">record-v1.0.0.json</span></code> you should see something like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-04/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://localhost/schemas/records/record-v1.0.0.json&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Record title.&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example record</strong></p>
+<p>An example record that validates against this schema could look like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://localhost/schemas/records/record-v1.0.0.json&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;My record&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note, that the <code class="docutils literal notranslate"><span class="pre">$schema</span></code> key points to the JSONSchema that the record should
+be validated against.</p>
+<p><strong>Discovery of schemas</strong></p>
+<p>Invenio is using standard Python entry points to discover your data model
+package’s JSONSchemas. Thus, you’ll see in the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> an entry point
+group <code class="docutils literal notranslate"><span class="pre">invenio_jsonschemas.schemas</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
+    <span class="c1"># ...</span>
+    <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;invenio_jsonschemas.schemas&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s1">&#39;my_datamodel = my_datamodel.jsonschemas&#39;</span>
+        <span class="p">],</span>
+        <span class="c1"># ...</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A typical mistake is to forget to add a blank <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file inside
+the <code class="docutils literal notranslate"><span class="pre">jsonschemas</span></code> folder, in which case the entry point won’t work.</p>
+</div>
+</div>
+<div class="section" id="define-an-elasticsearch-mapping">
+<span id="models-mapping"></span><h2>Define an Elasticsearch mapping<a class="headerlink" href="#define-an-elasticsearch-mapping" title="Permalink to this headline">¶</a></h2>
+<p>In order to make records searchable, the records need to be indexed in
+Elasticsearch. Similarly to the JSONSchema that allows you to validate the
+structure of the JSON, you need to define an <em>Elasticsearch mapping</em>, that
+tells Elasticsearch how to index your document.</p>
+<p>The scaffolded data model package includes an example of a simple Elasticsearch
+mapping</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- mappings
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- v5
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- record-v1.0.0.json
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- v6
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>           <span class="sb">`</span>-- record-v1.0.0.json
+</pre></div>
+</div>
+<p>Note, you need an Elasticsearch mapping per major version of Elasticsearch
+you want to support.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">record-v1.0.0.json</span></code> you should see something like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;record-v1.0.0&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;date_detection&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&quot;numeric_detection&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;index&quot;</span><span class="p">:</span> <span class="kc">false</span>
+                <span class="p">},</span>
+                <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="nt">&quot;keywords&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span>
+                <span class="p">},</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The above Elasticsearch mapping, similarly to the JSONSchema, defines the
+structure of the JSON, but also how it should be indexed.</p>
+<p>For instance, in the above example the <code class="docutils literal notranslate"><span class="pre">title</span></code> field is of type <code class="docutils literal notranslate"><span class="pre">text</span></code>,
+which applies stemming when searching, whereas the <code class="docutils literal notranslate"><span class="pre">keywords</span></code> field is of
+type <code class="docutils literal notranslate"><span class="pre">keyword</span></code>, which means no stemming is applied, therefore, this field
+is searched based on exact match. The mapping also allows you to define e.g.
+that a <code class="docutils literal notranslate"><span class="pre">lat</span></code> and a <code class="docutils literal notranslate"><span class="pre">lon</span></code> field are in fact geographical coordinates, and
+enable geospatial queries over your records.</p>
+<div class="section" id="naming-jsonschemas-and-mappings">
+<span id="naming-schemas-mappings"></span><h3>Naming JSONSchemas and mappings<a class="headerlink" href="#naming-jsonschemas-and-mappings" title="Permalink to this headline">¶</a></h3>
+<p>You may already have noticed that both JSONSchemas and Elasticsearch mappings
+are using the same folder structure and naming scheme:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- jsonschemas
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- record-v1.0.0.json
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- mappings
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- v6
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>           <span class="sb">`</span>-- record-v1.0.0.json
+</pre></div>
+</div>
+<p>The naming scheme is very important for three reasons:</p>
+<ol class="arabic simple">
+<li><p>Indexing of records</p></li>
+<li><p>Data model evolution</p></li>
+<li><p>Discovery of mappings</p></li>
+</ol>
+<p><strong>1. Indexing of records</strong></p>
+<p>Invenio will determine the Elasticsearch index for a given record, based on the
+record’s <code class="docutils literal notranslate"><span class="pre">$schema</span></code> key. For instance, given the following record:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://localhost/schemas/records/record-v1.0.0.json&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Invenio will send the above record to the <code class="docutils literal notranslate"><span class="pre">records-record-v1.0.0</span></code>
+Elasticsearch index. Note, it’s possible to customize this behavior.</p>
+<p><strong>2. Data model evolution</strong></p>
+<p>Over time data models are likely to evolve. In many cases, you can simply make
+backward compatible changes to the existing JSONSchema and Elasticsearch
+mappings. In cases, where you change the data model in a backward incompatible
+way, you create a new JSONSchema and new mappings (e.g. <code class="docutils literal notranslate"><span class="pre">record-v1.1.0.json</span></code>)</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- jsonschemas
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- record-v1.0.0.json
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- record-v1.1.0.json
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- mappings
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- v6
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="p">|</span>-- __init__.py
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>           <span class="sb">`</span>-- record-v1.0.0.json
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>           <span class="sb">`</span>-- record-v1.1.0.json
+</pre></div>
+</div>
+<p>This allows you to simultaneously store old and new records - i.e. you don’t
+have to take down your service for hours to migrate millions of records from
+one version to a new one.</p>
+<p>Now of course, old records will be sent to the <code class="docutils literal notranslate"><span class="pre">records-record-v1.0.0</span></code> index
+and new records will be sent to the <code class="docutils literal notranslate"><span class="pre">records-record-v1.1.0</span></code> index. However,
+a special Elasticsearch <em>index alias</em> <code class="docutils literal notranslate"><span class="pre">records</span></code> is also created, that allows
+you to search over both old and new records, thus smoothly handling data model
+evolution.</p>
+<p><strong>3. Discovery of mappings</strong></p>
+<p>Invenio is using standard Python entry points to discover your data model
+package’s Elasticsearch mappings. Thus, you’ll see in the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> an entry
+point group <code class="docutils literal notranslate"><span class="pre">invenio_search.mappings</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
+    <span class="c1"># ...</span>
+    <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;invenio_search.mappings&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s1">&#39;records = my_datamodel.mappings&#39;</span>
+        <span class="p">],</span>
+        <span class="c1"># ...</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Note, that the left-hand-side of the entry point,
+<code class="docutils literal notranslate"><span class="pre">records</span> <span class="pre">=</span> <span class="pre">my_datamodel.mappings</span></code>, defines the folder name/index alias (i.e.
+<code class="docutils literal notranslate"><span class="pre">records</span></code>) and that the right-hand-side defines the Python import path to the
+<code class="docutils literal notranslate"><span class="pre">mappings</span></code> package.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A typical mistake is to forget to add a blank <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file inside
+the <code class="docutils literal notranslate"><span class="pre">mappings</span></code>, <code class="docutils literal notranslate"><span class="pre">v5</span></code> and <code class="docutils literal notranslate"><span class="pre">v6</span></code> folders, in which case the entry points
+won’t be correctly discovered.</p>
+</div>
+</div>
+</div>
+<div class="section" id="define-a-marshmallow-schema">
+<span id="models-marshmallow"></span><h2>Define a Marshmallow schema<a class="headerlink" href="#define-a-marshmallow-schema" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://marshmallow.readthedocs.io/en/3.0/index.html">Marhsmallow</a> is a
+Python library that helps you write highly advanced
+serialization/deserialization/validation rules for your input/output data.
+You can think of Marshmallow schemas as akin to form validation.</p>
+<p>Marshmallow use in Invenio is optional, but is usually very helpful when you go
+beyond purely structural data validation - e.g. validating one field given the
+value of another field.</p>
+<p>In Invenio, the Marshmallow schemas are located in the <code class="docutils literal notranslate"><span class="pre">marshmallow</span></code> Python
+module. You may have multiple Marshmallow schemas depending on your
+serialization and deserialization needs.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>    <span class="p">|</span>   <span class="p">|</span>-- marshmallow
+<span class="p">|</span>    <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- __init__.py
+<span class="p">|</span>    <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- json.py
+</pre></div>
+</div>
+<p>Below is a simplified example of a Marshmallow schema you could use in
+<code class="docutils literal notranslate"><span class="pre">json.py</span></code> (note, the scaffolded data model package, includes a more complete
+example):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">invenio_records_rest.schemas</span> <span class="kn">import</span> <span class="n">StrictKeysMixin</span>
+<span class="kn">from</span> <span class="nn">marshmallow</span> <span class="kn">import</span> <span class="n">fields</span>
+
+<span class="k">class</span> <span class="nc">RecordSchemaV1</span><span class="p">(</span><span class="n">StrictKeysMixin</span><span class="p">):</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Raw</span><span class="p">()</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">()</span>
+    <span class="n">revision</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Integer</span><span class="p">()</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">()</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Dict</span><span class="p">()</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In Invenio the Marshmallow schemas are often used together with serializers and
+loaders, so continue reading to see how the schema is used.</p>
+<p><strong>What’s the difference: JSONSchemas, Mappings and Marshmallow?</strong></p>
+<p>It may seem a bit confusing that Invenio is dealing with three types of
+schemas. There’s however good reasons:</p>
+<ul class="simple">
+<li><p><strong>JSONSchema</strong>: Deals with the internal structural validation of records
+stored in the database (much like you define the table structure in
+database).</p></li>
+<li><p><strong>Elasticsearch mappings</strong>: Deals with how records are indexed in
+Elasticsearch which has big impact on your search results ranking.</p></li>
+<li><p><strong>Marshmallow schema</strong>: Deals with primarily data validation and
+transformation for both serialization and deserialization (think of it as
+form validation).</p></li>
+</ul>
+</div>
+<div class="section" id="define-serializers">
+<span id="models-serializers"></span><h2>Define serializers<a class="headerlink" href="#define-serializers" title="Permalink to this headline">¶</a></h2>
+<p>Think of serializers as the definition of your output formats for records. The
+serializers are responsible for transforming the internal JSON for a record
+into some external representation (e.g. another JSON format or XML).</p>
+<p>Serializers are defined in the <code class="docutils literal notranslate"><span class="pre">serializers</span></code> module:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- serializers
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- __init__.py
+</pre></div>
+</div>
+<p>By default, Invenio provides serializers that can help you serialize your
+internal record into common formats such as JSON-LD, Dublin Core, DataCite,
+MARCXML, Citation Style Language.</p>
+<p><strong>Example</strong></p>
+<p>In the scaffolded data model package, there’s an example of a simple
+serializer:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">invenio_records_rest.serializers.json</span> <span class="kn">import</span> \
+    <span class="n">JSONSerializer</span>
+<span class="kn">from</span> <span class="nn">invenio_records_rest.serializers.response</span> <span class="kn">import</span> \
+    <span class="n">record_responsify</span><span class="p">,</span> <span class="n">search_responsify</span>
+
+<span class="kn">from</span> <span class="nn">..marshmallow</span> <span class="kn">import</span> <span class="n">RecordSchemaV1</span>
+
+<span class="c1">#: JSON serializer definition.</span>
+<span class="n">json_v1</span> <span class="o">=</span> <span class="n">JSONSerializer</span><span class="p">(</span><span class="n">RecordSchemaV1</span><span class="p">,</span> <span class="n">replace_refs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#: Serializer for individual records.</span>
+<span class="n">json_v1_response</span> <span class="o">=</span> <span class="n">record_responsify</span><span class="p">(</span><span class="n">json_v1</span><span class="p">,</span> <span class="s1">&#39;application/json&#39;</span><span class="p">)</span>
+<span class="c1">#: Serializer for search results.</span>
+<span class="n">json_v1_search</span> <span class="o">=</span> <span class="n">search_responsify</span><span class="p">(</span><span class="n">json_v1</span><span class="p">,</span> <span class="s1">&#39;application/json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>First, we create an instance of the <code class="docutils literal notranslate"><span class="pre">JSONSerializer</span></code> and provide it with
+our previously created Marshmallow schema. The marshmallow schema is used to
+transform the internal JSON prior to that the <code class="docutils literal notranslate"><span class="pre">JSONSerializer</span></code> dumps the
+actual JSON output. This allows you e.g. to evolve your internal data model,
+without affecting your REST API.</p>
+<p>Next, we create two different <strong>response serializers</strong>: <code class="docutils literal notranslate"><span class="pre">json_v1_response</span></code>
+and <code class="docutils literal notranslate"><span class="pre">json_v1_search</span></code>. The former is responsible for producing an HTTP
+response for an individual record, while the latter is responsible for
+producing an HTTP response for a search result (i.e. multiple records).</p>
+<p>The response serializer can not only output data to the HTTP response body, but
+can also add HTTP headers (e.g. Link headers).</p>
+<p>You can see examples of the output from the two response serializers in
+the Quickstart section: <a class="reference internal" href="../quickstart/crud-operations.html#display-a-record"><span class="std std-ref">Display a record</span></a> and <a class="reference internal" href="../quickstart/crud-operations.html#search-for-records"><span class="std std-ref">Search for records</span></a>.</p>
+</div>
+<div class="section" id="define-loaders">
+<span id="models-loaders"></span><h2>Define loaders<a class="headerlink" href="#define-loaders" title="Permalink to this headline">¶</a></h2>
+<p>Think of loaders as the definition of your input formats for records. You only
+need loaders if you plan to allow creation of records via the REST API.</p>
+<p>The loaders are responsible for transforming a request payload (external
+representation) into the internal JSON format.</p>
+<p>Loaders are defined in the <code class="docutils literal notranslate"><span class="pre">loaders</span></code> module:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>    <span class="p">|</span>   <span class="p">|</span>-- loaders
+<span class="p">|</span>    <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- __init__.py
+</pre></div>
+</div>
+<p>Loaders are defined in much the same way as serializers, and similarly you can
+use the Marshmallow schemas:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">invenio_records_rest.loaders.marshmallow</span> <span class="kn">import</span> \
+    <span class="n">marshmallow_loader</span>
+<span class="kn">from</span> <span class="nn">..marshmallow</span> <span class="kn">import</span> <span class="n">MetadataSchemaV1</span>
+
+<span class="n">json_v1</span> <span class="o">=</span> <span class="n">marshmallow_loader</span><span class="p">(</span><span class="n">MetadataSchemaV1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note, that you are not required to use Marshmallow for deserialization, but it
+allows you to use advanced data validation rules on your REST API.</p>
+</div>
+<div class="section" id="define-templates">
+<span id="models-templates"></span><h2>Define templates<a class="headerlink" href="#define-templates" title="Permalink to this headline">¶</a></h2>
+<p>In order to display records not only on your REST API, but also provide
+search interface and landing pages for your record you need to provide
+templates that render your records.</p>
+<p>You will need two different types of templates:</p>
+<ul class="simple">
+<li><p>Search result template</p></li>
+<li><p>Landing page template</p></li>
+</ul>
+<p>The templates are stored in two different folders (<code class="docutils literal notranslate"><span class="pre">static</span></code> and
+<code class="docutils literal notranslate"><span class="pre">templates</span></code>):</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- static
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- templates
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- my_datamodel
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>           <span class="sb">`</span>-- results.html
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- templates
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-- my_datamodel
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>       <span class="sb">`</span>-- record.html
+</pre></div>
+</div>
+<p><strong>Search result template</strong></p>
+<p>The Invenio search interface is run by a JavaScript application, and thus the
+template is rendered client side in the user’s browser. The template uses data
+received by the REST API and thus your REST API must be able to deliver all
+information you would like to render in the template (your serializers are
+responsible for this).</p>
+<p>The search results template is by default (it’s configurable) located in
+<code class="docutils literal notranslate"><span class="pre">static/templates/my_datamodel/results.html</span></code> and is using the Angular
+template syntax.</p>
+<p><strong>Landing page template</strong></p>
+<p>The landing page for a single record is rendered on the server-side using a
+Jinja template.</p>
+<p>The landing page template is by default (it’s configurable) located in
+<code class="docutils literal notranslate"><span class="pre">templates/my_datamodel/record.html</span></code> and is using the Jinja template
+syntax.</p>
+</div>
+<div class="section" id="configure-the-ui">
+<span id="models-ui"></span><h2>Configure the UI<a class="headerlink" href="#configure-the-ui" title="Permalink to this headline">¶</a></h2>
+<p>Last step after having defined all the different schemas, serializers, loaders
+and templates is to configure your REST API and landing pages for your records.</p>
+<p>This is all done from the data model’s <code class="docutils literal notranslate"><span class="pre">config.py</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-- my_site
+<span class="p">|</span>   <span class="p">|</span>-- records
+<span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-- config.py
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Take care, not to confuse <code class="docutils literal notranslate"><span class="pre">my_site/records/config.py</span></code> (the data model’s
+module configuration) with <code class="docutils literal notranslate"><span class="pre">my_site/config.py</span></code> (your application’s
+configuration).</p>
+<p>To avoid the application configuration file from growing very big, we
+usually keep the <strong>default</strong> configuration for a module in a <code class="docutils literal notranslate"><span class="pre">config.py</span></code>
+inside the module.</p>
+</div>
+<p><strong>Landing page</strong></p>
+<p>Let’s start by configuring the landing page:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RECORDS_UI_ENDPOINTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;recid&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;pid_type&#39;</span><span class="p">:</span> <span class="s1">&#39;recid&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;/records/&lt;pid_value&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;my_datamodel/record.html&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here an explanation of the different keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pid_type</span></code>: Defines the persistent identifier type which the resolver
+should use to lookup records. Invenio provides an internal persistent
+identifier type called <code class="docutils literal notranslate"><span class="pre">recid</span></code> which is an auto-incrementing integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">route</span></code>: URL endpoint under which to expose the landing pages.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">template</span></code>: Template to use when rendering the landing page.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">recid</span></code>: Unique name of the endpoint. If this is the primary landing page,
+it must be named the same as the value of <code class="docutils literal notranslate"><span class="pre">pid_type</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">recid</span></code>).</p></li>
+</ul>
+</div>
+<div class="section" id="configure-the-rest-api">
+<span id="models-rest"></span><h2>Configure the REST API<a class="headerlink" href="#configure-the-rest-api" title="Permalink to this headline">¶</a></h2>
+<p>Configuring the REST API is done similarly to the landing pages via the
+<code class="docutils literal notranslate"><span class="pre">RECORDS_REST_ENDPOINTS</span></code> configuration variable in <code class="docutils literal notranslate"><span class="pre">config.py</span></code>:</p>
+<p><strong>Persistent identifier type</strong></p>
+<p>First you provide the persistent identifier type used by the resolver. You also
+need to configure a persistent identifier minter and fetcher. In the scaffolded
+data model package, you are just using the already provided <code class="docutils literal notranslate"><span class="pre">recid</span></code> minter
+and fetchers.</p>
+<p>A <a class="reference external" href="https://invenio-pidstore.readthedocs.io/en/latest/usage.html#minters">minter</a>
+is responsible for generating a new persistent identifier for your
+record, while a
+<a class="reference external" href="https://invenio-pidstore.readthedocs.io/en/latest/usage.html#fetchers">fetcher</a>
+is responsible for extracting the persistent identifier from your search
+results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RECORDS_REST_ENDPOINTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;recid&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pid_type</span><span class="o">=</span><span class="s1">&#39;recid&#39;</span><span class="p">,</span>
+        <span class="n">pid_minter</span><span class="o">=</span><span class="s1">&#39;recid&#39;</span><span class="p">,</span>
+        <span class="n">pid_fetcher</span><span class="o">=</span><span class="s1">&#39;recid&#39;</span><span class="p">,</span>
+        <span class="c1"># ...</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Search</strong></p>
+<p>Next, you define the Elasticsearch index to use for searches. The index is
+defined as <code class="docutils literal notranslate"><span class="pre">records</span></code> because this is the index alias which was created for
+our mappings <code class="docutils literal notranslate"><span class="pre">records/record-v1.0.0.json</span></code> (see
+<a class="reference internal" href="#naming-schemas-mappings"><span class="std std-ref">Naming JSONSchemas and mappings</span></a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RECORDS_REST_ENDPOINTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;recid&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="c1"># ...</span>
+        <span class="n">search_index</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Serializers</strong></p>
+<p>Next, you define which serializers to use. Invenio is using HTTP Content
+Negotiation to choose your serializer. You have to specify the serializer for
+individual records in <code class="docutils literal notranslate"><span class="pre">record_serializers</span></code> and the serializers for search
+results in <code class="docutils literal notranslate"><span class="pre">search_serializers</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RECORDS_REST_ENDPOINTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;recid&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="c1"># ...</span>
+        <span class="n">record_serializers</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;application/json&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s1">&#39;my_datamodel.serializers:json_v1_response&#39;</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="n">search_serializers</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;application/json&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s1">&#39;my_datamodel.serializers:json_v1_search&#39;</span><span class="p">),</span>
+        <span class="p">},</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Loaders</strong></p>
+<p>Next, you define the loaders to use. Similar to the serializers the loaders are
+selected based on HTTP Content Negotiation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RECORDS_REST_ENDPOINTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;recid&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="c1"># ...</span>
+        <span class="n">record_loaders</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;application/json&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s1">&#39;my_datamodel.loaders:json_v1&#39;</span><span class="p">),</span>
+        <span class="p">},</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>URL routes</strong></p>
+<p>Last you define the URL routes under which to expose your records:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RECORDS_REST_ENDPOINTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;recid&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="c1"># ...</span>
+        <span class="n">list_route</span><span class="o">=</span><span class="s1">&#39;/records/&#39;</span><span class="p">,</span>
+        <span class="n">item_route</span><span class="o">=</span><span class="s1">&#39;/records/&lt;pid(recid):pid_value&gt;&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="next-steps">
+<h2>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>Above is a quick walk through of the different steps to build a data model. In
+order to get more details on individual topics we suggest further reading:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://invenio-records-rest.readthedocs.io/en/latest/">Invenio-Records-REST</a></p></li>
+<li><p><a class="reference external" href="http://invenio-jsonschemas.readthedocs.io/en/latest/">Invenio-JSONSchemas</a></p></li>
+<li><p><a class="reference external" href="http://invenio-pidstore.readthedocs.io/en/latest/">Invenio-PIDStore</a></p></li>
+<li><p><a class="reference external" href="http://invenio-records.readthedocs.io/en/latest/">Invenio-Records</a></p></li>
+<li><p><a class="reference external" href="http://json-schema.org">JSONSchema</a></p></li>
+<li><p><a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html">Elasticsearch mappings</a></p></li>
+<li><p><a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html">Elasticsearch field types</a></p></li>
+<li><p><a class="reference external" href="https://marshmallow.readthedocs.io/en/3.0/index.html">Marshmallow schemas</a></p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build-a-repository.html">Build a repository</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Understanding data models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#first-steps">First steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#define-a-jsonschema">Define a JSONSchema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#define-an-elasticsearch-mapping">Define an Elasticsearch mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#define-a-marshmallow-schema">Define a Marshmallow schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#define-serializers">Define serializers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#define-loaders">Define loaders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#define-templates">Define templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-the-ui">Configure the UI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-the-rest-api">Configure the REST API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="managing-access.html">Managing access to records</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/securing-your-instance.html">Securing your instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/infrastructure.html">Infrastructure architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/application.html">Application architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating.html">Migrating to v3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../orcid-login.html">Login with ORCID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build-a-module.html">Build a module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing-with-invenio.html">Developing with Invenio</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="build-a-repository.html" title="previous chapter">Build a repository</a></li>
+      <li>Next: <a href="managing-access.html" title="next chapter">Managing access to records</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, CERN.
+      
+      |
+      <a href="../_sources/tutorials/understanding-data-models.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

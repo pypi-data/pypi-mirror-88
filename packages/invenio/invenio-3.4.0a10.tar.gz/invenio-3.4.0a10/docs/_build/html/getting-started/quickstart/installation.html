@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Launch an Invenio instance &#8212; Invenio 3.4.0a8 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Create, display and search records" href="crud-operations.html" />
+    <link rel="prev" title="Quickstart" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="launch-an-invenio-instance">
+<span id="launch-instance"></span><h1>Launch an Invenio instance<a class="headerlink" href="#launch-an-invenio-instance" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites">
+<span id="id1"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>Invenio requires the following software installed in your system:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.docker.com/install">Docker v1.18+</a> and <a class="reference external" href="https://docs.docker.com/compose/install/">Docker Compose v1.23+</a></p></li>
+<li><p><a class="reference external" href="https://nodejs.org/en/download/package-manager">NodeJS v14.x+ and NPM v6.x+</a></p></li>
+<li><p><a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144">Enough virtual memory</a>
+for Elasticsearch (when running in Docker).</p></li>
+<li><p>The Python package <a class="reference external" href="https://cookiecutter.readthedocs.io">Cookiecutter</a></p></li>
+<li><p><a class="reference external" href="https://pipenv.readthedocs.io">Pipenv</a></p></li>
+</ul>
+</div>
+<div class="section" id="create-an-invenio-instance">
+<span id="bootstrap"></span><h2>Create an Invenio instance<a class="headerlink" href="#create-an-invenio-instance" title="Permalink to this headline">¶</a></h2>
+<p>First step is to create your new Invenio instance using the <a class="reference external" href="https://github.com/inveniosoftware/cookiecutter-invenio-instance">official Invenio
+cookiecutter template</a>.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ cookiecutter gh:inveniosoftware/cookiecutter-invenio-instance --checkout v3.3
+</pre></div>
+</div>
+<p>The cookiecutter initialisation procedure will prompt you with a series of questions
+aiming to customise your new instance, e.g. the name of your application.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At the end of the initialisation, you will be warned to manually change some parts
+of the generated code marked with <code class="docutils literal notranslate"><span class="pre">TODOs</span></code>. These will be covered in the
+<a class="reference internal" href="final-steps.html#final-steps"><span class="std std-ref">Final steps</span></a> section of this quick start guide.</p>
+</div>
+</div>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>Now that your project is generated, you will have to install all needed Python dependencies
+and initialise the application services such as the database and the search engine.</p>
+<p>From now on, the quick start guide will use the name <code class="docutils literal notranslate"><span class="pre">my-site</span></code> to refer to your
+newly created Invenio application.</p>
+<p>Let’s run the service using <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> my-site/
+<span class="gp">$</span> docker-compose up
+<span class="go">Creating my-site_cache_1 ... done</span>
+<span class="go">Creating my-site_db_1    ... done</span>
+<span class="go">Creating my-site_es_1    ... done</span>
+<span class="go">Creating my-site_mq_1    ... done</span>
+</pre></div>
+</div>
+<p>If Elasticsearch service fails to start, it might be due to its requirement for
+additional virtual memory than the one provided by your system defaults.
+For more information, see
+<a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144">Elasticsearch documentation</a>.</p>
+<p>Let’s run the installation scripts:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./scripts/bootstrap
+<span class="gp">$</span> ./scripts/setup
+</pre></div>
+</div>
+<p>This will:</p>
+<ul class="simple">
+<li><p>install required Python packages</p></li>
+<li><p>build JS/CSS assets</p></li>
+<li><p>create and initialise the database and the search engine</p></li>
+</ul>
+</div>
+<div class="section" id="run">
+<h2>Run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h2>
+<p>Let’s run Invenio and open your browser to <a class="reference external" href="https://127.0.0.1:5000/">https://127.0.0.1:5000/</a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./scripts/server
+<span class="go">* Environment: development</span>
+<span class="go">* Debug mode: on</span>
+<span class="go">* Running on https://127.0.0.1:5000/ (Press CTRL+C to quit)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="records">
+<h2>Records<a class="headerlink" href="#records" title="Permalink to this headline">¶</a></h2>
+<p>Learn how to create and view records: <a class="reference internal" href="crud-operations.html#crud-operations"><span class="std std-ref">Create, display and search records</span></a>.</p>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="index.html" title="Previous document">Quickstart</a>
+        </li>
+        <li>
+          <a href="crud-operations.html" title="Next document">Create, display and search records</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-full.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Invenio Digital Library Framework.</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview.html">What is Invenio Framework?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development-environment.html">Setting up your system</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Quickstart</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Launch an Invenio instance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-an-invenio-instance">Create an Invenio instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install">Install</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run">Run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#records">Records</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crud-operations.html">Create, display and search records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="final-steps.html">Final steps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-help.html">Getting help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/bootcamp.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community/index.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/inveniosoftware/invenio">invenio@GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://pypi.python.org/pypi/invenio/">invenio@PyPI</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Getting started</a><ul>
+  <li><a href="index.html">Quickstart</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Quickstart</a></li>
+      <li>Next: <a href="crud-operations.html" title="next chapter">Create, display and search records</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2020, CERN.
+      
+      |
+      <a href="../../_sources/getting-started/quickstart/installation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/inveniosoftware/invenio" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
