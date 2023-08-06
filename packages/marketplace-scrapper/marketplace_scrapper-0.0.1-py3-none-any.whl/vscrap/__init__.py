@@ -1,0 +1,1 @@
+from ._sc import rap as get_extension_details
