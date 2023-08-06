@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: streamlit-discourse
+Version: 0.1.2
+Summary: A streamlit component to embed Discourse topics in your applications.
+Home-page: https://github.com/okld/streamlit-discourse
+Author: okld
+Author-email: 
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: streamlit (>=0.63)
+
+# Streamlit Discourse
+
+[![Open in Streamlit][share_badge]][share_link] [![GitHub][github_badge]][github_link] [![PyPI][pypi_badge]][pypi_link] 
+
+## Installation
+
+```sh
+pip install streamlit-discourse
+```
+
+## Quick usage
+
+```python
+from streamlit_discourse import st_discourse
+
+st_discourse("YOUR_DISCOURSE_URL", id)
+```
+
+## Demo
+
+Interested to see Streamlit Discourse in action? You can try it out now in [Streamlit Sharing][share_link]!
+
+Demo's **source code** and component's **documentation** are also available there.
+
+[![Demo preview][share_img]][share_link]
+
+
+[share_badge]: https://static.streamlit.io/badges/streamlit_badge_black_white.svg
+[share_link]: https://share.streamlit.io/okld/streamlit-discourse-demo/main/app.py
+[share_src]: https://github.com/okld/streamlit-discourse-demo/blob/main/app.py
+[share_img]: https://raw.githubusercontent.com/okld/streamlit-discourse-demo/main/app.png
+
+[github_badge]: https://badgen.net/badge/icon/GitHub?icon=github&color=black&label
+[github_link]: https://github.com/okld/streamlit-discourse
+
+[pypi_badge]: https://badgen.net/pypi/v/streamlit-discourse?icon=pypi&color=black&label
+[pypi_link]: https://pypi.org/project/streamlit-discourse
+
+
