@@ -1,0 +1,2 @@
+(this.webpackJsonpstreamlit_wenscrap_tool=this.webpackJsonpstreamlit_wenscrap_tool||[]).push([[25],{97:function(t,e){Prism.languages.arff={comment:/%.*/,string:{pattern:/(["'])(?:\\.|(?!\1)[^\\\r\n])*\1/,greedy:!0},keyword:/@(?:attribute|data|end|relation)\b/i,number:/\b\d+(?:\.\d+)?\b/,punctuation:/[{},]/}}}]);
+//# sourceMappingURL=25.22bd2afe.chunk.js.map
