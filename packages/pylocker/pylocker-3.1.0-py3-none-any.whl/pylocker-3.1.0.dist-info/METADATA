@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: pylocker
+Version: 3.1.0
+Summary: PYthon LOCKER or pylocker package provides a pythonic way to create locking mechanism that can be used for general purposes as well as for locking files upon reading or writing. 
+Home-page: http://bachiraoun.github.io/pylocker/
+Author: Bachir AOUN
+Author-email: bachir.aoun@e-aoun.com
+License: GNU
+Download-URL: https://github.com/bachiraoun/pylocker
+Platform: Windows
+Platform: Linux
+Platform: Mac OS-X
+Platform: Unix
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Requires-Dist: psutil
+
+PYthon LOCKER or pylocker package provides a pythonic way to create 
+locking mechanism that can be used for general purposes as well as 
+for locking files upon reading or writing. 
+The locking system works by creating and updating a general locking 
+file anytime a lock is requested with a certain pass. Lock pass is 
+used to specify the user who sets the lock and who can have access 
+to whatever is locked. Any user who knows the lock pass can access 
+whatever is locked.
+
