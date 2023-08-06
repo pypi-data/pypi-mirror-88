@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: sudoisbot
+Version: 0.3.2
+Summary: a home automation and monitoring system written to learn zmq
+Home-page: https://github.com/benediktkr/sudoisbot
+Author: Benedikt Kristinsson
+Author-email: benedikt@lokun.is
+Requires-Python: >=3.7,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: loguru (>=0.5.0,<0.6.0)
+Requires-Dist: matplotlib (>=3.2.1,<4.0.0)
+Requires-Dist: numpy (>=1.18.4,<2.0.0)
+Requires-Dist: peewee (>=3.13.3,<4.0.0)
+Requires-Dist: python-telegram-bot (>=13.0,<14.0)
+Requires-Dist: pyyaml (>=5.3.1,<6.0.0)
+Requires-Dist: pyzmq (>=19.0.2,<20.0.0)
+Requires-Dist: requests (>=2.23.0,<3.0.0)
+Requires-Dist: sudoistemper (>=0.1.0,<0.2.0)
+Project-URL: Repository, https://github.com/benediktkr/sudoisbot
