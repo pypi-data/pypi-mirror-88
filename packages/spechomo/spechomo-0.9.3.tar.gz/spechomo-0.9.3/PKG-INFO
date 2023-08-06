@@ -1,0 +1,316 @@
+Metadata-Version: 2.1
+Name: spechomo
+Version: 0.9.3
+Summary: Spectral homogenization of multispectral satellite data.
+Home-page: https://gitext.gfz-potsdam.de/geomultisens/spechomo
+Author: Daniel Scheffler
+Author-email: daniel.scheffler@gfz-potsdam.de
+License: GPL-3.0-or-later
+Description: ==================================================================
+        SpecHomo - Spectral homogenization of multispectral satellite data
+        ==================================================================
+        
+        * Free software: GNU General Public License v3 or later (GPLv3+)
+        * **Documentation:** https://geomultisens.gitext-pages.gfz-potsdam.de/spechomo/doc/
+        * The **paper** corresponding to this software repository can be found here:
+          `Scheffler et al. 2020 <https://doi.org/10.1016/j.rse.2020.111723>`__ (cite as:
+          Scheffler D., Frantz D., Segl K. (2020). Spectral harmonization and red edge prediction of Landsat-8 to Sentinel-2
+          using land cover optimized multivariate regressors. Remote Sens. Environ. 241, 111723.
+          https://doi.org/10.1016/j.rse.2020.111723)
+        * Information on how to **cite the SpecHomo Python package** can be found in the
+          `CITATION <https://gitext.gfz-potsdam.de/geomultisens/spechomo/-/blob/master/CITATION>`__ file.
+        * Submit feedback by filing an issue `here <https://gitext.gfz-potsdam.de/geomultisens/spechomo/issues>`__
+          or join our chat here: |Gitter|
+        
+        .. |Gitter| image:: https://badges.gitter.im/Join%20Chat.svg
+            :target: https://gitter.im/spechomo/community#
+            :alt: https://gitter.im/spechomo/community#
+        
+        Status
+        ------
+        
+        .. image:: https://gitext.gfz-potsdam.de/geomultisens/spechomo/badges/master/pipeline.svg
+                :target: https://gitext.gfz-potsdam.de/geomultisens/spechomo/commits/master
+        .. image:: https://gitext.gfz-potsdam.de/geomultisens/spechomo/badges/master/coverage.svg
+                :target: https://geomultisens.gitext-pages.gfz-potsdam.de/spechomo/coverage/
+        .. image:: https://img.shields.io/static/v1?label=Documentation&message=GitLab%20Pages&color=orange
+                :target: https://geomultisens.gitext-pages.gfz-potsdam.de/spechomo/doc/
+        .. image:: https://img.shields.io/pypi/v/spechomo.svg
+                :target: https://pypi.python.org/pypi/spechomo
+        .. image:: https://img.shields.io/conda/vn/conda-forge/spechomo.svg
+                :target: https://anaconda.org/conda-forge/spechomo
+        .. image:: https://img.shields.io/pypi/l/spechomo.svg
+                :target: https://gitext.gfz-potsdam.de/geomultisens/spechomo/blob/master/LICENSE
+        .. image:: https://img.shields.io/pypi/pyversions/spechomo.svg
+                :target: https://img.shields.io/pypi/pyversions/spechomo.svg
+        .. image:: https://img.shields.io/pypi/dm/spechomo.svg
+                :target: https://pypi.python.org/pypi/spechomo
+        .. image:: https://zenodo.org/badge/241405333.svg
+           :target: https://zenodo.org/badge/latestdoi/241405333
+        
+        See also the latest coverage_ report and the nosetests_ HTML report.
+        
+        
+        Feature overview
+        ----------------
+        
+        SpecHomo is a **Python package for spectral homogenization of multispectral satellite data**, i.e., for the transformation
+        of the spectral information of one sensor into the spectral domain of another one. This simplifies workflows, increases
+        the reliability of subsequently derived multi-sensor products and may also enable the generation of new products that
+        are not possible with the initial spectral definition.
+        
+        SpecHomo offers **different machine learning techniques** for the prediction of the target sensor spectral information. So
+        far, multivariate linear regression, multivariate quadratic regression and random forest regression are implemented. To
+        allow easy comparisons to the most simple homogenization approach, we also implemented linear spectral interpolation.
+        
+        In contrast to previous spectral homogenization techniques, SpecHomo not only allows to apply a global (band-wise)
+        transformation with the same prediction coefficients for all gray values of a spectral band. It also **distinguishes**
+        **between individual spectral characteristics of different land-cover types** by using specifically trained prediction
+        coefficients for various spectral clusters. This increases the accuracy of the predicted spectral information.
+        Apart from that, SpecHomo can not only be used to homogenize already similar spectral definitions - it also **allows to**
+        **predict unilaterally missing bands** such as the red edge bands that are not present in Landsat-8 data.
+        
+        **Prediction accuracies and effects to subsequent products** such as spectral indices or classifications have been
+        evaluated in the above mentioned paper at the example of Sentinel-2 spectral information predicted from Landsat-8.
+        Algorithm details may also be found there.
+        
+        Satellite data (surface reflectance) acquired by **following sensors may be used** as source or target sensor:
+        
+        * Landsat-5 TM
+        * Landsat-7 ETM+
+        * Landsat-8 OLI
+        * Sentinel-2A MSI
+        * Sentinel-2B MSI
+        * RapidEye-5 MSI
+        * SPOT-4
+        * SPOT-5
+        
+        SpecHomo features **classifiers for homogenization** that we trained in the context of the GeoMultiSens project (see the
+        credits section) and for our evaluations related with the above mentioned paper. The initial spectral information for
+        classifier training has been derived from hyperspectral airborne data, spectrally convolved to different sensors. You
+        may also train your own homogenization classifiers specifically optimized to your area of interest. SpecHomo provides
+        the needed functionality for that.
+        
+        For further details on how to use SpecHomo check out the
+        `documentation <https://geomultisens.gitext-pages.gfz-potsdam.de/spechomo/doc/>`__!
+        
+        Credits
+        -------
+        
+        The spechomo package was developed within the context of the GeoMultiSens project funded
+        by the German Federal Ministry of Education and Research (project grant code: 01 IS 14 010 A-C).
+        
+        This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+        
+        .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+        .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+        .. _coverage: https://geomultisens.gitext-pages.gfz-potsdam.de/spechomo/coverage/
+        .. _nosetests: https://geomultisens.gitext-pages.gfz-potsdam.de/spechomo/nosetests_reports/nosetests.html
+        
+        
+        =======
+        History
+        =======
+        
+        0.9.3 (2020-12-15)
+        ------------------
+        
+        * Fixed incorrect handling of classification map nodata value in SpectralHomogenizer (default is now -9999).
+        * Updated minimal version of specclassify to 0.2.8. This fixes issue #8 (Homogenization using kNN classifiers uses
+          faulty weights in case SpectralHomogenizer.predict_by_machine_learner() is called with global_clf_threshold=None.).
+        * Changed minimum and maximum values used for normalization of spectral distance measures. SAM values are now
+          normalized between 0 and 15 degrees SA and all other measures use the 90% percentile as maximum value.
+          This fixes issue #9 (Harmonization weights are affected by extreme values in the computed spectral distances between
+          spectrum and available regressors.).
+        
+        
+        0.9.2 (2020-12-15)
+        ------------------
+        
+        * Cluster classifiers can now be saved as JSON files (relates to issue #5).
+        * Added attributes 'spechomo_version' and 'spechomo_versionalias' to ClusterLearner.
+        
+        
+        0.9.1 (2020-12-11)
+        ------------------
+        
+        * Added URL checker and corresponding CI job.
+        * Removed travis related files.
+        * Replaced hard-coded links in documentation by cross-linking directives.
+        
+        
+        0.9.0 (2020-11-02)
+        ------------------
+        
+        * Replaced deprecated 'source activate' by 'conda activate.'
+        * Updated installation instructions.
+        * Revised requirements.
+        * Added doc, test, lint and dev requirements to optional requirements in setup.py.
+        * Updated LR and QR classifiers.
+        * Added sklearn import to avoid static TLS ImportError.
+        * Improved code style of SpectralHomogenizer.interpolate_cube() and SpectralHomogenizer.predict().
+        * Bugfix for also predicting spectral information for pixels that contain nodata in any band
+          (causes faulty predictions).
+        * Bugfix for only choosing 25 spectra in classifier creation in case the maximum angle threshold is automatically
+          set to 0 because there are many well matching spectra.
+        * Added minimal version of geoarray.
+        
+        
+        0.8.2 (2020-10-12)
+        ------------------
+        
+        * Use SPDX license identifier and set all files to GLP3+ to be consistent with license headers in the source files.
+        
+        
+        0.8.1 (2020-10-08)
+        ------------------
+        
+        * Added latest QR classifiers.
+        
+        
+        0.8.0 (2020-10-07)
+        ------------------
+        
+        * SpecHomo is now on conda-forge! Updated the installation instructions accordingly.
+        
+        
+        0.7.0 (2020-10-01)
+        ------------------
+        
+        * Re-trained LR classifiers.
+        * Updated classifiers within test data.
+        * Classifiers are no longer stored in the repository (resources directory) but are automatically downloaded on demand
+          at the first run (added corresponding code).
+        * Fixed TemporaryDirectory bug in Test_Utils.test_export_classifiers_as_JSON().
+        * Re-enabled CI job 'deploy_pypi'.
+        
+        
+        0.6.10 (2020-09-25)
+        -------------------
+        
+        * Fixed an AssertionError within ClusterClassifier_Generator.create_classifiers() caused by nodata pixels in the target
+          sensor reference cube that were not dropped before creating the classifier.
+        
+        
+        0.6.9 (2020-09-25)
+        ------------------
+        
+        * Moved matplotlib imports function/class level to avoid static TLS ImportError.
+        
+        
+        0.6.8 (2020-09-25)
+        ------------------
+        
+        * Moved scipy imports function/class level to avoid static TLS ImportError.
+        * environment_spechomo.yml now uses Python 3.7+.
+        * scikit-learn is now pinned to 0.23.2+ due to classifier recreation.
+        
+        
+        0.6.7 (2020-09-24)
+        ------------------
+        
+        * Fixed a DeprecationWarning in case of scikit-learn>=0.23.
+        * Dumped regressors now use the second highest dill protocol in order to have some downwards compatibility.
+        
+        
+        0.6.6 (2020-09-24)
+        ------------------
+        
+        * Moved imports of scikit-learn to function/class level to avoid static TLS ImportError.
+        
+        
+        0.6.5 (2020-09-15)
+        ------------------
+        
+        * Replaced deprecated HTTP links.
+        
+        
+        0.6.4 (2020-04-09)
+        ------------------
+        
+        * Fixed test_spechomo_install CI job.
+        
+        
+        0.6.3 (2020-04-09)
+        ------------------
+        
+        * Fixed create_github_release CI job.
+        
+        
+        0.6.2 (2020-04-09)
+        ------------------
+        
+        * Releases in the GitHub-Mirror-Repository are now created automatically
+          (added create_release_from_gitlab_ci.sh and create_github_release CI job).
+        * Added GitHub issue template.
+        
+        
+        0.6.1 (2020-04-07)
+        ------------------
+        
+        * Revised CITATION file and .zenodo.json.
+        
+        
+        0.6.0 (2020-04-04)
+        ------------------
+        
+        * Added functionality to export existing .dill classifiers to JSON format to make them also usable in different
+          programming environments.
+        * The documentation now contains links to the published version of the research paper corresponding to SpecHomo.
+        * Changed Zenodo title and description.
+        * Fixed fallback algorithm in SpectralHomogenizer.predict_by_machine_learner() and added corresponding tests.
+        * SpectralHomogenizer.interpolate_cube() now returns a GeoArray instead of a numpy array.
+        
+        
+        0.5.0 (2020-02-20)
+        ------------------
+        
+        * Removed pyresample dependency (not needed anymore).
+        * Updated README.rst and setup.py.
+        * Pinned geopandas to below version 0.6.3 to fix an incompatibility with pyproj.
+        * Updated CI runner setup scripts and CI jobs.
+        * Updated LR and QR classifiers.
+        
+        
+        0.4.0 (2019-10-07)
+        ------------------
+        
+        * Added Sphinx documentation.
+        * Improved usability by adding functions to explore available spectral tansformations.
+        
+        
+        0.3.0 (2019-09-25)
+        ------------------
+        
+        * All tests are working properly now.
+        * Added license texts.
+        * Revised global classifiers.
+        * Added harmonization using weighted averaging.
+        
+        
+        0.2.0 (2019-07-22)
+        ------------------
+        
+        * A lot of algorithm improvements. Refer to the commits for details.
+        
+        
+        0.1.0 (2019-03-26)
+        ------------------
+        
+        * First version working separately from geomultisens.
+        
+Keywords: spechomo,spectral homogenization,sensor fusion,remote sensing
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Provides-Extra: doc
+Provides-Extra: test
+Provides-Extra: lint
+Provides-Extra: dev
