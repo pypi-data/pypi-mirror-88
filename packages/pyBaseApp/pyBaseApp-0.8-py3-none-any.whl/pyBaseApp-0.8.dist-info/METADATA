@@ -1,0 +1,131 @@
+Metadata-Version: 2.1
+Name: pyBaseApp
+Version: 0.8
+Summary: Standard app configuration and packaging
+Home-page: https://github.com/20centcroak/pyBaseApp
+Author: 20centCroak
+Author-email: 
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: PyYAML
+Requires-Dist: pyinstaller
+
+# pyBaseApp
+Tools to define a standard way to launch and package python application
+
+See readme files in the following modules to explore the offered features.
+- applauncher
+- package
+
+# applauncher module
+
+## Description
+The applauncher module defines a standard way to launch and manage a basic application.
+
+## Configuration class
+**Configuration** class defines a standard logger which prompts in console and save log in a dated file.
+I also define a standard way to configure the app with a settings file in yml format. 
+This yml file is a key/value pair collection and allows substitution of values using the syntax {key}
+
+Here is an example of yml file:
+
+    mykey: myvalue
+    value_to_substitute: '{otherkey}'
+    otherkey: 3
+    listkey:
+        - key1: value1
+        - key2: value2
+    dictkey:
+        key: value
+        otherkey: othervalue
+    booleankey: true
+
+## Settings class
+**Settings** is a class for which attributes are defined by the given dictionary
+
+## error function
+**error** function defines a standard error behaviour by displaying an error and exiting the app
+# package module
+
+## Description
+The package module makes use of Pyinstaller to build an app package ready to go.
+It is a wrapper to ease the use of Pyinstaller.
+It defines the build parameters in a settings file (yml file) and also add the ability to add external documents (documentation, config files, ...) and a launcher (.bat or .sh file)
+
+Note that Pyinstaller builds executable files according to the OS on which the program is exectuted :
+- if executed on Windows, a windows executable file is generated
+- if executed on Linux, a linux executable file is generated
+
+## Example
+Here is a basic example of use:
+
+    from pyBaseApp.package import Package, Options
+    from pyBaseApp.applauncher import Configuration
+
+    settings = Configuration().settings('settings.yml')
+    try:
+        options = Options(settings)
+        Package(options, data)
+    except ValueError:
+        print('package value is missing in settings')
+
+Where *settings.yml* could be:
+
+    name: myApp
+    package: C:/scripts/my_app.py
+    distpath: C:/dist/myApp
+    data: 
+    - src: C:/scripts/resources/myapp.yml
+        root_level: true
+    - src: C:/scripts/resources/README.md
+        root_level: true
+    - src: C:\data\github\work\scripts\doc\easyPresentation\images
+        dst: images
+        root_level: true
+    sh:
+        path: mypath
+        options:
+            l: myloggerpath
+            s: mysettingspath
+
+
+## List of available options:
+
+
+Pynstaller options and default values (See [pyinstaller documentation](https://pyinstaller.readthedocs.io/en/stable/) for more info):
+
+    name = None
+    onefile=False
+    console=True
+    binaries = dict()
+    icon = None
+    distpath = None
+    workpath = None
+    specpath = 'pyinstaller'
+    paths = []
+    clean = True
+    loglevel = loglevels.DEBUG.name
+    hiddenimports = []
+    additionalhooks = []
+    runtimehooks = []
+    excludemodules = []
+    package = None
+    no_confirm = True
+
+
+addons options :
+
+    data = None
+    version = None
+    sh = None
+    bat = None
+
+
+Examples of data and sh structures are given above
+
+
