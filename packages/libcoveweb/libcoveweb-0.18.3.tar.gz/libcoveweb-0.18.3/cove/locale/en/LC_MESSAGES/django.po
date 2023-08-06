@@ -1,0 +1,486 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-05 13:13+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: cove/input/views.py:18
+msgid "Upload a file (.json, .csv, .xlsx, .ods)"
+msgstr ""
+
+#: cove/input/views.py:27
+msgid "Supply a URL"
+msgstr ""
+
+#: cove/input/views.py:32
+msgid "Paste (JSON only)"
+msgstr ""
+
+#: cove/input/views.py:72
+msgid "Sorry we got a ConnectionError whilst trying to download that file"
+msgstr ""
+
+#: cove/input/views.py:74 cove/input/views.py:82 cove/views.py:28
+#: cove/views.py:39 cove/views.py:49
+msgid "Try Again"
+msgstr ""
+
+#: cove/input/views.py:75
+msgid ""
+"\n"
+"\n"
+" Common reasons for this error include supplying a local development url "
+"that our servers can't access, or misconfigured SSL certificates."
+msgstr ""
+
+#: cove/input/views.py:80
+msgid "Sorry we got a HTTP Error whilst trying to download that file"
+msgstr ""
+
+#: cove/input/views.py:83
+msgid ""
+"\n"
+"\n"
+" If you can access the file through a browser then the problem may be "
+"related to permissions, or you may be blocking certain user agents."
+msgstr ""
+
+#: cove/templates/500.html:8
+msgid "Internal Server Error"
+msgstr ""
+
+#: cove/templates/500.html:12
+msgid ""
+"Something went wrong with your request. This could be due to a bug in the "
+"application and/or the data you supplied."
+msgstr ""
+
+#: cove/templates/500.html:14
+msgid ""
+"This error has been automatically reported to our development team. If you "
+msgstr ""
+
+#: cove/templates/500.html:14
+msgid "get in touch"
+msgstr ""
+
+#: cove/templates/500.html:14
+msgid "please reference this error as "
+msgstr ""
+
+#: cove/templates/additional_codelist_values.html:7
+#: cove/templates/additional_fields_table.html:5
+#: cove/templates/additional_fields_table_all.html:7
+#: cove/templates/additional_fields_table_all.html:53
+msgid "Field"
+msgstr ""
+
+#: cove/templates/additional_codelist_values.html:8
+#: cove/templates/additional_fields_table.html:5
+#: cove/templates/additional_fields_table_all.html:8
+#: cove/templates/additional_fields_table_all.html:54
+msgid "Path to Field"
+msgstr ""
+
+#: cove/templates/additional_codelist_values.html:9
+msgid "Codelist"
+msgstr ""
+
+#: cove/templates/additional_codelist_values.html:10
+msgid "Additional Values Used"
+msgstr ""
+
+#: cove/templates/additional_fields_table.html:5
+#: cove/templates/additional_fields_table_all.html:9
+#: cove/templates/additional_fields_table_all.html:55
+msgid "Usage Count"
+msgstr ""
+
+#: cove/templates/additional_fields_table_all.html:10
+#: cove/templates/additional_fields_table_all.html:56
+msgid "Examples (first 3)"
+msgstr ""
+
+#: cove/templates/additional_fields_table_all.html:11
+msgid "Child Fields"
+msgstr ""
+
+#: cove/templates/additional_fields_table_all.html:29
+msgid "(See child fields)"
+msgstr ""
+
+#: cove/templates/additional_fields_table_all.html:46
+#, python-format
+msgid "Child fields of %(parent_full_path)s"
+msgstr ""
+
+#. Translators: Label of a button that triggers search
+#: cove/templates/base.html:55 cove/templates/page_header.html:27
+msgid "Go"
+msgstr ""
+
+#: cove/templates/base.html:115
+msgid "About"
+msgstr ""
+
+#: cove/templates/base.html:118
+msgid "Built by"
+msgstr ""
+
+#: cove/templates/base.html:118
+msgid "Open Data Services Co-operative"
+msgstr ""
+
+#: cove/templates/base.html:119
+msgid "The code for this site is available on"
+msgstr ""
+
+#: cove/templates/base.html:119
+msgid "GitHub"
+msgstr ""
+
+#: cove/templates/base.html:119
+msgid "Cove - COnvert Validate & Explore"
+msgstr ""
+
+#: cove/templates/base.html:119
+msgid "Licence"
+msgstr ""
+
+#: cove/templates/base.html:119
+msgid "AGPLv3"
+msgstr ""
+
+#: cove/templates/base.html:119
+msgid "Report/View issues"
+msgstr ""
+
+#: cove/templates/base.html:119
+msgid "Cove Issues"
+msgstr ""
+
+#: cove/templates/base.html:124
+msgid "Terms &amp; Conditions"
+msgstr ""
+
+#: cove/templates/base.html:128
+msgid "Running version "
+msgstr ""
+
+#: cove/templates/base.html:134
+msgid "Links"
+msgstr ""
+
+#: cove/templates/error_extra.html:2
+msgid ""
+"If you think this is a bug, you can <a href=\"https://github.com/"
+"OpenDataServices/cove/issues\">file an issue publicly on GitHub</a> or "
+msgstr ""
+
+#: cove/templates/error_extra.html:2
+msgid "get in touch via email"
+msgstr ""
+
+#: cove/templates/error_extra.html:2
+msgid "referencing this error as "
+msgstr ""
+
+#: cove/templates/explore.html:6
+msgid "Load New File"
+msgstr ""
+
+#: cove/templates/explore.html:11
+msgid "Converted from Original"
+msgstr ""
+
+#: cove/templates/explore.html:12
+msgid "Original"
+msgstr ""
+
+#: cove/templates/explore.html:13
+msgid "Excel Spreadsheet (.xlsx)"
+msgstr ""
+
+#: cove/templates/explore.html:14
+msgid "OpenDocument Spreadsheet (.ods)"
+msgstr ""
+
+#: cove/templates/explore.html:15
+msgid "CSV Spreadsheet (.csv)"
+msgstr ""
+
+#: cove/templates/explore.html:16
+msgid "Excel Spreadsheet (.xlsx) with titles"
+msgstr ""
+
+#: cove/templates/explore.html:17
+msgid "OpenDocument Spreadsheet (.ods) with titles"
+msgstr ""
+
+#. Translators: JSON probably does not need a transalation: http://www.json.org/
+#: cove/templates/explore.html:19
+msgid "JSON"
+msgstr ""
+
+#: cove/templates/explore.html:20
+msgid "XML"
+msgstr ""
+
+#: cove/templates/input.html:6
+msgid "Loading:"
+msgstr ""
+
+#: cove/templates/input.html:13 cove/templates/stats.html:10
+msgid "Upload"
+msgstr ""
+
+#: cove/templates/input.html:23 cove/templates/input.html:46
+#: cove/templates/input.html:69
+msgid "Submit"
+msgstr ""
+
+#: cove/templates/input.html:36 cove/templates/stats.html:11
+msgid "Link"
+msgstr ""
+
+#: cove/templates/input.html:59 cove/templates/stats.html:12
+msgid "Paste"
+msgstr ""
+
+#: cove/templates/modal_errors.html:14
+#, python-format
+msgid ""
+"Showing a random %(validation_error_locations_length)s locations for this "
+"error."
+msgstr ""
+
+#: cove/templates/modal_errors.html:16
+#, python-format
+msgid ""
+"Showing the first %(validation_error_locations_length)s locations for this "
+"error."
+msgstr ""
+
+#: cove/templates/modal_errors.html:24
+msgid "Value"
+msgstr ""
+
+#: cove/templates/modal_errors.html:25 cove/templates/modal_errors.html:31
+msgid "Location"
+msgstr ""
+
+#: cove/templates/modal_errors.html:27 cove/templates/modal_errors.html:33
+msgid "Spreadsheet Location"
+msgstr ""
+
+#: cove/templates/modal_errors.html:45 cove/templates/validation_table.html:61
+msgid "Path:"
+msgstr ""
+
+#: cove/templates/modal_errors.html:46 cove/templates/validation_table.html:62
+msgid "Line:"
+msgstr ""
+
+#: cove/templates/modal_errors.html:52 cove/templates/modal_errors.html:58
+#: cove/templates/validation_table.html:74
+msgid "Sheet:"
+msgstr ""
+
+#: cove/templates/modal_errors.html:52 cove/templates/modal_errors.html:58
+#: cove/templates/validation_table.html:74
+msgid "Row:"
+msgstr ""
+
+#: cove/templates/modal_errors.html:52 cove/templates/modal_errors.html:58
+msgid "Header:"
+msgstr ""
+
+#: cove/templates/stats.html:4
+msgid "Usage stats"
+msgstr ""
+
+#: cove/templates/stats.html:13
+msgid "Total"
+msgstr ""
+
+#: cove/templates/stats.html:19
+msgid "Last"
+msgstr ""
+
+#: cove/templates/stats.html:19
+msgid "days"
+msgstr ""
+
+#: cove/templates/stats.html:27
+msgid "Ever"
+msgstr ""
+
+#: cove/templates/validation_table.html:7
+msgid "Error Description"
+msgstr ""
+
+#: cove/templates/validation_table.html:8
+msgid "Error Count"
+msgstr ""
+
+#: cove/templates/validation_table.html:9
+msgid "First 3 Examples"
+msgstr ""
+
+#: cove/templates/validation_table.html:10
+msgid "Location of first 3 errors"
+msgstr ""
+
+#: cove/templates/validation_table.html:12
+msgid "Spreadsheet Location of first 3 errors"
+msgstr ""
+
+#: cove/templates/validation_table.html:30
+msgid "(more info)"
+msgstr ""
+
+#: cove/templates/validation_table.html:74
+msgid "Column:"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:73
+msgid "Date is not in the correct format"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:74
+msgid "Invalid 'uri' found"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:75
+msgid ""
+"{}<code>{}</code> is not a string. Check that the value {} has quotes at the "
+"start and end. Escape any quotes in the value with <code>\\</code>"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:76
+msgid ""
+"{}<code>{}</code> is not a integer. Check that the value {} doesn’t contain "
+"decimal points or any characters other than 0-9. Integer values should not "
+"be in quotes. "
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:77
+msgid ""
+"{}<code>{}</code> is not a number. Check that the value {} doesn’t contain "
+"any characters other than 0-9 and dot (<code>.</code>). Number values should "
+"not be in quotes. "
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:78
+msgid "{}<code>{}</code> is not a JSON object"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:79
+msgid "{}<code>{}</code> is not a JSON array"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:101
+msgid "Array Element "
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:109 cove/templatetags/cove_tags.py:111
+msgid "is not null, and"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:127
+msgid "<code>{}</code> is missing but required within <code>{}</code>"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:133
+msgid "<code>{}</code> is missing but required"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:137
+msgid "Invalid code found in <code>{}</code>"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:141
+msgid "<code>{}</code> does not match the regex <code>{}</code>"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:148
+msgid ""
+"<code>{}</code> is too short. You must supply at least one value, or remove "
+"the item entirely (unless it’s required)."
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:154
+msgid ""
+"<code>\"{}\"</code> is too short. Strings must be at least one character. "
+"This error typically indicates a missing value."
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:159
+msgid "{} does not have enough properties"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:164
+msgid "Array has non-unique elements"
+msgstr ""
+
+#: cove/templatetags/cove_tags.py:167
+msgid "Non-unique {} values"
+msgstr ""
+
+#: cove/views.py:26 cove/views.py:37 cove/views.py:47
+msgid "Sorry, we can't process that data"
+msgstr ""
+
+#: cove/views.py:30
+msgid ""
+"We think you tried to upload a JSON file, but it is not well formed JSON.\n"
+"\n"
+"Error message: {}"
+msgstr ""
+
+#: cove/views.py:41
+msgid ""
+"We did not recognise the file type.\n"
+"\n"
+"We can only process json, csv, ods and xlsx files."
+msgstr ""
+
+#: cove/views.py:51
+msgid ""
+"We think you tried to supply a spreadsheet, but we failed to convert it.\n"
+"\n"
+"Error message: {}"
+msgstr ""
+
+#: cove/views.py:75 cove/views.py:87
+msgid "Sorry, the page you are looking for is not available"
+msgstr ""
+
+#: cove/views.py:77 cove/views.py:89
+msgid "Go to Home page"
+msgstr ""
+
+#: cove/views.py:78
+msgid "We don't seem to be able to find the data you requested."
+msgstr ""
+
+#: cove/views.py:90
+msgid ""
+"The data you were hoping to explore no longer exists.\n"
+"\n"
+"This is because all data supplied to this website is automatically deleted "
+"after 7 days, and therefore the analysis of that data is no longer available."
+msgstr ""
