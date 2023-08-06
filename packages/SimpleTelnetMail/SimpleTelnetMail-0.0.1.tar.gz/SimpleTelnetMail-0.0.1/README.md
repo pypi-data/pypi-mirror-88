@@ -1,0 +1,75 @@
+# SimpleTelnetMail
+
+## Requirements
+This package require : 
+ - python3
+ - python3 Standard Library
+
+## Installation
+```bash
+pip install SimpleTelnetMail 
+```
+
+## Description 
+Send simples emails with Telnet.
+
+## Examples
+
+### Simple usage
+
+#### Command line
+Use this command : `SimpleTelnetMail.py --host="my.server.com" --from="my.address@domain.com" --to="receiver@domain.com" --message="Secret and not secure email with Telnet."` to send this message : `Secret and not secure email with Telnet.`
+
+#### Python
+To send same message with python :
+```python
+client = TelnetMail("my.server.com", from_ = "my.address@domain.com", to = ["receiver@domain.com"], message = "Secret and not secure email with Telnet.", ssl = False)
+client.send_mail()
+
+print(repr(client))
+print(client)
+print(client.responses.decode())
+```
+
+### Advanced usage
+
+#### Command line
+Use this command : `SimpleTelnetMail.py --ssl --debug=4 --pseudo="H4CK3R" --ehlo="H4CK3R" --host="my.server.com" --port=587 --from="my.address@domain.com" --to="receiver1@domain.com,receiver2@domain.com" --message="Secret and secure email with Telnet." Subject="Secret Email" Date="Sat, 19 Dec 2020 01:02:03 -0000" "MIME-Version"="1.0" Encrypted="ROT13" Fake="Fake hearder" Sender="PSEUDO <my.address@domain.com>" Comments="My comment" Keywords="Email, Secret" Expires="Sat, 25 Dec 2021 05:35:23 -0000" Language="en-EN, it-IT" Importance="hight" Priority="urgent" Sensibility="Company-Confidential" From="my.address@domain.com" To="receiver1@domain.com,receiver2@domain.com" "Content-Type"="text/plain; charset=us-ascii" "Content-Transfer-Encoding"="quoted-printable"` to send this email :
+```
+Return-Path: my.address@domain.com
+MIME-Version: 1.0
+From: H4CK3R <my.address@domain.com>
+To: "receiver1@domain.com,receiver2@domain.com"
+Sender: H4CK3R <my.address@domain.com>
+Comments: My comment
+Keywords: Email, Secret
+Language: en-EN, it-IT
+Date: 23 Nov 2020 09:09:09 +0100
+Expires: Sat, 25 Dec 2021 05:35:23 -0000
+Importance: hight
+Priority: urgent
+Sensibility: Company-Confidential
+Subject: Secret email
+Encrypted: ROT13
+Fake: Fake hearder
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Secret and secure email with Telnet.
+```
+
+#### Python
+
+```python
+client = TelnetMail("my.server.com", port = 587, from_ = "my.address@domain.com", to = ["receiver1@domain.com", "receiver2@domain.com"], message = "Secret and secure email with Telnet.", ehlo = "H4CK3R", pseudo = "Mr_X", ssl = True, debug = 4, Subject="Secret Email", Date="Sat, 19 Dec 2020 01:02:03 -0000", MIME_Version="1.0", Encrypted="ROT13", Fake="Fake hearder", Sender="PSEUDO <my.address@domain.com>", Comments="My comment", Keywords="Email, Secret", Expires="Sat, 25 Dec 2021 05:35:23 -0000", Language="en-EN, it-IT", Importance="hight", Priority="urgent", Sensibility="Company-Confidential", From="PSEUDO <my.address@domain.com>", To="receiver1@domain.com,receiver2@domain.com", Content_Type="text/plain; charset=us-ascii", Content_Transfer_Encoding="quoted-printable")
+client.send_mail()
+
+print(repr(client))
+print(client)
+print(client.responses.decode())
+```
+
+## Link
+[Github Page](https://github.com/mauricelambert/SimpleTelnetMail)
+
+## Licence
+Licensed under the [GPL, version 3](https://www.gnu.org/licenses/).
