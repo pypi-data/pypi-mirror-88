@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: recipe-grid
+Version: 2.0.1
+Summary: A tool for generating table-based recipe descriptions.
+Home-page: https://github.com/mossblaser/recipe_grid
+Author: Jonathan Heathcote
+Requires-Python: >=3.7,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: jinja2 (>=2.11.2,<3.0.0)
+Requires-Dist: lxml (>=4.6.1,<5.0.0)
+Requires-Dist: marko (>=0.9.1,<0.10.0)
+Requires-Dist: peggie (>=0.2.0,<0.3.0)
