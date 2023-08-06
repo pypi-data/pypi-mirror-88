@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: hier-config
+Version: 2.0.0
+Summary: A network configuration comparison tool, used to build remediation configurations.
+License: MIT
+Author: Andrew Edwards
+Author-email: andrew.edwards@rackspace.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: PyYAML (>=5.3.1,<6.0.0)
