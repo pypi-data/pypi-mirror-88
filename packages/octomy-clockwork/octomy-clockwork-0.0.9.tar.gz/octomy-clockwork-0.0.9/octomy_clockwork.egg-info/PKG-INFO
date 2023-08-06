@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: octomy-clockwork
+Version: 0.0.9
+Summary: OctoMY scheduler
+Home-page: https://gitlab.com/octomy/clockwork
+Author: Lennart Rolland
+Author-email: lennart@octomy.org
+Maintainer: Lennart Rolland
+Maintainer-email: lennart@octomy.org
+License: GPL-3 LGPL-3 MIT
+Description: [![pipeline status](https://gitlab.com/octomy/clockwork/badges/production/pipeline.svg)](https://gitlab.com/octomy/clockwork/-/commits/production)
+        # About clockwork
+        
+        <img src="https://gitlab.com/octomy/clockwork/-/raw/master/design/clockwork-logo-1024.png" width="20%"/>
+        
+        Clockwork is a cheduler for tasks tightly linked to [the batch project](https://gitlab.com/octomy/batch)
+        
+        - Clockwork is [available on gitlab](https://gitlab.com/octomy/clockwork).
+        - Clockwork is [available in PyPI](https://pypi.org/project/clockwork/).
+        
+        ```shell
+        # Clone git repository
+        git clone git@gitlab.com:octomy/clockwork.git
+        
+        ```
+        
+        ```shell
+        # Install clockwork into your current Python environment
+        pip install octomy-clockwork
+        
+        ```
+Keywords: octomy clockwork scheduler clock timer task queue
+Platform: Linux
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Other Audience
+Classifier: Topic :: Utilities
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Topic :: Other/Nonlisted Topic
+Requires-Python: >=3.7.4
+Description-Content-Type: text/markdown
