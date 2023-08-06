@@ -1,0 +1,1232 @@
+#!/usr/bin/env python3
+
+"""\
+HTML representation of on-going projects.
+"""
+import argparse
+import os
+import random
+import re
+import string
+from datetime import date
+
+import numpy as np
+import pandas as pd
+
+from SCRIdb.connector import Conn
+
+
+def expected_del_cat1(mrd):
+    if pd.isnull(mrd):
+        return "ND"
+    else:
+        today_ = date.today()
+        sd = today_ - mrd
+        sd = sd.days
+        if sd in range(29, 36):
+            return "any day now"
+        elif sd in range(22, 29):
+            return "1 week"
+        elif sd in range(14, 22):
+            return "2 weeks"
+        elif sd in range(8, 14):
+            return "3 weeks"
+        elif sd in range(8):
+            return "4 weeks"
+        else:
+            return "overdue"
+
+
+def expected_del_cat2(mrd):
+    if pd.isnull(mrd):
+        return "ND"
+    else:
+        today_ = date.today()
+        igd = today_ - mrd
+        igd = igd.days
+        if igd in range(14, 22):
+            return "any day now"
+        elif igd in range(8, 14):
+            return "1 week"
+        elif igd in range(8):
+            return "2 weeks"
+        else:
+            return "overdue"
+
+
+def expected_del_cat3(mrd):
+    if pd.isnull(mrd):
+        return "ND"
+    else:
+        return "delivered"
+
+
+def expected_del_cat4(x):
+    return "ND"
+
+
+sample_stage = {
+    0: ["NA", lambda x: "", expected_del_cat4],
+    1: [
+        "submitted to SCRI",
+        lambda x: x.submission_date.max().date(),
+        expected_del_cat1,
+    ],
+    2: ["IGO submitted", lambda x: x.IGO_sub_date.max().date(), expected_del_cat2],
+    3: ["sequenced", lambda x: x.sequencing_date.max().date(), expected_del_cat3],
+}
+
+project_status = {
+    1: {
+        "GLYPHICON": "ok",
+        "TITLE": "samples delivered!",
+        "DATACONTENT": "analysis in progress",
+        "BTN": "btn-success",
+        "LABEL": "",
+        "FLAG": "OKAY",
+    },
+    2: {
+        "mesg1": {
+            "GLYPHICON": "info-sign",
+            "TITLE": "samples {}!",
+            "LABEL": "info",
+            "FLAG": "WARNING",
+            "DATACONTENT": "missing {} date! check with wet lab",
+            "BTN": "btn-warning",
+        },
+        "mesg2": {
+            "GLYPHICON": "info-sign",
+            "TITLE": "Project initiated!",
+            "LABEL": "info",
+            "FLAG": "WARNING",
+            "DATACONTENT": "waiting for submitting new samples",
+            "BTN": "btn-warning",
+        },
+    },
+    3: {
+        "GLYPHICON": "user",
+        "TITLE": "samples delivered!",
+        "LABEL": "",
+        "FLAG": "USER",
+        "DATACONTENT": "assign a computational person",
+        "BTN": "btn-primary",
+    },
+    4: {
+        "GLYPHICON": "exclamation-sign",
+        "TITLE": "samples overdue!",
+        "LABEL": "action",
+        "DATACONTENT": "check with wet lab!",
+        "BTN": "btn-danger",
+        "FLAG": "DANGER",
+    },
+    5: {
+        "GLYPHICON": "cloud",
+        "TITLE": "Completed!",
+        "LABEL": "",
+        "BTN": "btn-info",
+        "FLAG": "PROJECTCOMPLETED",
+        "DATACONTENT": "Project Completed! Archiving will be in accordance to lab policy",
+    },
+}
+
+
+def stage_preprocessing(dd):
+    d = dd.copy()
+    return_ = []
+    d.loc[(d.submitted == "yes") | (d.submission_date.notna()), "submitted"] = 1
+    d.loc[d.submitted != 1, "submitted"] = 0
+    d.loc[(d.IGO_submitted == "yes") | (d.IGO_sub_date.notna()), "IGO_submitted"] = 2
+    d.loc[d.IGO_submitted != 2, "IGO_submitted"] = 0
+    d.loc[(d.sequenced == "yes") | (d.sequencing_date.notna()), "sequenced"] = 3
+    d.loc[d.sequenced != 3, "sequenced"] = 0
+
+    # this block is meant to capture erroneous entries of submission dates
+    d_ = d.loc[:, ["submitted", "IGO_submitted", "sequenced"]]
+    x = d.loc[:, ["submission_date", "IGO_sub_date", "sequencing_date"]]
+    x = np.array([np.array(d_ != 0), np.array(x.notna())])
+    y = x.sum(0) == 1
+    # masker for erroneous entries that will appear separately in the table listing
+    # samples
+    y = y.any(1)
+    d["st"] = d_.max(1)
+    for i in d.st.unique():
+        stage, recent_date, expected_del_cat = sample_stage[i]
+        dd_ = d[(d.st == i) & y]
+        if not dd_.empty:
+            samp = sum(dd_.samples)
+            most_recent_date = recent_date(dd_)
+            return_.append([stage, samp, most_recent_date, expected_del_cat])
+
+        dd_ = d[(d.st == i) & np.invert(y)]
+        if not dd_.empty:
+            samp = sum(dd_.samples)
+            most_recent_date = recent_date(dd_)
+            return_.append([stage, samp, most_recent_date, expected_del_cat])
+
+    return return_
+
+
+def rejected_df(d):
+    return_ = []
+    elements = stage_preprocessing(d)
+    for stage, samp, most_recent_date, expected_del_cat in elements:
+        delivered = ""
+        stage_notes = "failed QC or analysis"
+        return_.append(
+            [stage, samp, most_recent_date, delivered, stage_notes, "not-processed"]
+        )
+
+    return return_
+
+
+def onhold_df(d):
+    return_ = []
+    elements = stage_preprocessing(d)
+    for stage, samp, most_recent_date, expected_del_cat in elements:
+        delivered = ""
+        stage_notes = "samples frozen until further notice"
+        return_.append(
+            [stage, samp, most_recent_date, delivered, stage_notes, "not-processed"]
+        )
+
+    return return_
+
+
+def completed_df(d):
+    return_ = []
+    elements = stage_preprocessing(d)
+    for stage, samp, most_recent_date, expected_del_cat in elements:
+        delivered = "delivered"
+        stage_notes = "completed"
+        return_.append(
+            [stage, samp, most_recent_date, delivered, stage_notes, "completed"]
+        )
+
+    return return_
+
+
+def inprogress_df(d):
+    return_ = []
+    flag = {
+        "submitted to SCRI": "submitted",
+        "IGO submitted": "submittedIGO",
+        "sequenced": "delivered",
+        "NA": "not submitted yet",
+    }
+    elements = stage_preprocessing(d)
+    for stage, samp, most_recent_date, expected_del_cat in elements:
+        delivered = expected_del_cat(most_recent_date)
+        stage_notes = "processing"
+        return_.append(
+            [stage, samp, most_recent_date, delivered, stage_notes, flag[stage]]
+        )
+
+    return return_
+
+
+def pending_df(d):
+    return_ = []
+    elements = stage_preprocessing(d)
+    for stage, samp, most_recent_date, expected_del_cat in elements:
+        delivered = expected_del_cat(most_recent_date)
+        stage_notes = "pending further action - check with wet lab"
+        return_.append(
+            [stage, samp, most_recent_date, delivered, stage_notes, "not-processed"]
+        )
+
+    return return_
+
+
+def nd_df(d):
+    return_ = []
+    elements = stage_preprocessing(d)
+    for stage, samp, most_recent_date, expected_del_cat in elements:
+        delivered = expected_del_cat(most_recent_date)
+        stage_notes = "missing meta data - check with wet lab"
+        return_.append(
+            [stage, samp, most_recent_date, delivered, stage_notes, "not-processed"]
+        )
+
+    return return_
+
+
+def notsubmitted_df(d):
+    return_ = []
+    elements = stage_preprocessing(d)
+    for _, samp, most_recent_date, expected_del_cat in elements:
+        stage = "not submitted"
+        delivered = expected_del_cat(most_recent_date)
+        stage_notes = "no samples delivered for this project"
+        return_.append(
+            [stage, samp, most_recent_date, delivered, stage_notes, "not-processed"]
+        )
+
+    return return_
+
+
+functions = {
+    "rejected": rejected_df,
+    "onhold": onhold_df,
+    "pending": pending_df,
+    "completed": completed_df,
+    "inprogress": inprogress_df,
+    "ND": nd_df,
+    "not submitted": notsubmitted_df,
+}
+
+
+def process_data(df):
+
+    df.loc[
+        (
+            (df.sample_status == "")
+            & (df.samples > 0)
+            & (
+                (df.submitted == "no")
+                | (df.IGO_submitted == "no")
+                | (df.sequenced == "no")
+            )
+        ),
+        "sample_status",
+    ] = "rejected"
+    df.loc[
+        (
+            (df.sample_status == "")
+            & (df.samples > 0)
+            & (
+                (df.submitted == "yes")
+                | (df.IGO_submitted == "yes")
+                | (df.sequenced == "yes")
+                | (df.submission_date.notna())
+                | (df.IGO_sub_date.notna())
+                | (df.sequencing_date.notna())
+            )
+        ),
+        "sample_status",
+    ] = "in-progress"
+
+    df.loc[(df.sample_status == "") & (df.samples > 0), "sample_status"] = "ND"
+    df.loc[df.sample_status == "", "sample_status"] = "not submitted"
+    table_ = pd.DataFrame(
+        columns=[
+            "PI_name",
+            "PROJECTTITLE",
+            "PROJECTSTATUS",
+            "CONTACTNAME",
+            "DESCRIPTION",
+            "ASSIGNEDTO",
+            "TOTALEXPECTED",
+            "TOTALDELIVERED",
+            "STATUS",
+            "stage",
+            "samples",
+            "recent",
+            "delivery",
+            "stage_notes",
+            "notes",
+        ]
+    )
+    for lab in df.PI_name.unique():
+        temp_op = df[df.PI_name == lab]
+        for project in temp_op.projectName.unique():
+            temp_op_project = temp_op[temp_op.projectName == project]
+            assignedto = temp_op_project.labMember_name.unique()[0]
+            description = re.sub(
+                "\|\*\*\* Experimental design:",
+                "<br><strong>Experimental design:</strong>",
+                temp_op_project.Description.unique()[0],
+            )
+            TOTALEXPECTED = temp_op_project.sample_count.unique()[0]
+            TOTALEXPECTED = int(TOTALEXPECTED) if TOTALEXPECTED else 0
+            TOTALDELIVERED = int(temp_op_project.total_delivered.unique()[0])
+            notes = temp_op_project.notes.unique()[0]
+            if notes:
+                notes = (
+                    '<a href="#" data-toggle="tooltip" data-placement="top" '
+                    'title="{}">View note</a>'.format(notes)
+                )
+            for ele in temp_op_project.sample_status.unique():
+                d = temp_op_project[temp_op_project.sample_status == ele]
+                if not d.empty:
+                    elements = functions[re.sub("-", "", ele)](d)
+                    for (
+                        stage,
+                        samp,
+                        most_recent_date,
+                        delivered,
+                        stage_notes,
+                        flag,
+                    ) in elements:
+
+                        if delivered == "overdue":
+                            STATUS = 4
+                        elif assignedto == "" and samp > 0:
+                            STATUS = 3
+                        elif not samp:
+                            STATUS = 22
+                        elif stage and pd.isnull(most_recent_date):
+                            STATUS = 21
+                        else:
+                            STATUS = 1
+
+                        table_ = table_.append(
+                            {
+                                "PI_name": temp_op_project.PI_name.unique()[0],
+                                "PROJECTTITLE": temp_op_project.projectName.unique()[0],
+                                "PROJECTSTATUS": temp_op_project.project_status.unique()[
+                                    0
+                                ],
+                                "CONTACTNAME": temp_op_project.contact_name.unique()[0],
+                                "DESCRIPTION": description,
+                                "ASSIGNEDTO": assignedto,
+                                "TOTALEXPECTED": TOTALEXPECTED,
+                                "TOTALDELIVERED": TOTALDELIVERED,
+                                "STATUS": STATUS,
+                                "stage": stage,
+                                "samples": samp,
+                                "recent": ""
+                                if pd.isnull(most_recent_date)
+                                else most_recent_date,
+                                "delivery": delivered,
+                                "stage_notes": stage_notes,
+                                "notes": notes,
+                                "flag": flag,
+                            },
+                            ignore_index=True,
+                        )
+
+    return table_
+
+
+def fill_project_rows(p):
+    kargs = {}
+    # get the highest status
+    status = max([int(str(i)[0]) for i in p.STATUS])
+    if status == 2:
+        status = max(p.STATUS)
+    if status == 21:
+        key = max(
+            [
+                k
+                for k, v in sample_stage.items()
+                if v[0] in p.stage[p.STATUS == status].values
+            ]
+        )
+        status_, msg = list("21")
+        projectstatus = dict(project_status[int(status_)]["mesg" + msg])
+        projectstatus["TITLE"] = projectstatus["TITLE"].format(sample_stage[key][0])
+        projectstatus["DATACONTENT"] = projectstatus["DATACONTENT"].format(
+            re.sub("ed", "ing", sample_stage[key][0])
+        )
+    elif status == 22:
+        status_, msg = list("22")
+        projectstatus = dict(project_status[int(status_)]["mesg" + msg])
+    else:
+        projectstatus = dict(project_status[status])
+
+    # override sample flags when a project is completed
+    if p.PROJECTSTATUS.unique()[0] == "completed":
+        projectstatus = dict(project_status[5])
+
+    kargs.update(projectstatus)
+    kargs["PROGRESS"], kargs["TABLE"] = fill_progress_bar(p)
+    r = "".join(random.choice(string.ascii_letters + string.digits) for i in range(8))
+    DESCRIPTION = collapse.format(r, p.DESCRIPTION.unique()[0])
+    kargs["DESCRIPTION"] = DESCRIPTION
+    kargs["PROJECTTITLE"] = p.PROJECTTITLE.unique()[0]
+    kargs["CONTACTNAME"] = p.CONTACTNAME.unique()[0]
+    kargs["DATATARGET"] = r
+    kargs["ASSIGNEDTO"] = p.ASSIGNEDTO.unique()[0] if p.ASSIGNEDTO.unique()[0] else ""
+    kargs["notes"] = p.notes.unique()[0]
+
+    return HTML_project_rows.format(**kargs)
+
+
+def fill_progress_bar(p):
+    # sort rows by flag
+    dataframe = pd.DataFrame(columns=p.columns)
+    for f in ["not-processed", "completed", "submitted", "submittedIGO", "delivered"]:
+        tdf = p[p.flag == f]
+        if not tdf.empty:
+            dataframe = dataframe.append(tdf)
+    p = dataframe
+    kargs = {}
+    progressbar_ = []
+    TABLE_ = []
+    td = p.TOTALDELIVERED.unique()[0]
+    te = p.TOTALEXPECTED.unique()[0]
+    if te and td > te:
+        te_ = te
+        for _, row in p.iterrows():
+            if row.samples < te_:
+                valuenow = row.samples / td * 100
+                te_ -= row.samples
+                kargs["CLASS"] = row.flag
+                kargs["VALUENAOW"] = valuenow
+                kargs["TITLE"] = row.samples
+                kargs["STATE"] = ""
+                kargs["STYLE"] = "background: rgba(136,176,141,0.6);"
+                kargs["SPAN"] = span.format(**kargs)
+                TABLE_.append(
+                    table_row.format(
+                        row.flag,
+                        row.stage,
+                        row.samples,
+                        row.recent,
+                        row.delivery,
+                        row.stage_notes,
+                    )
+                )
+                progressbar_.append(progressbar.format(**kargs))
+            else:
+                if te_:
+                    valuenow = te_ / td * 100
+                    kargs["CLASS"] = row.flag
+                    kargs["VALUENAOW"] = valuenow
+                    kargs["TITLE"] = row.samples
+                    kargs["STATE"] = ""
+                    kargs["STYLE"] = "background: rgba(136,176,141,0.6);"
+                    kargs["SPAN"] = ""
+                    progressbar_.append(progressbar.format(**kargs))
+                    valuenow = (row.samples - te_) / td * 100
+                    kargs["CLASS"] = row.flag
+                    kargs["VALUENAOW"] = valuenow
+                    kargs["TITLE"] = row.samples
+                    kargs["STATE"] = "progress-bar-warning"
+                    kargs["STYLE"] = ""
+                    kargs["SPAN"] = span.format(**kargs)
+                    TABLE_.append(
+                        table_row.format(
+                            row.flag,
+                            row.stage,
+                            row.samples,
+                            row.recent,
+                            row.delivery,
+                            row.stage_notes,
+                        )
+                    )
+                    progressbar_.append(progressbar.format(**kargs))
+                    te_ = 0
+                else:
+                    valuenow = row.samples / td * 100
+                    kargs["CLASS"] = row.flag
+                    kargs["VALUENAOW"] = valuenow
+                    kargs["TITLE"] = row.samples
+                    kargs["STATE"] = "progress-bar-warning"
+                    kargs["STYLE"] = ""
+                    kargs["SPAN"] = span.format(**kargs)
+                    TABLE_.append(
+                        table_row.format(
+                            row.flag,
+                            row.stage,
+                            row.samples,
+                            row.recent,
+                            row.delivery,
+                            row.stage_notes,
+                        )
+                    )
+                    progressbar_.append(progressbar.format(**kargs))
+    else:
+        for _, row in p.iterrows():
+            if te:
+                valuenow = row.samples / te * 100
+            elif td:
+                valuenow = row.samples / td * 100
+            else:
+                valuenow = 0
+            kargs["CLASS"] = row.flag
+            kargs["VALUENAOW"] = valuenow
+            kargs["TITLE"] = row.samples
+            kargs["STATE"] = ""
+            kargs["STYLE"] = "background: rgba(136,176,141,0.6);"
+            kargs["SPAN"] = span.format(**kargs)
+            TABLE_.append(
+                table_row.format(
+                    row.flag,
+                    row.stage,
+                    row.samples,
+                    row.recent,
+                    row.delivery,
+                    row.stage_notes,
+                )
+            )
+            progressbar_.append(progressbar.format(**kargs))
+
+    TABLE_ = "".join(TABLE_)
+    r = "".join(random.choice(string.ascii_letters + string.digits) for i in range(8))
+    TABLE = table.format(r, TABLE_)
+    progress = """<div class="progress" data-toggle="collapse" data-target="#{}">
+                    {}
+                    {}
+                 </div>
+                 """
+    if te:
+        text = """
+        <div class="bar-text" style="color: #990000; font-weight: bold;">{} / {} samples delivered</div>""".format(
+            td, te
+        )
+    else:
+        text = """
+        <div class="bar-text" style="color: #990000; font-weight: bold;">{} samples delivered</div>""".format(
+            td
+        )
+    progress = progress.format(r, "".join(progressbar_), text)
+
+    return progress, TABLE
+
+
+def count_states(df):
+    states = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}  # count completed projects
+    for i in df.PROJECTTITLE.unique():
+        state = df[df.PROJECTTITLE == i]
+        if state.PROJECTSTATUS.unique()[0] == "completed":
+            state = 5
+        else:
+            state = state.STATUS.max()
+            if state >= 21:
+                state = 2
+        states[state] += 1
+
+    return states
+
+
+###############################################################
+HTML_project_rows = """
+            <div class="{FLAG}">
+                <div class="row">
+                  <div class="col-sm-2">
+                    <button type="button" class="btn btn-info btn-xs" style="width: 160px;" data-toggle="collapse" data-target="#{DATATARGET}">
+                      <span class="projecttooltip" data-toggle="tooltip" title="{PROJECTTITLE}" data-placement="auto left">{PROJECTTITLE}</span>
+                    </button><span class="label label-warning">{CONTACTNAME}</span>
+                  </div>
+                  <div class="col-sm-1">
+                    <button type="button" class="btn {BTN} btn-xs" style="width: 50px; font-size: 10px;" data-toggle="popover" title="{TITLE}" data-content="{DATACONTENT}" data-trigger="hover" data-placement="auto bottom">
+                      <span class="glyphicon glyphicon-{GLYPHICON}"></span> {LABEL}
+                    </button>
+                  </div>
+                  <div class="col-sm-7 text-center">
+                    {PROGRESS}
+                  </div>
+                  <div class="col-sm-1">
+                    <strong>{ASSIGNEDTO}</strong>
+                  </div>
+                  <div class="col-sm-1">
+                    {notes}
+                  </div>
+                </div>
+                {TABLE}
+                {DESCRIPTION}
+            </div>
+"""
+progressbar = """<div class="progress-bar {STATE}" role="progressbar" aria-valuenow="{VALUENAOW}" aria-valuemin="0" aria-valuemax="100" style="{STYLE}">
+                        {SPAN}
+                      </div>
+                      """
+span = """<span class="{CLASS}" data-toggle="tooltip" data-placement="top" title="{TITLE}"></span>"""
+collapse = """<div id="{}" class="collapse">
+                    {}
+                  </div>"""
+table = """<div id="{}" class="row collapse">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-7">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Stage</th>
+                        <th>Samples</th>
+                        <th>Date</th>
+                        <th>Delivery</th>
+                        <th>Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {}
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-sm-2"></div>
+              </div>
+                """
+table_row = """<tr class="table-{}">
+                          <td>{}</td>
+                          <td>{}</td>
+                          <td>{}</td>
+                          <td>{}</td>
+                          <td>{}</td>
+                        </tr>
+                        """
+HTML_footer = """
+<script>
+
+    $(".progress-bar").each(function(){
+        each_bar_width = $(this).attr('aria-valuenow');
+        $(this).width(each_bar_width + '%');
+    });
+
+    $(document).ready(function(){
+
+        $('.projecttooltip').tooltip();
+    
+        $('[data-toggle="tooltip"]').tooltip();   
+    
+        $('[data-toggle="popover"]').popover();
+    
+        $('.danger').data("lastState",0);
+        $('.danger').text("Action - Close");
+    
+        $('.user').data("lastState",0);
+        $('.user').text("Computation - Close");
+    
+        $('.warning').data("lastState",0);
+        $('.warning').text("Warning - Close");
+    
+        $('.okay').data("lastState",0);
+        $('.okay').text("Ongoing - Close");
+    
+        $('.projectcompleted').data("lastState",0);
+        $('.projectcompleted').text("Completed - Close");
+    
+    
+        $('.not-processed').tooltip('show');
+        $('.delivered').tooltip('show');
+        $('.submitted').tooltip('show');
+        $('.submittedIGO').tooltip('show');
+        $('.completed').tooltip('show');
+    });
+
+    $('.toggle-all').click(function(){
+
+      if ($(this).data("lastState") === null || $(this).data("lastState") === 0) {
+        $('.collapse.in').collapse('hide');
+        $(this).data("lastState",1);
+        $(this).text("Toggle - Open All");
+      }
+      else {
+
+        $('.panel-collapse').removeData('bs.collapse')
+        .collapse({parent:false, toggle:false})
+        .collapse('show')
+        .removeData('bs.collapse')
+        .collapse({parent:'#accordion', toggle:false});
+
+        $(this).data("lastState",0);
+        $(this).text("Toggle - Close All");
+      }
+  });
+
+    $('.danger').click(function(){
+
+      if ($(this).data("lastState") === null || $(this).data("lastState") === 0) {
+        $('.DANGER').hide();
+        $(this).data("lastState",1);
+        $(this).text("Action - Open");
+      }
+      else {
+
+        $('.DANGER').show();
+        $(this).data("lastState",0);
+        $(this).text("Action - Close");
+      }
+
+      });
+
+    $('.user').click(function(){
+
+      if ($(this).data("lastState") === null || $(this).data("lastState") === 0) {
+        $('.USER').hide();
+        $(this).data("lastState",1);
+        $(this).text("Computation - Open");
+      }
+      else {
+
+        $('.USER').show();
+        $(this).data("lastState",0);
+        $(this).text("Computation - Close");
+      }
+
+      });
+
+    $('.warning').click(function(){
+
+      if ($(this).data("lastState") === null || $(this).data("lastState") === 0) {
+        $('.WARNING').hide();
+        $(this).data("lastState",1);
+        $(this).text("Warning - Open");
+      }
+      else {
+
+        $('.WARNING').show();
+        $(this).data("lastState",0);
+        $(this).text("Warning - Close");
+      }
+
+      });
+
+    $('.okay').click(function(){
+
+      if ($(this).data("lastState") === null || $(this).data("lastState") === 0) {
+        $('.OKAY').hide();
+        $(this).data("lastState",1);
+        $(this).text("Ongoing - Open");
+      }
+      else {
+
+        $('.OKAY').show();
+        $(this).data("lastState",0);
+        $(this).text("Ongoing - Close");
+      }
+
+      });
+
+    $('.projectcompleted').click(function(){
+
+      if ($(this).data("lastState") === null || $(this).data("lastState") === 0) {
+        $('.PROJECTCOMPLETED').hide();
+        $(this).data("lastState",1);
+        $(this).text("Completed - Open");
+      }
+      else {
+
+        $('.PROJECTCOMPLETED').show();
+        $(this).data("lastState",0);
+        $(this).text("Completed - Close");
+      }
+
+      });
+
+
+</script>
+
+</body>
+</html>
+"""
+
+statement = """
+SELECT 
+    l.PI_name,
+    p.projectName,
+    p.contact_name,
+    p.`status` AS 'project_status',
+    m.appearance as `labMember_name`,
+    m.labMember_name as `full_name`,
+    COUNT(s.id) AS 'samples',
+    s.label,
+    s.`status` AS 'sample_status',
+    s.priority,
+    s.submitted,
+    i.submission_date,
+    s.IGO_submitted,
+    i.IGO_sub_date,
+    s.sequenced,
+    i.sequencing_date,
+    p.`Description`,
+    e.sample_count,
+    ifnull(t.total_delivered, 0) as 'total_delivered',
+    p.notes
+FROM
+    lab AS l
+        JOIN
+    project_data AS p ON p.lab_id = l.id
+        LEFT JOIN
+    sample_data AS s ON s.projectData_id = p.id
+        LEFT JOIN
+    important_dates AS i ON i.sampleData_id = s.id
+        LEFT JOIN
+    lab_member AS m ON m.id = p.assignedMember_id
+        LEFT JOIN
+    expected_samples AS e ON e.projectData_id = p.id
+        LEFT JOIN
+    (SELECT 
+         count(id) as 'total_delivered', projectData_id
+    FROM
+        sample_data
+    GROUP BY projectData_id) AS t ON t.projectData_id = p.id
+GROUP BY PI_name , projectName , project_status , sample_status , submission_date , IGO_sub_date , sequencing_date
+ORDER BY FIELD(s.priority,
+        'very low',
+        'low',
+        'medium',
+        'high',
+        'very high') DESC, PI_name"""
+
+
+###############################################################
+def main():
+
+    HTML = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <title>Ongoing Projects</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <style>
+          td, th {{
+            padding-left: 5px;
+            border-bottom: 1px solid #ddd;
+          }}
+          table {{
+              width: 100%;
+              font-size: 12px;
+              border-collapse: collapse;
+            }}
+          .projecttooltip + .tooltip > .tooltip-inner {{
+            background-color: #beffbd;
+            color: #000000;
+            font-size: 12px;
+            data-placement: auto left;
+          }}
+          .panel-body {{
+            padding: 0px 0px 0px 0px;
+            margin-bottom:0px;
+          }}
+          .panel-heading {{
+            padding: 0px 0px 0px 10px;
+            margin-bottom:0px;
+          }}
+          .col-sm-2 {{
+            padding: 20px 0px 0px 20px;
+            margin-bottom:0px;
+          }}
+          .col-sm-1 {{
+            padding: 20px 0px 0px 20px;
+            margin-bottom:0px;
+          }}
+          .table-not-processed {{
+            background-color: rgba(255, 0, 0, 0.2);
+          }}
+          .table-completed {{
+            background-color: rgba(0, 0, 255, 0.2);
+          }}
+          .table-submitted {{
+            background-color: rgba(255, 152, 0, 0.2);
+          }}
+          .table-submittedIGO {{
+            background-color: rgba(255, 152, 0, 0.3);
+          }}
+          .table-delivered {{
+            background-color: rgba(0, 255, 0, 0.2);
+          }}
+          .progress {{
+            height: 15px;
+            border-radius:0;
+            overflow:visible;
+            margin-top: 25px;
+          }}
+          .bar-text {{
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: #190fe2;
+            font-size:10px;
+            padding-top: 15px;
+          }}
+          .not-processed + .tooltip {{
+            position:relative;
+            float:right;
+            float-offset: 10%;
+            white-space: nowrap;
+          }}
+          .submittedIGO + .tooltip {{
+            position:relative;
+            float:right;
+            float-offset: 10%;
+            white-space: nowrap;
+          }}
+          .submitted + .tooltip {{
+            position:relative;
+            float:right;
+            float-offset: 10%;
+            white-space: nowrap;
+          }}
+          .completed + .tooltip {{
+            position:relative;
+            float:right;
+            float-offset: 10%;
+            white-space: nowrap;
+          }}
+          .delivered + .tooltip {{
+            position:relative;
+            float:right;
+            float-offset: 10%;
+            white-space: nowrap;
+          }}
+          .not-processed + .tooltip > .tooltip-inner {{
+            background-color: rgba(255, 0, 0, 0.6);
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            font-size: 8px;
+            padding: 2px 10px;
+          }}
+          .completed + .tooltip > .tooltip-inner {{
+            background-color: rgba(0, 0, 255, 0.6);
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            font-size: 8px;
+            padding: 2px 10px;
+          }}
+          .submitted + .tooltip > .tooltip-inner {{
+            background-color: rgba(255, 152, 0, 0.4);
+            color: rgb(25, 15, 226);
+            font-weight: bold;
+            font-size: 8px;
+            padding: 2px 10px;
+          }}
+          .submittedIGO + .tooltip > .tooltip-inner {{
+            background-color: rgba(255, 152, 0, 0.6);
+            color: rgb(25, 15, 226);
+            font-weight: bold;
+            font-size: 8px;
+            padding: 2px 10px;
+          }}
+          .delivered + .tooltip > .tooltip-inner {{
+            background-color: rgba(0, 255, 0, 0.6);
+            color: rgb(25, 15, 226);
+            font-weight: bold;
+            font-size: 8px;
+            padding: 2px 10px;
+          }}
+          .not-processed + .tooltip > .tooltip-arrow {{
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #000000;
+          }}
+          .completed + .tooltip > .tooltip-arrow {{
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #000000;
+          }}
+          .submitted + .tooltip > .tooltip-arrow {{
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #000000;
+          }}
+          .submittedIGO + .tooltip > .tooltip-arrow {{
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #000000;
+          }}
+          .delivered + .tooltip > .tooltip-arrow {{
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #000000;
+          }}
+        </style>
+    </head>
+    <body>
+
+    <div class="container">
+
+      <h3>Ongoing Projects - Date: {}</h3>
+      <hr>
+        <div>
+          <div class="row">
+            <div class="col-sm-12"><strong>Contextual meaning of labels and their order:</strong></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <span class="label label-danger">samples overdue for sequencing</span>&nbsp;&#8594;
+              <span class="label label-primary">computational person not assigned</span>&nbsp;&#8594;
+              <span class="label label-warning">Missing meta data or new project waiting for samples</span>&nbsp;&#8594;
+              <span class="label label-success">Projects being processed and/or analyzed</span> &#8594;
+              <span class="label label-info">Projects completed</span>
+            </div>
+          </div>
+        </div>
+      <hr>
+      <div class="container">
+          <button class="btn btn-default toggle-all">Toggle - Open All</button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="btn btn-danger danger btn-xs">Action - Open</button>&nbsp;<span class="badge">{}</span>
+          <button class="btn btn-primary user btn-xs">Computation - Open</button>&nbsp;<span class="badge">{}</span>
+          <button class="btn btn-warning warning btn-xs">Warning - Open</button>&nbsp;<span class="badge">{}</span>
+          <button class="btn btn-success okay btn-xs">Ongoing - Open</button>&nbsp;<span class="badge">{}</span>
+          <button class="btn btn-info projectcompleted btn-xs">Completed - Open</button>&nbsp;<span class="badge">{}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="label label-default">Total Collaborators: {}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="label label-default">Total Projects: {}</span>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          PIs
+        </div>
+      </div>
+      <div>
+        <p>
+          &nbsp&nbsp&nbsp&nbsp© Copyright 2020,
+          <a href="mailto:awnimousa@gmail.com">Awni Mousa</a>.
+          Dana Pe'er Lab, MSKCC.
+        </p>
+      </div>
+    </div>
+    """
+    HTML_PIs = """
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="collapse-heading-{}">
+            <a role="button" class="panel-link" data-toggle="collapse" data-parent="#accordion" href="#collapse-category-{}" aria-expanded="false" aria-controls="collapse-category-{}">
+              PINAME
+            </a>
+            </div>
+            <div class="panel-collapse collapse" id="collapse-category-{}" role="tabpanel" aria-labelledby="collapse-heading-{}">
+              <div class="panel-body">
+                PROJECTROWS
+              </div>
+            </div>
+          </div>
+    """
+    today = date.today()
+
+    db_connect = Conn()
+    db_connect.conn(os.path.expanduser("~/.config.json"))
+    db_connect.cur.execute(statement)
+    res = [i for i in db_connect.cur.fetchall()]
+    db_connect.db.disconnect()
+
+    tb = pd.DataFrame(
+        res,
+        columns=[
+            "PI_name",
+            "projectName",
+            "contact_name",
+            "project_status",
+            "labMember_name",
+            "full_name",
+            "samples",
+            "label",
+            "sample_status",
+            "priority",
+            "submitted",
+            "submission_date",
+            "IGO_submitted",
+            "IGO_sub_date",
+            "sequenced",
+            "sequencing_date",
+            "Description",
+            "sample_count",
+            "total_delivered",
+            "notes",
+        ],
+    )
+
+    # manage filtering
+    criterion_lab_member, criterion_project, criterion_label, filtered, criterion = [
+        pd.Series([False] * tb.shape[0]),
+        pd.Series([False] * tb.shape[0]),
+        pd.Series([False] * tb.shape[0]),
+        "",
+        False,
+    ]
+    if args.filter_by_lab_member:
+        criterion_lab_member = tb["full_name"].map(
+            lambda x: any(
+                [i.lower() in x.lower() for i in args.filter_by_lab_member if x]
+            )
+        )
+        criterion = True
+    if args.filter_by_project:
+        criterion_project = tb["projectName"].map(
+            lambda x: any([i.lower() in x.lower() for i in args.filter_by_project])
+        )
+        criterion = True
+    if args.filter_by_label:
+        criterion_label = tb["label"].map(
+            lambda x: x.lower() == args.filter_by_label.lower() if x else False
+        )
+        criterion = True
+    if criterion:
+        idx = criterion_lab_member | criterion_project | criterion_label
+        tb = tb[idx]
+        filtered = "filtered"
+
+    if not tb.empty:
+        tb = tb.fillna("")
+        tb.submission_date = pd.to_datetime(tb.submission_date)
+        tb.IGO_sub_date = pd.to_datetime(tb.IGO_sub_date)
+        tb.sequencing_date = pd.to_datetime(tb.sequencing_date)
+        tb = process_data(tb)
+
+        labels = tb.loc[:, ["PROJECTTITLE", "PROJECTSTATUS", "STATUS"]]
+        labels = count_states(labels)
+
+        HTML = HTML.format(
+            str(today) + " {}".format(filtered.upper()),
+            labels[4],
+            labels[3],
+            labels[2],
+            labels[1],
+            labels[5],
+            tb.PI_name.unique().size - 1,
+            tb.PROJECTTITLE.unique().size,
+        )
+        HTML_ = []
+        n = 1
+        for PI in tb.PI_name.unique():
+            HTML_PIs_ = re.sub("PINAME", PI, HTML_PIs)
+            HTML_PIs_ = HTML_PIs_.format(n, n, n, n, n)
+
+            HTML_project_rows_ = []
+            op_sub = tb[tb.PI_name == PI]
+            for i in op_sub.PROJECTTITLE.unique():
+                sub_proj = op_sub[op_sub.PROJECTTITLE == i]
+                HTML_project_rows_.append(fill_project_rows(sub_proj))
+
+            HTML_project_rows_ = "\n".join(HTML_project_rows_)
+            HTML_PIs_ = re.sub("PROJECTROWS", HTML_project_rows_, HTML_PIs_)
+            HTML_.append(HTML_PIs_)
+            n += 1
+        HTML_PIs = "\n".join(HTML_)
+        HTML = re.sub("PIs", HTML_PIs, HTML) + HTML_footer
+
+        if args.output:
+            filename = "~/html_outs/{}_projects_index.html".format(args.output)
+        else:
+            filename = "~/html_outs/projects_index.html"
+
+        os.makedirs(os.path.expanduser("~/html_outs"), exist_ok=True)
+
+        with open(os.path.expanduser(filename), "w") as f:
+            f.write(HTML)
+            f.close()
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(
+        description="Generate a HTML report on projects filtered by a union of lab "
+        "member/s and project/s."
+    )
+
+    parser.add_argument(
+        "-filter-by-lab-member",
+        dest="filter_by_lab_member",
+        action="store",
+        nargs="*",
+        help="generate a report filtered by lab member/s. Provide first name, or last "
+        "name, or both. Partial names accepted too.",
+    )
+    parser.add_argument(
+        "-filter-by-project",
+        dest="filter_by_project",
+        action="store",
+        nargs="*",
+        help="generate a report filtered by project/s. Provide a string, or a list of "
+        "strings. Partial project names accepted too.",
+    )
+    parser.add_argument(
+        "-filter-by-label",
+        dest="filter_by_label",
+        action="store",
+        nargs="?",
+        help="generate a report filtered by sample label (Special filter for HTAN).",
+    )
+
+    parser.add_argument(
+        "-o",
+        dest="output",
+        action="store",
+        nargs="?",
+        help="prefix to output filename.",
+    )
+
+    args = parser.parse_args()
+
+    main()

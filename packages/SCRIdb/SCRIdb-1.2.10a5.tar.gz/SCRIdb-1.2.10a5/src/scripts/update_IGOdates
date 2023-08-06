@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+
+"""\
+Update IGO submission dates and sequencing dates.
+"""
+import argparse
+import os
+import re
+from dateutil.parser import parse
+
+import pandas as pd
+
+from SCRIdb.connector import Conn
+
+
+def main():
+    db_connect = Conn()
+    db_connect.conn(os.path.expanduser("~/.config.json"))
+
+    filename = os.path.expanduser(args.filename)
+    df = pd.read_excel(filename, header=None)
+    # scan and determine column for sample names by matching field to Sample name in
+    # database
+
+    for col in df.columns:
+        s = [f"'{i}'" for i in df[col]]
+        s = ",".join(s)
+        try:
+            db_connect.cur.execute(
+                'SELECT id FROM sample_data WHERE Sample in ({})'.format(s)
+            )
+            res = [i for i in db_connect.cur.fetchall()]
+            if res:
+                print("Found sample names in column {}!".format(col))
+                break
+        except:
+            pass
+
+    idx = []
+    n = 0
+    for s in df[col]:
+        db_connect.cur.execute(
+            'SELECT id FROM sample_data WHERE Sample="{}"'.format(s)
+        )
+        res = [i for i in db_connect.cur.fetchall()]
+        if res:
+            print(res[0][0], " : ", s)
+            idx.append(res[0])
+            n += 1
+
+    print()
+    print("Total Samples Searched: {}".format(n))
+    print("Total IDs found: {}".format(len(idx)))
+    idx.sort()
+
+    ma = re.search("\d{4}-\d{1,2}-\d{1,2}", filename)
+    IGO_date = parse(ma.group()).strftime("%Y-%m-%d")
+
+    if not args.sequencing_date:
+        # sequencing_date defaults to IGO_sub_date
+        statement = (
+            "UPDATE important_dates SET IGO_sub_date='{}', sequencing_date='{}' "
+            "WHERE sampleData_id=%s".format(IGO_date, IGO_date)
+        )
+    elif args.sequencing_date.upper() == "NULL":
+        statement = (
+            "UPDATE important_dates SET IGO_sub_date='{}', sequencing_date=NULL "
+            "WHERE sampleData_id=%s".format(IGO_date)
+        )
+    else:
+        try:
+            sequencing_date = parse(args.sequencing_date).strftime("%Y-%m-%d")
+            statement = (
+                "UPDATE important_dates SET IGO_sub_date='{}', sequencing_date='{}' "
+                "WHERE sampleData_id=%s".format(IGO_date, sequencing_date)
+            )
+        except:
+            statement = (
+                "UPDATE important_dates SET IGO_sub_date='{}' WHERE "
+                "sampleData_id=%s".format(IGO_date)
+            )
+            print(
+                "{:*^100s}".format(
+                    "  WARNING: Updating only IGO_sub_date! Check sequencing date!  "
+                )
+            )
+    print(statement)
+
+    # update the database
+    try:
+        db_connect.cur.executemany(statement, idx)
+        db_connect.db.commit()
+        db_connect.cur.close()
+        print("IGO dates updated successfully!")
+    except Exception as e:
+        db_connect.db.rollback()
+        print(str(e))
+
+    db_connect.db.disconnect()
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "filename",
+        action="store",
+        nargs="?",
+        help="Excel file name. The file name must include the IGO submission date.",
+    )
+    parser.add_argument(
+        "-s",
+        dest="sequencing_date",
+        action="store",
+        nargs="?",
+        help="Provide a sequencing data if different from IGO_submission_date. "
+        "If not provided, sequencing_date will default to IGO_sub_date",
+    )
+
+    args = parser.parse_args()
+
+    main()

@@ -1,0 +1,304 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+
+import pandas as pd
+import yaml
+from tabulate import tabulate
+
+from SCRIdb.query import db_connect
+from SCRIdb.tools import jobs_yml_config, json_jobs, sample_data_frame
+
+
+def main():
+
+    save = False if args.dryrun else True
+    config_load = json.load(open(os.path.expanduser(args.config)))
+    db_connect.conn(config_load)
+
+    # TODO: add cite_seq if different from hashtags
+    if args.mode in ["hashtag", "TCR"]:
+        q = (
+            "SELECT "
+            "  Sample AS sampleName, "
+            "  AWS_storage AS sample_path "
+            "FROM "
+            "  {}_lib "
+            "WHERE "
+            "  sampleData_id IN ({});".format(
+                args.mode, ",".join(["%s"] * len(args.ids))
+            )
+        )
+    else:
+        q = (
+            "SELECT "
+            "  Sample AS sampleName, "
+            "  AWS_storage AS sample_path "
+            "FROM "
+            "  sample_data "
+            "WHERE "
+            "  id IN ({});".format(",".join(["%s"] * len(args.ids)))
+        )
+
+    db_connect.cur.execute(q, tuple(args.ids))
+    res = db_connect.cur.fetchall()
+    f_in = [i[0] for i in res]
+    try:
+        source_path = [os.path.dirname(i[1].strip("/")) for i in res]
+    except AttributeError as e:
+        print(str(e), ": Missing data source path! Check query...")
+        print("{:>10}{}".format("", db_connect.cur.statement))
+        sys.exit()
+
+    sd = pd.DataFrame(
+        {"proj_folder": source_path, "s3_loc": source_path, "fastq": f_in}
+    )
+    sample_data = sample_data_frame(sd)
+
+    # validate the path on S3
+    for _, row in sample_data.iterrows():
+        cmd = "aws s3 ls {}".format(row.s3_loc)
+        p = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+            shell=True,
+        )
+        outs, errs = p.communicate()
+        try:
+            assert outs, ""
+        except AssertionError as e:
+            print(e)
+            print("The following sample will be excluded due to missing data in path:")
+            print(
+                tabulate(
+                    sample_data.loc[
+                        sample_data.id == row.id, ["id", "sample", "s3_loc"]
+                    ],
+                    headers="keys",
+                    tablefmt="fancy_grid",
+                    showindex=False,
+                )
+            )
+            sample_data = sample_data[sample_data.id != row.id]
+
+    if sample_data.empty:
+        print("Warning: empty data.")
+        print(
+            tabulate(
+                sample_data[["id", "sample", "s3_loc"]],
+                headers="keys",
+                tablefmt="fancy_grid",
+                showindex=False,
+            )
+        )
+        sys.exit(1)
+
+    if args.mode in ["hashtag", "TCR"]:
+        inputs_labels, exclude_s = json_jobs(
+            sample_data, config_path=os.path.expanduser(args.tool_path), save=False,
+        )
+        for inputs, labels, j_inputs, j_labels in inputs_labels:
+
+            # change destination
+            m = re.search(r"(?<=_).*", j_labels["sample"])
+            n = re.search(f"(?={m.group()}).*", j_labels["destination"])
+            j_labels["destination"] = os.path.join(args.target_path, n.group())
+            if save:
+                with open(os.path.join(args.tool_path, inputs), "w") as f:
+                    f.write(json.dumps(j_inputs, indent=4))
+                    f.close()
+                with open(os.path.join(args.tool_path, labels), "w") as f:
+                    f.write(json.dumps(j_labels, indent=4))
+                    f.close()
+                print(
+                    "Inputs and labels json files were written to:\n\t\t {}".format(
+                        os.path.join(args.tool_path, "config")
+                    )
+                )
+            else:
+                print("INPUTS:\n{:-^7}\n".format(""), json.dumps(j_inputs, indent=4))
+                print("LABELS:\n{:-^7}\n".format(""), json.dumps(j_labels, indent=4))
+
+    else:
+        config_jobs_yml = os.path.join(
+            os.path.expanduser(args.tool_path), "config", args.jobs_out
+        )
+        jobs_yml = jobs_yml_config(
+            sample_data,
+            email=config_load["email"],
+            config_jobs_yml=config_jobs_yml,
+            seqcargs=args.seqcargs,
+            save=False,
+        )
+        # change upload-prefix, sampleName, and output-prefix
+        for j in jobs_yml["jobs"]:
+            try:
+                m = re.search(r"(?<=_).*", j["user-tags"]["sampleName"])
+                n = re.search(f"(?={m.group()}).*", j["upload-prefix"])
+                if args.target_path:
+                    j["upload-prefix"] = os.path.join(args.target_path, n.group())
+                cmd = "aws s3 ls {}".format(j["genomic-fastq"])
+            except KeyError:
+                m = re.search(r"(?<=_).*", j["sampleName"])
+                n = re.search(f"(?={m.group()}).*", j["uriS3Output"])
+                if args.target_path:
+                    j["uriS3Output"] = os.path.join(args.target_path, n.group())
+                cmd = "aws s3 ls {}".format(j["uriS3Fastq"])
+            p = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+                shell=True,
+            )
+            outs, errs = p.communicate()
+            # get IGO
+            IGO = re.search(r"(?=_IGO).+?(?=_[A-Za-z])", outs)
+
+            try:
+                j["user-tags"]["sampleName"] = (
+                    j["user-tags"]["sampleName"] + IGO.group()
+                )
+                j["output-prefix"] = j["output-prefix"] + IGO.group()
+            except KeyError:
+                j["sampleName"] = j["sampleName"] + IGO.group()
+            except AttributeError:
+                pass
+
+        if save:
+            try:
+                assert os.path.isdir(os.path.dirname(config_jobs_yml)), ""
+                print(
+                    "Jobs Yaml file will be written to:\n\t\t {}".format(
+                        config_jobs_yml
+                    )
+                )
+            except AssertionError:
+                print("{:*^80}".format(" WARNING "))
+                print(
+                    "{:>10}Path `{}` does not exist!".format(
+                        "", os.path.dirname(config_jobs_yml)
+                    )
+                )
+                print(
+                    "{:>10}Try using `--tool_path [TOOL_PATH]` to override the "
+                    "default path to your tool.".format("")
+                )
+                config_jobs_yml = os.path.join(
+                    os.path.expanduser("~"), os.path.basename(config_jobs_yml)
+                )
+                print(
+                    "{:>10}Jobs YAML will be saved to `{}`!".format("", config_jobs_yml)
+                )
+
+            yaml.dump(jobs_yml, open(config_jobs_yml, "w"), sort_keys=False)
+        else:
+            print(yaml.dump(jobs_yml, sort_keys=False))
+
+    db_connect.db.disconnect()
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+
+    class StoreDictKeyPair(argparse.Action):
+        def __call__(self, parser, namespace, values, option_string=None):
+            if not values:
+                sys.exit("ERROR: Missing `--seqc-args` values!")
+            my_dict = {}
+            for kv in values.split(","):
+                k, v = kv.split("=")
+                my_dict[k] = v
+            setattr(namespace, self.dest, my_dict)
+
+    parser.add_argument(
+        "ids", action="store", nargs="*", help="Sample IDs.",
+    )
+    parser.add_argument(
+        "-d",
+        "--destination-path",
+        dest="target_path",
+        required=True,
+        action="store",
+        nargs="?",
+        help="Provide a target path were processing outputs will be stored.",
+    )
+    parser.add_argument(
+        "-m",
+        "--mode",
+        dest="mode",
+        action="store",
+        default=None,
+        choices=["hashtag", "TCR"],
+        nargs="?",
+        help="Choose `hashtag` or `TCR` for samples with libraries from these preps.",
+    )
+    parser.add_argument(
+        "-c",
+        "--config",
+        dest="config",
+        action="store",
+        nargs="?",
+        default=os.path.expanduser("~/.config.json"),
+        help="path to config file. Default: $HOME/.config.json",
+    )
+    parser.add_argument(
+        "-j",
+        "--jobs-out",
+        dest="jobs_out",
+        action="store",
+        nargs="?",
+        default="jobs.yml",
+        help="Provide a name to Yaml file. Default: `jobs.yml`.",
+    )
+    parser.add_argument(
+        "-tp",
+        "--tool-path",
+        dest="tool_path",
+        action="store",
+        default=os.getcwd(),
+        nargs="?",
+        help="Provide path to package used for processing.",
+    )
+    parser.add_argument(
+        "--seqc-args",
+        dest="seqcargs",
+        action=StoreDictKeyPair,
+        nargs="?",
+        metavar="KEY1=VAL1,KEY2=VAL2...",
+        help="Additional arguments to pass to SEQC.",
+    )
+    parser.add_argument(
+        "-e",
+        "--email",
+        dest="email",
+        action="store",
+        nargs="?",
+        help="Override email address in config.",
+    )
+    parser.add_argument(
+        "-p",
+        "--pem",
+        dest="pem",
+        action="store",
+        nargs="?",
+        help="Override path to AWS EC key pair file `.pem` in config.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        dest="dryrun",
+        action="store_true",
+        help="Do not write processing jobs to file. Will rather print to screen.",
+    )
+
+    args = parser.parse_args()
+
+    main()
