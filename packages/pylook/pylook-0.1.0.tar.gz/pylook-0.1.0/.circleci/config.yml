@@ -1,0 +1,32 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: continuumio/miniconda3
+    
+    working_directory: ~/pylook
+
+    steps:
+      # Step 1 - get the repo
+      - checkout
+      # Step 2 - Install miniconda and deps
+      - run:
+          name: install-deps
+          command: conda env create -f environment.yml
+      # Step 3 - Run Tests with Flake8
+      - run:
+          name: test
+          command: |
+            conda init bash
+            source activate pylook
+            pip install -e .
+            pytest --flake8
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
