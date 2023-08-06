@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: denoise_fmri
+Version: 0.1.0
+Summary: denoise_fmri - BIDS app for denoising fmriprep outputs
+Home-page: http://github.com/akhanf/denoise-fmri
+Author: Ali Khan
+Author-email: ali.khan@uwo.ca
+License: UNKNOWN
+Description: denoise-fmri
+        ============
+        
+        Known issues:
+         - pybids has an incompatibility with the latest fmriprep (20.2.0) dataset_description.json, need to replace this with the version in resources/dataset_description.json for now 
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/x-rst

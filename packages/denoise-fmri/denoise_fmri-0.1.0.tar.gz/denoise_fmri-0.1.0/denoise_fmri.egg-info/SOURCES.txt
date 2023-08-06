@@ -1,0 +1,16 @@
+MANIFEST.in
+README.rst
+setup.py
+denoise_fmri/__init__.py
+denoise_fmri/run.py
+denoise_fmri.egg-info/PKG-INFO
+denoise_fmri.egg-info/SOURCES.txt
+denoise_fmri.egg-info/dependency_links.txt
+denoise_fmri.egg-info/entry_points.txt
+denoise_fmri.egg-info/requires.txt
+denoise_fmri.egg-info/top_level.txt
+denoise_fmri/config/snakebids.yml
+denoise_fmri/resources/dataset_description.json
+denoise_fmri/workflow/Snakefile
+denoise_fmri/workflow/scripts/denoise.py
+denoise_fmri/workflow/scripts/smooth.py
