@@ -1,0 +1,100 @@
+Metadata-Version: 2.1
+Name: scrapy-plus
+Version: 1.0.5
+Summary: scrapy 常用爬网必备工具包
+Home-page: http://www.github.com/dotnetage/scrapy_plus
+Author: Ray
+Author-email: csharp2002@hotmail.com
+License: BSD
+Keywords: scrapy,crawl,redis,tor
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Utilities
+Description-Content-Type: text/markdown
+Requires-Dist: aliyun-python-sdk-core (==2.13.30)
+Requires-Dist: aliyun-python-sdk-core-v3 (==2.13.11)
+Requires-Dist: aliyun-python-sdk-kms (==2.13.0)
+Requires-Dist: attrs (==20.3.0)
+Requires-Dist: Automat (==20.2.0)
+Requires-Dist: certifi (==2020.12.5)
+Requires-Dist: cffi (==1.14.4)
+Requires-Dist: chardet (==4.0.0)
+Requires-Dist: constantly (==15.1.0)
+Requires-Dist: crcmod (==1.7)
+Requires-Dist: cryptography (==3.2.1)
+Requires-Dist: cssselect (==1.1.0)
+Requires-Dist: dateparser (==1.0.0)
+Requires-Dist: hyperlink (==20.0.1)
+Requires-Dist: idna (==2.10)
+Requires-Dist: incremental (==17.5.0)
+Requires-Dist: itemadapter (==0.2.0)
+Requires-Dist: itemloaders (==1.0.4)
+Requires-Dist: jmespath (==0.10.0)
+Requires-Dist: lxml (==4.6.2)
+Requires-Dist: oss2 (==2.13.1)
+Requires-Dist: parsel (==1.6.0)
+Requires-Dist: Protego (==0.1.16)
+Requires-Dist: pyasn1 (==0.4.8)
+Requires-Dist: pyasn1-modules (==0.2.8)
+Requires-Dist: pycparser (==2.20)
+Requires-Dist: pycryptodome (==3.9.9)
+Requires-Dist: PyDispatcher (==2.0.5)
+Requires-Dist: PyHamcrest (==2.0.2)
+Requires-Dist: pymongo (==3.11.2)
+Requires-Dist: pyOpenSSL (==20.0.1)
+Requires-Dist: python-dateutil (==2.8.1)
+Requires-Dist: pytz (==2020.4)
+Requires-Dist: queuelib (==1.5.0)
+Requires-Dist: redis (==3.5.3)
+Requires-Dist: regex (==2020.11.13)
+Requires-Dist: requests (==2.25.1)
+Requires-Dist: Scrapy (==2.4.1)
+Requires-Dist: scrapy-splash (==0.7.2)
+Requires-Dist: selenium (==3.141.0)
+Requires-Dist: service-identity (==18.1.0)
+Requires-Dist: six (==1.15.0)
+Requires-Dist: SQLAlchemy (==1.3.20)
+Requires-Dist: stem (==1.8.0)
+Requires-Dist: Twisted (==20.3.0)
+Requires-Dist: tzlocal (==2.1)
+Requires-Dist: urllib3 (==1.26.2)
+Requires-Dist: w3lib (==1.22.0)
+Requires-Dist: zope.interface (==5.2.0)
+
+# Scrapy+
+
+Scrapy扩展工具包。为[《从0学爬虫专栏》](https://www.imooc.com/read/34) 提供，详细的使用方法请到专栏内参考。
+
+```
+$ pip install scrapy_plus
+```
+
+Scrapy+提供以下的内容
+
+- 过滤器
+  - Redis 去重过滤器
+  - Redis 布隆去重过滤器
+- 中间件
+  - 自登录中间件
+  - 花瓣网专用中间件
+  - Chrome通用中间件
+  - Splash渲染中间件
+  - Tor中间件
+  - 随机UA中间件
+  - 随机代理中间件
+- 管道
+  - MongoDB数据存储管道
+  - 可支持阿里云的OSS图片管道
+- SQL存储端
+- 输入/输出处理器
+- 蜘蛛
+  - `BookSpider`
+  - `NeteaseSpider`
+  - `TaobaoSpider`
+
