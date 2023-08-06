@@ -1,0 +1,6 @@
+PyUtilib>=6.0.0
+ply
+six>=1.4
+
+[:python_version < "3.4"]
+enum34
