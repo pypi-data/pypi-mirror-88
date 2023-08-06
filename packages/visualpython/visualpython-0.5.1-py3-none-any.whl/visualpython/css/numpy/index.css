@@ -1,0 +1,349 @@
+.vp-numpy-container > .vp-numpy-packagePage.vp-minimize {
+ 
+    height: 25px;
+    overflow: hidden;
+}
+
+.vp-numpy-mainPageBlock-view .vp-minimize {
+    height: 25px;
+    overflow: hidden;
+}
+
+.vp-numpy-optionPageBlock-view .vp-minimize {
+    height: 25px;
+    overflow: hidden;
+}
+
+/* .vp-numpy-block { */
+    /* padding: 5px 0px; */
+    /* border-bottom: 1px solid darkgray; */
+/* } */
+
+.vp-numpy-textarea {
+    outline: none;
+    resize: none;
+}
+
+/* .vp-numpy-option-block { */
+    /* padding: 5px 20px !important; */
+/* } */
+.vp-numpy-option-block h4 {
+    font-size: 13px;
+}
+.vp-numpy-selected {
+    display: none;
+}
+
+.vp-numpy-tab-block-element-1-view {
+    display: flex;
+    flex-direction: row;
+}
+
+.vp-numpy-func_btn {
+    position: relative;
+    z-index: 10;
+    border-width: 0;
+    outline: 0;
+
+    font-family: Apple SD Gothic Neo;
+    background: #F5F5F5;
+    border: 0.25px solid #C4C4C4;
+}
+
+.vp-numpy-func_btn:hover{
+    cursor: pointer;
+    transition: 0.7s;
+    /* background-color: #E85401; */
+}
+
+.vp-numpy-func-btn {
+    position: relative;
+    z-index: 10;
+    background-color: #828282;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+    color: white;
+    border-width: 0;
+    outline: 0;
+}
+
+.vp-numpy-func-btn:hover{
+    cursor: pointer;
+    transition: 0.7s;
+    /* background-color: #E85401; */
+}
+
+.vp-numpy-input-checkbox-title {
+    margin-top: 4px;
+    margin-left: 5px;
+}
+
+/* default tag */
+.vp-numpy-input {
+    /* width: 100%; */
+    padding: 3px;
+    border: 1px solid #cfcfcf;
+    outline: 0;
+}
+
+/* h4 {
+    margin-bottom: 11px;
+} */
+
+.vp-numpy-select {
+    border-radius: 10px;
+    border: 1px solid #cfcfcf;
+    padding: 3px;
+
+    outline: 0;
+}
+
+.vp-numpy-arrayEditor-row-block {
+    border: 1px solid #828282;
+    padding: 0 1rem;
+    border-radius: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+/** 
+ *numpy style
+ */
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+.flex-row-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+}
+.flex-row-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.flex-row-between {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-flow: wrap;
+}
+
+.flex-column-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.margin-right-5px {
+    margin-right: 5px;
+}
+
+.font-weight-700 {
+    font-weight: 700;
+}
+
+.vp-numpy-style-margin-right-5px {
+    margin-right: 5px;
+}
+
+.vp-numpy-style-font-weight-700 {
+    font-weight: 700;
+}
+.vp-numpy-style-text-center {
+    text-align: center;
+}
+
+.vp-numpy-style-flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.vp-numpy-style-flex-row-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+}
+
+.vp-numpy-style-flex-row-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.vp-numpy-style-flex-row-center-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-flow: wrap;
+}
+
+.vp-numpy-style-flex-row-start {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.vp-numpy-style-flex-row-start-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-flow: wrap;
+}
+
+.vp-numpy-style-flex-row-evenly {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.vp-numpy-style-flex-row-around {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.vp-numpy-style-flex-row-evenly-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-flow: wrap;
+}
+
+.vp-numpy-style-flex-row-end {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.vp-numpy-style-flex-row-end-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-flow: wrap;
+}
+.vp-numpy-style-flex-row-between {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.vp-numpy-style-flex-row-between-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.vp-numpy-style-flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.vp-numpy-style-flex-column-wrap {
+    display: flex;
+    flex-direction: column;
+    flex-flow: wrap;
+}
+
+.vp-numpy-style-flex-column-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.vp-numpy-style-flex-column-center-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-flow: wrap;
+}
+.vp-numpy-style-base-margin-left {
+    margin-left: 10px;
+}
+
+.vp-numpy-style-margin-right-10px {
+    margin-right: 10px;
+}
+
+/* 스크롤바 */
+/* scrollbar // */
+.scrollbar::-webkit-scrollbar {
+    width: 1em;
+}
+   
+.scrollbar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+   
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: #828282;
+    outline: 1px solid slategrey;
+}
+
+.vp-numpy-scrollbar::-webkit-scrollbar {
+    width: 1em;
+}
+   
+.vp-numpy-scrollbar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+   
+.vp-numpy-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #828282;
+    outline: 1px solid slategrey;
+}
+
+.vp-numpy-oneArrayEditor-length-input {
+    width: 50px;
+}
+
+.vp-numpy-twoArrayEditor-row-input {
+    width: 50px;
+}
+
+.vp-numpy-twoArrayEditor-col-input {
+    width: 50px;
+}
+
+.vp-numpy-threeArrayEditor-row-input {
+    width: 50px;
+}
+
+.vp-numpy-threeArrayEditor-col-input {
+    width: 50px;
+}
+
+.vp-numpy-threeArrayEditor-depth-input {
+    width: 50px;
+}
+
+.vp-numpy-padding-1rem {
+    padding: 1rem;
+}
+/* .vp-numpy-return-input
+,.vp-numpy-select-dtype { */
+    /* width: 200px; */
+    /* height: 20px; */
+    /* font-size: 1.2em; */
+/* } */
+
+.vp-arrow-right , 
+.vp-arrow-down {
+    background-repeat: no-repeat;
+}
+
+.vp-numpy-block .vp-accordion-header {
+    font-weight: bold;
+}
+
+.vp-numpy-mainPageBlock-view .vp-minimize .vp-accordion-header .vp-multilang {
+	color: #696969;
+}
+
+.vp-numpy-block .vp-accordion-header .vp-multilang {
+	color: #E85401;
+}
+
+.vp-numpy-tab {
+    margin-top: 10px;
+}

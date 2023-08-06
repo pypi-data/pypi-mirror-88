@@ -1,0 +1,60 @@
+#vp-wrapper .vp-option-page .CodeMirror { border: 1px solid silver; }
+#vp-wrapper .vp-option-page .CodeMirror-empty { outline: 1px solid #c22; }
+#vp-wrapper .vp-option-page .CodeMirror-empty.CodeMirror-focused { outline: none; }
+#vp-wrapper .vp-option-page .CodeMirror pre.CodeMirror-placeholder { color: #999; }
+
+#vp-wrapper .vp-option-page .CodeMirror-scroll { min-height: 80px; max-height: 250px;}
+
+#vp_udfRefresh {
+    padding: 5px;
+}
+
+#vp-wrapper .vp-common-block {
+    border-bottom: 1px solid darkgray;
+}
+.vp-udf-key {
+    cursor: pointer;
+}
+.vp-udf-key.selected {
+    color: #E85401;
+}
+
+/* code td 긴 문자열 생략 */
+.vp-udf-code,
+.vp-udf-code pre {
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 250px;
+    height: 35px;
+    margin-right: 5px;
+}
+
+#vp_udfRefresh:hover {
+    cursor: pointer;
+}
+
+/* 삭제 버튼 */
+.vp-del-col {
+    background-image: url(../../resource/close_big.svg);
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+/* code block add popup menu */
+.vp-cm-popup {
+    display:none;
+    position: absolute;
+    background-color: #ffffff;
+    box-shadow: 1px 1px 3px 0px grey;
+    z-index: 999;
+}
+.vp-cm-popup-menu {
+    min-height: 20px;
+    cursor: pointer;
+}
