@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="cpskin">
+
+  <include file="configure.zcml" />
+  <include package="cpskin.core" file="testing.zcml"/>
+
+  <genericsetup:registerProfile
+      name="testing"
+      title="cpskin.minisite"
+      directory="profiles/testing"
+      description="Tests the cpskin.minisite package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:importStep
+      name="cpskin.minisite"
+      title="register minisites"
+      description="Register minisites as utilities"
+      handler=".startup.registerMinisitesSetupHandler"
+      />
+
+</configure>

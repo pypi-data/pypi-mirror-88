@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<object name="portal_actions" meta_type="Plone Actions Tool"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+    <object name="cpskin_configurations" meta_type="CMF Action Category">
+        <object name="enable_hnavigation" meta_type="CMF Action" i18n:domain="cpskin">
+            <property name="title" i18n:translate="">Show minisite horizontal navigation menu</property>
+            <property name="description"></property>
+            <property name="url_expr">string:${context/absolute_url}/@@ms_horizontal_navigation_enable</property>
+            <property name="link_target"></property>
+            <property name="available_expr">context/@@ms_horizontal_navigation/can_enable_hnavigation</property>
+            <property name="permissions">
+                <element value="Manage portal"/>
+            </property>
+            <property name="visible">True</property>
+        </object>
+        <object name="disable_hnavigation" meta_type="CMF Action" i18n:domain="cpskin">
+            <property name="title" i18n:translate="">Hide minisite horizontal navigation menu</property>
+            <property name="description"></property>
+            <property name="url_expr">string:${context/absolute_url}/@@ms_horizontal_navigation_disable</property>
+            <property name="link_target"></property>
+            <property name="available_expr">context/@@ms_horizontal_navigation/can_disable_hnavigation</property>
+            <property name="permissions">
+                <element value="Manage portal"/>
+            </property>
+            <property name="visible">True</property>
+        </object>
+    </object>
+</object>

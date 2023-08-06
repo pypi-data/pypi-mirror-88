@@ -1,0 +1,14 @@
+setuptools
+Plone
+plone.api
+collective.weightedportlets
+plone.app.contenttypes
+cpskin.core
+cpskin.locales
+plone.rest
+
+[test]
+plone.app.testing
+plone.app.robotframework[debug]
+cpskin.workflow
+cpskin.core[test]

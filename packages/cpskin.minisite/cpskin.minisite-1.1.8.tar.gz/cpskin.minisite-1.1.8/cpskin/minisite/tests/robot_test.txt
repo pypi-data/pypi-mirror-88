@@ -1,0 +1,281 @@
+# ============================================================================
+# DEXTERITY ROBOT TESTS
+# ============================================================================
+#
+# Run this robot test stand-alone:
+#
+#  $ bin/test -s cpskin.core -t test_banner.robot --all
+#
+# Run this robot test with robot server (which is faster):
+#
+# 1) Start robot server:
+#
+# $ bin/robot-server --reload-path cpskin cpskin.minisite.testing.CPSKIN_MINISITE_FUNCTIONAL_TESTING
+#
+# 2) Run robot tests:
+#
+# $ bin/robot cpskin/minisite/tests/robot_test.txt
+# OR
+# $ bin/robot -i current cpskin/minisite/tests/robot_test.txt
+#
+# See the http://docs.plone.org for further details (search for robot
+# framework).
+#
+# ============================================================================
+*** Settings ***
+
+Resource  plone/app/robotframework/keywords.robot
+Resource  plone/app/robotframework/selenium.robot
+
+Library  Remote  ${PLONE_URL}/RobotRemote
+
+Test Setup  Open test browser
+Test Teardown  Close all browsers
+
+*** Variables ***
+
+${BROWSER} =  firefox
+${SUBDOMAIN_PLONE_URL} =   http://127.0.0.1:${ZOPE_PORT}/${PLONE_SITE_ID}
+
+*** Test Cases ***
+
+Plone site does not show minisite viewlet
+    Go to  ${PLONE_URL}
+    Page should contain  Plone site
+    Page should not contain minisite viewlet
+    Page should contain element  css=div.searchSection
+    Element should be visible  css=div.searchSection
+
+Plone control panel does show panel link
+    Enable autologin as  Manager
+    Go to  ${PLONE_URL}/plone_control_panel
+    Page should contain  Mini sites
+    Page should contain link  @@minisites_panel
+
+Control panel does show panel minisites
+    Enable autologin as  Manager
+    ${folder}=  Create content  id=folder  type=Folder  title=Folder
+    ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description  container=${folder}
+    Go to  ${PLONE_URL}/plone_control_panel
+    Page should contain link  @@minisites_panel
+    Click link  @@minisites_panel
+    Page should contain  tests/minisites_config.txt
+    Page should contain  Chemin /plone/minisite
+    Page should contain  Minisite does not exist
+
+Minisite does not show minisite viewlet nor portlet in portal mode
+    Enable autologin as  Manager
+    Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    Go to  ${PLONE_URL}/minisite
+    Page should contain  Mini site
+    Page should not contain minisite viewlet
+    Page should not contain minisite portlet
+    Page should contain element  css=div.searchSection
+    Element should be visible  css=div.searchSection
+
+Minisite does show minisite viewlet and portlet in minisite mode
+    Enable autologin as  Manager
+    Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    Go to  ${SUBDOMAIN_PLONE_URL}/minisite
+    Page should contain  Mini site
+    Page should contain minisite viewlet
+    Page should contain minisite portlet
+    Page should contain element  css=div.searchSection
+    Element should not be visible  css=div.searchSection
+
+Minisite viewlet link in minisite mode leads to same page in portal mode
+    Enable autologin as  Manager
+    Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    Go to  ${SUBDOMAIN_PLONE_URL}/minisite
+    Page should contain  Mini site
+    Page should contain minisite viewlet
+    Click link  localhost
+    Sleep  1
+    Select Window  url=${PLONE_URL}/minisite
+    Page should contain  Mini site description
+    Page should not contain minisite viewlet
+
+Subfolder of minisite does not show minisite viewlet nor portlet in portal mode
+    Enable autologin as  Manager
+    ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    Create content  id=subfolder  type=Folder  title=Subfolder  container=${minisite}
+    Go to  ${PLONE_URL}/minisite/subfolder
+    Page should contain  Subfolder
+    Page should not contain minisite viewlet
+    Page should not contain minisite portlet
+
+Subfolder of minisite does show minisite viewlet and portlet in minisite mode
+    Enable autologin as  Manager
+    ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    Create content  id=subfolder  type=Folder  title=Subfolder  container=${minisite}
+    Go to  ${SUBDOMAIN_PLONE_URL}/minisite/subfolder
+    Page should contain  Subfolder
+    Page should contain minisite viewlet
+    Page should contain minisite portlet
+
+Content of minisite does not show minisite viewlet nor portlet in portal mode
+    Enable autologin as  Manager
+    ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    Create content  id=content  type=Document  title=Document  container=${minisite}
+    Go to  ${PLONE_URL}/minisite/content
+    Page should contain  Document
+    Page should not contain minisite viewlet
+    Page should not contain minisite portlet
+
+Content of minisite does show minisite viewlet and portlet in minisite mode
+    Enable autologin as  Manager
+    ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    Create content  id=content  type=Document  title=Document  container=${minisite}
+    Go to  ${SUBDOMAIN_PLONE_URL}/minisite/content
+    Page should contain  Document
+    Page should contain minisite viewlet
+    Page should contain minisite portlet
+
+Minisite viewlet link of subfolder in minisite mode leads to same page in portal mode
+    Enable autologin as  Manager
+    ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    Create content  id=subfolder  type=Folder  title=Subfolder  container=${minisite}
+    Go to  ${SUBDOMAIN_PLONE_URL}/minisite/subfolder
+    Page should contain  Subfolder
+    Page should contain minisite viewlet
+    Click link  localhost
+    Sleep  1
+    Select Window  url=${PLONE_URL}/minisite/subfolder
+    Page should contain  Subfolder
+    Page should not contain minisite viewlet
+
+Minisite as subfolder does not show minisite viewlet nor portlet in portal mode
+    Enable autologin as  Manager
+    ${folder}=  Create content  id=folder  type=Folder  title=Folder
+    Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description  container=${folder}
+    Go to  ${PLONE_URL}/folder/minisite
+    Page should contain  Mini site
+    Page should not contain minisite viewlet
+    Page should not contain minisite portlet
+
+Minisite as subfolder does show minisite viewlet and portlet in minisite mode
+    Enable autologin as  Manager
+    ${folder}=  Create content  id=folder  type=Folder  title=Folder
+    Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description  container=${folder}
+    Go to  ${SUBDOMAIN_PLONE_URL}/folder/minisite
+    Page should contain  Mini site
+    # Page should contain minisite viewlet
+    # Page should contain minisite portlet
+
+Search with searchbox in minisite as subfolder does show all content
+    Enable autologin as  Manager
+    ${folder}=  Create content  id=folder  type=Folder  title=Folder
+    Create content  id=to_find  type=Folder  title=To find in folder  container=${folder}
+    ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description  container=${folder}
+    Create content  id=to_find  type=Folder  title=To find in minisite  container=${minisite}
+    Go to  ${PLONE_URL}/folder/minisite
+    Page should contain  Mini site
+    Page should not contain minisite viewlet
+    Input text  css=#searchGadget  To find
+    Wait Until Page contains  To find in minisite
+    Wait Until Page contains  To find in folder
+    Page should contain  To find in minisite
+    Page should contain  To find in folder
+    Click element  css=#portal-searchbox .searchButton
+    Wait Until Page contains  To find in minisite
+    Wait Until Page contains  To find in folder
+    Page should contain  To find in minisite
+    Page should contain  To find in folder
+
+Minisite mode Search with searchbox in minisite as subfolder does show all content
+    [Tags]  current
+    Enable autologin as  Manager
+    ${folder}=  Create content  id=folder  type=Folder  title=Folder
+    Create content  id=to_find  type=Folder  title=To find in folder  container=${folder}
+    ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description  container=${folder}
+    Create content  id=to_find  type=Folder  title=To find in minisite  container=${minisite}
+    Go to  ${SUBDOMAIN_PLONE_URL}/folder/to_find
+    Exclude from navigation
+    Go to  ${SUBDOMAIN_PLONE_URL}/folder/minisite/to_find
+    Exclude from navigation
+    Go to  ${SUBDOMAIN_PLONE_URL}/folder/minisite
+    Page should contain  Mini site
+    # Page should contain minisite viewlet
+    Input text  css=#searchGadget  To find
+    # Page should contain  To find in minisite
+    # Page should not contain  To find in folder
+    Click element  css=#portal-searchbox .searchButton
+    # Location Should Contain  minisite/@@search
+    # Page should contain  To find in minisite
+    # Page should not contain  To find in folder
+    Click button  css=#search-field .searchButton
+    # Location Should Contain  minisite
+    # Page should contain  To find in minisite
+    # Page should not contain  To find in folder
+
+Minisite action to show/hide horizontal navigation menu
+    Enable autologin as  Manager
+    Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    Go to  ${SUBDOMAIN_PLONE_URL}/minisite
+    Page should contain  Mini site
+    Page should contain minisite viewlet
+    # XXX
+    # Click CPSkin Configuration by id  enable_hnavigation
+    # Page should contain  Activer le menu horizontal de navigation du minisite
+    # Click CPSkin Configuration by id  disable_hnavigation
+    # Page should contain  Désactiver le menu horizontal de navigation du minisite
+    # Page should not contain  Activer le menu horizontal de navigation du minisite
+
+Minisite actions viewlet shows tagged content
+    Enable autologin as  Manager
+    ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    ${subfolder}=  Create content  id=subfolder  type=Folder  title=Subfolder  container=${minisite}
+    Create content  id=mydocument  type=Document  title=My document  container=${subfolder}
+    Go to  ${PLONE_URL}/minisite/subfolder/mydocument
+    Click Link  css=#contentview-edit a
+    Click Link  css=#fieldsetlegend-categorization
+    Input Text  form.widgets.IHiddenTags.hiddenTags_additional  minisite-action
+    Click Button  Sauvegarder
+    # XXX
+    # Element Should Contain  id=hidden-tags  minisite-action
+    # Go to  ${PLONE_URL}/minisite
+    # Page should contain  My document
+
+Registration form should be available on minisite
+    Enable autologin as  Manager
+    # XXX
+    # Go to  ${PLONE_URL}/@@register
+    # Page should contain  Formulaire d'inscription
+    # ${minisite}=  Create content  id=minisite  type=Folder  title=Mini site  description=Mini site description
+    # Go to  ${PLONE_URL}/minisite/@@register
+    # Page should contain  Formulaire d'inscription
+    # Create content  id=test  type=Folder  title=Test folder
+    # Go to  ${PLONE_URL}/test/@@register
+    # Page should not contain  Formulaire d'inscription
+
+*** Keywords ***
+
+
+Page should contain minisite viewlet
+    Page should contain element  css=#viewlet-minisite
+    Page should contain link  localhost
+
+Page should not contain minisite viewlet
+    Page should not contain element  css=#viewlet-minisite
+
+Page should contain minisite portlet
+    Page should contain element  css=#portlet-minisite
+
+Page should not contain minisite portlet
+    Page should not contain element  css=#portlet-minisite
+
+Exclude from navigation
+    Click Link  css=#contentview-edit a
+    Click Link  id=fieldsetlegend-settings
+    Select Checkbox  id=form-widgets-IExcludeFromNavigation-exclude_from_nav-0
+    Click Button  Sauvegarder
+
+Open CPSkin Configuration Menu
+    Open Menu  plone-contentmenu-cpskin-configurations
+
+Click CPSkin Configuration by id
+    [arguments]  ${name}
+
+    Open CPSkin Configuration Menu
+    Element Should be visible  css=dl#plone-contentmenu-cpskin-configurations dd.actionMenuContent  #plone-contentmenu-cpskin-configurations-${name}
+    Click Link  id=plone-contentmenu-cpskin-configurations-${name}

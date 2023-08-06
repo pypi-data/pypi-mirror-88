@@ -1,0 +1,40 @@
+<tal:sections tal:define="portal_tabs view/portal_tabs;
+                          minisite_menu view/minisite_menu;
+                          actions view/actions"
+     tal:condition="python: minisite_menu or actions"
+     i18n:domain="plone">
+    <p class="hiddenStructure" i18n:translate="heading_sections">Navigation</p>
+    <div id="container-minisite-globalnav">
+
+    <div id="minisite-actions"
+         tal:condition="actions">
+         <ul>
+             <li tal:repeat="action actions">
+                 <a href=""
+                    tal:content="action/Title"
+                    tal:attributes="href action/getURL;
+                                    title action/description|nothing"></a>
+             </li>
+         </ul>
+    </div>
+
+    <ul id="minisite-globalnav"
+        tal:define="selected_tab python:view.selected_portal_tab"
+        tal:condition="minisite_menu">
+        <tal:tabs tal:repeat="tab portal_tabs">
+            <li tal:define="tid tab/id"
+                tal:attributes="id string:portaltab-${tid};
+                            class python:selected_tab==tid and 'selected' or 'plain'">
+                <a href=""
+                    tal:content="structure tab/name"
+                    tal:attributes="href tab/url;
+                               title tab/description|nothing;
+                               target tab/link_target|nothing;
+                               class tab/class | nothing">
+                    Tab Name
+                </a>
+            </li>
+        </tal:tabs>
+    </ul>
+    </div>
+</tal:sections>

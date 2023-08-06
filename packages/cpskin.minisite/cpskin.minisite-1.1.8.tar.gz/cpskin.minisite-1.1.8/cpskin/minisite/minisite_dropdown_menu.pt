@@ -1,0 +1,31 @@
+<div id="container-minisite-globalnav"
+     class="minisite-dropdown-menu-container"
+     i18n:domain="plone">
+
+    <div id="minisite-actions"
+         tal:define="actions view/actions"
+         tal:condition="actions">
+         <ul>
+             <li tal:repeat="action actions">
+                 <a href=""
+                    tal:content="action/Title"
+                    tal:attributes="href action/getURL;
+                                    title action/description|nothing"></a>
+             </li>
+         </ul>
+    </div>
+
+    <div class="minisite-dropdown-menu">
+
+        <a href="#" class="minisite-dropdown-menu-mobile"
+           tal:content="view/minisite_root/Title"></a>
+
+        <ul class="navTree navTreeLevel0">
+            <li tal:replace="structure view/createNavTree">
+                SUBTREE
+            </li>
+        </ul>
+
+    </div>
+
+</div>

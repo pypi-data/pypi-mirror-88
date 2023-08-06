@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="cpskin">
+
+<body>
+
+  <div id="content-core" metal:fill-slot="main">
+
+  <h2 i18n:translate="">Minisites</h2>
+
+  <tal:block define="minisites view/minisites">
+  <tal:no_minisites condition="not:minisites">
+  <p i18n:translate="">There are no mini sites configured.</p>
+  </tal:no_minisites>
+  <p class="discreet" i18n:translate="">Read-only list of minisites.</p>
+  <tal:sites repeat="minisite view/minisites">
+  <h3><a
+      i18n:translate=""
+      tal:define="obj python:minisite.obj(context)"
+      tal:attributes="href obj/absolute_url"
+      tal:content="obj/Title"
+      tal:on-error="string:Minisite does not exist." /></h3>
+    <p i18n:translate="">
+    Path <span i18n:name="search_path"
+               tal:replace="minisite/search_path" /><br />
+    Domain <a i18n:name="domain"
+              target="_blank"
+              tal:attributes="href minisite/minisite_url"
+              tal:content="minisite/minisite_url" /><br />
+    <span class="discreet">in file <span i18n:name="filename"
+                                         tal:replace="minisite/filename" /></span></p>
+  </tal:sites>
+  </tal:block>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<object>
+
+    <hidden manager="plone.portaltop" skinname="*">
+      <viewlet name="cpskin.minisitemenu" remove="True" />
+    </hidden>
+    <hidden manager="plone.abovecontent" skinname="*">
+      <viewlet name="cpskin.minisite" remove="True" />
+    </hidden>
+
+</object>

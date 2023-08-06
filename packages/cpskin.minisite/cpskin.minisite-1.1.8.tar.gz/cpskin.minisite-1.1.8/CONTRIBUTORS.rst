@@ -1,0 +1,5 @@
+- Godefroid Chapelle, Original Author [Bubblenet]
+- Laurent Lasudry [Affinitic]
+- Benoit Suttor [IMIO]
+- Christophe Boulanger [IMIO]
+- Leonardo J. Caballero G. [Plone Venezuela]

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<portlets xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+          i18n:domain="plone">
+
+ <portlet 
+     addview="cpskin.minisite.portlet"
+     title="Mini Site"
+     description="A portlet which shows minisite link"
+     i18n:attributes="title title_minisite_portlet;
+                      description description_minisite_portlet">
+    <for interface="plone.app.portlets.interfaces.IRightColumn" />
+ </portlet>
+
+</portlets>
