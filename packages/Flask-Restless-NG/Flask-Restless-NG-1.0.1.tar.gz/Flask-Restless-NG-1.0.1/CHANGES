@@ -1,0 +1,35 @@
+Changelog
+=========
+
+Changes in Flask-Restless-NG
+============================
+
+Version 1.0.1
+-------------
+- #4: `id` is an optional attribute as long as Model has a primary key
+- #6: Fix for `flask_restless.views` not being included in the installed package.
+
+Version 1.0.0
+-------------
+- Performance improvement: url_for() changed to build url locally instead of delegating it to Flask
+- This is the last release that is backward compatible with the original Flask-Restless API.
+
+
+Version 0.0.2
+-------------
+- New serializer (2-3x faster)
+- Added lru_cache to helpers to reduce number of recursive calls (better performance)
+
+
+Version 0.0.1
+-------------
+
+- Fixed 1.0+ compatibility
+- Fix for hybrid_property
+
+
+Original Flask-Restless
+=======================
+You can find the full `changelog`_ in the original repo
+
+.. _changelog: https://github.com/jfinkels/flask-restless/blob/master/CHANGES
