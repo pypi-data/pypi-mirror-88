@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: sdata_examples
+Version: 0.1.0
+Summary: structured data examples
+Home-page: https://github.com/lepy/sdata_examples
+Author: Lepy
+Author-email: lepy@mailbox.org
+Maintainer: Lepy
+Maintainer-email: lepy@mailbox.org
+License: MIT/Apache-2.0
+Description: # sdata_examples
+        sdata example data
+        
+        ## example 1
+        
+            import sdata
+            data = sdata.Data(name="data", uuid="38b26864e7794f5182d38459bab85841")
+        
+Keywords: open data
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Description-Content-Type: text/markdown
