@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: pyScatSpheres
+Version: 1.0.2rc1
+Summary: Scattering of array of spheres, scalar theory
+Home-page: https://pypi.org/project/pyScatSpheres
+Author: Tarik Ronan Drevon
+Author-email: tarik.drevon@stfc.ac.uk
+License: UNKNOWN
+Project-URL: Documentation, http://88.123.115.137:8000/projects/scattering/
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License 
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: colorama
+Requires-Dist: easygui
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: py3nj
+Requires-Dist: scipy
+
+# pyScatSpheres
+
+Package for solving the scalar wave equation  with a linear array of scattering spheres.
+Possibility to solve for constant potential well and hard spheres i.e. infinite potential.
+
+## installation
+`pip install pyScatSpheres`
+
+## Using the GUI
+A gui is available to interactively display pre calculated solutions.
+
+```python
+from pyScatSpheres import gui_base as gui
+sa = gui.GUI_handler()
+```
+
+![](figures/gui_screenshot.png)
+
+## Using the API
+New sets of solution can be calculated and solved to a pickle using the API.
+
+```python
+import numpy as np
+import pandas as pd
+from pyScatSpheres import qdot_sphere_array as qsa
+from pyScatSpheres import glob_colors as colors
+
+kas = [0.5,2,5]
+kds = [2,5,10]
+kps = [1.2]
+kas,kps,kds = np.meshgrid(kas,kps,kds)
+kas,kps,kds = kas.flatten(),kps.flatten(),kds.flatten()
+cols = ['N','ka','kp','kd','nmax','sigma','ap','bp']
+df = pd.DataFrame(columns=cols)
+for ka,kp,kd in zip(kas,kps,kds):
+    nmax = max(int(np.ceil(1.3*ka)),int(ka)+4)
+    s = qsa.QdotSphereArray(N=N,ka=ka,kp=kp,kd=kd*ka,nmax=10,solve=1,copt=1)
+    sig = s.get_s(npts=1000)
+    df=df.append(dict(zip(cols,[s.N,s.ka,s.kp,s.kd,s.nmax,sig,s.ap,s.bp])),ignore_index=True)
+df.to_pickle(df_name)
+print(colors.green+'DataFrame saved:\n'+ colors.yellow+df_name+colors.black)
+```
+
+
