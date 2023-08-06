@@ -1,0 +1,23 @@
+name: CoreTestSchema
+version: 1
+description: All-purpose testing schema
+unique on:
+  - k1
+  - k2
+on conflict: ReplaceWithNewer
+updated at field name: f4
+fields:
+  k1:
+    type: BigInteger
+    validators:
+      - NotNull
+  k2:
+    type: BigInteger
+  f1:
+    type: Unicode
+  f2:
+    type: Float
+  f3:
+    type: Unicode
+  f4:
+    type: DateTime
