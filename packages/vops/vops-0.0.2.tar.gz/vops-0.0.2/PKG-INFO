@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: vops
+Version: 0.0.2
+Summary: A package for visualizing profit-loss option diagrams
+Home-page: https://github.com/RJL22/Options
+Author: Ryan Lee
+Author-email: ryanjlee22@gmail.com
+License: UNKNOWN
+Description: # Options
+        This python project uses data from yahoo finance to graph option profit-loss diagrams
+        
+        ## Installing
+        Installing with pip:
+        ```bash
+        pip install gops
+        ```
+        
+        ## Usage
+        Simple program graphing a long call option:
+        ```python
+        import options
+        
+        contractName = 'AMD201218C00040000'
+        optionObj = options.scrapeCallOptions('AMD')
+        
+        options.graphLongCall(optionObj, contractName)
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
