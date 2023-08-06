@@ -1,0 +1,62 @@
+CHANGES
+=======
+
+* Bump to RKD v2.3.4 with a new structure
+* Bump RKD
+
+1.0.2
+-----
+
+* RST formatting - corrections
+* RST formatting - PyPI debug
+* RST formatting
+
+1.0.1
+-----
+
+* Update README.rst
+* Change python package name
+
+1.0.0
+-----
+
+* Resolve unit tests after expected changes
+* Update docs about importing in a project
+* Update PyPI information
+* Update docs
+* Correct docs
+* Bump RKD to 2.1.0 STABLE, finally change switch from --coop-repositories to --repositories using RKD v2.1 functionality
+* Add a todo
+* Add support for local directory-repositories
+
+1.0.0.0rc2
+----------
+
+* Fix RST syntax
+* Bump RKD to 2.0 RC4
+* Resolve tests after recent changes
+* Increase verbosity, add support for filenames templating
+* Improve docs
+
+1.0.0.0rc1
+----------
+
+* Improve docs
+* Add notice about malformed url, fix environment variable support
+* Rename variable that is too generic
+* Update docs
+* Support for categories distinction
+* Correct invalid environment name
+* Set correct include path order
+* Fix typo
+* Improve docs
+* Bump RKD version
+* Fix tests that are failing on Travis due to sort order
+* Correct tests on Travis
+* Improve docs
+* Cover installation task with tests, at least functional
+* Add tests initially
+* Remove Ansible as it was a mistake
+* Fix makefile
+* Initial commit
+* Initial commit
