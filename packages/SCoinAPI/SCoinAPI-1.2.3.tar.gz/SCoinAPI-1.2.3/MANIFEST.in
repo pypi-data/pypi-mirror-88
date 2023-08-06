@@ -1,0 +1,9 @@
+include *.in
+include *.py
+include *.txt
+include *.yml
+include CNAME
+recursive-include SCoinAPI *.py
+recursive-include build *.py
+recursive-include dist *.gz
+recursive-include dist *.whl
