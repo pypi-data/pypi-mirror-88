@@ -1,0 +1,126 @@
+0.1.9
+- removed the `backfill` command as this is no longer part of the GTDB workflow
+
+0.1.8
+- added check to `check_file` to identify potential misspellings indicated by parent and child
+  names being similar, but not identical
+  
+0.1.7
+- modified `add_dummy` command to also add dummy nodes to an optional taxonomy file
+
+0.1.6
+- fixed an overflow error when building on Windows
+
+0.1.5
+- fixed merge conflict causing code to not compile
+- bug fix to output table produced when validating type material
+
+0.1.4
+- removed the 'check_suffix' command since it produces excessive numbers of false positives
+  as a result of names such as g__Examplus_A, g__Examplus_B occuring without a corresponding 
+  g__Examplus due to the merging a splitting of same taxa.
+
+0.1.3
+- added check to check_file for capitalization of taxon names
+
+0.1.2
+- updates for GTDB R95
+- modified missing_genera to use canonical genome IDs
+- added red_diff functionality to compare RED values between releases
+
+0.1.1
+- added explicit check for Latinized specific names with placeholder generic names to the check_specific method
+
+0.1.0
+- initial migration to Python 3
+
+0.0.27
+- updated 'check_specific' method to flag genomes assigned a specific name that is considered a synonym
+
+0.0.26
+- fixed bug in 'tax_diff' causing additional passive changes to be reported
+- improved reporting of cases where a genus has multiple type species
+
+0.0.25
+- added 'remove_dummy' method
+
+0.0.24
+- minor improvements to reduce false positives when validating type material and source of specific and generic names
+- release used to validate the GTBD R89 bacterial taxonomy
+
+0.0.23
+- added 'add_dummy' method
+- release used to validate the GTDB R89 archaeal taxonomy
+
+0.0.22
+- added 'val_table' method
+- added 'check_generic' method
+
+0.0.21
+- added 'check_specific' method
+
+0.0.20
+- updated the "ncbi_species" method to use new GTDB metadata file and report additional fields in output tables
+
+0.0.19
+- added check to "check_file" to flag species names where the genus name is a placeholder and the specific name is Latinized
+
+0.0.18
+- updated check_tree so it could be used with trees containing "dummy" nodes required for the "2 genomes per species" curation trees
+
+0.0.17
+- added retired_taxa method
+
+0.0.16
+- modified validation of type strains to account for GTDB synonyms
+- add method for identifying sister genera that are candidates for merging into a single genera
+
+0.0.15
+- modified 'missing_genus' method so all ranks are filled in for taxonomy read from scaled tree
+
+0.0.14
+- added 'missing_genus' command to identify potentially missing genus labels
+
+0.0.13
+- changed default checks such that species assignments are ignored
+
+0.0.12
+- added additional validation checks to the 'species_clusters' method
+
+0.0.11
+- updated 'ncbi_tax_diff' command to remove GTDB metadata requirement
+
+0.0.10
+- added 'species_clusters' method for validation classifications in species clusters
+- added 'suffix_table' method
+
+0.0.9
+- reorganized help menu to emphasize validation methods
+- added 'branch_len' method
+- added 'type_species' method
+
+0.0.8
+- updated the type_strains method to use new GTDB metadata fields
+
+0.0.7
+- fixed issue with checkspelling assuming ranks were seperated by a ';', where a '; ' is also common
+
+0.0.6
+- added fuzzy search
+- added distribution of rank between taxonomies 
+
+0.0.5
+- improved output of the 'gtdb_cluster_ncbi' and 'type_strains' tables
+
+0.0.4
+- added ncbi_tax_diff general curation method
+- improved reporting of type material information in tables
+
+0.0.3
+- added GTDB taxonomy and accession information to ANI tables
+- modified inter-species ANI test to use Mash to screen out cases
+
+0.0.2
+- added type_strains validation method
+
+0.0.1
