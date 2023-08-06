@@ -1,0 +1,385 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Janar Leas <janar.leas@gmail.com>, 2019.
+# Priit Jõerüüt <hwlate@joeruut.com>, 2020.
+# Anonymous <noreply@weblate.org>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: Weblate 4.4\n"
+"Report-Msgid-Bugs-To: https://github.com/WeblateOrg/weblate/issues\n"
+"POT-Creation-Date: 2020-12-10 20:03+0000\n"
+"PO-Revision-Date: 2020-10-14 07:10+0000\n"
+"Last-Translator: Priit Jõerüüt <hwlate@joeruut.com>\n"
+"Language-Team: Estonian <https://hosted.weblate.org/projects/weblate/"
+"javascript/et/>\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.3-dev\n"
+
+#: weblate/static/editor/base.js:151
+#, javascript-format
+msgid "Cmd+%s"
+msgstr "Cmd+%s"
+
+#: weblate/static/editor/base.js:153
+#, javascript-format
+msgid "Ctrl+%s"
+msgstr "Ctrl+%s"
+
+#: weblate/static/editor/full.js:223
+msgid "The request for machine translation has failed:"
+msgstr "Nurjus päring masin-tõlkele:"
+
+#: weblate/static/editor/full.js:236
+#, javascript-format
+msgid "The request for machine translation using %s has failed:"
+msgstr "Nurjus päring masin-tõlkele, kasutades %s:"
+
+#: weblate/static/editor/full.js:270
+#, javascript-format
+msgid "Cmd+M then %s"
+msgstr "Cmd+M, seejärel %s"
+
+#: weblate/static/editor/full.js:272
+#, javascript-format
+msgid "Ctrl+M then %s"
+msgstr "Ctrl+M, seejärel %s"
+
+#: weblate/static/editor/full.js:358
+#, javascript-format
+msgid "Press Cmd+I then %s to dismiss this."
+msgstr "Loobumiseks vajuta Cmd+I ning %s."
+
+#: weblate/static/editor/full.js:363
+#, javascript-format
+msgid "Press Ctrl+I then %s to dismiss this."
+msgstr "Loobumiseks vajuta Ctrl+I ning %s."
+
+#: weblate/static/editor/full.js:486
+msgid "Copy"
+msgstr "Kopeeri"
+
+#: weblate/static/editor/full.js:492
+msgid "Copy and save"
+msgstr "Kopeeri ja salvesta"
+
+#: weblate/static/editor/zen.js:81
+msgid "There are some unsaved changes, are you sure you want to leave?"
+msgstr "Esineb mõni talletamata muudatus, soovid siiski lahkuda?"
+
+#: weblate/static/loader-bootstrap.js:150
+msgid "Add to screenshot"
+msgstr "Lisa kuvatõmmisele"
+
+#: weblate/static/loader-bootstrap.js:167
+msgid "Error loading search results!"
+msgstr "Tõrge otsingutulemuste laadimisel!"
+
+#: weblate/static/loader-bootstrap.js:171
+msgid "No new matching source strings found."
+msgstr "Ei leidu ühtegi vastavat lähte-lausendit."
+
+#: weblate/static/loader-bootstrap.js:237
+msgid "Sort this column"
+msgstr "Järjesta see tulp"
+
+#: weblate/static/loader-bootstrap.js:366
+msgid "Error while loading page:"
+msgstr "Viga lehekülje laadimisel:"
+
+#: weblate/static/loader-bootstrap.js:527
+#: weblate/static/loader-bootstrap.js:534
+msgid "Sunday"
+msgstr "Pühapäev"
+
+#: weblate/static/loader-bootstrap.js:528
+msgid "Monday"
+msgstr "Esmaspäev"
+
+#: weblate/static/loader-bootstrap.js:529
+msgid "Tuesday"
+msgstr "Teisipäev"
+
+#: weblate/static/loader-bootstrap.js:530
+msgid "Wednesday"
+msgstr "Kolmapäev"
+
+#: weblate/static/loader-bootstrap.js:531
+msgid "Thursday"
+msgstr "Neljapäev"
+
+#: weblate/static/loader-bootstrap.js:532
+msgid "Friday"
+msgstr "Reede"
+
+#: weblate/static/loader-bootstrap.js:533
+msgid "Saturday"
+msgstr "Lauapäev"
+
+#: weblate/static/loader-bootstrap.js:537
+#: weblate/static/loader-bootstrap.js:544
+msgctxt "Short (for example three letter) name of day in week"
+msgid "Sun"
+msgstr "Pühap"
+
+#: weblate/static/loader-bootstrap.js:538
+msgctxt "Short (for example three letter) name of day in week"
+msgid "Mon"
+msgstr "Esmasp"
+
+#: weblate/static/loader-bootstrap.js:539
+msgctxt "Short (for example three letter) name of day in week"
+msgid "Tue"
+msgstr "Teisip"
+
+#: weblate/static/loader-bootstrap.js:540
+msgctxt "Short (for example three letter) name of day in week"
+msgid "Wed"
+msgstr "Kolmap"
+
+#: weblate/static/loader-bootstrap.js:541
+msgctxt "Short (for example three letter) name of day in week"
+msgid "Thu"
+msgstr "Neljap"
+
+#: weblate/static/loader-bootstrap.js:542
+msgctxt "Short (for example three letter) name of day in week"
+msgid "Fri"
+msgstr "Reede"
+
+#: weblate/static/loader-bootstrap.js:543
+msgctxt "Short (for example three letter) name of day in week"
+msgid "Sat"
+msgstr "Laup"
+
+#: weblate/static/loader-bootstrap.js:547
+#: weblate/static/loader-bootstrap.js:554
+msgctxt "Minimal (for example two letter) name of day in week"
+msgid "Su"
+msgstr "P"
+
+#: weblate/static/loader-bootstrap.js:548
+msgctxt "Minimal (for example two letter) name of day in week"
+msgid "Mo"
+msgstr "E"
+
+#: weblate/static/loader-bootstrap.js:549
+msgctxt "Minimal (for example two letter) name of day in week"
+msgid "Tu"
+msgstr "T"
+
+#: weblate/static/loader-bootstrap.js:550
+msgctxt "Minimal (for example two letter) name of day in week"
+msgid "We"
+msgstr "K"
+
+#: weblate/static/loader-bootstrap.js:551
+msgctxt "Minimal (for example two letter) name of day in week"
+msgid "Th"
+msgstr "N"
+
+#: weblate/static/loader-bootstrap.js:552
+msgctxt "Minimal (for example two letter) name of day in week"
+msgid "Fr"
+msgstr "R"
+
+#: weblate/static/loader-bootstrap.js:553
+msgctxt "Minimal (for example two letter) name of day in week"
+msgid "Sa"
+msgstr "L"
+
+#: weblate/static/loader-bootstrap.js:557
+msgid "January"
+msgstr "Jaanuar"
+
+#: weblate/static/loader-bootstrap.js:558
+msgid "February"
+msgstr "Veebruar"
+
+#: weblate/static/loader-bootstrap.js:559
+msgid "March"
+msgstr "Märts"
+
+#: weblate/static/loader-bootstrap.js:560
+msgid "April"
+msgstr "Aprill"
+
+#: weblate/static/loader-bootstrap.js:561
+msgid "May"
+msgstr "Mai"
+
+#: weblate/static/loader-bootstrap.js:562
+msgid "June"
+msgstr "Juuni"
+
+#: weblate/static/loader-bootstrap.js:563
+msgid "July"
+msgstr "Juuli"
+
+#: weblate/static/loader-bootstrap.js:564
+msgid "August"
+msgstr "August"
+
+#: weblate/static/loader-bootstrap.js:565
+msgid "September"
+msgstr "September"
+
+#: weblate/static/loader-bootstrap.js:566
+msgid "October"
+msgstr "Oktoober"
+
+#: weblate/static/loader-bootstrap.js:567
+msgid "November"
+msgstr "November"
+
+#: weblate/static/loader-bootstrap.js:568
+msgid "December"
+msgstr "Detsember"
+
+#: weblate/static/loader-bootstrap.js:571
+msgctxt "Short name of month"
+msgid "Jan"
+msgstr "Jan"
+
+#: weblate/static/loader-bootstrap.js:572
+msgctxt "Short name of month"
+msgid "Feb"
+msgstr "Veb"
+
+#: weblate/static/loader-bootstrap.js:573
+msgctxt "Short name of month"
+msgid "Mar"
+msgstr "Mär"
+
+#: weblate/static/loader-bootstrap.js:574
+msgctxt "Short name of month"
+msgid "Apr"
+msgstr "Apr"
+
+#: weblate/static/loader-bootstrap.js:575
+msgctxt "Short name of month"
+msgid "May"
+msgstr "Mai"
+
+#: weblate/static/loader-bootstrap.js:576
+msgctxt "Short name of month"
+msgid "Jun"
+msgstr "Jun"
+
+#: weblate/static/loader-bootstrap.js:577
+msgctxt "Short name of month"
+msgid "Jul"
+msgstr "Jul"
+
+#: weblate/static/loader-bootstrap.js:578
+msgctxt "Short name of month"
+msgid "Aug"
+msgstr "Aug"
+
+#: weblate/static/loader-bootstrap.js:579
+msgctxt "Short name of month"
+msgid "Sep"
+msgstr "Sep"
+
+#: weblate/static/loader-bootstrap.js:580
+msgctxt "Short name of month"
+msgid "Oct"
+msgstr "Okt"
+
+#: weblate/static/loader-bootstrap.js:581
+msgctxt "Short name of month"
+msgid "Nov"
+msgstr "Nov"
+
+#: weblate/static/loader-bootstrap.js:582
+msgctxt "Short name of month"
+msgid "Dec"
+msgstr "Dets"
+
+#: weblate/static/loader-bootstrap.js:584
+msgid "Today"
+msgstr "Täna"
+
+#: weblate/static/loader-bootstrap.js:585
+msgid "Clear"
+msgstr "Puhasta"
+
+#: weblate/static/loader-bootstrap.js:745
+msgid "Text copied to clipboard."
+msgstr "Tekst on kopeeritud lõikelauale."
+
+#: weblate/static/loader-bootstrap.js:748
+msgid "Please press Ctrl+C to copy."
+msgstr "Kopeerimiseks palun vajuta Ctrl+C."
+
+#: weblate/static/loader-bootstrap.js:772
+msgid "Search…"
+msgstr "Otsing…"
+
+#: weblate/static/loader-bootstrap.js:773
+msgid "Available:"
+msgstr "Saadaval:"
+
+#: weblate/static/loader-bootstrap.js:774
+msgid "Chosen:"
+msgstr "Valitud:"
+
+#: weblate/static/loader-bootstrap.js:1033
+msgid "Weblate is now scanning the repository, please be patient."
+msgstr "Weblate sirvib praegu varamut läbi, palun oota natukene."
+
+#: weblate/static/zammad.js:3
+msgid "Weblate feedback"
+msgstr "Weblate'i tagasiside"
+
+#: weblate/static/zammad.js:4
+msgid "Get help"
+msgstr "Abiteave"
+
+#: weblate/static/zammad.js:6
+#, javascript-format
+msgid ""
+"Thank you for your inquiry (#%s)! We'll contact you as soon as possible."
+msgstr ""
+"Täname teid päringu eest (#%s)! Võtame teiega esimesel võimalusel ühendust."
+
+#: weblate/static/zammad.js:13
+msgid "Subject"
+msgstr "Teema"
+
+#: weblate/static/zammad.js:21
+msgid "Your name"
+msgstr "Sinu nimi"
+
+#: weblate/static/zammad.js:29
+msgid "Your e-mail"
+msgstr "Sinu e-kiri"
+
+#: weblate/static/zammad.js:37
+msgid "Message"
+msgstr "Sõnum"
+
+#: weblate/static/zammad.js:41
+msgid ""
+"Please contact us in English, otherwise we might be unable to process your "
+"request."
+msgstr ""
+"Palun võtke meiega ühendust inglise keeles, muidu me ei pruugi teie palvet "
+"menetleda."
+
+#: weblate/static/zammad.js:47
+msgid "Attachments"
+msgstr "Lisatud failid"
+
+#~ msgid "Ctrl/Command+%s"
+#~ msgstr "Ctrl/Command+%s"
+
+#~ msgid "Ctrl+I then %s"
+#~ msgstr "Ctrl+I, seejärel %s"
+
+#~ msgid "Copied"
+#~ msgstr "Kopeeritud"
