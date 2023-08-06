@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: OctoBot-CLI
+Version: 1.0.7
+Summary: OctoBot project command line interface
+Home-page: https://github.com/Drakkar-Software/OctoBot-CLI
+Author: Drakkar-Software
+Author-email: drakkar-software@protonmail.com
+License: LGPL-3.0
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Environment :: Console
+Requires-Python: >=3.8
+Requires-Dist: OctoBot-Commons (<1.5,>=1.4.15)
+Requires-Dist: OctoBot-Tentacles-Manager (<2.4,>=2.3.8)
+Requires-Dist: docker (==4.4.0)
+
+UNKNOWN
+
+
