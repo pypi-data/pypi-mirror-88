@@ -1,0 +1,6 @@
+from cli.templates.core import CoreDeployerTemplate
+from cli.templates.initialize import InitializeDeployerTemplate
+from cli.templates.project import ProjectTemplate
+from cli.templates.repository import DeployerRepositoryTemplate
+from cli.templates.service import ServiceDeployerTemplate
+from cli.templates.subscription import SubscriptionDeployerTemplate
