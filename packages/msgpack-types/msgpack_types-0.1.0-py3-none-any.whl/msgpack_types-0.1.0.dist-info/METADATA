@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: msgpack-types
+Version: 0.1.0
+Summary: Type stubs for msgpack
+Home-page: https://github.com/sbdchd/msgpack-types
+License: Apache-2.0
+Keywords: msgpack,types,mypy,stubs
+Author: Steve Dignam
+Author-email: steve@dignam.xyz
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Project-URL: Repository, https://github.com/sbdchd/msgpack-types
+Description-Content-Type: text/markdown
+
+# msgpack-types [![PyPI](https://img.shields.io/pypi/v/msgpack-types.svg)](https://pypi.org/project/msgpack-types/)
+
+> Type stubs for [msgpack](https://github.com/msgpack/msgpack-python)
+
+Allows for autocomplete and static typing.
+
+## install
+
+```
+pip install msgpack-types
+```
+
