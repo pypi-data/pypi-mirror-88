@@ -1,0 +1,16 @@
+MANIFEST.in
+README.rst
+setup.py
+grvlms_figures.egg-info/PKG-INFO
+grvlms_figures.egg-info/SOURCES.txt
+grvlms_figures.egg-info/dependency_links.txt
+grvlms_figures.egg-info/entry_points.txt
+grvlms_figures.egg-info/requires.txt
+grvlms_figures.egg-info/top_level.txt
+grvlmsfigures/__about__.py
+grvlmsfigures/__init__.py
+grvlmsfigures/plugin.py
+grvlmsfigures/patches/k8s-deployments
+grvlmsfigures/patches/local-docker-compose-services
+grvlmsfigures/patches/openedx-dockerfile-pre-assets
+grvlmsfigures/patches/openedx-lms-common-settings

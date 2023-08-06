@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: grvlms-figures
+Version: 1.0.2
+Summary: A Grvlms plugin for Figures, the Open edX reporting and data retrieval app
+Home-page: https://groove.education/
+Author: Overhang.io
+Author-email: thuan.ha@grovoetechnology.com
+License: AGPLv3
+Project-URL: Documentation, https://groove.education/
+Project-URL: Code, https://github.com/groovetch/grvlms-figures
+Project-URL: Issue tracker, https://github.com/groovetch/grvlms-figures/issues
+Project-URL: Community, https://groove.education/
+Description: Figures plugin for `Grvlms`
+        ============================================================
+        
+        `Figures <https://github.com/appsembler/figures>`_ is a data retrieval and reporting app for Open edX; this is a plugin for Grvlms that allows quick and easy integration in an Open edX platform. It works both locally and on a Kubernetes-based platform.
+        
+        
+        Installation
+        ------------
+        
+        This plugin requires grvlms>=1.0.4. Also, you should have installed grvlms from source, and not from a pre-compiled binary.
+        
+        ::
+          
+            pip install grvlms-figures
+        
+        Then, to enable this plugin, run::
+          
+            grvlms plugins enable figures
+        
+        You will have to re-generate the environment and rebuild the "openedx" docker image::
+          
+            grvlms config save
+            grvlms images build openedx
+        
+        You will then have to run LMS migrations. To do so, run::
+          
+            grvlms local init
+        
+        This last step is unnecessary if you run instead ``grvlms local quickstart``.
+        
+        You should then be able to access the Figures dashboard at ``http://<your lms host>/figures``. On a local instance, you should be able to access it at http://localhost/figures.
+        
+        
+        Release Version 1.0.2
+        ---------------------
+        
+        - EDT-302: Applying Custom Frontend. 
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.5
+Description-Content-Type: text/x-rst

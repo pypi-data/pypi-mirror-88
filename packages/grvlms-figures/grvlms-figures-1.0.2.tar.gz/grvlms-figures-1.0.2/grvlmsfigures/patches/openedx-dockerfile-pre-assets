@@ -1,0 +1,7 @@
+# Install Figures app
+ARG FIGURES_FRONTEND_VERSION=open-release/ironwood.master
+ARG FIGURES_WITHOUT_FRONTEND=ironwood.master-without-frontend
+RUN git clone https://github.com/groovetch/edx-figures.git --branch $FIGURES_WITHOUT_FRONTEND --depth 1 /openedx/edx-platform/edx-figures
+RUN git clone https://github.com/groovetch/edx-figures-frontend.git --branch $FIGURES_FRONTEND_VERSION --depth 1 /openedx/edx-platform/edx-figures/frontend && \
+    cd edx-figures/frontend && npm install && npm run build
+RUN pip install -e edx-figures
