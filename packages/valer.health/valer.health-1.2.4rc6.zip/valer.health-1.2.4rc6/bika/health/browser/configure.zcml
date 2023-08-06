@@ -1,0 +1,37 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="senaite.health">
+
+  <include package=".aetiologicagent"/>
+  <include package=".analysisrequest"/>
+  <include package=".analysisrequests"/>
+  <include package=".batch"/>
+  <include package=".client"/>
+  <include package=".disease"/>
+  <include package=".doctor"/>
+  <include package=".doctors"/>
+  <include package=".drug"/>
+  <include package=".drugprohibition"/>
+  <include package=".identifiertype"/>
+  <include package=".immunization"/>
+  <include package=".insurancecompany"/>
+  <include package=".patient"/>
+  <include package=".patients"/>
+  <include package=".symptoms"/>
+  <include package=".treatment"/>
+  <include package=".vaccinationcenter"/>
+  <include package=".vaccinationcentercontact"/>
+  <include package=".viewlets"/>
+
+  <!-- Custom referencewidget_search for Health. Does the same as core's, but
+  implements a more specific interface, so health-specific adapters for
+  IReferenceWidgetVocabulary can be supported -->
+  <browser:page
+    for="*"
+    name="referencewidget_search"
+    class=".referencewidget.ajaxReferenceWidgetSearch"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth" />
+
+</configure>
