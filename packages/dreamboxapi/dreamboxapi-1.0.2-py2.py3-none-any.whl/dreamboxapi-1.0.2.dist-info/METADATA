@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: dreamboxapi
+Version: 1.0.2
+Summary: Provides a python interface to interact with a dreambox running the official webinterface
+Home-page: https://github.com/sreichholf/python-dreamboxapi
+Author: Stephan Reichholf
+Author-email: reichi@opendreambox.org
+License: MIT license
+Keywords: dreambox,enigma2
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Dist: requests (>=2.21.0)
+
+[![Python package](https://github.com/sreichholf/python-dreamboxapi/workflows/Python%20package/badge.svg?branch=master)](https://github.com/sreichholf/python-dreamboxapi/actions)
+
+[![PyPi](https://img.shields.io/pypi/v/dreamboxapi.svg)](https://pypi.python.org/pypi/dreamboxapi)
+
+### A python client library for dreamboxes using requests
+
+### Super simple example
+``` { .py }
+from dreamboxapi.api import DreamboxApi
+api = DreamboxApi(host="my.dreambox.local")
+print(api.current.name)
+```
+
+
+
+
