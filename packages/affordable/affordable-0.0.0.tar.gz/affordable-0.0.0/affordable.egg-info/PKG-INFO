@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: affordable
+Version: 0.0.0
+Summary: Affordable is an abstraction layer to facilitate RL environment developing
+Home-page: https://pypi.org/project/affordable
+Author: Mingli Yuan
+Author-email: mingli.yuan@gmail.com
+License: UNKNOWN
+Project-URL: Documentation, https://packaging.python.org/tutorials/distributing-packages/
+Project-URL: Source, https://github.com/mountain/affordable
+Project-URL: Tracker, https://github.com/mountain/affordable/issues
+Description: # Affordable
+        
+        An abstraction layer to facilitate RL environment developing.
+        
+        Concepts
+        ---------------
+        
+        * Game
+        * World
+        * Agent
+          * Affordable
+            * Action
+            * State
+        * Embedding
+        
+        
+        How to release
+        ---------------
+        
+        ```bash
+        python3 setup.py sdist bdist_wheel
+        python3 -m twine upload dist/*
+        
+        git tag va.b.c master
+        git push origin va.b.c
+        ```
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
