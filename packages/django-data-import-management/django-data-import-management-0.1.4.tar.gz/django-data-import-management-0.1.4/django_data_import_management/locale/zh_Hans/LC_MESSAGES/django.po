@@ -1,0 +1,181 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-12-12 10:11+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\django_data_import_management\admin.py:16
+#, python-brace-format
+msgid "Parse data file of case {case} success."
+msgstr "解析导入任务【{case}】中的数据文件成功！"
+
+#: .\django_data_import_management\admin.py:18
+#, python-brace-format
+msgid "Parse data file of case {case} failed: {message}"
+msgstr "解析导入任务【{case}】中的数据文件失败：{message}"
+
+#: .\django_data_import_management\admin.py:19
+msgid "Parse selected data files."
+msgstr "解析导入任务中的数据文件"
+
+#: .\django_data_import_management\admin.py:26
+#, python-brace-format
+msgid "Import data file of case {case} success."
+msgstr "导入任务【{case}】执行成功！"
+
+#: .\django_data_import_management\admin.py:28
+#, python-brace-format
+msgid "Import data file of case {case} failed: {message}"
+msgstr "执行导入任务【{case}】失败：{message}！"
+
+#: .\django_data_import_management\admin.py:29
+msgid "Import selected data files."
+msgstr "执行导入任务"
+
+#: .\django_data_import_management\admin.py:42
+msgid "Import item {item} failed: {message}"
+msgstr "导入任务【编号：{item}】失败：{message}。"
+
+#: .\django_data_import_management\admin.py:46
+#, python-brace-format
+msgid "{success} items successfully imported."
+msgstr "{success}条数据导入成功！"
+
+#: .\django_data_import_management\admin.py:48
+#, python-brace-format
+msgid "{failed} items successfully imported."
+msgstr "{failed}条数据导入失败！"
+
+#: .\django_data_import_management\admin.py:49
+msgid "Import selected items."
+msgstr "导入所选数据项"
+
+#: .\django_data_import_management\admin.py:56
+#: .\django_data_import_management\models.py:68
+msgid "Import Workflow"
+msgstr "导入工作流"
+
+#: .\django_data_import_management\admin.py:72
+msgid "Import Settings"
+msgstr "导入任务设置"
+
+#: .\django_data_import_management\admin.py:76
+msgid "Parse Resslt"
+msgstr "解析结果"
+
+#: .\django_data_import_management\admin.py:80
+#: .\django_data_import_management\models.py:77
+msgid "Import Result"
+msgstr "导入结果"
+
+#: .\django_data_import_management\apps.py:6
+msgid "Django Data Import Management"
+msgstr "数据导入管理"
+
+#: .\django_data_import_management\models.py:62
+msgid "Success"
+msgstr "成功"
+
+#: .\django_data_import_management\models.py:63
+msgid "Failed"
+msgstr "失败"
+
+#: .\django_data_import_management\models.py:64
+msgid "Partly Failed"
+msgstr "部分失败"
+
+#: .\django_data_import_management\models.py:67
+msgid "Title"
+msgstr "标题"
+
+#: .\django_data_import_management\models.py:69
+msgid "Data File"
+msgstr "数据文件"
+
+#: .\django_data_import_management\models.py:70
+msgid "Add Time"
+msgstr "添加时间"
+
+#: .\django_data_import_management\models.py:71
+msgid "Modify Time"
+msgstr "修改时间"
+
+#: .\django_data_import_management\models.py:73
+msgid "Parse Result"
+msgstr "解析结果"
+
+#: .\django_data_import_management\models.py:74
+msgid "Parse Time"
+msgstr "解析时间"
+
+#: .\django_data_import_management\models.py:75
+msgid "Parse Error"
+msgstr "解析错误信息"
+
+#: .\django_data_import_management\models.py:78
+#: .\django_data_import_management\models.py:174
+msgid "Import Time"
+msgstr "导入时间"
+
+#: .\django_data_import_management\models.py:79
+msgid "Import Error"
+msgstr "导入错误信息"
+
+#: .\django_data_import_management\models.py:83
+#: .\django_data_import_management\models.py:165
+msgid "Django Data Import Case"
+msgstr "数据导入任务"
+
+#: .\django_data_import_management\models.py:84
+msgid "Django Data Import Cases"
+msgstr "数据导入任务"
+
+#: .\django_data_import_management\models.py:95
+msgid "Unknown import workflow!"
+msgstr "未知的数据导入流程！"
+
+#: .\django_data_import_management\models.py:167
+msgid "Parse Success"
+msgstr "解析成功"
+
+#: .\django_data_import_management\models.py:168
+msgid "Item Information"
+msgstr "数据项信息"
+
+#: .\django_data_import_management\models.py:169
+msgid "Parsed Time"
+msgstr "解析时间"
+
+#: .\django_data_import_management\models.py:170
+msgid "Data"
+msgstr "数据"
+
+#: .\django_data_import_management\models.py:172
+msgid "Import Success"
+msgstr "导入是否成功"
+
+#: .\django_data_import_management\models.py:173
+msgid "Import Error Message"
+msgstr "导入错误信息"
+
+#: .\django_data_import_management\models.py:177
+msgid "Django Data Import Item"
+msgstr "数据导入项"
+
+#: .\django_data_import_management\models.py:178
+msgid "Django Data Import Items"
+msgstr "数据导入项"
