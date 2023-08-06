@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: galbi
+Version: 0.2.0
+Summary: Galbi CLI
+Home-page: UNKNOWN
+License: UNKNOWN
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+Requires-Dist: click (>=7.1.2)
+Requires-Dist: requests (>=2.25.0)
+
+# Galbi
+
+Less important configuration management system.
+
+## Installation
+
+### Requires
+
+- Python 3.6 +
+- GitHub personal access token: <https://github.com/settings/tokens>
+
+
+### Install dependencies
+
+```console
+$ pip install -e .
+```
+
+
+### Initialize configuration
+
+```console
+$ galbi init
+GitHub repo: ...
+Your GitHub personal access token: ...
+
+Initialize galbi.
+```
+
+
+## How to deploy key?
+
+It uploads json to reposotory's issue.
+
+```console
+$ galbi deploy something.json
+
+...
+```
+
+## How to get key?
+```
+$ galbi get --key foo --key bar
+{
+    "foo": ...,
+    "bar": ...,
+}
+```
+
+
