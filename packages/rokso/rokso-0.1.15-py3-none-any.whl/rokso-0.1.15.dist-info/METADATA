@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: rokso
+Version: 0.1.15
+Summary: Rokso migration package for mysql database migrations.
+Home-page: https://github.com/matrixbegins/rokso-migrations
+Author: Ankur Pandey
+Author-email: matrixbegins@gmail.com
+License: MIT
+Keywords: MySql,database-migration,python-database-migration
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Topic :: Database
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.3
+Description-Content-Type: text/markdown
+Requires-Dist: click (==7.1.1)
+Requires-Dist: mysql-connector (==2.2.9)
+Requires-Dist: mysql-connector-python (==8.0.18)
+Requires-Dist: tabulate (==0.8.7)
+
+Rokso migration package for mysql database migrations
+
+
