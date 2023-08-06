@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: return-type
+Version: 0.1.1
+Summary: Generic type ReturnType and mypy checker plugin
+Home-page: https://github.com/wlf100220/return_type
+Author: Dimitri.WEI
+Author-email: dimitri.wei.lingfeng@gmail.com
+License: UNKNOWN
+Description: # ReturnType
+        
+        Generic type ReturnType and mypy checker plugin
+        
+        # Install
+        
+        ```shell
+        pip install return_type
+        ```
+        add plugin to `mypy.ini`
+        ```ini
+        [mypy]
+        plugins = return_type.mypy-plugin.py
+        ```
+        
+        # Usage
+        ```python3
+        import typing as t
+        from return_type import ReturnType
+        
+        C = t.Callable[..., int]
+        RC = ReturnType[C]
+        
+        assert RC = int
+        v1: RC = 1  # correct
+        v2: RC = 1.  # error
+        ```
+        
+Platform: UNKNOWN
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
