@@ -1,0 +1,28 @@
+# print help
+venv\Scripts\python.exe main.py -h
+
+# list all semantics
+venv\Scripts\python.exe main.py -ls
+
+# list all labeling schemes
+venv\Scripts\python.exe main.py -ll
+
+# get one cautious labeling for af_references (without specifying a semantics)
+venv\Scripts\python.exe main.py -f AFs\af_references.tgf --labeling_scheme cautious -OL
+
+# get all cautious labelings for af_references satisfying sNor
+venv\Scripts\python.exe main.py -f AFs\af_references.tgf --labeling_scheme cautious -AL --semantics sNor
+
+# check credulous acceptance of argument R for af_references under semantics sNor
+venv\Scripts\python.exe main.py -f AFs\af_references.tgf --argument R -CA --semantics sNor
+
+# check skeptical threshold acceptance of C for af01
+venv\Scripts\python.exe main.py -f AFs\af01_probs.tgf --semantics Nor CF AF --argument C -SA 0.5
+
+# get one distribution for af_odd_cycle satisfying nNorAF
+venv\Scripts\python.exe main.py -f AFs\af_odd_cycle.tgf -OD --semantics nNorAF
+
+
+venv\Scripts\python.exe main.py -f AFs\af_talk_02.tgf -OD --semantics nNor
+
+venv\Scripts\python.exe main.py -f AFs\af_talk_02.tgf -AL --semantics nNor -l firm
