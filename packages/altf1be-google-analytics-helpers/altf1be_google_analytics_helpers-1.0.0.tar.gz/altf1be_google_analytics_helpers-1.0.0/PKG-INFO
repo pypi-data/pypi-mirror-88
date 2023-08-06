@@ -1,0 +1,119 @@
+Metadata-Version: 2.1
+Name: altf1be_google_analytics_helpers
+Version: 1.0.0
+Summary: Google Analytics helpers facilitating the setting of the categories, actions, labels, User Id and User Agents built by www.alt-f1.be
+Home-page: https://bitbucket.org/altf1be/altf1be_google_analytics_helpers
+Author: Abdelkrim Boujraf
+Author-email: abo+altf1be_google_analytics_helpers_pkg@alt-f1.be
+License: EUPL-1.2
+Project-URL: Bug Reports, https://bitbucket.org/altf1be/altf1be_google_analytics_helpers/admin/issues
+Project-URL: Company behind the library, http://www.alt-f1.be
+Project-URL: Source, https://bitbucket.org/altf1be/altf1be_google_analytics_helpers
+Description: # altf1be_google_analytics_helpers
+        
+        Helpers for Google Analytics facilitating the setting of the categories, actions, labels, User Id and User Agents.
+        
+        See <https://bitbucket.org/altf1be/altf1be_google_analytics_helpers>
+        
+        Google Analytics: https://analytics.google.com
+        
+        Author: Abdelkrim BOUJRAF, http://www.alt-f1.be
+        
+        
+        ## Usage
+        
+        1. Create a .env including this parameter COM_GOOGLE_ANALYTICS_TRACKING_ID
+        
+        ``` sh
+        export COM_GOOGLE_ANALYTICS_TRACKING_ID=G-XXXXXXXXXX
+        
+        ```
+        
+        2. Install python-dotenv
+        
+        ``` sh
+        pip install python-dotenv
+        ```
+        
+        3. load the .env in your entry point (app.py, main.py, test.py)
+        
+        
+        ``` sh
+        from dotenv import load_dotenv
+        
+        load_dotenv()
+        
+        ```
+        
+        4. Run the code and check if the event is set on Google Analytics
+        
+        ``` python
+        from altf1be_google_analytics_helpers import GoogleAnalytics
+        import requests
+        
+        googleAnalytics = GoogleAnalytics()
+        
+        USER_ID: int, 0 if you DO NOT store a user_id 
+        
+        googleAnalytics.track_event(
+            category="set a category",
+            action="set an action",
+            label="set a label",
+            value=0, # Event value, must be an integer. i.e. the value of a basket
+            ua=request.headers.get("User-Agent"),
+        )
+        ```
+        
+        ## installation
+        
+        * install the package on **pypi.org** : 
+            * install : `pip install altf1be_google_analytics_helpers`
+            * upgrade : `pip install altf1be_google_analytics_helpers --upgrade`
+        
+        
+        * install the package on **test.pypi.org** : 
+            * install : `pip install -i https://test.pypi.org/simple/altf1be_google_analytics_helpers`
+            * upgrade : `pip install -i https://test.pypi.org/simple/altf1be_google_analytics_helpers --upgrade`
+        
+        ## dependencies
+        
+        * See [requirements.txt](requirements.txt)
+        
+        ## Build this package 
+        
+        * build the setup.py
+            * `python3 setup.py sdist bdist_wheel`
+            * `python3 -m pip install --user --upgrade twine --use-feature=2020-resolver`
+        
+        * upload the library on TEST **pypi.org** 
+            * `python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*` 
+            * Source : [https://test.pypi.org/project/altf1be_helpers](https://test.pypi.org/project/altf1be_helpers)
+        
+        * upload the library on PROD **pypi.org** 
+            * `python -m twine upload dist/*` 
+            * Source : [https://pypi.org/project/altf1be_helpers](https://pypi.org/project/altf1be_helpers)
+        
+        ## Documentation to build a Python package
+        
+        * Packaging Python Projects <https://packaging.python.org/tutorials/packaging-projects/>
+        * Managing Application Dependencies <https://packaging.python.org/tutorials/managing-dependencies/#managing-dependencies>
+        * Packaging and distributing projects <https://packaging.python.org/guides/distributing-packages-using-setuptools/#distributing-packages>
+        
+        ## License
+        
+        Copyright (c) ALT-F1 SPRL, Abdelkrim BOUJRAF. All rights reserved.
+        
+        Licensed under the EUPL License, Version 1.2.
+        
+        See LICENSE in the project root for license information.
+        
+Keywords: library,altf1be_google_analytics_helpers,alt-f1.be,helpers-library,python3,pypi-package
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
