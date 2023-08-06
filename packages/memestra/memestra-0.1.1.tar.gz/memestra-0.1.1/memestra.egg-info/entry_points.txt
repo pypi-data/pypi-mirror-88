@@ -1,0 +1,7 @@
+[console_scripts]
+memestra = memestra.memestra:run
+memestra-cache = memestra.caching:run
+
+[memestra.plugins]
+.ipynb = memestra.nbmemestra:register
+
