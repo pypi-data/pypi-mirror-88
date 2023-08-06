@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: edhoc
+Version: 0.2.dev1
+Summary: Ephemeral Diffie-Hellman Over COSE (EDHOC)
+Home-page: UNKNOWN
+Author: Timothy Claeys
+Author-email: timothy.claeys@gmail.com
+License: BSD-3
+Description: # EDHOC-PYTHON
+        This project provides a Python implementation of the EDHOC key exchange protocol for constrained devices. 
+        Currently the protocol is still in [draft](https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-01) status at the IETF.
+        
+Keywords: EDHOC,Internet of Things,CBOR,object security,COSE,OSCORE,cryptography
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Internet
+Classifier: Topic :: Communications
+Classifier: Topic :: Software Development
+Classifier: Topic :: System :: Networking
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
