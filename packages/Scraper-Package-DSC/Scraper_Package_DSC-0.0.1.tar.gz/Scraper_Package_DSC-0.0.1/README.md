@@ -1,0 +1,36 @@
+# Scraper Package
+
+This news scraper package provides three functions:
+
+1) NewsAPI_Pckg.py
+Takes the following parameters:
+- API key
+- source domain (eg: Reuters.com)
+- range of dates (from and to) as an array
+
+Range of dates must be in this format:
+#example
+dates = [
+    "11/10/20 - 12/10/20",
+    "05/04/20 - "05/04/20"
+]
+
+Produces:
+Results of "everthing" search for one particular news source through NewsAPI and outputs results into a json object 
+
+2) reuters.py 
+- Requires selinium driver installation: https://chromedriver.chromium.org/downloads
+- Navigates to Reuters world news site
+- Collects all headlines, summaries, and article URLs from each article starting with the most recent stories, for specified number of pages
+- Reuters World website lists 10 articles per page, in reverse chronological order typically going back about a year from the current date
+- Scrolls through X number of pages to repeat the process for older news (1 page = 10 articles)
+    -> Enter this as a parameter in your usage script 
+- see https://www.reuters.com/news/world for page format 
+- Saves data to a JSON object
+
+3) nyt.py
+- enter a specific article's URL from the New York Times as a parameter
+- output is a dictionary with the summary and full text article associated with the URL
+
+# see example_usage.py for sample code using this package
+
