@@ -1,0 +1,8 @@
+[console_scripts]
+nabu = nabu.resources.cli.reconstruct:main
+nabu-config = nabu.resources.cli.bootstrap:bootstrap
+nabu-generate-info = nabu.resources.cli.generate_header:generate_merged_info_file
+nabu-histogram = nabu.resources.cli.histogram:histogram_cli
+nabu-test = nabu.tests:nabu_test
+nabu-zsplit = nabu.resources.cli.nx_z_splitter:zsplit
+
