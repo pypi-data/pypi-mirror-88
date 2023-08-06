@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: metalabs-sdk
+Version: 0.1.1
+Summary: SDK for MetaLabs API 
+Home-page: https://github.com/JAnnaraj/meta-labs_sdk
+Author: Jeffrey Annaraj
+Author-email: jannaraj@baffled.dev
+License: UNKNOWN
+Keywords: metalabs
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: urllib3
+
+# **metalabs_sdk**
+###SDK for MetaLabs API
+___
+```py
+pip install metalabs_sdk
+```
+
+**Methods** :
+>get_license(_api_key_, _license_key_)
+
+> update_license(_api_key_, _license_key_, _metadata_)
+
+
