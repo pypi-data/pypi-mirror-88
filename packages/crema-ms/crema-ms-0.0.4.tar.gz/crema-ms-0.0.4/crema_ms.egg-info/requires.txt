@@ -1,0 +1,15 @@
+numpy>=1.18.1
+pandas>=1.0.3
+numba>=0.48.0
+
+[dev]
+pre-commit>=2.7.1
+black>=19.10b0
+pytest>=6.0.1
+
+[docs]
+numpydoc>=1.0.0
+sphinx-argparse>=0.2.5
+sphinx-rtd-theme>=0.5.0
+nbsphinx>=0.7.1
+ipykernel>=5.3.0
