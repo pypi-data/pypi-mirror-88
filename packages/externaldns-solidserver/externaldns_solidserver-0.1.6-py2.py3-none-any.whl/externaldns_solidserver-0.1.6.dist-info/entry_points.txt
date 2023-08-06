@@ -1,0 +1,3 @@
+[neutron.services.external_dns_drivers]
+solidserver = solidserver.driver:SolidServer
+
