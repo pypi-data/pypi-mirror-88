@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: versort
+Version: 0.1.1
+Summary: Sort versions according to different versioning schemas
+Home-page: https://versort.readthedocs.io/
+License: BSL-1.0
+Author: Jairo Llopis
+Author-email: jairo.llopis@tecnativa.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: Boost Software License 1.0 (BSL-1.0)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Provides-Extra: docs
+Requires-Dist: mkdocs-material (>=6.1.7,<7.0.0); extra == "docs"
+Requires-Dist: mkdocstrings (>=0.13.6,<0.14.0); extra == "docs"
+Requires-Dist: packaging (>=20.7,<21.0)
+Requires-Dist: plumbum (>=1.6.9,<2.0.0)
+Requires-Dist: semver (>=2.13.0,<3.0.0)
+Project-URL: Repository, https://github.com/Tecnativa/versort
+Description-Content-Type: text/markdown
+
+# VerSort
+
+![License](https://img.shields.io/github/license/Tecnativa/versort)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/versort)
+![PyPI](https://img.shields.io/pypi/v/versort)
+![CI](https://github.com/Tecnativa/versort/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/Tecnativa/versort/branch/master/graph/badge.svg?token=1gDyBgOuPr)](https://codecov.io/gh/Tecnativa/versort)
+
+Sort versions according to different versioning schemas.
+
+## Install
+
+To use as a CLI app:
+
+```sh
+pipx install versort
+```
+
+To use as a library:
+
+```sh
+pip install versort
+```
+
+## Usage
+
+### Supported version algorithms
+
+-   [PEP440](https://www.python.org/dev/peps/pep-0440/)
+-   [SemVer](https://semver.org/)
+
+### As a library
+
+```python
+from versort import get_sorter
+
+sorter = get_sorter("pep440")()
+print(sorter.sort("v1", "2a1", "2"))
+```
+
+### CLI
+
+You can call `versort` directly, or as a Python module with `python -m versort`.
+
+```sh
+➤ echo 2 2a1 v1 | versort --stdin pep440
+v1
+2a1
+2
+
+➤ versort --reverse pep440 2 2a1 v1
+2
+2a1
+v1
+
+➤ versort --first pep440 2 2a1 v1
+v1
+
+➤ python -m versort --reverse --first pep440 2 2a1 v1
+2
+```
+
