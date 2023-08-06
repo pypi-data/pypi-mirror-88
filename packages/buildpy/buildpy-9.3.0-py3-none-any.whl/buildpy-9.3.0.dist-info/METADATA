@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: buildpy
+Version: 9.3.0
+Summary: Make in Python
+Home-page: https://github.com/kshramt/buildpy
+Author: kshramt
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Requires-Dist: boto3 (<2)
+Requires-Dist: google-cloud-bigquery (<2)
+Requires-Dist: google-cloud-storage (<2)
+Requires-Dist: psutil (<6)
+Provides-Extra: dev
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: pyflakes ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+Requires-Dist: wheel ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: pytype ; extra == 'dev'
+
+UNKNOWN
+
+
