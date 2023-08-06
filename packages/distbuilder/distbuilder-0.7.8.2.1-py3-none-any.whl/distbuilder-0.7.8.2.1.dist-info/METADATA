@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: distbuilder
+Version: 0.7.8.2.1
+Summary: Wrapper for other libraries and tools including PyInstaller, the Qt Installer Framework, Opy (a code obfuscater), PIP, and more.
+Home-page: https://github.com/BuvinJT/distbuilder
+Author: BuvinJ
+Author-email: buvintech@gmail.com
+License: UNKNOWN
+Keywords: distbuilder,dist,distribution,install,package,distutils,setuptools
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Natural Language :: English
+Classifier: Development Status :: 3 - Alpha
+Description-Content-Type: text/markdown
+Requires-Dist: six
+Requires-Dist: PyInstaller
+Requires-Dist: opy-distbuilder
+Requires-Dist: argparse
+
+# Distribution Builder (distbuilder)  
+![distbuilder logo](https://raw.githubusercontent.com/BuvinJT/distbuilder/master/docs/img/distbuilder128.png)
+
+"Distribution Builder" (distbuilder) is an open source Python library. 
+It is a "meta tool", which wraps and combines other related libraries and utilities 
+including PyInstaller, the Qt Installer Framework, Opy (Obfuscator for Python), 
+PIP, and more.  
+
+## Online documentation
+
+https://distribution-builder.readthedocs.io/en/latest/
+
+
