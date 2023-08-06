@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: madforhooks
+Version: 0.1.1
+Summary: Random assorted pre-commit hooks
+Home-page: https://github.com/MarcoGorelli/madforhooks
+Author: Marco Gorelli
+License: MIT
+Project-URL: Source, https://github.com/MarcoGorelli/madforhooks
+Project-URL: Tracker, https://github.com/MarcoGorelli/madforhooks/issues
+Keywords: conda,pre-commit
+Platform: UNKNOWN
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Quality Assurance
+Requires-Python: >=3.6.1
+Description-Content-Type: text/markdown
+Requires-Dist: ruamel.yaml (>=0.15)
+
+[![Build Status](https://github.com/MarcoGorelli/madforhooks/workflows/tox/badge.svg)](https://github.com/MarcoGorelli/madforhooks/actions?workflow=tox)
+[![codecov](https://codecov.io/gh/MarcoGorelli/madforhooks/branch/main/graph/badge.svg?token=KrZeKo2xwD)](https://codecov.io/gh/MarcoGorelli/madforhooks)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/MarcoGorelli/madforhooks/main.svg)](https://results.pre-commit.ci/latest/github/MarcoGorelli/madforhooks/main)
+
+# MadForHooks
+
+Random assorted [pre-commit](https://github.com/pre-commit/pre-commit) hooks.
+
+## Usage
+
+Put this in the `repos` section of your `.pre-commit-config.yaml` file:
+
+```yaml
+-   repo: https://github.com/MarcoGorelli/madforhooks
+    rev: 0.1.1
+    hooks:
+    -   id: conda-env-sorter
+```
+
+## Hooks available
+
+### conda-env-sorter
+
+Sort the dependencies in your conda environment file(s).
+
+
