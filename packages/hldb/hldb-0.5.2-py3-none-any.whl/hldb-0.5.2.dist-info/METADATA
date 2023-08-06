@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: hldb
+Version: 0.5.2
+Summary: Supple oracle/mysql/hadoop query,export datafile as csv/excel ,up/download datafile to/from ftp,zip/tar datafile, for easy done with data
+Home-page: https://github.com/tuobabing/hldb
+Author: 胡晋
+Author-email: hujin1219@163.com
+License: MIT
+Platform: UNKNOWN
+Requires: pandas
+Requires: numpy
+Requires: cx_Oracle
+Requires: pymysql
+Requires: pyodbc
+Requires: sqlalchemy
+Requires: configparser
+Requires: openpyxl
+Requires-Python: >=3.6
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: cx-Oracle
+Requires-Dist: pymysql
+Requires-Dist: pyodbc
+Requires-Dist: sqlalchemy
+Requires-Dist: configparser
+Requires-Dist: openpyxl
+
+UNKNOWN
+
+
