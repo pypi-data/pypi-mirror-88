@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: jhsp
+Version: 0.0.16
+Summary: A package only used by Junhe Zhao
+Home-page: https://pypi.org
+Author: Junhe Zhao
+Author-email: zhaozong111@gmail.com
+License: UNKNOWN
+Description: 这是一个包含多种任务的赵大爷专用package，任何用于科研学术及商业场景的使用均需获得本人授权。
+        
+        ver0.0.16说明：
+        
+        1. SANN.0.9
+        	1. 数据应放入data目录中的一个新建目录，且数据格式应为xlxd，数据文件的文件名应包含‘data’字段
+        	2. xlxd第一行必须为标题行，最后一列必须为分类编码
+        	3. 运行时直接调用sann子类方法即可
+        	4. 代码注释及针对连续数值型变量的sann算法设计待更新
+        
+        2.CW 0.1
+        	1.作用是整理君何的易混淆单词
+        
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
