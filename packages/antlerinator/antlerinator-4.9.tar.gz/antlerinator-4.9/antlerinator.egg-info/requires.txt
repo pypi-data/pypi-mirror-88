@@ -1,0 +1,14 @@
+
+[:python_version < "3.5"]
+typing
+
+[:python_version >= "3.0"]
+antlr4-python3-runtime==4.9
+
+[:python_version ~= "2.7"]
+antlr4-python2-runtime==4.9
+
+[docs]
+sphinx
+sphinx_rtd_theme
+sphinxcontrib-runcmd
