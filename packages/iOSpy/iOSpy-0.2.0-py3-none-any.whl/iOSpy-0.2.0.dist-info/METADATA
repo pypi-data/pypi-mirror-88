@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: iOSpy
+Version: 0.2.0
+Summary: iOS MobileSync backup data extraction
+Home-page: https://github.com/chbrown/iOSpy
+Author: Christopher Brown
+Author-email: io@henrian.com
+License: MIT
+Platform: UNKNOWN
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: appdirs (>=1.4.0)
+Requires-Dist: click (>=7.0)
+Requires-Dist: file-magic (>=0.4.0)
+
+# `iOSpy` <img align="right" src="https://badge.fury.io/py/iOSpy.svg">
+
+`iOSpy` is a Python package for extracting data from iOS MobileSync backups.
+
+It uses the namespace `iospy` and provides a command line tool, `ios`.
+
+Install from [PyPI](https://pypi.org/project/iOSpy/):
+
+```sh
+pip install iOSpy
+```
+
+Then get started with the CLI:
+
+```sh
+ios --help
+```
+
+
+## License
+
+Copyright 2018–2020 Christopher Brown.
+[MIT Licensed](https://chbrown.github.io/licenses/MIT/#2018-2020).
+
+
