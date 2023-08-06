@@ -1,0 +1,21 @@
+pyserial
+pyqt5
+
+[:sys_platform == "darwin"]
+tkmacosx
+bleak==0.8.0
+
+[:sys_platform == "linux"]
+python-can==3.3.4
+pexpect
+
+[:sys_platform == "win32"]
+bleak==0.8.0
+
+[dev]
+pip
+flake8
+black
+tox
+coverage
+pre-commit
