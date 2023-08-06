@@ -1,0 +1,37 @@
+0.8.2
+ - enh: minor improvements of depotize script
+0.8.1
+ - enh: when aborting depotize, do not abort recursive depotize
+ - enh: update file ignore patterns for depotize
+0.8.0
+ - feat: implement "depotize_archive" for populating the internal depot
+   with tarred RT-DC data (This step is required for importing
+   internal data with internal-import)
+ - fix: download large files with small memory footprint
+0.7.11
+ - cleanup
+0.7.10
+ - enh: internal-import now supports --start-date and --end-date (#6)
+0.7.9
+ - fix: avoid bad datasets on internal-import and print less to stdout
+0.7.8
+ - fix: minor parsing issues
+0.7.7
+ - enh: increase error verbosity when importing from internal depot
+0.7.6
+ - maintenance release
+0.7.5
+ - fix: set www-data permissions when importing from depot
+0.7.4
+ - enh: finish importer for archived data (#1)
+0.7.3
+ - enh: add a ``job_id`` for the "symlink" background job
+ - enh: add ckan command "list-all-resources" which prints
+   a list of all resource ids
+ - ref: include resource id in file names in user depot
+0.7.2
+ - maintenance release
+0.7.1
+ - use unique configuration keys in ckan.ini
+0.7.0
+ - initial open-sourced version
