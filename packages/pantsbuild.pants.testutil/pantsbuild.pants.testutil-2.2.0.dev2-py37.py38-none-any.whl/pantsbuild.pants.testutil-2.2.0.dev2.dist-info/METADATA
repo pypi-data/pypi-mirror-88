@@ -1,0 +1,148 @@
+Metadata-Version: 2.1
+Name: pantsbuild.pants.testutil
+Version: 2.2.0.dev2
+Summary: Test support for writing Pants plugins.
+Home-page: https://github.com/pantsbuild/pants
+License: Apache License, Version 2.0
+Project-URL: Documentation, https://www.pantsbuild.org/
+Project-URL: Source, https://github.com/pantsbuild/pants
+Project-URL: Tracker, https://github.com/pantsbuild/pants/issues
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Testing
+Description-Content-Type: text/x-rst
+Requires-Dist: ansicolors (==1.1.8)
+Requires-Dist: pantsbuild.pants (==2.2.0.dev2)
+
+Pants is an Apache2 licensed build tool written in Python.
+
+The latest documentation can be found at `pantsbuild <https://www.pantsbuild.org/>`_.
+
+
+# 2.2.x Stable Releases
+
+See https://www.pantsbuild.org/v2.2/docs/release-notes-2-2 for an overview of the changes in this release series.
+
+This is the first release to require having a Python 3.7 or 3.8 interpreter to run Pants. Run `curl -L -o ./pants 
+https://raw.githubusercontent.com/pantsbuild/setup/2f079cbe4fc6a1d9d87decba51f19d7689aee69e/pants` to update your
+`./pants` script to choose the correct interpreter.
+
+This release also removes the ability to use `%(pants_bootstrapdir)s` and `%(pants_configdir)s` in
+interpolations in your config file.
+
+## 2.2.0.dev2 (Dec 16, 2020)
+
+### Plugin API Changes
+
+* Upgrade packaging from 20.4 to 20.7 ([#11302](https://github.com/pantsbuild/pants/pull/11302))
+
+* Update default values for run tracker and streaming work unit handlers to more commonly used values. ([#11292](https://github.com/pantsbuild/pants/pull/11292))
+
+### Bug fixes
+
+* Fix filtering of log messages generated in native code. ([#11313](https://github.com/pantsbuild/pants/pull/11313))
+
+* Upgrade to Pex 2.1.24 to fix macOS Big Sur. ([#11312](https://github.com/pantsbuild/pants/pull/11312))
+
+* Clean the graph speculatively, and cancel nodes when interest is lost ([#11308](https://github.com/pantsbuild/pants/pull/11308))
+
+* Implement native Process cache scoping to fix --test-force ([#11291](https://github.com/pantsbuild/pants/pull/11291))
+
+## 2.2.0.dev1 (Dec 09, 2020)
+
+### New Features
+
+* Add shorthand to use a file name for `pex_binary`'s `entry_point` and `python_awslambda`'s `handler` field ([#11261](https://github.com/pantsbuild/pants/pull/11261))
+
+* Add dependency inference for `pex_binary`'s `entry_point` and `python_awslambda`'s `handler` fields ([#11245](https://github.com/pantsbuild/pants/pull/11245))
+
+* Allow file arguments to work with the `app.py` shorthand for `pex_binary` and `python_awslambda` ([#11263](https://github.com/pantsbuild/pants/pull/11263))
+
+* Warn if `package` and `test` have no matching files/targets ([#11240](https://github.com/pantsbuild/pants/pull/11240))
+
+### User API Changes
+
+* 2.2.0.dev1 deprecations. ([#11281](https://github.com/pantsbuild/pants/pull/11281))
+
+* Require `pex_binary`'s `platforms` field to be a list ([#11246](https://github.com/pantsbuild/pants/pull/11246))
+
+* Remove deprecated `--pants-distdir-legacy-paths` option ([#11247](https://github.com/pantsbuild/pants/pull/11247))
+
+### Bug fixes
+
+* Increase Pants' python recursion limit by default, and allow it to be overridden. ([#11271](https://github.com/pantsbuild/pants/pull/11271))
+
+* Stop logging if Pyenv not installed ([#11243](https://github.com/pantsbuild/pants/pull/11243))
+
+### Performance
+
+* Reduce interning overhead ([#11262](https://github.com/pantsbuild/pants/pull/11262))
+
+* Parallelize the `Owners` rule more ([#11260](https://github.com/pantsbuild/pants/pull/11260))
+
+### Documentation
+
+* Update Pants prerequisites facts. ([#11265](https://github.com/pantsbuild/pants/pull/11265))
+
+## 2.2.0.dev0 (Nov 24, 2020)
+
+### New Features
+
+* Add dependency inference for Protobuf <-> Protobuf imports ([#11205](https://github.com/pantsbuild/pants/pull/11205))
+
+* Add dependency inference for Python imports of Protobuf/gRPC ([#11195](https://github.com/pantsbuild/pants/pull/11195))
+
+* Allow setting the entry point for a `pex_binary` to `<none>` ([#11199](https://github.com/pantsbuild/pants/pull/11199))
+
+* Add support for filtering file vs BUILD targets ([#11126](https://github.com/pantsbuild/pants/pull/11126))
+
+* Cancel sessions rather than killing pantsd ([#11123](https://github.com/pantsbuild/pants/pull/11123))
+
+* Remoting: allow timeout parameters to be configured ([#11125](https://github.com/pantsbuild/pants/pull/11125))
+
+### User API Changes
+
+* Require Python 3.7 or 3.8 to run Pants ([#11135](https://github.com/pantsbuild/pants/pull/11135))
+
+* Deprecate `mypy_source_plugin` and `pylint_source_plugin` targets in favor of `python_library` ([#11233](https://github.com/pantsbuild/pants/pull/11233))
+
+* Remove deprecated `compatibility` field in favor of `interpreter_constraints` ([#11225](https://github.com/pantsbuild/pants/pull/11225))
+
+* Upgrade to Pex 2.1.21. ([#11131](https://github.com/pantsbuild/pants/pull/11131))
+
+### Plugin API Changes
+
+* Remove `PrimitiveField` and align `AsyncField` with `Field` ([#11231](https://github.com/pantsbuild/pants/pull/11231))
+
+* Change `AsyncField` to be `AsyncFieldMixin` ([#11232](https://github.com/pantsbuild/pants/pull/11232))
+
+* Deprecate `TransitiveTargetsRequestLite` and `DependenciesRequestLite` now that graph cycle is fixed ([#11188](https://github.com/pantsbuild/pants/pull/11188))
+
+### Bug fixes
+
+* Fix dependency inference parsing of Python 3.8 and 3.9 syntax ([#11213](https://github.com/pantsbuild/pants/pull/11213))
+
+* Set the soft ulimit value more conservatively to fix macOS Big Sur issue ([#11194](https://github.com/pantsbuild/pants/pull/11194))
+
+* Move graph cycle detection to Rust to fix recursion limit. ([#11202](https://github.com/pantsbuild/pants/pull/11202))
+
+* Fix relative imports in dependency inference ([#11181](https://github.com/pantsbuild/pants/pull/11181))
+
+* Remove extraneous info level log line ([#11228](https://github.com/pantsbuild/pants/pull/11228))
+
+* Fix Coverage not finding resource files when generating a report ([#11129](https://github.com/pantsbuild/pants/pull/11129))
+
+* Fix `test` results showing up twice by removing `TargetsWithOrigin` ([#11128](https://github.com/pantsbuild/pants/pull/11128))
+
+* Make a few minor reliability fixes to remote caching code ([#11130](https://github.com/pantsbuild/pants/pull/11130))
+
+### Documentation
+
+* Improve error message for no applicable targets ([#11215](https://github.com/pantsbuild/pants/pull/11215))
+
+
