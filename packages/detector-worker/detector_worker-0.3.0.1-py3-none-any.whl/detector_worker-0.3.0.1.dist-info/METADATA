@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: detector-worker
+Version: 0.3.0.1
+Summary: Worker class for incapsulating logic, required for Lionbridge Rnd detectors
+Home-page: https://liox-teams.visualstudio.com/LE%20Research/_git/DntExtractor
+Author: Rodion Cherny
+Author-email: v-Rodion.Cherny@lionbridge.com
+License: MIT
+Platform: UNKNOWN
+Requires-Dist: azure-storage-blob (==12.5.0)
+Requires-Dist: azure-cosmosdb-table (==1.0.6)
+Requires-Dist: azure-storage-queue (==12.1.2)
+Requires-Dist: spacy (>=2.1.9)
+
+UNKNOWN
+
+
