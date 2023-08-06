@@ -1,0 +1,19 @@
+# Python object files
+*.pyc
+*,pyo
+
+# Python common virtual environments
+/.venv/
+/venv/
+/.tox/
+
+# OS specific files.
+.DS_Store
+
+# Common temporary files.
+*.~
+*.swp
+
+# tasks output files
+.coverage
+/{project[name]}.egg-info/
