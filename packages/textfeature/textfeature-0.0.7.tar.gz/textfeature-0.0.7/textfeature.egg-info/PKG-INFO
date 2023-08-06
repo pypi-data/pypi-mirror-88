@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: textfeature
+Version: 0.0.7
+Summary: transform unstructured text to feature vector using word2vec, lexicon and ... 
+Home-page: https://github.com/Farshad-Hasanpour/textfeature
+Author: Farshad Hasanpour
+Author-email: farshad.hasanpour96@gmail.com
+License: UNKNOWN
+Description: # TextFeature
+        transforms unstructured text to feature vector using word2vec, lexicon and ... 
+        
+        ## Directories
+        - test: This directory contains an jupyter Notebook to test and debug code easily
+        
+        ## Requirements
+        
+        This library uses modules below:
+        - gensim
+        - nltk
+        - numpy
+        - pandas
+        - ... (more requirements is needed in future)
+        
+        ## Functions
+        ### text_w2v()
+        ...
+         - **word_tokens**:
+        ### text_l2v()
+        ...
+         - **word_tokens**:
+        - **lexicon_name**:
+        - **vector_size**:
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
