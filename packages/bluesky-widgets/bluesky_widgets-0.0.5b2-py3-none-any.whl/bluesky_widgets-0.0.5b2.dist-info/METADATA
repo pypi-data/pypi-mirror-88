@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: bluesky-widgets
+Version: 0.0.5b2
+Summary: Toolbox of widgets for visualizing streaming data
+Home-page: https://github.com/bluesky/bluesky-widgets
+Author: Brookhaven National Lab
+Author-email: dallan@bnl.gov
+License: BSD (3-clause)
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Requires-Dist: bluesky-live (>=0.0.6)
+Requires-Dist: numpy
+Provides-Extra: examples
+Requires-Dist: bluesky ; extra == 'examples'
+Requires-Dist: databroker ; extra == 'examples'
+Requires-Dist: ophyd (>=1.5.3) ; extra == 'examples'
+Requires-Dist: pyzmq ; extra == 'examples'
+Requires-Dist: suitcase-msgpack ; extra == 'examples'
+Provides-Extra: pyqt5
+Requires-Dist: PyQt5 ; extra == 'pyqt5'
+Requires-Dist: qtpy ; extra == 'pyqt5'
+Provides-Extra: pyside2
+Requires-Dist: PySide2 ; extra == 'pyside2'
+Requires-Dist: qtpy ; extra == 'pyside2'
+
+===============
+bluesky-widgets
+===============
+
+.. image:: https://img.shields.io/travis/bluesky/bluesky-widgets.svg
+        :target: https://travis-ci.org/bluesky/bluesky-widgets
+
+.. image:: https://img.shields.io/pypi/v/bluesky-widgets.svg
+        :target: https://pypi.python.org/pypi/bluesky-widgets
+
+.. image:: https://img.shields.io/codecov/c/github/bluesky/bluesky-widgets
+        :target: https://codecov.io/gh/bluesky/bluesky-widgets
+
+Toolbox of widgets for visualizing blueskying data
+
+
