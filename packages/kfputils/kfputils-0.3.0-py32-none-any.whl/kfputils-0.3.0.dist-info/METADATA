@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: kfputils
+Version: 0.3.0
+Summary: Kubeflow pipeline utils.
+Home-page: https://github.com/cloudxlr8r/kfputils
+Author: Cloud XLR8R
+Author-email: hello@cloudxlr8r.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: kfp (==1.1.2)
+Requires-Dist: click (==7.1.2)
+Requires-Dist: pyyaml (==5.3.1)
+Requires-Dist: boto3 (==1.16.34)
+Requires-Dist: awscli (==1.18.194)
+
+kfputils
+=======================
+
+The missing CLI for Kubeflow pipelines.
+
+----
+
+See README.md for more info.
+
+
