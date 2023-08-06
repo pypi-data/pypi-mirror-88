@@ -1,0 +1,22 @@
+include README.md
+include LICENSE
+include *.md
+include requirements.txt
+
+exclude test
+exclude deploy
+exclude data
+exclude docs
+exclude activatePython
+exclude docs-docsify-dont-delete
+exclude GoogleAPIKey
+exclude makedoc
+exclude src
+exclude tmp
+exclude notebooks
+
+
+
+global-exclude __pycache__ *.py[cod]
+global-exclude *.so *.dylib
+
