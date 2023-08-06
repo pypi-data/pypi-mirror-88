@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: ezyrb
+Version: 1.1
+Summary: Easy Reduced Basis
+Home-page: https://github.com/mathLab/EZyRB
+Author: Nicola Demo, Marco Tezzele
+Author-email: demo.nicola@gmail.com, marcotez@gmail.com
+License: MIT
+Keywords: pod interpolation reduced-basis model-order-reduction
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Requires-Dist: future
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: GPy
+Provides-Extra: docs
+Requires-Dist: Sphinx (==1.4) ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme ; extra == 'docs'
+
+EZyRB is a python library for the Model Order Reduction based on baricentric triangulation for the selection of the parameter points and on Proper Orthogonal Decomposition for the selection of the modes. It is ideally suited for actual industrial problems, since its structure can interact with several simulation software simply providing the output file of the simulations.
+
+
