@@ -1,0 +1,12 @@
+hy>=0.19.0
+
+[dev]
+twine
+
+[doc]
+Sphinx
+
+[test]
+flake8
+pytest
+tox
