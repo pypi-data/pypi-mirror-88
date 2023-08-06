@@ -1,0 +1,34 @@
+{
+    "name": "@wq/router",
+    "version": "1.3.0-alpha.2",
+    "description": "Respond to URL changes with locally generated pages and custom events",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "test": "cd ../../ && npm run jest packages/router",
+        "prettier": "cd ../../ && npm run prettier -- --write packages/router/",
+        "lint": "cd ../../ && npm run eslint packages/router/{,src/,src/*/,src/*/*/}*.js",
+        "rollup": "cd ../../ && npm run rollup -- -c packages/router/rollup.config.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wq/wq.app.git",
+        "directory": "packages/router"
+    },
+    "keywords": [
+        "wq",
+        "router",
+        "jquery-mobile"
+    ],
+    "author": "S. Andrew Sheppard",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/wq/wq.app/issues"
+    },
+    "homepage": "https://wq.io/wq.app",
+    "dependencies": {
+        "@wq/store": "^1.3.0-alpha.2",
+        "query-string": "^6.13.1",
+        "redux-first-router": "^2.1.5"
+    }
+}

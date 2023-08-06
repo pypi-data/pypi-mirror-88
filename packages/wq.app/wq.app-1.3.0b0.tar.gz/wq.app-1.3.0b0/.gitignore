@@ -1,0 +1,15 @@
+*.py[cod]
+*.egg-info/
+*.swp
+*.tgz
+.eggs
+/dist/
+/static/
+/js/
+/scss/
+/css/
+# Note: build/*.py is actually wq.app.build, while build/*/ is 
+# created by distutils...
+/build/*/
+/wq/__init__.py
+node_modules
