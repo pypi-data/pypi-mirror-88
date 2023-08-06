@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: fabric-fss-utils
+Version: 0.2
+Summary: FABRIC System Services Utilities library
+Home-page: https://github.com/fabric-testbed/system-service-utils
+Author: Ilya Baldin
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/plain
+Requires-Dist: certifi (==2020.12.5)
+Requires-Dist: cffi (==1.14.4)
+Requires-Dist: chardet (==3.0.4)
+Requires-Dist: cryptography (==3.3.1)
+Requires-Dist: idna (==2.10)
+Requires-Dist: pycparser (==2.20)
+Requires-Dist: PyJWT (==1.7.1)
+Requires-Dist: requests (==2.25.0)
+Requires-Dist: six (==1.15.0)
+Requires-Dist: urllib3 (==1.26.2)
+
+FABRIC System Services Utilities library
+
+
