@@ -1,0 +1,13 @@
+name: desk
+
+channels:
+    - astropy
+
+dependencies:
+    - astropy
+    - Cython
+    - matplotlib
+    - sphinx
+    - sphinx-astropy
+    - sphinx_automodapi
+    - Pillow
