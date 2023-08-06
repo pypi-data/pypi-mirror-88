@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: devioc
+Version: 2020.5.6
+Summary: Simple Python based EPICS Device IOC Support
+Home-page: https://github.com/michel4j/devioc
+Author: Michel Fodje
+Author-email: michel4j@gmail.com
+License: MIT
+Keywords: epics device ioc development
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: gepics
+Requires-Dist: numpy
+Requires-Dist: PyGObject
+Requires-Dist: Twisted
+Requires-Dist: importlib-metadata (~=1.0) ; python_version < "3.8"
+
+# DevIOC
+Simple Python Device IOC Support for EPICS
+
+DevIOC is a package which enables python based EPICS IOC Soft Device support all within python. It
+allows you to define the IOC database model in a manner similar to Django Database models, and to use
+the model to develop dynamic, IOC servers.
+
+To use the full capabilities, it is is highly recommended to use a GObject compatible main loop, such as the
+one provided by `PyGObject` or even better, the GObject compatible `Twisted` reactor.
+
+Detailed documentation is available at https://michel4j.github.io/devioc/
+
+
