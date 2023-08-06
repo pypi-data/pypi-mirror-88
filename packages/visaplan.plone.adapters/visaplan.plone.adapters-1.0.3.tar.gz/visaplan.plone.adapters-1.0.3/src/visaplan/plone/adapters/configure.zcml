@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <include package=".flvinfo" />
+
+    <include package=".getmenulevel" />
+
+    <include package=".grouplog" />
+
+    <include package=".pc2" />
+
+    <include package=".pformat" />
+
+    <include package=".puc" />
+
+    <include package=".rawbyname" />
+
+    <include package=".swfinfo" />
+
+    <include package=".uidorint" />
+
+    <include package=".updateactualurl" />
+
+    <include package=".userlog" />
+
+</configure>

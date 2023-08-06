@@ -1,0 +1,6 @@
+[console_scripts]
+parseuserlog = visaplan.plone.adapters.scripts.parseuserlog:main
+
+[z3c.autoinclude.plugin]
+target = plone
+
