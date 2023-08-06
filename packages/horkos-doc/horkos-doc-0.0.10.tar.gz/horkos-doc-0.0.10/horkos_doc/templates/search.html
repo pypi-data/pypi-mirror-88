@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block contents %}
+<div id='search_results'>
+  <div id='query_overview' class='query_overview'></div>
+</div>
+<script>
+  var indices = {{ indices | safe }};
+  var url = new URL(window.location.href);
+  var query = (url.searchParams.get('query') || '');
+
+  function matches_query(record) {
+    var textInput = record.text.toLowerCase();
+    var titleInput = record.title[record.title.length - 1].toLowerCase();
+    var fullInput = textInput + ' ' + titleInput;
+    var parts = query.toLowerCase().split(' ').filter(v => Boolean(v));
+    return parts.filter( p => fullInput.includes(p)).length > 0;
+  }
+
+  var parent = document.getElementById('search_results');
+  var fetches = indices.map(url => {
+    return fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      data.filter(matches_query).map(match => {
+        var element = document.createElement('a');
+        element.setAttribute('href', match.link);
+        element.setAttribute('class', 'undecorated');
+        var card = document.createElement('div');
+        card.setAttribute('class', 'card');
+        var card_header = document.createElement('div');
+        card_header.setAttribute('class', 'card_header');
+        var card_title = document.createElement('div');
+        card_title.setAttribute('class', 'card_title');
+        card_title.innerText = match.title.join(' > ');
+        var card_body = document.createElement('div');
+        card_body.setAttribute('class', 'card_body');
+        card_body.innerHTML = match.html;
+        // var contents_holder = document.createElement('p');
+        // contents_holder.innerText = match.text;
+
+        // card_body.appendChild(contents_holder);
+        card_header.appendChild(card_title);
+        card.appendChild(card_header);
+        card.appendChild(card_body);
+        element.appendChild(card);
+
+        parent.appendChild(element);
+      });
+    });
+  });
+  document.getElementById('query_overview').innerText = (
+    'Showing results for "' + query + '".'
+  );
+</script>
+{% endblock %}
