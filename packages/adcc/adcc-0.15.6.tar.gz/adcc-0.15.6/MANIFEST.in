@@ -1,0 +1,6 @@
+# Exclude test stuff
+global-exclude test_*.py
+exclude adcc/conftest.py
+global-include libadcc/**/*.hh libadcc/**/*.cc
+include LICENSE
+include README.md
