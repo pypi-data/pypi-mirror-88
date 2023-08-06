@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: opera
+Version: 0.6.3
+Summary: Lightweight TOSCA orchestrator
+Home-page: https://github.com/xlab-si/xopera-opera
+Author: XLAB d.o.o.
+Author-email: pypi@xlab.si
+License: UNKNOWN
+Project-URL: Source Code, https://github.com/xlab-si/xopera-opera
+Project-URL: Bug Tracker, https://github.com/xlab-si/xopera-opera/issues
+Keywords: orchestration
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Dist: ansible (>=2.8)
+Requires-Dist: pyyaml (>=3.10)
+Provides-Extra: openstack
+Requires-Dist: openstacksdk ; extra == 'openstack'
+
+UNKNOWN
+
+
