@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: scrud-django
+Version: 0.1.8
+Summary: A Django app for Semantic CRUD.
+Home-page: https://github.com/openteamsinc/scrud-django
+Author: David Charboneau
+Author-email: dcharbon@openteams.com
+License: BSD-3-Clause
+Platform: UNKNOWN
+Classifier: 
+Requires-Dist: django
+Requires-Dist: djangorestframework
+Requires-Dist: django-cors-headers
+Requires-Dist: psycopg2
+Requires-Dist: python-decouple
+Requires-Dist: python-dotenv
+Requires-Dist: django-jsonfield
+Provides-Extra: dev
+Requires-Dist: django ; extra == 'dev'
+Requires-Dist: djangorestframework ; extra == 'dev'
+Requires-Dist: django-cors-headers ; extra == 'dev'
+Requires-Dist: psycopg2 ; extra == 'dev'
+Requires-Dist: python-decouple ; extra == 'dev'
+Requires-Dist: python-dotenv ; extra == 'dev'
+Requires-Dist: django-jsonfield ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: seed-isort-config ; extra == 'dev'
+Requires-Dist: re-ver ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: docker-compose ; extra == 'dev'
+Requires-Dist: sphinx ; extra == 'dev'
+Requires-Dist: sphinx-autobuild ; extra == 'dev'
+Requires-Dist: sphinxcontrib-bibtex ; extra == 'dev'
+Requires-Dist: myst-parser ; extra == 'dev'
+Requires-Dist: solar-theme ; extra == 'dev'
+Requires-Dist: factory-boy ; extra == 'dev'
+Requires-Dist: safetydance-django ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: django-extensions ; extra == 'dev'
+
+# scrud-django
+A Django application for SCRUD REST services. Semantic REST API generation.
+
+## Get Started
+
+### Get prepared to run tests and the demo application
+
+```bash
+cd docker
+conda env create -f environment-dev.yml
+conda activate scrud-django
+cd ..
+make develop
+make migrate
+```
+### Confirm setup
+
+```bash
+make run_tests
+```
+
+### Start the demo application
+
+```bash
+cd demo
+python manage.py runserver
+```
+
+
+
+
