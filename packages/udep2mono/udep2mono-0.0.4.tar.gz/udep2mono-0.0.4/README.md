@@ -1,0 +1,18 @@
+# Udep2Mono: Monotonicity Marking from Universal Dependency Trees
+
+## Install
+1. `git clone`
+2. `pip install -r requirements.txt`
+
+## Run
+Start Stanford CoreNLP server
+
+`java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000`
+
+Polarize Evaluation Dataset
+
+`python main.py --dataset gold --pos <0 or 1> --mode eval --parser <parser>`
+
+Polarize Working Dataset
+
+`python main.py --dataset <your dataset name> --pos <0 or 1> --mode polarize --parser <parser>`
