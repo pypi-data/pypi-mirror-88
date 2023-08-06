@@ -1,0 +1,66 @@
+Metadata-Version: 1.1
+Name: django-slack-logger
+Version: 0.1
+Summary: A Django app to log in Slack channel.
+Home-page: https://github.com/SharmaAnshuman/django-slack-logger
+Author: Sharma Anshuman
+Author-email: mail@ashusharma.com
+License: BSD-3-Clause
+Description: ===================
+        django-slack-logger
+        ===================
+        
+           Django errors to Slack channel.
+        
+        Quick start
+        -----------
+        
+        1. Add "django-slack-logger" to your INSTALLED_APPS setting like this::
+        
+            INSTALLED_APPS = [
+                ...
+                'django-slack-logger',
+            ]
+        
+        2. Config::
+        
+            SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/XXXX/XXXX/XXXX"
+        
+             1. To create slack app goto `https://api.slack.com/apps` and create new app
+             2. In `Create a Slack App` popup enter App Name you want. and select workspace
+        			and click on Create App.
+             3. After creating app under `Add features and functionality` tab click on `Incoming Webhooks` and make it turn on 
+             4. Click on "Add New Webhook to Workspace" in new page select channel to post to as an app
+             5. Copy `Webhook URL` and set to **SLACK_WEBHOOK_URL** 
+        	
+            SLACK_ERROR_LEVEL** = ["ERROR", "CRITICAL"] # only this logs are send to slack channel "*" for all 
+        
+        
+            SLACK_WITH_EMAIL = False # if you want logs in mail default `False` - This will requires email django email configuration to settings.py file
+        
+        
+                EMAIL_HOST = 'smtp.gmail.com'
+                EMAIL_PORT = 587
+                EMAIL_HOST_USER = 'your@gmail.com'
+                EMAIL_HOST_PASSWORD = 'password'
+                EMAIL_USE_TLS = True
+                ADMINS = [('Your Name', 'your@gmail.com'),]
+        
+            SLACK_SHORT_MESSAGE = False
+        
+        
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 3.1
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
