@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: ufmt
+Version: 0
+Summary: usort + black, in that order
+Home-page: https://github.com/omnilib/ufmt
+License: UNKNOWN
+Author: John Reese
+Author-email: john@noswap.com
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Software Development :: Version Control
+Classifier: Topic :: Software Development :: Documentation
+Classifier: Topic :: Software Development :: Version Control :: Git
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Requires-Dist: black
+Requires-Dist: usort
+Project-URL: Github, https://github.com/omnilib/ufmt
+
+# ufmt
+black + usort
+
