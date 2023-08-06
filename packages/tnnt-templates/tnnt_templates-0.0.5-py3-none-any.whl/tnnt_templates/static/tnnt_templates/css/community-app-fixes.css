@@ -1,0 +1,15 @@
+/* Fittings module fixes
+------------------------------------------------------------------------------------- */
+@media all {
+    .aa-fittings-add-dropdown {
+        margin-bottom: 0.8em;
+    }
+}
+
+@media all and (min-width: 768px) {
+    .aa-fittings-add-dropdown {
+        margin-bottom: 0;
+        margin-top: 0.8em;
+    }
+}
+/* ---------------------------------------------------------------------------------- */
