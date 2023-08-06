@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: snapml
+Version: 1.7.0rc0
+Summary: Snap Machine Learning
+Home-page: https://www.zurich.ibm.com/snapml/
+Author: IBM
+Author-email: tpa@zurich.ibm.com
+License: Proprietary
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: Other/Proprietary License
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+
+# Snap Machine Learning
+
+A library that provides high-speed training and inference of popular machine learning models on modern computing systems.
+
+## Documentation
+
+Coming soon.
+
+## License
+
+This library is distributed under the [International License Agreement for Non-Warranted
+Programs](https://www-03.ibm.com/software/sla/sladb.nsf/pdf/ilan/$file/ilan_en.pdf)
+
+
+
