@@ -1,0 +1,16 @@
+version: '3'
+services:
+  train:
+    image: example-container-ml-cpu-py38
+    volumes:
+      - ../src/container/local_test/test_dir:/opt/ml
+    command: python src/container/training/train.py
+    entrypoint: ["src/container/training/local-executor.sh"]
+  deploy:
+    image: example-container-ml-cpu-py38
+    volumes:
+      - ../src/container/local_test/test_dir:/opt/ml
+    command: python src/container/prediction/serve.py
+    entrypoint: ["src/container/prediction/local-executor.sh"]
+    ports:
+      - "8080:8080"
