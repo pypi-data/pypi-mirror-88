@@ -1,0 +1,12 @@
+CairoSVG==1.0.20
+WeasyPrint==0.42.3
+beautifulsoup4
+cairocffi<1.0.0
+setuptools
+tinycss2<1.0.0
+
+[test]
+Products.PloneTestCase
+Products.SecureMailHost
+plone.app.testing
+unittest2
