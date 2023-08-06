@@ -1,0 +1,19 @@
+graft docs
+graft src
+graft tests
+
+include .bumpversion.cfg
+include .coveragerc
+include .editorconfig
+
+include AUTHORS.rst
+include CHANGELOG.rst
+include CONTRIBUTING.rst
+include LICENSE
+include README.rst
+
+include tox.ini .readthedocs.yml .pre-commit-config.yaml
+
+prune scripts
+
+global-exclude *.py[cod] __pycache__/* *.so *.dylib
