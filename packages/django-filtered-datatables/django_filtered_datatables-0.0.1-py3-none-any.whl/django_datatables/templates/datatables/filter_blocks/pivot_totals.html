@@ -1,0 +1,50 @@
+{% extends 'datatables/filter_blocks/base_filter_block.html' %}
+
+{% block content %}
+    <div class="row pb-2">
+        <div class="col-6 text-center">
+            <a class="small all-check" href="javascript:void(0);">all</a>
+        </div>
+        <div class="col-6 text-center">
+            <a class="small none-check" href="javascript:void(0);">none</a>
+        </div>
+    </div>
+    <table class="small w-100">
+        <tr>
+            <td></td>
+            <td class="text-right text-secondary">Total</td>
+            <td class="text-right">Filtered</td>
+        </tr>
+        <tbody class="filter-content">
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        function filter(column_no, html_id, options) {
+            django_datatables.PivotFilter.call(this, column_no, html_id, options)
+            this.storage_key = 'pivot_totals'
+            this.refresh = function () {
+                totals = this.filter_calcs.calcs
+                $("#{{ html_id }} .total").each(function () {
+                    var result = totals[decodeURI($(this).attr("data-value"))]
+                    $(this).html(numberWithCommas(result[0]))
+                })
+                $("#{{ html_id }} .overall").each(function () {
+                    var result = totals[decodeURI($(this).attr("data-value"))]
+                    $(this).html(numberWithCommas(result[1]))
+                })
+                if (typeof (chart) != 'undefined') chart.data = graph_data;
+            }
+        }
+        filter.prototype = Object.create(django_datatables.PivotFilter.prototype);
+        options = {
+        'htmlcheckbox': `{% include 'datatables/filter_rows/checkbox_total.html' %}`
+        }
+        var new_filter = new filter({{ column_no }}, '{{ html_id }}', options)
+    </script>
+{% endblock %}
+
+

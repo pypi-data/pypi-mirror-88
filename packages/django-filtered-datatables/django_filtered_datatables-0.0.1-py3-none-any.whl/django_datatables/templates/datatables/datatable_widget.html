@@ -1,0 +1,48 @@
+<input class="d-none" id="json{{ widget.name }}" id="custId" name="{{ widget.name }}" value="{{ hidden }}">
+{{ table|safe }}
+<script>
+
+    function removeItem(arr, value) {
+        var index = arr.indexOf(value);
+        if (index > -1) {
+            arr.splice(index, 1);
+        }
+        return arr;
+    }
+
+    function configure_datatable() {
+        multi_select_table = $('#{{ widget.attrs.id }}')
+        multi_select_table.on('click', 'tbody tr', function () {
+            row = dt.api().row($(this))
+            hidden_input = $('#json{{ widget.name }}')
+            json_array = JSON.parse(hidden_input.val())
+            if (!$(this).hasClass('table-primary')) {
+                json_array.push(row.data()[{{ id_column }}])
+                row.data()[{{selected_column}}] = '{{ tick|safe }}'
+            } else {
+                json_array = removeItem(json_array, row.data()[{{ id_column }}])
+                row.data()[{{selected_column}}] = '{{ no_tick|safe }}'
+            }
+            hidden_input.val(JSON.stringify(json_array))
+            row.invalidate();
+            $(this).toggleClass('table-primary');
+        });
+        json_array = {{ hidden }}
+            dt = DataTables['{{ widget.attrs.id }}'].table
+        if (multi_select_table.length > 0) {
+            multi_select_table.find('tr').each(function (row) {
+                try {
+                    if (json_array.indexOf(dt.api().row($(this)).data()[{{ id_column }}]) > -1) {
+                        $(this).addClass('table-primary')
+                    }
+                } catch {
+                }
+            })
+        }
+    }
+
+    $(document).on("modalPostLoad", {}, function (event, container) {
+        configure_datatable(container)
+    })
+
+</script>

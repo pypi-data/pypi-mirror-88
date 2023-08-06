@@ -1,0 +1,24 @@
+{% spaceless %}
+    <table id="{{ datatable.table_id }}" class="{{ datatable.table_class }}">
+        <thead>
+        <tr{% if datatable.table_options.no_titles %} class="d-none"{% endif %}>
+            {% for t in datatable.all_titles %}
+                <th>{{ t }}</th>{% endfor %}
+        </tr>
+        {% include 'datatables/search_boxes.html' with table=datatable %}
+        </thead>
+        {% if not datatable.table_options.nofooter %}
+            <tfoot>
+            <tr>
+                {% for t in datatable.all_titles %}
+                    <th>{{ t }}</th>{% endfor %}
+            </tr>
+            </tfoot>
+        {% endif %}
+    </table>
+
+    <script>
+        {{ datatable.table_id }}_configuration = {{ datatable.col_def_str|safe }};
+        new PythonTable("{{ datatable.table_id }}", {{ datatable.table_id }}_configuration);
+    </script>
+{% endspaceless %}
