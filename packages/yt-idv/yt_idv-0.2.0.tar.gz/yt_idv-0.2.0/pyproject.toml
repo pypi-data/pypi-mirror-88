@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel", "Cython", "numpy"]
+
+[tool.black]
+line-length = 88
+target-version = ['py36', 'py37', 'py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | build
+  | dist
+)/
+'''
+
+# To be kept consistent with "Import Formatting" section in CONTRIBUTING.rst
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+# isort can't be applied to yt/__init__.py because it creates circular imports
+skip =  ["setup.py"]
