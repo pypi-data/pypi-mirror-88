@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -ex
+
+tempdir=$(mktemp -d)
+
+trap 'rm -r $tempdir' EXIT
+
+for version in 3 2; do
+
+    bootvenv=$tempdir/$version
+
+    virtualenv -p python$version $bootvenv # XXX: Upgrade setuptools?
+
+    $bootvenv/bin/pip install twine==1.15.0 pyven
+
+    $bootvenv/bin/initopt ~/opt/venv$version
+
+done
