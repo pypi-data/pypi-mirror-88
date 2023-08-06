@@ -1,0 +1,82 @@
+Metadata-Version: 2.1
+Name: quantumflow
+Version: 1.0.4
+Summary: "Cross compiler for gate based models of quantum computing"
+Home-page: https://github.com/gecrooks/quantumflow/
+Author: Gavin Crooks
+Author-email: gavincrooks@gmail.com
+License: Apache-2.0
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Topic :: Scientific/Engineering
+Classifier: Programming Language :: Python
+Classifier: Natural Language :: English
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: importlib-metadata
+Requires-Dist: numpy (>=1.19)
+Requires-Dist: scipy
+Requires-Dist: sympy (>=1.6)
+Requires-Dist: networkx
+Requires-Dist: opt-einsum
+Requires-Dist: pillow
+Requires-Dist: matplotlib
+Provides-Extra: dev
+Requires-Dist: pyquil (>=2.1) ; extra == 'dev'
+Requires-Dist: cirq (>=0.8) ; extra == 'dev'
+Requires-Dist: qiskit (>0.18.0) ; extra == 'dev'
+Requires-Dist: ruamel.yaml ; extra == 'dev'
+Requires-Dist: pyquil ; extra == 'dev'
+Requires-Dist: sphinx ; extra == 'dev'
+Requires-Dist: sphinxcontrib-bibtex ; extra == 'dev'
+Requires-Dist: guzzle-sphinx-theme ; extra == 'dev'
+Requires-Dist: setuptools-scm ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: setupext-janitor ; extra == 'dev'
+Requires-Dist: pytest (>=4.6) ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: sphinxcontrib-bibtex ; extra == 'docs'
+Requires-Dist: guzzle-sphinx-theme ; extra == 'docs'
+Requires-Dist: setuptools-scm ; extra == 'docs'
+Provides-Extra: ext
+Requires-Dist: pyquil (>=2.21) ; extra == 'ext'
+Requires-Dist: cirq (>=0.8) ; extra == 'ext'
+Requires-Dist: qiskit (>0.18.0) ; extra == 'ext'
+Requires-Dist: ruamel.yaml ; extra == 'ext'
+Requires-Dist: pyquil ; extra == 'ext'
+
+#  QuantumFlow: A Quantum Algorithms Development Toolkit
+
+A cross-compiler for gate based models of quantum computing
+
+![Build Status](https://github.com/gecrooks/quantumflow-dev/workflows/Build/badge.svg) [![Documentation Status](https://readthedocs.org/projects/quantumflow/badge/?version=latest)](https://quantumflow.readthedocs.io/en/latest/?badge=latest)
+
+
+[Source](https://github.com/gecrooks/quantumflow)
+
+
+## Installation for development
+
+```
+$ git clone https://github.com/gecrooks/quantumflow.git
+$ cd quantumflow
+$ pip install -e .[dev]
+```
+
+
+
+
