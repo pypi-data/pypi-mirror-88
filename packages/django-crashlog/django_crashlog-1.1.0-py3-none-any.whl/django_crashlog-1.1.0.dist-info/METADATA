@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: django-crashlog
+Version: 1.1.0
+Summary: Django custom field to implement the strategy pattern
+Home-page: https://github.com/saxix/django-strategy-field
+Author: sax
+Author-email: sax@os4d.org
+License: BSD
+Platform: linux
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 2.2
+Classifier: Framework :: Django :: 3.0
+Classifier: Framework :: Django :: 3.1
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Intended Audience :: Developers
+Requires-Dist: django-admin-extra-urls
+Provides-Extra: dev
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: django-webtest ; extra == 'dev'
+Requires-Dist: pytest-cache ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: pytest-django ; extra == 'dev'
+Requires-Dist: pytest-echo ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: psycopg2 ; extra == 'dev'
+Requires-Dist: pdbpp ; extra == 'dev'
+Provides-Extra: tests
+Requires-Dist: flake8 ; extra == 'tests'
+Requires-Dist: django-webtest ; extra == 'tests'
+Requires-Dist: pytest-cache ; extra == 'tests'
+Requires-Dist: pytest-cov ; extra == 'tests'
+Requires-Dist: pytest-django ; extra == 'tests'
+Requires-Dist: pytest-echo ; extra == 'tests'
+Requires-Dist: pytest ; extra == 'tests'
+Requires-Dist: psycopg2 ; extra == 'tests'
+Requires-Dist: pdbpp ; extra == 'tests'
+
+UNKNOWN
+
+
