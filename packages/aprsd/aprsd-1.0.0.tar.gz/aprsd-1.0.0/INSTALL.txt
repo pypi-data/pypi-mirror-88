@@ -1,0 +1,24 @@
+
+# installation instructions for the short-attention-span user like me
+
+mkdir -p ~/.aprsd
+
+cd ~
+virtualenv .venv_aprsd
+cd .venv_aprsd/
+source ./bin/activate
+
+mkdir ~/aprsd2
+cd ~/aprsd2
+git clone https://github.com/craigerl/aprsd.git
+cd aprsd
+pip install -e .
+cd ~/.venv_aprsd
+
+./bin/aprsd  # generates a config.yml template on first run
+
+vi ~/.aprsd/config.yml   
+
+./bin/aprsd
+
+# profit! #
