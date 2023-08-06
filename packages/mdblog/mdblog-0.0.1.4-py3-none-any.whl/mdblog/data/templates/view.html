@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>pydms-config-server-manager</title>
+<!--    <link rel="stylesheet" href="/static/bootstrap.min.css"/>-->
+<!--    <link rel="stylesheet" href="/static/alertify.min.css"/>-->
+    <link rel="stylesheet" href="/static/style/fluent.css"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.3/styles/github.min.css"/>
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<!--    <script type="text/javascript" src="/static/popper.min.js"></script>-->
+<!--    <script type="text/javascript" src="/static/bootstrap.min.js"></script>-->
+    <script type="text/javascript" src="https://cdn.staticfile.org/marked/1.1.0/marked.min.js"></script>
+    <script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/10.0.3/highlight.min.js"></script>
+<!--    <script type="text/javascript" src="/static/alertify.min.js"></script>-->
+<!--    <script type="text/javascript" src="/static/jquery.jgrowl.min.js"></script>-->
+<!--    <script type="text/javascript" src="/static/underscore.js"></script>-->
+<!--    <script type="text/javascript" src="/static/jsv.js"></script>-->
+<!--    <script type="text/javascript" src="/static/jsonform.js"></script>-->
+
+</head>
+<body>
+
+<div id="root" style="padding:10px">
+
+</div>
+    <script type="text/javascript" src="/static/mdview.js"></script>
+    <script>
+        const apis={
+            getTextFile:function(user,path){
+                if(path[0]==='/')path=path.slice(1);
+                return $.get({
+                    url:'/'+user+'/'+path,
+                    async:false,
+                }).responseText;
+            },
+        }
+        $(()=>{
+            let mdtext=apis.getTextFile("{{user}}","{{path}}");
+
+            console.log(mdtext);
+            mdview.view(mdtext,document.getElementById('root'));
+        })
+    </script>
+</body>
+</html>
