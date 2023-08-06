@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: waterch-tasker
+Version: 0.3.3
+Summary: A scalable and extendable experiment task scheduler framework.
+Home-page: https://github.com/chenrz925/waterch-tasker
+Author: Chen Runze
+Author-email: chenrz925@icloud.com
+License: UNKNOWN
+Project-URL: Documentation, https://waterch-tasker.readthedocs.io/en/latest/
+Project-URL: Source Code, https://github.com/chenrz925/waterch-tasker
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Planning
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+Requires-Dist: python-box (>=4.2.3)
+Requires-Dist: toml (>=0.10.1)
+Requires-Dist: more-itertools (>=8.3.0)
+Provides-Extra: pytorch
+Requires-Dist: torch (>=1.5.1) ; extra == 'pytorch'
+Requires-Dist: pytorch-ignite (>=0.3.0) ; extra == 'pytorch'
+
+# waterch-tasker
+
+![License](https://img.shields.io/github/license/chenrz925/waterch-tasker?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/chenrz925/waterch-tasker?style=flat-square)
+[![PyPI](https://img.shields.io/pypi/v/waterch-tasker?style=flat-square)](https://pypi.org/project/waterch-tasker/)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/chenrz925/waterch-tasker/CI?style=flat-square)
+
+A scalable and extendable experiment task scheduler framework. [Documentation](http://tasker.waterch.cn)
+
+## Install
+
+You can install waterch-tasker using `pip`.
+
+```bash
+pip install waterch-tasker
+```
+
+## Usage
+
+When waterch-tasker is installed, please use `--help` command.
+
+```bash
+waterch-tasker --help
+```
+
+
+
