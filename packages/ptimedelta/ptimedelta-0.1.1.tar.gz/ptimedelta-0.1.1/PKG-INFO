@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: ptimedelta
+Version: 0.1.1
+Summary: Pretty Timedelta. Convert your timedelta objects to pretty strings and vice versa.
+Home-page: https://github.com/antongoy/ptimedelta
+License: MIT
+Author: Anton Goy
+Author-email: g.a.s.s@mail.ru
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Utilities
+Project-URL: Repository, https://github.com/antongoy/ptimedelta
+Description-Content-Type: text/markdown
+
+# ptimedelta
+
+Convert time periods represented by strings to timedelta objects and vice versa. 
+
+## Features
+1. Supports Python2.7, Python3+.
+
+## Warning
+Project under a development.
+
+## Installation
+```shell script
+$ pip install ptimedelta
+```
+
+## Examples
+```pydocstring
+>>> import ptimedelta as ptd
+>>> ptd.to_timedelta("12m34s")
+datetime.timedelta(seconds=754)
+>>> ptd.to_seconds("3h23m4s", as_int=True)
+12184
+```
+
