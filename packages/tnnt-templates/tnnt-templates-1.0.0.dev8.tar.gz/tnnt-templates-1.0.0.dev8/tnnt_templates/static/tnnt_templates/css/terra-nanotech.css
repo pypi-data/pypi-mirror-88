@@ -1,0 +1,145 @@
+/* Auth base styles
+------------------------------------------------------------------------------------- */
+@media all {
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .alliance-auth-background {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        z-index: 0;
+        width: 100%;
+        margin: 0;
+        background-color: rgba(39, 43, 48, 0.95);
+    }
+
+    .alliance-auth-content {
+        position: relative;
+        /*z-index: 1;*/
+        margin-bottom: 2rem;
+    }
+
+    .gray-icon-color .fa {
+        color: rgb(80, 80, 80);
+    }
+
+    .notification-bell-color {
+        color: rgb(168, 143, 30);
+    }
+
+    .navbar-brand {
+        padding: 10px 15px 15px 16px;
+    }
+
+    .auth-navbar-top {
+        margin-bottom: 0;
+    }
+
+    .auth-side-navbar-collapse {
+        padding-left: 0;
+    }
+
+    #wrapper {
+        width: 100%;
+        padding: 0;
+    }
+
+    #site-body-wrapper {
+        margin-right: 0;
+    }
+
+    /* Horizontal list group */
+    ul.list-group.list-group-horizontal {
+        display: table;
+        width: 100%;
+    }
+
+    ul.list-group.list-group-horizontal > li.list-group-item {
+        display: table-cell;
+        max-width: 0;
+    }
+
+    .flex-center-horizontal {
+        justify-content: center;
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: rgba(62, 68, 76, 0.5);
+    }
+
+    /* style group headers within a table */
+    .table-striped > tbody > tr.tr-group, .tr-group {
+        font-weight: bold;
+        background-color: rgb(62, 68, 76);
+    }
+
+    .label-tnnt-default {
+        display: inline-block;
+        background-color: rgb(192, 192, 192);
+        color: rgb(54, 54, 54);
+        padding: 0.625rem 0.625rem 0.625rem 0.4375rem;
+        font-size: 1rem;
+        font-weight: normal;
+        border-left: 5px solid rgb(0, 0, 0);
+    }
+
+    .panel {
+        /*border: 1px solid transparent;*/
+        border: none;
+    }
+
+    .panel-title {
+        display: block;
+        font-size: 1rem;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 700;
+        line-height: 1.1;
+        color: inherit;
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+        text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .panel-body {
+        min-height: 100px;
+    }
+}
+
+/* highlight active menu items
+------------------------------------------------------------------------------------- */
+@media all {
+    .nav-pills > li > a.active,
+    .nav-pills > li > a:hover {
+        background-color: rgb(62, 68, 76);
+        color: rgb(255, 255, 255);
+    }
+}
+
+/* Small devices (tablets, 768px and up)
+------------------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+    /* class for vertically aligning columns in a bootstrap row */
+    .row.vertical-flexbox-row2 {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .row.vertical-flexbox-row2 > [class*='col-'] {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* Alliance Auth Bootstrap fixes
+------------------------------------------------------------------------------------- */
+@media all and (min-width: 768px) {
+    .site-body-wrapper {
+        margin-left: -15px;
+    }
+}
