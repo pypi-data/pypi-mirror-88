@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: horus-media-client
+Version: 0.4
+Summary: Horus Media Server Client
+Home-page: https://github.com/horus-view-and-explore/horus-media-client
+Author: Horus View and Explore B.V.
+Author-email: info@horus.nu
+License: MIT
+Description: # Horus Media Server Client
+        
+        An [Horus Media Server](https://horus.nu/horus-geo-suite/) client python library
+        
+        ## [Install latest release](https://github.com/horus-view-and-explore/horus-media-client/wiki/Install-latest-release)
+        
+        
+        ## [Run the example strategy](https://github.com/horus-view-and-explore/horus-media-client/wiki/Example-strategy-tool)
+        
+        ```
+        python3 -m horus_media_examples.example_strategy --help
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.6, <4
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Provides-Extra: test
