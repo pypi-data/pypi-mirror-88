@@ -1,0 +1,125 @@
+Metadata-Version: 2.1
+Name: pylexem
+Version: 0.0.1
+Summary: pylexem - python lexem analysis scanner tokenizer
+Home-page: https://github.com/kr-g/pylexem
+Author: k.r. goger
+Author-email: k.r.goger+pylexem@gmail.com
+License: UNKNOWN
+Description: 
+        [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+        
+        
+        # py-lexem - lexem analysis scanner tokenizer
+        
+        `py-lexem` is a 1-to-1 scanner and tokenizer with no-loss of information. 
+        
+        if required extra whitespace can be removed from the stream easily from the stream (see sample).
+        
+        `py-lexem` will create Token or 
+        [`Lexeme`](https://en.wikipedia.org/wiki/Lexical_analysis#Lexeme)
+        where each token has a value and annotation depending on the matched lexical rule.
+        
+        internally a look-ahead is used to produce the right lexeme
+        
+        
+        # how to create / use lexical analysis rules
+        
+        lexical analysis is done by well formed rule where the  best one 
+        (greedy one) is used to produce the exact lexem.
+        
+        so it doesnt matter in which order rules are placed in the definition.
+        
+        E.G. the rules for '=' or '==' will produce always the right '==' lexem
+        output when scanning an '==' since there is a look-ahead for the greedy 
+        operation is performed internally.
+        
+        for creating customer lex rules refer also to the predefined set:
+        
+        [`utils.py`](https://github.com/kr-g/pylexem/blob/main/pylexem/utils.py)
+        
+        
+        # how to use
+        
+        refer to [`sample.py`](https://github.com/kr-g/pylexem/blob/main/sample.py)
+        
+        refer also to test cases in [`tests`](https://github.com/kr-g/pylexem/blob/main/tests)
+        
+        
+        code: (e.g.)
+        
+        
+            def test_float(self):
+                inp_text = """
+                    0. +0. .0 +.0 0.0 +0.1 0.0e-1 +0.0e-1 0.0e1 .0e1 -.0e1
+                    """
+                stream = self.lexx.tokenize(inp_text)
+                self.stream = Sanitizer().whitespace(stream)
+        
+                res = list(map(lambda x: float(x[0]), self.stream))
+        
+                self.assertEqual(
+                    res,
+                    [0.0, +0.0, 0.0, +0.0, 0.0, +0.1, 0.0e-1, +0.0e-1, 0.0e1, 0.0e1, -0.0e1],
+                )
+            
+        
+        or:
+        
+                inp_text = """
+                    0. +0. .0 +.0 0.0 +0.1 0.0e-1 +0.0e-1 0.0e1 .0e1 -.0e1
+                    """
+                stream = self.lexx.tokenize(inp_text)
+                self.stream = Sanitizer().whitespace(stream)
+            
+                for tok in self.stream:
+                    print(tok)
+        
+        
+                        ('\n', 'LF')
+                        ('    ', 'TABED') # 4 BLANK are replaced by 1 Token 'TABED'
+                        ('    ', 'TABED') # dont like this TABED Token here? 
+                        ('    ', 'TABED') # dont add it to the lexer, then 4 BLANK are produced
+                        ('-112', 'INT')
+                        (' ', 'BLANK')
+                        ('+110', 'INT')
+                        (' ', 'BLANK')
+                        ('110', 'UINT')
+                        (' ', 'BLANK')
+                        ('\n', 'LF')
+                        ('    ', 'TABED')
+                        ('    ', 'TABED')
+                        ('    ', 'TABED')
+        
+           
+        
+        # Platform
+        
+        Tested on Python3, and Linux.
+        
+        
+        # Development status
+        
+        alpha state.
+        the API or logical call flow might change without prior notice.
+        
+        read [`CHANGELOG`](https://github.com/kr-g/pylexem/blob/main/CHANGELOG.MD)
+        for latest, or upcoming news.
+        
+        
+        # installation
+            
+        available on pypi. install with:
+        
+            python3 -m pip install pylexem
+            
+        
+Keywords: lex lexer lexem scanner tokenizer
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
