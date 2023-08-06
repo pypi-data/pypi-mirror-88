@@ -1,0 +1,4 @@
+include AUTHORS COPYING NEWS README.md
+graft tests
+graft biosql
+global-exclude *.py[cod]

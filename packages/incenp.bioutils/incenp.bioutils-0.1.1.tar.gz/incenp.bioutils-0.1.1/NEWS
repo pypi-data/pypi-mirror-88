@@ -1,0 +1,7 @@
+Changes in pebble-0.1.1 (2020-12-15)
+------------------------------------
+
+  * Support reading from program-based USAs.
+  * Support identifier lookup when reading from a file-based USA.
+  * Support field lookup when reading from a file-based USA.
+  * seqtool>cat: Reuse first record's details when catenating sequences.
