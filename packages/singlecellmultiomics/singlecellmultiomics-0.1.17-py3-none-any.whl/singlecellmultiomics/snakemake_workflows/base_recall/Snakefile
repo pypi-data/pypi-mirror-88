@@ -1,0 +1,179 @@
+from glob import glob
+import collections
+import os
+from singlecellmultiomics.utils import get_contig_list_from_fasta
+from singlecellmultiomics.bamProcessing import get_read_group_format
+"""
+This workflow:
+
+"""
+################## configuration ##################
+configfile: "config.json"
+# config
+
+
+
+# Obtain contigs:
+rule all:
+    input:
+        b = "recallibration/recallibrated.scrg.bam",
+        i = "recallibration/recallibrated.scrg.bam.bai"
+
+def get_uncallibrated_library_read_grouped_file(wildcards):
+
+    rg_input_format = get_read_group_format(config['bam'])
+    if rg_input_format==0:
+        # Conversion is required
+        print("Conversion of input is required")
+        return "recallibration/uncall.sglibrary.bam"
+    else:
+        # Conversion is not required
+        print("Conversion of input is not required")
+        return config['bam']
+
+
+rule gatk_BaseRecalibrator:
+    input:
+        scbam=get_uncallibrated_library_read_grouped_file,
+
+    output:
+        recall_table = "recallibration/recall_table.tsv"
+
+    log:
+        stdout="log/BaseRecalibrator/BaseRecalibrator.stdout",
+        stderr="log/BaseRecalibrator/BaseRecalibrator.stderr"
+
+    threads: 1
+    params:
+        runtime="60h",
+        reference=config['reference_file'],
+        gatk_path=config['gatk_path'],
+        known_variants_vcf=config['known_variants_vcf'],
+        covariate_radius=config['covariate_radius']
+
+
+    resources:
+        mem_mb = lambda wildcards, attempt, input: attempt * 10000,
+        runtime = lambda wildcards, attempt, input: attempt * 24
+
+    shell:
+        "{params.gatk_path} BaseRecalibrator \
+        --known-sites {params.known_variants_vcf} \
+        --reference {params.reference} \
+         --input {input.scbam} \
+         --output {output.recall_table} \
+         -mcs {params.covariate_radius} \
+         > {log.stdout} 2> {log.stderr} \
+         ;"
+
+rule SCMO_bamMatchGATKBQSRReport:
+    input:
+        scbam=get_uncallibrated_library_read_grouped_file,
+        recall_table='recallibration/recall_table.tsv'
+    output:
+        recall_matched_bam = temp("recallibration/recall_matched.bam"),
+        recall_matched_bam_index = temp("recallibration/recall_matched.bam.bai"),
+
+    log:
+        stdout="log/matchGATKBQSRReport/matchGATKBQSRReport.stdout",
+        stderr="log/matchGATKBQSRReport/matchGATKBQSRReport.stderr"
+
+    threads: 1
+    params:
+        runtime="60h",
+        covariate_radius=config['covariate_radius']
+
+    resources:
+        mem_mb = lambda wildcards, attempt, input: attempt * 10000,
+        runtime = lambda wildcards, attempt, input: attempt * 24
+
+    shell:
+        "bamMatchGATKBQSRReport.py {input.scbam} \
+        {input.recall_table} -o {output.recall_matched_bam} \
+         > {log.stdout} 2> {log.stderr}; samtools index {output.recall_matched_bam}"
+
+
+rule gatk_BaseRecalibratorApply:
+    input:
+        scbam='recallibration/recall_matched.bam',
+        scbam_index='recallibration/recall_matched.bam.bai',
+        recall_table='recallibration/recall_table.tsv',
+
+    output:
+        recall_bam = temp("recallibration/recallibrated.bam"),
+        recall_bam_index = temp("recallibration/recallibrated.bam.bai")
+
+    log:
+        stdout="log/ApplyBQSR/ApplyBQSR.stdout",
+        stderr="log/ApplyBQSR/ApplyBQSR.stderr"
+
+    threads: 1
+    params:
+        runtime="60h",
+        gatk_path=config['gatk_path'],
+        covariate_radius=config['covariate_radius']
+
+    resources:
+        mem_mb = lambda wildcards, attempt, input: attempt * 10000,
+        runtime = lambda wildcards, attempt, input: attempt * 24
+
+    shell:
+        "{params.gatk_path} ApplyBQSR \
+        --bqsr-recal-file {input.recall_table} \
+         --input {input.scbam} \
+         --output {output.recall_bam} \
+         > {log.stdout} 2> {log.stderr}; samtools index {output.recall_bam} \
+         ;"
+
+
+rule revert_read_groups_to_SC:
+    input:
+        recall_bam='recallibration/recallibrated.bam',
+        recall_bam_index='recallibration/recallibrated.bam.bai'
+
+    output:
+        # File with single cell read groups
+        scrg_bam = "recallibration/recallibrated.scrg.bam",
+        scrg_bam_i = "recallibration/recallibrated.scrg.bam.bai"
+
+    log:
+        stdout="log/SCMO_RG/SCMO_RG.stdout",
+        stderr="log/SCMO_RG/SCMO_RG.stderr"
+
+    threads: 1
+    params:
+        runtime="60h",
+        format=0
+
+    resources:
+        mem_mb = lambda wildcards, attempt, input: attempt * 10000,
+        runtime = lambda wildcards, attempt, input: attempt * 24
+
+    shell:
+        "bamReadGroupFormat.py {input.recall_bam} -o {output.scrg_bam} -format {params.format} > {log.stdout} 2> {log.stderr}; samtools index {output.scrg_bam} "
+
+
+rule revert_read_groups_to_LIBRARY:
+    input:
+        recall_bam=config['bam']
+
+    output:
+        # File with single cell read groups
+        scrg_bam = temp("recallibration/uncall.sglibrary.bam"),
+        scrg_bam_index = "recallibration/uncall.sglibrary.bam.bai"
+
+    log:
+        stdout="log/SCMO_RG_LY/SCMO_RG_LY.stdout",
+        stderr="log/SCMO_RG_LY/SCMO_RG_LY.stderr"
+
+    threads: 1
+    params:
+        runtime="60h",
+        format=1
+
+    resources:
+        mem_mb = lambda wildcards, attempt, input: attempt * 10000,
+        runtime = lambda wildcards, attempt, input: attempt * 24
+
+    shell:
+        "bamReadGroupFormat.py {input.recall_bam} -o {output.scrg_bam} -format {params.format} > {log.stdout} 2> {log.stderr}; samtools index {output.scrg_bam}  "
