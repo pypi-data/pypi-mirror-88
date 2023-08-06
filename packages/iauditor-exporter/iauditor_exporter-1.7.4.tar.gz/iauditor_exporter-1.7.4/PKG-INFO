@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: iauditor-exporter
+Version: 1.7.4
+Summary: The iAuditor Exporter tool is the primary way to bulk export iAuditor information for use in BI tools such as PowerBI. The tool is coded in the Python programming language and can be ran simply and easily on any computer with Python installed.
+Author: Edd
+Author-email: edward.abrahamsen-mills@safetyculture.io
+Requires-Python: >=3.7,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Provides-Extra: all_db
+Provides-Extra: mysql
+Provides-Extra: postgres
+Provides-Extra: sql
+Requires-Dist: PyYAML (>=5.3.1,<6.0.0)
+Requires-Dist: SQLAlchemy (>=1.3.4)
+Requires-Dist: coloredlogs (>=10.0)
+Requires-Dist: dateparser (>=0.7.6,<0.8.0)
+Requires-Dist: mysqlclient (>=2.0.1,<3.0.0); extra == "all_db" or extra == "mysql"
+Requires-Dist: numpy (>=1.16.4)
+Requires-Dist: pandas (>=0.24.2)
+Requires-Dist: psycopg2 (>=2.8.5,<3.0.0); extra == "all_db" or extra == "postgres"
+Requires-Dist: pyodbc (>=4.0.30,<5.0.0); extra == "all_db" or extra == "sql"
+Requires-Dist: python_dateutil (>=2.8.0)
+Requires-Dist: pytz (>=2019.2)
+Requires-Dist: questionary (>=1.5.2,<2.0.0)
+Requires-Dist: rich (>=4.2.2,<5.0.0)
+Requires-Dist: safetyculture-sdk-python-beta (>=2.2.3)
+Requires-Dist: tqdm (>=4.48.2,<5.0.0)
+Requires-Dist: tzlocal (>=2.0.0)
+Requires-Dist: unicodecsv (>=0.14.1)
