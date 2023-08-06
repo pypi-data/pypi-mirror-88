@@ -1,0 +1,46 @@
+{% load view_tags %}
+
+{% for section in project.catalog.sections.all %}
+
+    <h2>{{ section.title }}</h2>
+
+    {% for questionset in section.questionsets.all %}
+
+        <h3>{{ questionset.title }}</h3>
+
+        {% for question in questionset.questions.all %}
+
+            <p><strong>{{ question.text }}</strong></p>
+
+            {% if questionset.is_collection %}
+                {% get_set questionset.attribute.uri as sets %}
+                {% for set in sets %}
+                    {% if question.is_collection %}
+                    <p><em>{{ set.value }}:</em></p>
+                    <ul>
+                    {% render_set_value_list set question.attribute.uri %}
+                    </ul>
+                    {% else %}
+                    <p><em>{{ set.value }}:</em> {% render_set_value set question.attribute.uri %}</p>
+                    {% endif%}
+                {% endfor %}
+
+            {% else %}
+
+                {% if question.is_collection %}
+                <ul>
+                {% render_value_list question.attribute.uri %}
+                </ul>
+                {% else %}
+                <p>
+                {% render_value question.attribute.uri %}
+                </p>
+                {% endif%}
+
+            {% endif %}
+
+        {% endfor %}
+
+    {% endfor %}
+
+{% endfor %}
