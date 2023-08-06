@@ -1,0 +1,6 @@
+[console_scripts]
+__hookpy-auto-main = hookpy.main:auto_main
+hookpy = hookpy.main:auto_main_auto_find_config
+hookpy-forward = hookpy.main:auto_main_forward
+hookpy-selected = hookpy.main:main
+
