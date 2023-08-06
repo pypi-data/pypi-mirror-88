@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: tianyancha
+Version: 0.1.0
+Summary: Tianyancha SDK for python, which based on https://open.tianyancha.com/
+Home-page: https://github.com/iamsk/tianyancha
+Author: Bin
+Author-email: iamsk.info@gmail.com
+License: MIT
+Description: 
+        # tianyancha
+        
+        Tianyancha SDK for python, which based on https://open.tianyancha.com/
+        
+        ## install
+        
+        pip install tianyancha
+        
+        ## Usage
+        
+        ```python
+        from tianyancha import Tianyancha
+        token = "TOKEN"
+        word = "完美日记"
+        
+        tyc = Tianyancha(token)
+        ret = tyc.search(word)
+        ```
+        
+        ## More usages
+        
+        
+        ```python
+        ret = tyc.get('/search/2.0', {'word': word})
+        ```
+        
+        API Mappings : https://open.tianyancha.com/api_list
+        
+        ## Tests
+        
+        just run `pytest`
+        
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6.0
+Description-Content-Type: text/markdown
