@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: tomso
+Version: 0.0.12
+Summary: Tools for Modelling Stars and their Oscillations
+Home-page: https://github.com/warrickball/tomso
+Author: Warrick Ball
+Author-email: W.H.Ball@bham.ac.uk
+License: MIT
+Download-URL: https://github.com/warrickball/tomso/archive/v0.0.12.tar.gz
+Description: # TOMSO: Tools for Modelling Stars and their Oscillations
+        
+        TOMSO is a set of Python modules for loading and saving input and
+        output files for and from stellar evolution and oscillation
+        codes.  Functions are presently implemented for the following
+        standard or code-specific formats:
+        
+        * [FGONG](https://www.astro.up.pt/corot/ntools/docs/CoRoT_ESTA_Files.pdf)
+        * [MESA](http://mesa.sourceforge.net)
+        * [STARS](http://www.ast.cam.ac.uk/~stars)
+        * [ADIPLS](http://users-phys.au.dk/jcd/adipack.n/)
+        * [GYRE](https://bitbucket.org/rhdtownsend/gyre/wiki/Home)
+        
+        Documentation is available on
+        [ReadTheDocs.org](http://tomso.readthedocs.io).  Beware that the code
+        is *very unstable*.  Expect the API to change drastically or
+        completely without warning!
+        
+        ## Contributors
+        * [Warrick Ball](https://warrickball.github.io)
+        
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Description-Content-Type: text/markdown

@@ -1,0 +1,48 @@
+v0.0.12,  2020-12-11 -- overhauled docs
+          2020-12-01 -- rewrite MESA astero sample functions as extensions of
+                        dict and list
+          2020-10-24 -- refactor BaseStellarModel into AdiabaticStellarModel
+                        and FullStellarModel
+          2020-09-29 -- rename `enn` and `ell` to `n` and `l` in ADIPLS
+          2020-09-04 -- added `info` function to script
+          2020-08-27 -- FGONG adheres more closely to formats impled by ivers
+                     -- refactored common stellar models to extend new class
+                        BaseStellarModel
+          2020-08-23 -- add `regularize` decorator to suppress warnings at
+                     -- centres of stellar models
+          2020-08-14 -- started implementing __repr__ and __str__
+          2020-08-07 -- add new functions for loading MESA/astero samples
+          2020-07-29 -- rename `common` to `utils`
+          2020-07-26 -- where implemented, functions return objects by default
+          2020-07-22 -- tomso_open now handles URLs
+          2020-07-20 -- added constants module and Teff property to FGONG and
+                        and GYRE models
+v0.0.11,  2020-02-04 -- added script to convert between stellar model types
+          2019-10-16 -- added classes to FGONG, GYRE and ADIPLS modules as well
+                        as tests that currently run alongside old functions
+v0.0.10,  2019-08-01 -- added `prune` keyword to `mesa.load_history` to force a
+                        strictly increasing model number by only taking last
+                        model of any given model number
+                     -- added function to convert AMDL back into FGONG
+                     -- frequency tables in MESA samples now in stored in record
+                        arrays using same keys as MESA
+                     -- suppressed divide by zero and 0/0 warnings in ADIPLS
+                        manipulation
+                     -- refactored MESA/GYRE readers to use common code and
+                        tweaked them to infer column widths from header names
+                     -- added option to reverse arrays from fgong.fgong_get
+                     -- added specific heat capacity `cp` to fgong.fgong_get
+v0.0.9,   2018-09-24 -- should fix bugs in gzip support in v0.0.8 
+v0.0.8,   2018-09-21 -- Some functions now automagically read gzipped files
+                        ending `.gz.`.
+                     -- `fgong_` and `amdl_get` now return single keys in the
+                        same form as requested.
+v0.0.7,   2018-05-30 -- Improvements to GYRE file manipulation.
+v0.0.6,   2018-05-03 -- Renamed IO module to FGONG.
+v0.0.5,   2018-03-02 -- Bugfix in integrate.  Also added test and improved
+                        fgong/amdl_get.
+v0.0.4,   2018-02-10 -- Multiple improvements: functionality, tests,
+                        documentation...
+v0.0.3,   2017-11-08 -- First PyPI version, documentation on ReadTheDocs.
+v0.0.2,   2017-05-09 -- Code finally stable, first "release candidate".
+v0.0.1,   2016-11-17 -- Initial commit.
