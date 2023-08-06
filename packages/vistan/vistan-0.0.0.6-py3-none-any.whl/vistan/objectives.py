@@ -1,0 +1,161 @@
+import functools
+import autograd.numpy as np
+import autograd.scipy.special as autoscipy
+import autograd
+import vistan.utilities as utils
+
+
+def objective_utils(
+                    params, log_p, log_q, sample_q,
+                    M_iw_train, num_copies_training):
+
+    samples_shape = (num_copies_training, M_iw_train)
+
+    params_stopped = autograd.core.getval(params)
+
+    z = sample_q(params, samples_shape)
+
+    lp = log_p(z)
+
+    lq = log_q(params, z)
+
+    lq_stopped = log_q(params_stopped, z)
+
+    return z, lp, lq, lq_stopped
+
+
+def ELBO_cf_entropy(
+                    params, log_p, log_q, sample_q, entropy_q,
+                    M_iw_train, num_copies_training):
+
+    _, lp, _, _ = objective_utils(
+                                params, log_p, log_q, sample_q,
+                                M_iw_train, num_copies_training)
+
+    return np.mean(lp) + entropy_q(params)
+
+
+def IWELBO(params, log_p, log_q, sample_q, M_iw_train, num_copies_training):
+
+    _, lp, lq, _ = objective_utils(
+                                    params, log_p, log_q, sample_q,
+                                    M_iw_train, num_copies_training)
+    # This will also work, but will not evaluate to IW-ELBO
+    # lR = lp - lq
+    # weights = autograd.core.getval(utils.softmax_matrix(lR))
+    # targets = lR
+    # return np.mean(np.sum(weights*targets, -1))
+    return np.mean(autoscipy.logsumexp(lp - lq, -1)) - np.log(M_iw_train)
+
+
+def IWELBO_STL(
+            params, log_p, log_q,
+            sample_q, M_iw_train, num_copies_training):
+
+    _, lp, _, lq_stopped = objective_utils(
+                        params, log_p, log_q,
+                        sample_q, M_iw_train, num_copies_training)
+    lR = lp - lq_stopped
+    weights = autograd.core.getval(utils.softmax_matrix(lR))
+    targets = lR
+    return np.mean(np.sum(weights*targets, -1))
+
+
+def IWELBO_DREG(
+                params, log_p, log_q, sample_q,
+                M_iw_train, num_copies_training):
+
+    _, lp, _, lq_stopped = objective_utils(
+                            params, log_p,
+                            log_q, sample_q, M_iw_train, num_copies_training)
+
+    lR = lp - lq_stopped
+    weights = autograd.core.getval(utils.softmax_matrix(lR))
+    weights = weights**2
+    targets = lR
+    return np.mean(np.sum(weights*targets, -1))
+
+
+def choose_objective_eval_fn(hyper_params):
+
+    if hyper_params['grad_estimator'] == "Total-gradient":
+        objective = IWELBO
+
+    elif hyper_params['grad_estimator'] == "DReG":
+        objective = IWELBO_DREG
+
+    elif hyper_params['grad_estimator'] == "STL":
+        objective = IWELBO_STL
+
+    elif hyper_params['grad_estimator'] == "closed-form-entropy":
+        assert (hyper_params['M_iw_train'] == 1)
+        assert ("gaussian" in hyper_params['vi_family'])
+        objective = ELBO_cf_entropy
+    else:
+        raise ValueError
+
+    if hyper_params['evaluation_fn'] == "IWELBO":
+        evaluation_fn = IWELBO
+
+    elif hyper_params['evaluation_fn'] == "ELBO-cfe":
+        evaluation_fn = ELBO_cf_entropy
+
+    else:
+        raise ValueError
+
+    return objective, evaluation_fn
+
+
+def modify_objective_eval_fn(
+                    objective, evaluation_fn,
+                    log_p, var_dist, hyper_params):
+
+    m_objective = functools.partial(
+                    objective,
+                    log_p=log_p,
+                    log_q=var_dist.log_prob,
+                    sample_q=var_dist.sample,
+                    M_iw_train=hyper_params['M_iw_train'],
+                    num_copies_training=hyper_params['num_copies_training'])
+
+    m_evaluation_fn = functools.partial(
+                    evaluation_fn,
+                    log_p=log_p,
+                    log_q=var_dist.log_prob,
+                    sample_q=var_dist.sample,
+                    M_iw_train=hyper_params['M_iw_train'],
+                    num_copies_training=hyper_params['num_copies_training'])
+
+    if hyper_params['grad_estimator'] == "closed-form-entropy":
+        m_objective = functools.partial(
+                            m_objective,
+                            entropy_q=var_dist.entropy)
+
+    if hyper_params['evaluation_fn'] == "ELBO-cfe":
+        m_evaluation_fn = functools.partial(
+                            m_evaluation_fn,
+                            entropy_q=var_dist.entropy)
+
+    # Augment the objective definition to match
+    # the Autograd's optimizer template
+
+    return functools.partial(
+                modify_objective_for_autograd_optims,
+                func=m_objective,
+                maximize=True), m_evaluation_fn
+
+
+def modify_objective_for_autograd_optims(params, t, func, maximize):
+    if maximize is True:
+        return -func(params)
+    else:
+        return func(params)
+
+
+def get_objective_eval_fn(log_p, var_dist, hyper_params):
+
+    objective, evaluation_fn = choose_objective_eval_fn(hyper_params)
+
+    return modify_objective_eval_fn(
+                    objective, evaluation_fn, log_p,
+                    var_dist, hyper_params)
