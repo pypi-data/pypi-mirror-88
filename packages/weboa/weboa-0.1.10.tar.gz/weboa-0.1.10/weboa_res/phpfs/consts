@@ -1,0 +1,11 @@
+<?php
+$DOMAIN = '';
+$_DOMAIN = "https://".$DOMAIN;
+$SITE_TITLE = '';
+$_SITE_TITLE = '';
+$DESCRIPTION = $__translations['d0'];
+$KEYWORDS = 'NVG, ';
+$MAIN_COLOR = "#";
+$CACHE = "7";
+$SN_BANNER = "img/sn_share.png?".$CACHE;
+?>
