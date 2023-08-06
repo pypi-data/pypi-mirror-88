@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: vribieregetscode
+Version: 0.1.0
+Summary: Print the HTTP status code for an HTTP GET
+Home-page: https://gitlab.com/fortinet_vincent/vribieregetscode
+License: Apache-2.0
+Keywords: requests,cli,status_code
+Author: Vincent Ribiere
+Author-email: vribiere@fortinet.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: requests (>=2.25.0,<3.0.0)
