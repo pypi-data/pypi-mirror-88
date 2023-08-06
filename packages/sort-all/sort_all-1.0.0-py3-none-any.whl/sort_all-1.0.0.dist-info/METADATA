@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: sort-all
+Version: 1.0.0
+Summary: Automatically Sort __all__ records alphabetically
+Home-page: https://github.com/aio-libs/sort-all
+Author: Andrew Svetlov
+Author-email: andrew.svetlov@gmail.com
+License: Apache-2.0
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6.1
+Description-Content-Type: text/x-rst
+Requires-Dist: tokenize-rt (>=3.0.1)
+
+# sort-all
+Sort __all__ lists alphabetically
+
+
