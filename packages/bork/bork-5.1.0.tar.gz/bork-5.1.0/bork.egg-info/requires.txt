@@ -1,0 +1,16 @@
+packaging==20.8
+toml==0.10.2
+pep517==0.8.2
+twine==3.2.0
+click==7.1.2
+coloredlogs==15.0
+importlib_metadata==3.3.0
+
+[testing]
+pylint==2.6.0
+pytest==6.2.0
+pytest-pylint==0.18.0
+pytest-mypy==0.8.0
+
+[testing_only]
+pytest==6.2.0
