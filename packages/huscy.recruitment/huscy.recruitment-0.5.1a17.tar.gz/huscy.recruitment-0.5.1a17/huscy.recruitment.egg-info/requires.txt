@@ -1,0 +1,16 @@
+Django>=2.2
+djangorestframework>=3.10
+drf-nested-routers
+huscy.appointments
+huscy.attributes
+huscy.bookings
+huscy.projects
+huscy.pseudonyms
+huscy.subjects
+
+[development]
+psycopg2-binary
+
+[testing]
+tox
+watchdog
