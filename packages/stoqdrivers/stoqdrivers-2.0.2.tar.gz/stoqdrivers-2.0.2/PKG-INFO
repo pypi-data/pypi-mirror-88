@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: stoqdrivers
+Version: 2.0.2
+Summary: Drivers for the retail sector.
+Author: Stoq Team
+Author-email: dev@stoq.com
+Requires-Python: >=3.5,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: Pillow (>=3.1.2)
+Requires-Dist: pyserial (>=2.2)
+Requires-Dist: qrcode (>=5.3,<5.4)
+Requires-Dist: zope.interface (>=4.0,<5.0)
