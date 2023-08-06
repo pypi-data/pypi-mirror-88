@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: unreal-cli
+Version: 0.0.0
+Summary: Command-line interface for Unreal Engine 4/5
+Home-page: http://github.com/adamrehn/unreal-cli
+Author: Adam Rehn
+Author-email: adam@adamrehn.com
+License: MIT
+Keywords: epic unreal engine
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Environment :: Console
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: setuptools (>=38.6.0)
+Requires-Dist: shellescape
+Requires-Dist: twine (>=1.11.0)
+Requires-Dist: wheel (>=0.31.0)
+
+# unreal-cli
+
+The successor to ue4cli, for both Unreal Engine 4 and 5 [COMING SOON]
+
+
