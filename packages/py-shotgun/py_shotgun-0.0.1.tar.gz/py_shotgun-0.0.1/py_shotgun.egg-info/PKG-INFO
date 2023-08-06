@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: py-shotgun
+Version: 0.0.1
+Summary: simple shotgun api wrap
+Home-page: https://https://github.com/MoonShineVFX/py_shotgun
+Author: Noflame Lin
+Author-email: linjuang@gmail.com
+License: UNKNOWN
+Description: # pyShotgun
+        A python wrapper for shotgun api
+        
+        ### usage
+        basic usage
+        
+        ```python
+        import logging
+        logger = logging.getLogger(__name__)
+        import shotgun_api3
+        from py_shotgun import SGSchema
+        sg = shotgun_api3.Shotgun(server, script_name=script_name, api_key=script_key)
+        # init a shotgun api
+        
+        SGSchema.set_api(sg)
+        SGProject = SGSchema.sgClasses.Project
+        SGReply = SGSchema.sgClasses.Reply
+        # get shotgun class from "SGSchema.sgClasses"
+        
+        project = SGProject(1, sg, logger)
+        reply = SGReply(2, sg, logger)
+        
+        print(project.name)
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
