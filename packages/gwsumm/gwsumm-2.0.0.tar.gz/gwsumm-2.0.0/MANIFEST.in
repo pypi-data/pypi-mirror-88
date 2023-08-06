@@ -1,0 +1,4 @@
+include LICENSE README.rst MANIFEST.in
+include versioneer.py setup.py
+include gwsumm/_version.py
+recursive-include share *.ini

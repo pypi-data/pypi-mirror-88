@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: gwsumm
+Version: 2.0.0
+Summary: A python toolbox used by the LIGO Scientific Collaboration for detector characterisation
+Home-page: https://gwsumm.readthedocs.io
+Author: Alex Urban, Duncan Macleod
+Author-email: alexander.urban@ligo.org
+License: GPL-3.0-or-later
+Project-URL: Bug Tracker, https://github.com/gwpy/gwsumm/issues
+Project-URL: Discussion Forum, https://gwdetchar.slack.com
+Project-URL: Documentation, https://gwsumm.readthedocs.io
+Project-URL: Source Code, https://github.com/gwpy/gwsumm
+Description: ================================================
+        Gravitational-wave Summary Information Generator
+        ================================================
+        
+        GWSumm is a python toolbox used by the LIGO Scientific Collaboration to summarise and archive sundry facets of the performance of the LIGO instruments, and archive these data in a nested HTML structure.
+        
+        |PyPI version| |Conda version|
+        
+        |DOI| |License| |Supported Python versions|
+        
+        |Build Status| |Coverage Status| |Code Climate|
+        
+        https://gwsumm.readthedocs.io
+        
+        ------------
+        Installation
+        ------------
+        
+        GWSumm is best installed with `conda`_:
+        
+        .. code:: bash
+        
+           conda install -c conda-forge gwsumm
+        
+        but can also be installed with `pip`_:
+        
+        .. code:: bash
+        
+           python -m pip install gwsumm
+        
+        ------------
+        Contributing
+        ------------
+        
+        All code should follow the Python Style Guide outlined in `PEP 0008`_;
+        users can use the `flake8`_ package to check their code for style issues
+        before submitting.
+        
+        See `the contributions guide`_ for the recommended procedure for
+        proposing additions/changes.
+        
+        .. _PEP 0008: https://www.python.org/dev/peps/pep-0008/
+        .. _flake8: http://flake8.pycqa.org
+        .. _the contributions guide: https://github.com/gwpy/gwsumm/blob/master/CONTRIBUTING.md
+        .. _conda: https://conda.io
+        .. _pip: https://pip.pypa.io/en/stable/
+        
+        .. |PyPI version| image:: https://badge.fury.io/py/gwsumm.svg
+           :target: http://badge.fury.io/py/gwsumm
+        .. |Conda version| image:: https://img.shields.io/conda/vn/conda-forge/gwsumm.svg
+           :target: https://anaconda.org/conda-forge/gwsumm/
+        .. |DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.2647609.svg
+           :target: https://doi.org/10.5281/zenodo.2647609
+        .. |License| image:: https://img.shields.io/pypi/l/gwsumm.svg
+           :target: https://choosealicense.com/licenses/gpl-3.0/
+        .. |Supported Python versions| image:: https://img.shields.io/pypi/pyversions/gwsumm.svg
+           :target: https://pypi.org/project/gwsumm/
+        .. |Build Status| image:: https://travis-ci.org/gwpy/gwsumm.svg?branch=master
+           :target: https://travis-ci.org/gwpy/gwsumm
+        .. |Coverage Status| image:: https://codecov.io/gh/gwpy/gwsumm/branch/master/graph/badge.svg
+           :target: https://codecov.io/gh/gwpy/gwsumm
+        .. |Code Climate| image:: https://codeclimate.com/github/gwpy/gwsumm/badges/gpa.svg
+           :target: https://codeclimate.com/github/gwpy/gwsumm
+        
+Keywords: physics,astronomy,gravitational-waves,ligo
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.6
+Provides-Extra: doc
