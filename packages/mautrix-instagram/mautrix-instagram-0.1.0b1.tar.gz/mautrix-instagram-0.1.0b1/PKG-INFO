@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: mautrix-instagram
+Version: 0.1.0b1
+Summary: A Matrix-Instagram puppeting bridge.
+Home-page: https://github.com/tulir/mautrix-instagram
+Author: Tulir Asokan
+Author-email: tulir@maunium.net
+License: UNKNOWN
+Description: # mautrix-instagram
+        ![Languages](https://img.shields.io/github/languages/top/tulir/mautrix-instagram.svg)
+        [![License](https://img.shields.io/github/license/tulir/mautrix-instagram.svg)](LICENSE)
+        [![Release](https://img.shields.io/github/release/tulir/mautrix-instagram/all.svg)](https://github.com/tulir/mautrix-instagram/releases)
+        [![GitLab CI](https://mau.dev/tulir/mautrix-instagram/badges/master/pipeline.svg)](https://mau.dev/tulir/mautrix-instagram/container_registry)
+        
+        A Matrix-Instagram DM puppeting bridge.
+        
+        ### [Wiki](https://github.com/tulir/mautrix-instagram/wiki)
+        
+        ### [Features & Roadmap](https://github.com/tulir/mautrix-instagram/blob/master/ROADMAP.md)
+        
+        ## Discussion
+        Matrix room: [`#instagram:maunium.net`](https://matrix.to/#/#instagram:maunium.net)
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Topic :: Communications :: Chat
+Classifier: Framework :: AsyncIO
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: ~=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: all
+Provides-Extra: e2be
+Provides-Extra: imageconvert
+Provides-Extra: metrics
