@@ -1,0 +1,104 @@
+Metadata-Version: 2.1
+Name: SmokeMSG
+Version: 0.0.1.dev1
+Summary: Lightweight Python library to show simple dialogs.
+Home-page: https://quantumgui.github.io/smokemsg
+Author: Kavindu Santhusa
+Author-email: kavindusanthusa@gmail.com
+License: UNKNOWN
+Project-URL: Bug Reports, https://github.com/quantumgui/smokemsg/issues
+Project-URL: Source, https://github.com/quantumgui/smokemsg/
+Description: [![Twitter](https://img.shields.io/twitter/url?color=blue&logo=twitter&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2FQuantumGUI%2Fsmokemsg)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FQuantumGUI%2Fsmokemsg)
+        [![GitHub issues](https://img.shields.io/github/issues/QuantumGUI/smokemsg?logo=github&style=for-the-badge)](https://github.com/QuantumGUI/smokemsg/issues)
+        [![GitHub forks](https://img.shields.io/github/forks/QuantumGUI/smokemsg?logo=github&style=for-the-badge)](https://github.com/QuantumGUI/smokemsg/network)
+        [![GitHub stars](https://img.shields.io/github/stars/QuantumGUI/smokemsg?logo=github&style=for-the-badge)](https://github.com/QuantumGUI/smokemsg/stargazers)
+        [![GitHub license](https://img.shields.io/github/license/QuantumGUI/smokemsg?logo=github&style=for-the-badge)](https://github.com/QuantumGUI/smokemsg/blob/main/LICENSE)
+        ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/QuantumGUI/smokemsg/Python%20package?logo=github&style=for-the-badge)
+        ![GitHub top language](https://img.shields.io/github/languages/top/QuantumGUI/smokemsg?logo=github&style=for-the-badge)
+        ![PyPI - Downloads](https://img.shields.io/pypi/dm/smokemsg?logo=pypi&style=for-the-badge)
+        
+        <br />
+        <p align="center">
+          <a href="https://github.com/QuantumGUI/smokemsg">
+            <img src="https://github.com/QuantumGUI/smokemsg/raw/main/docs/assets/logo.png" alt="Logo" width="80" height="80">
+          </a>
+        
+          <h3 align="center">SmokeMSG</h3>
+        
+          <p align="center">
+            Best Python Library To Show Simple Dialogs.
+            <br />
+            <br />
+            <a href="https://quantumgui.github.io/smokemsg/"><strong>Explore the docs »</strong></a>
+            <br />
+            <br />
+            <a href="https://quantumgui.github.io/smokemsg/demo">View Demo</a>
+            ·
+            <a href="https://github.com/QuantumGUI/smokemsg/issues">Report Bug</a>
+            ·
+            <a href="https://github.com/QuantumGUI/smokemsg/issues">Request Feature</a>
+          </p>
+        </p>
+        
+        smokemsg provides following functions to show dialogs.
+        - [x] :warning: alert
+        - [x] :question: confirm 
+        - [ ] :pencil: prompt
+        
+        
+        ## Features
+        
+        - **Pure** Python,
+        - No dependencies(only depends on standard Python library)
+        - works on Python **3** and Python **2**
+        - **Cross platform** :heavy_plus_sign:
+          - [x] <img src="https://microsoft.com/favicon.ico" width="16" height="16"><sup>®</sup> Windows(from at least XP)
+          - [x] <img src="https://linux.org/favicon.ico" width="16" height="16"><sup>®</sup> Linux(most ones anyway, including Raspbian)
+          - [x] **macOS<sup>®</sup>** OS X
+          - [ ] <img src="https://android.com/favicon.ico" width="16" height="16"><sup>®</sup> Android
+          - [ ] **iOS<sup>®</sup>** iOS(Apple phones)
+        - Easy **packaging** - no fancy (and heavy) GUI libraries. Easy to use with cx_Freeze and PyInstaller.
+        
+        
+        ## Installation
+        
+        ```bash
+        pip install smokemsg
+        ```
+        You may want to use `py -m pip`, `python -m pip` or `python3 -m pip` depending on your python installation and platform.
+        
+        
+        ## Example:
+            
+        ```py
+        import smokemsg
+        
+        if smokemsg.confirm('Are You Sure?', 'Question'):
+            print('Sure...')
+        ```
+        
+        
+        ## License
+        
+        Licensed under MIT license. See [LICENSE](/license) for details.
+        
+Keywords: dialog,popup,module,pure-python,lightweight,cross-platform,alert,prompt,confirm,question,info,ask
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: User Interfaces
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
