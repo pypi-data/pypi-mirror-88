@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: aioserialctrl
+Version: 0.1.0
+Summary: A module of asyncio serail port control.
+Home-page: https://github.com/eplut/aioserialctrl
+Author: eplut
+Author-email: eplutus@protonmail.com
+License: MIT
+Description: # Asyncio serial port control
+        
+        ## Overview
+        
+        This module provides async and sync serial port control, but now only supports Windows.  
+        It's base on c library [serial.c](./aioserialctrl/serial.c).
+        
+        ## Examples
+        
+        Examples directory [example](./example).
+        
+        ## Reference
+        
+        [pyserial](https://github.com/pyserial/pyserial)  
+        [aioserial](https://github.com/changyuheng/aioserial)  
+Keywords: serial serialctrl aioserialctrl
+Platform: Windows
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
