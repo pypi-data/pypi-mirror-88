@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: starlette-authlib
+Version: 0.1.7
+Summary: A drop-in replacement for Starlette session middleware, using authlib's jwt
+Author: Alessandro Ogier
+Author-email: alessandro.ogier@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: authlib (>=0.14.1,<0.15.0)
+Requires-Dist: starlette (>=0.14.1,<0.15.0)
+Requires-Dist: uvicorn (>=0.11.3,<0.12.0)
