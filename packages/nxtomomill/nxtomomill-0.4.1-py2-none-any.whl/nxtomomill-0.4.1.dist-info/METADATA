@@ -1,0 +1,65 @@
+Metadata-Version: 2.1
+Name: nxtomomill
+Version: 0.4.1
+Summary: applications to convert data to nx compliant format
+Home-page: https://gitlab.esrf.fr/tomotools/nxtomomill
+Author: data analysis unit
+Author-email: christian.nemoz@esrf.fr
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Environment :: MacOS X
+Classifier: Environment :: Win32 (MS Windows)
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: h5py (>=3.0)
+Requires-Dist: numpy
+Requires-Dist: setuptools
+Requires-Dist: silx (>=0.14)
+Requires-Dist: tomoscan (>=0.4)
+Provides-Extra: full
+
+# nxtomomill
+
+nxtomomill provide a set of applications to convert tomography acquisition made from bliss (@ESRF) from their original file format (.edf, .h5) to a Nexus compliant file format (using [NXtomo](https://manual.nexusformat.org/classes/applications/NXtomo.html))
+
+## installation
+
+To install the latest 'nxtomomill' pip package
+
+```bash
+pip install nxtomomill
+```
+
+You can also install nxtomomill from source: 
+
+```bash
+pip install git+https://gitlab.esrf.fr/tomotools/nxtomomill.git
+```
+
+## documentation
+
+General documentation can be found here: [https://tomotools.gitlab-pages.esrf.fr/nxtomomill/](https://tomotools.gitlab-pages.esrf.fr/nxtomomill/)
+
+## application
+
+documentation regarding applications can be found here: [https://tomotools.gitlab-pages.esrf.fr/nxtomomill/tutorials/index.html](https://tomotools.gitlab-pages.esrf.fr/nxtomomill/tutorials/index.html)
+
+or to get help you can directly go for
+
+```bash
+nxtomomill --help
+```
+
+
