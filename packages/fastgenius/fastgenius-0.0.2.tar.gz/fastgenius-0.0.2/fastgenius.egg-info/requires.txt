@@ -1,0 +1,15 @@
+beautifulsoup4>=4.6.0
+aiohttp
+tqdm
+pickledb
+nest_asyncio
+unidecode
+lxml
+
+[dev]
+sphinx~=3.2
+sphinx-rtd-theme
+
+[docs]
+sphinx~=3.2
+sphinx-rtd-theme
