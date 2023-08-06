@@ -1,0 +1,61 @@
+---
+modname: extras_require
+import_name: sphinxcontrib.extras_require
+copyright_years: "2020"
+author: "Dominic Davis-Foster"
+email: "dominic@davis-foster.co.uk"
+version: "0.2.3"
+username: "domdfcoding"
+license: 'BSD'
+short_desc: 'Display a warning at the top of module documentation that it has additional requirements.'
+
+exclude_files:
+ - bumpversion
+ - rtfd
+
+conda_channels:
+ - domdfcoding
+ - conda-forge
+
+python_deploy_version: 3.6
+
+# Additional lines for .gitignore
+additional_ignore:
+#  Editors
+ - "*~"
+ - ".*.swp"
+ - ".*sw?"
+
+# Versions to run tests for
+python_versions:
+ - '3.6'
+ - '3.7'
+ - '3.8'
+ - '3.9'
+ - '3.10-dev'
+
+classifiers:
+ - 'Development Status :: 4 - Beta'
+ - "Framework :: Sphinx :: Extension"
+ - 'Intended Audience :: Developers'
+ - 'Operating System :: OS Independent'
+ - 'Programming Language :: Python'
+ - "Topic :: Documentation"
+ - 'Topic :: Documentation :: Sphinx'
+ - 'Topic :: Software Development :: Documentation'
+ - 'Topic :: Software Development :: Libraries :: Python Modules'
+ - "Topic :: Utilities"
+
+extra_sphinx_extensions:
+ - "sphinx.ext.autosummary"
+
+keywords:
+ - sphinx
+ - sphinx-extension
+ - requirements
+ - documentation
+
+use_experimental_backend: true
+
+tox_unmanaged:
+ - flake8
