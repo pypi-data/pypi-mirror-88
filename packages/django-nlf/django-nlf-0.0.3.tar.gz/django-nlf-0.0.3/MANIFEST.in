@@ -1,0 +1,7 @@
+include LICENSE
+recursive-include django_nlf/antlr *.g4
+recursive-include django_nlf/antlr *.interp
+recursive-include django_nlf/antlr *.tokens
+recursive-include django_nlf/templates *.html
+global-exclude __pycache__
+global-exclude *.py[co]
