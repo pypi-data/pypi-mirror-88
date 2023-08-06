@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: myassistant
+Version: 1.0.3
+Summary: It is a assistant creater module :)
+Home-page: UNKNOWN
+Author: Govind Potdar
+Author-email: govindpotdar2001@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+Requires-Dist: speechrecognition
+Requires-Dist: pyttsx3
+Requires-Dist: datetime
+Requires-Dist: psutil
+Requires-Dist: wikipedia
+Requires-Dist: requests
+Requires-Dist: prettytable
+Requires-Dist: sounddevice
+Requires-Dist: wavio
+Requires-Dist: scipy
+
+# Assistant
+So guys this module will help you to create your own Assistant with the minimum lines of code.
+
+
+## Installation
+```pip install assistant```
+
+
+## How to use it?
+First install this module then create a python file. Import ```from myassistant.assistant import Assistant,run``` or ```from myassistant.assistant import *``` after that create a class and inherite the ```Assistant``` class. After that you have to initialize some variables for example 
+
+
+```
+from myassistant.assistant import *
+
+#create a class 
+
+class ClassName(Assistant):
+    name = YourName  #By default name is user
+    voice = male or female  #By default voice version is male   
+    path = Path to save text files  #By default it's current working directory.
+    wait = Time in seconds to to mute the Programme  #By default it is 10 seconds
+    duration = Voice recording time in seconds  #By defaukt recording time is 10 seconds
+    code = Name of code editor #By default it is None
+    mails={}  #mails name with their email address
+    my_mail = None  #your email address and it should be less secured on becuase it uses SMTP
+    my_password = None  #your given email password 
+
+
+# Create a object of the class
+
+class_object = ClassName()
+
+# call the run function and pass the class object
+
+run(class_object)
+
+#And enjoy with your personal Assistant :)
+```
+
+
+## Errors
+
+there are some chances to get some errors for example 
+
+you can get a error while installing the this module like ```pyaudio``` wheel file is not installing as same in ```psutils``` because many of users face these type of errors so you can separately download wheel files form ```https://www.lfd.uci.edu/~gohlke/pythonlibs/``` and then install them. this method can pull you out from this problem. if you face any other type of problem contect me by mail i will try to solve your problem ,Thanks for using this module :)
+
+
+## License
+
+Â© 2020 Govind Potdar
+
+This repository is licensed under the MIT license. See LICENSE for details.
+
+
