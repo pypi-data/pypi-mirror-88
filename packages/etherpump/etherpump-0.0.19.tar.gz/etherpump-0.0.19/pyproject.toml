@@ -1,0 +1,46 @@
+[build-system]
+requires = ["poetry>=1.0.9,<2.0"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry]
+name = "etherpump"
+version = "0.0.19"
+description = "Pumping text from etherpads into publications"
+authors = ["Varia, Center for Everyday Technology"]
+maintainers = ["Varia, Center for Everyday Technology <info@varia.zone>"]
+license = "GPLv3"
+readme = "README.md"
+repository = "https://git.vvvvvvaria.org/varia/etherpump"
+keywords = ["etherpad", "etherdump", "etherpump"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+asks = "^2.4.10"
+html5lib = "^1.1"
+jinja2 = "^2.11.2"
+pypandoc = "^1.5"
+python-dateutil = "^2.8.1"
+requests = "^2.24.0"
+trio = "^0.17.0"
+
+[tool.poetry.dev-dependencies]
+black = "^19.10b0"
+flake8 = "^3.8.3"
+isort = "^5.0.2"
+mypy = "^0.782"
+
+[tool.poetry.scripts]
+etherpump = "etherpump:main"
+
+[tool.black]
+line-length = 80
+target-version = ["py38"]
+include = '\.pyi?$'
+
+[tool.isort]
+include_trailing_comma = true
+known_first_party = "abra"
+known_third_party = "pytest"
+line_length = 80
+multi_line_output = 3
+skip = ".tox"
