@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: tiny-router
+Version: 0.0.6
+Summary: Tiny HTTP router
+Home-page: https://github.com/nekonoshiri/tiny-router
+License: MIT
+Keywords: router
+Author: Shiri Nekono
+Author-email: gexira.halen.toms@gmail.com
+Maintainer: Shiri Nekono
+Maintainer-email: gexira.halen.toms@gmail.com
+Requires-Python: >=3.7.2,<4.0.0
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Software Development :: Libraries
+Requires-Dist: typing-extensions (>=3.7.4,<4.0.0)
+Project-URL: Documentation, https://github.com/nekonoshiri/tiny-router
+Project-URL: Repository, https://github.com/nekonoshiri/tiny-router
+Description-Content-Type: text/markdown
+
+# tiny-router
+
+[![PyPI](https://img.shields.io/pypi/v/tiny-router)](https://pypi.org/project/tiny-router/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/tiny-router)](https://pypi.org/project/tiny-router/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![license](https://img.shields.io/github/license/nekonoshiri/tiny-router)](https://github.com/nekonoshiri/tiny-router/blob/main/LICENSE)
+
+A tiny HTTP router like this:
+
+```Python
+from tiny_router import SimpleRouter
+
+router = SimpleRouter()
+
+
+@router.get("/users")
+def list_users():
+    ...
+
+
+@router.post("/users")
+def create_user():
+    ...
+
+
+another_router = SimpleRouter()
+router.include(another_router)
+
+route = router.resolve("GET", "/users")
+```
+
+## Features
+
+- `SimpleRouter`: exact-match router
+- `SimpleRegexRouter`: simple regex-based router
+- Abstract `Router`: user can implement their own routers
+- Support for type hints
+
+## Usage
+
+See `examples/` directory of [repository](https://github.com/nekonoshiri/tiny-router).
+
