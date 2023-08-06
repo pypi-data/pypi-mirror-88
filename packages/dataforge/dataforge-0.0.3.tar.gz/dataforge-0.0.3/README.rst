@@ -1,0 +1,80 @@
+=========
+Dataforge
+=========
+
+.. note:: Tested with Python 3.7.
+
+Dataforge is a Python package containing tools for creating and packaging data
+products.
+
+.. contents::
+   :depth: 2
+
+
+Installation
+============
+
+.. note:: Installation in a virtual environment of the type created by the
+          `venv module <https://docs.python.org/3/library/venv.html>`_ or
+          `virtualenv <https://virtualenv.pypa.io/en/latest/>`_ is highly
+          recommended.
+
+Dataforge uses `xmarshal <https://github.com/hexdump/xmarshal>`_, which is
+compiled using `Cython <https://cython.readthedocs.io/>`_. Thus, prior to
+installation, you will need a C compiler:
+
+Linux
+    ``sudo apt-get install build-essential``
+
+Mac OS X
+    Install Apple’s XCode from the App Store
+
+Windows
+    Install `Microsoft's C++ Build Tools <https://visualstudio.microsoft.com/visual-cpp-build-tools/>`_ 
+
+To install dataforge::
+    
+    pip install dataforge
+
+
+Configuration
+=============
+
+For ease of use, many arguments and options for executable commands as well as
+many function arguments may be specified in a file called ``config.yaml``
+located at the root of your project. For example, you could specify arguments
+and options for the ``redcap_export`` command by creating a ``config.yaml``
+file containing something like this::
+
+    sources.redcap.api:
+        url: https://redcap.uchicago.edu/api/
+        project_name: MyREDCapProject
+        outdir: tmp/redcap
+
+
+REDCap
+======
+
+Management of API Tokens
+------------------------
+
+To access a REDCap project via the API, you will need to obtain a REDCap API
+token. To avoid having to enter the token each time you export data, it is
+convenient to add the token to your system keyring. You may do this with the
+following command::
+
+    keyring set <redcap_hostname> [<project_name>]
+
+where ``<redcap_hostname>`` is the hostname of your REDCap server (e.g.,
+``redcap.uchicago.edu``) and ``<project_name>`` is an abbreviated (no spaces)
+name of the REDCap project (e.g., ``MyREDCapProject``). Although specifying a
+project name is not required, doing so will allow you to store API tokens for
+multiple projects. When you are asked to enter a password, enter the API token
+you obtained for your project.
+
+.. warning:: Do not store your API token in a plaintext or otherwise
+             unencrypted file, and do not write it down on a piece of paper.
+             If another person were to obtain your API token, he or she would
+             have the same access to your REDCap project as you do. If there
+             is ever a possibility that your token has been compromised, you
+             should immediately regenerate your token.
