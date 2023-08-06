@@ -1,0 +1,17 @@
+{% extends "wagtailadmin/base.html" %}
+{% load wagtailadmin_tags i18n %}
+{% block titletag %}{% trans "Compare A/B test versions" %} - {{ page.title }}{% endblock %}
+
+{% block content %}
+    {% trans "Compare A/B test versions" as title %}
+    {% include "wagtailadmin/shared/header.html" with title=title subtitle=page.title tabbed=1 merged=1 %}
+
+    <div class="nice-padding" style="padding-top: 20px;">
+        {% include "./includes/comparison.html" %}
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% versioned_static 'wagtailadmin/css/layouts/compare-revisions.css' %}" type="text/css" />
+{% endblock %}
