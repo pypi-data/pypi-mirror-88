@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "sqlalchemy-querybuilder"
+version = "0.1.4"
+description = "Build sqlalchemy queries from jQuery-Query json"
+authors = ["Oscar Curero <oscar@curero.es>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://sr.ht/~ocurero/sqlalchemy-querybuilder/"
+repository = "https://hg.sr.ht/~ocurero/sqlalchemy-querybuilder"
+documentation = "https://sqlalchemy-querybuilder.readthedocs.io/"
+keywords = ["sqlalchemy", "jquery", "json", "querybuilder"]
+classifiers=["Development Status :: 5 - Production/Stable",
+             "License :: OSI Approved :: Apache Software License",
+             "Programming Language :: Python :: 3",
+             "Intended Audience :: Developers",
+             "Topic :: Software Development :: Libraries"
+             ]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+sqlalchemy = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+coverage = "^5.1"
+mkdocs = "^1.1.2"
+markdown-include = "^0.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
