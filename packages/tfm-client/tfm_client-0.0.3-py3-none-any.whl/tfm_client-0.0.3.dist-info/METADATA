@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: tfm-client
+Version: 0.0.3
+Summary: UNKNOWN
+Home-page: https://github.com/almenjonatan/tfm_api_client
+Author: Jonatan Almen
+Author-email: almen.jonatan@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# Asmodee/TFM api client
+
+## Installation
+
+```
+pip install tfm-client
+```
+
+## Usage
+
+```python 
+from tfm_client import APIClient
+
+bearer = "Bearer TOKEN from asmoodee"
+
+api_client = APIClient(bearer)
+
+player_id = 111111
+
+games = api_client.get_player_games(player_id)
+
+```
+
+
