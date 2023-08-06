@@ -1,0 +1,97 @@
+CHANGES
+=======
+
+0.2.3
+-----
+
+* Prep for 0.2.3 release
+* Add option to checkout newly created branches
+* Add option to run the integration tests with podman
+* Update README with new release instructions
+
+0.2.2
+-----
+
+* Prepare 0.2.2 release
+* New function to check if a commit exists on a given remote branch
+
+0.2.1
+-----
+
+* Prep for version 0.2.1 release
+* Add tagging functions
+* Add function to compare commit references
+* Check reference exists in commit.describe
+* Update travis url so mergify works
+* Update mergify config for v2 api
+
+0.2.0
+-----
+
+* Prep for version 0.2.0 release
+* Add convenience method for creating a branch
+* Add convenience method for checking if a branch exists
+* Fix broken doc string
+* Add functionality to refresh a repository's remotes
+* Add --bare cloning option
+* Add log diff functionality
+* Allow customised commit message for reverts
+* Integration tests for some GitCommit/GitBranch functions
+* Improve a few doc strings
+* Removing python 3.5 tests
+* Add a couple of examples to the usage doc
+* Redesign: Move describe to GitCommit
+* Redesign: Move apply and reverse functions to GitBranch
+* Redesign: Rename GitWrapperCommit into GitCommit
+* Redesign: Move cherry functions into GitBranch
+* Redesign: Move rebase functionality into GitBranch
+* Redesign: Move clone functionality into base GitRepo
+* Redesign: Move Remote functions into their own class
+* Redesign: GitWrapperBase becomes GitRepo
+* Logging setup improvements
+* Minor string formatting improvements
+* Add functionality to destroy a repo and reclone it
+* Add git clone support
+* Add Tox & Travis support for py37
+* Skeleton code for integration tests
+* Add back support for Python 2.7
+* Add support for applying a diff
+* Add support for applying a patch
+* Add support for basic committing and commit revert
+* Refactor branch/hash checks into a decorator
+* Fix rebasing on branch issue
+* Adding contributors
+* Drop py34 from Travis environments
+* Move setup to use pbr
+* Add coverage in tests reports
+* Avoid sending git CommandError back to the user
+* Unify 'mock' imports
+* Drop py34
+* Add basic logging in more places
+* Fix several doc strings formatting
+* Fixing readthedocs not generating api information
+* Add support for basic rebase + abort
+* Fix a couple of typos
+* Fixing inconsistent quote marks in doc strings
+* Removing the Travis CI python2.7 config
+* Removing python 2 support
+
+0.1.0
+-----
+
+* Preping of tag 0.1.0
+* Fixing mergify config file whitespace (#12)
+* Correcting the HISTORY.rst file
+* Adding a mergify config (#10)
+* Moving away from pipenv. (#5)
+* Fixing tox.ini flake8 for tests
+* 'Make lint' should match the tox setup
+* Adding GitWrapperCherry (#4)
+
+0.0.1
+-----
+
+* Adding a wrapper base class and unit tests. (#3)
+* Fixing travis-ci badge. (#2)
+* Initial project structure (#1)
+* Initial commit of README.rst
