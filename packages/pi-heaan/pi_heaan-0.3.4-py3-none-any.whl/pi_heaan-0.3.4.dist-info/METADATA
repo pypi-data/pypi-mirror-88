@@ -1,0 +1,135 @@
+Metadata-Version: 2.1
+Name: pi-heaan
+Version: 0.3.4
+Summary: pi-heaan is a simulator to HEaaN API, the library of CKKS scheme
+Home-page: http://iheaan.org
+Author: Cryptolab Inc.
+Author-email: pi-heaan@cryptolab.co.kr
+License: Creative Commons
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: Other/Proprietary License
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: pandas
+
+# pi-HEaaN (π-HEaaN)
+
+---
+
+pi-HEaaN is a Python library for simulating HEAAN(Homomorphic Encryption for Arithmetic of Approximate Numbers), so that it offers experience for HE(homomorphic encryption). It provides not only key generation, encryption and decryption, but homomorphic operations such as homomorphic addition and homomorphic multiplication.
+
+pi-HEaaN performs encryption, decryption and homomorphic operations in *block units*. A single block consists of a maximum of 65,536(=$2^{16}$) slots.
+
+The HE simulator pi-HEaaN is a marvellous package for HE engineers who attempt to implement their HE algorithms. HE engineers can evaluate complexity and effectiveness of algorithms which utilize homomorphic encryption by pi-HEaaN.
+
+## Installation
+
+---
+
+To install pi-HEaaN, run :
+
+```bash
+pip install pi-heaan
+```
+
+## Usage
+
+---
+
+To import pi-HEaaN, run: 
+
+```python
+$ python3
+Python 3.6.9 (default, Oct  8 2020, 12:12:24) 
+[GCC 8.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import heaan
+```
+
+Firstly, we set up parameters and context for homomorphic encryption as below:
+
+```python
+>>> params = heaan.Parameters()
+>>> context = heaan.Context(params)
+```
+
+For using homomorphic operations, it is necessary to generate secret and public keys. The public key is for encrypting message to ciphertext and performing homomorphic operations on ciphertext, while secret key is for decrypting ciphertext.
+
+```python
+>>> key_dir_path = "./keys"
+>>> secret_key = heaan.SecretKey(context)
+>>> public_key = heaan.PublicKeyPack(context, secret_key, key_dir_path)
+```
+
+To encrypt message `[1,2,3,4]` as a ciphertext by Encryptor, run:
+
+```python
+>>> encryptor = heaan.Encryptor(context)
+>>> message = heaan.Message([1,2,3,4])
+>>> ciphertext = heaan.Ciphertext()
+>>> enc_key = public_key.get_enc_key()
+>>>
+>>> enc.encrypt(message, enc_key, ciphertext)
+```
+
+We need HomEvaluator while performing homomorphic operations on ciphertexts. In case of specific operations, public key such as multiplication key is required. The following is to multiply ciphertexts(i.e. square a ciphertext), which needs multiplication key.
+
+```python
+>>> evaluator = heaan.HomEvaluator(context)
+>>> ciphertext_out = heaan.Ciphertext()
+>>> mult_key = public_key.get_mult_key()
+>>>
+>>> evaluator.mult(ciphertext, ciphertext, mult_key, ciphertext_out)
+```
+
+It is no wonder that we cannot see the contents of ciphertext — that is what ciphertext is for! To figure out what ciphertext has, we have to decrypt the ciphertext by Decryptor.
+
+```python
+>>> decryptor = heaan.Decryptor(context)
+>>> message_out = heaan.Message()
+>>>
+>>> decryptor.decrypt(ciphertext_out, secret_key, message_out)
+```
+
+Note that the result of operation performed on ciphertext is not exactly the same as the result performed on message. This tiny and random error comes from *approximation operation*, which is the essence of HEAAN. To reduce time complexity and raise efficiency, HEAAN scheme adopts approximation operation instead of exact operations.
+
+```python
+>>> message_out              # result of operation performed on ciphertext
+[1.0, 3.9999999990686774, 8.999999999068677, 16.0]
+>>> [x*x for x in message]   # result of operation performed on message
+[1, 4, 9**,** 16]
+```
+
+It is the Operation Usage report that provides convenient method for developing HE algorithm. The report enables to check estimated operation time of the algorithm which is the clue to improve the performance of the algorithm. Operation Usage provides the estimated time of the algorithm for each operation so we can build our algorithm more efficiently.
+
+```python
+>>> print(context)
+=========== Operation Usage (in single thread) ===========
+==========================================================
+OP_TYPE         TIME_UNIT       NUM_USAGE       TIME_USAGE
+----------------------------------------------------------
+encrypt         0.191           1               0.191
+mult            1               1               1
+decrypt         0.032           1               0.032
+----------------------------------------------------------
+                       * Total estimated time : 1.223
+```
+
+The operation usage report offers information as follows:
+
+- `OP_TYPE` : Type of operation unit used in algorithm.
+- `TIME_UNIT` : Time consumed on operation unit. (Note that it is based on multiplication operation.)
+- `NUM_USAGE` : The number of each `OP_TYPE` used in algorithm.
+- `TIME_USAGE` : Total estimated time of operation unit. (i.e. `TIME_UNIT` * `NUM_USAGE`)
+- `Total estimated time` : Total estimated time of the algorithm. (i.e. sum of `TIME_USAGE`)
+
