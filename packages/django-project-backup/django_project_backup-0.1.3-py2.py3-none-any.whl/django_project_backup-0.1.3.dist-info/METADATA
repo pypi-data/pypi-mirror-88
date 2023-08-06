@@ -1,0 +1,185 @@
+Metadata-Version: 2.1
+Name: django-project-backup
+Version: 0.1.3
+Summary: Add a short description here!
+Home-page: https://github.com/pyscaffold/pyscaffold/
+Author: pai
+Author-email: luca.bertuol@gmail.com
+License: mit
+Project-URL: Documentation, https://pyscaffold.org/
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Requires-Dist: django
+Requires-Dist: django-dotenv
+Requires-Dist: ijson
+Provides-Extra: testing
+Requires-Dist: pytest ; extra == 'testing'
+Requires-Dist: pytest-cov ; extra == 'testing'
+
+# django-project-backup
+
+Django project backup application.
+
+(This is alpha software and is under heavy development)
+
+
+## Setup
+
+Add the following lines to *settings.py*
+
+```python
+# django
+INSTALLED_APPS += [
+    'django_project_backup'
+]
+
+# django_project_backup settings
+DJANGO_PROJECT_BACKUP_SHAPES = 'manual'  # 'manual' | 'realtime'
+
+DJANGO_PROJECT_BACKUP_EXCLUDED_MODELS = [
+    'sessions',
+    'admin'
+]  # default
+
+# filesystem backup strategy
+PUBLIC_ROOT = os.path.join(ROOT_DIR ,'public')
+PRIVATE_ROOT = os.path.join(ROOT_DIR ,'private')
+
+DJANGO_PROJECT_BACKUP_DUMPDATA_JSON_FILENAME = 'dump_all.json' # default
+DJANGO_PROJECT_BACKUP_BACKUP_FILE_PREFIX = 'backup' # default
+DJANGO_PROJECT_BACKUP_DESTINATION_FOLDER = os.path.join(ROOT_DIR ,'backups')
+
+# couchdb backup strategy
+SERIALIZATION_MODULES = {
+    'couchdb_datastore': 'django_project_backup.utils.couchdb.serializers'
+}
+
+COUCHDB_DATASTORE_HOST = 'http://127.0.0.1:5984'
+COUCHDB_DATASTORE_USER = 'admin'
+COUCHDB_DATASTORE_PASSWORD = 'couchdb'
+COUCHDB_DATASTORE_DATABASE_NAME = 'django_project_backup'
+
+# django-filer
+# store files as payload
+FILER_DUMP_PAYLOAD = True
+```
+
+
+## Usage
+
+### Filesystem
+
+- Backup DB
+
+    ```
+    $ python manage.py dpb_filesystem_dumpdata
+    ```
+
+- Backup assets
+
+    ```
+    $ python manage.py dpb_filesystem_assets_backup
+    ```
+
+### Couchdb
+
+- Backup all
+
+    ```
+    $ python manage.py dpb_couchdb_dumpdata
+    ```
+
+- Restore all
+
+    ```
+    $ python manage.py dpb_couchdb_loaddata
+    ```
+
+## Sandbox
+
+### Docker
+
+#### Dependencies
+* [Docker](https://docs.docker.com/engine/installation/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
+
+### Installation
+Run the following commands:
+
+```bash
+git clone https://bitbucket.org/pai/django-project-backup.git
+cd django-project-backup
+docker-compose up --build -d
+docker-compose run app /venv/bin/python manage.py load_initial_data
+docker-compose up
+```
+
+The demo site will now be accessible at [http://localhost:8000/](http://localhost:8000/) and the Wagtail admin
+interface at [http://localhost:8000/admin/](http://localhost:8000/admin/).
+
+Log into the admin with the credentials ``admin / admin``.
+
+**Important:** This `docker-compose.yml` is configured for local testing only, and is _not_ intended for production use.
+
+### Debugging
+To tail the logs from the Docker containers in realtime, run:
+
+```bash
+docker-compose logs -f
+```
+
+Setup with Virtualenv
+---------------------
+You can run the demo locally without setting up Docker and simply use Virtualenv, which is the [recommended installation approach](https://docs.djangoproject.com/en/2.2/topics/install/#install-the-django-code) for Django itself.
+
+#### Dependencies
+* Python 3.6, 3.7 or 3.8
+* [Virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
+* [VirtualenvWrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html) (optional)
+
+### Installation
+
+With [PIP](https://github.com/pypa/pip) and [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)
+installed, run:
+
+    mkvirtualenv django_project_backup
+    python --version
+
+Confirm that this is showing a compatible version of Python 3.x. If not, and you have multiple versions of Python installed on your system, you may need to specify the appropriate version when creating the virtualenv:
+
+    deactivate
+    rmvirtualenv django_project_backup
+    mkvirtualenv django_project_backup --python=python3.7
+    python --version
+
+Now we're ready to set up the bakery demo project itself:
+
+    cd ~/dev [or your preferred dev directory]
+    git clone https://bitbucket.org/pai/django-project-backup.git
+    cd django_project_backup/sandbox/
+    pip install -r requirements/base.txt
+
+Next, we'll set up our local environment variables. We use [django-dotenv](https://github.com/jpadilla/django-dotenv)
+to help with this. It reads environment variables located in a file name `.env` in the top level directory of the project.
+The only variable we need to start is `DJANGO_SETTINGS_MODULE`:
+
+    $ cp backend/settings/local.py.example backend/settings/local.py
+    $ echo "DJANGO_SETTINGS_MODULE=backend.settings.local" > .env
+
+To set up your database and load initial data, run the following commands:
+
+    ./manage.py migrate
+    ./manage.py load_initial_data
+    ./manage.py runserver
+
+Log into the admin with the credentials ``admin / admin``.
+
+
+## Note
+
+This project has been set up using PyScaffold 3.2.3. For details and usage
+information on PyScaffold see https://pyscaffold.org/.
+
+
