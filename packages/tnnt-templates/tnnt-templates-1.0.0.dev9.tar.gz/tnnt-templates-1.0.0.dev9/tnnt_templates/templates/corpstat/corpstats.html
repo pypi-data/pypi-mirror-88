@@ -1,0 +1,380 @@
+{% extends 'corpstat/base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% block member_data %}
+    {% if corpstats %}
+        <div class="clearfix">
+            <div class="text-center">
+                <table class="table">
+                    <tr>
+                        <td class="text-center {% if corpstats.corp.alliance %}col-md-4{% else %}col-md-8{% endif %}">
+                            <img class="ra-avatar" src="{{ corpstats.corp.logo_url_128 }}">
+                        </td>
+
+                        {% if corpstats.corp.alliance %}
+                            <td class="text-center col-md-4"><img class="ra-avatar" src="{{ corpstats.corp.alliance.logo_url_128 }}">
+                            </td>
+                        {% endif %}
+
+                        <td class="text-center col-md-4"  rowspan="2">
+                            <h4>Corp Info</h4>
+                            <span style="background-color: {% if auth_percent >= 95 %}#00AA33{% elif auth_percent >= 80 %}#FF9000{% else %}#AA0000{% endif %}" class="label label-default">Authenticated: {{members|length}}/{{total_members}} ({{auth_percent|floatformat:0|intcomma}}%)</span><br>
+                            <span class="label label-default">Main/Alt Ratio: {{alt_ratio|floatformat:2|intcomma}}</span><br>
+                            <h4>Services Active</h4>
+                            {% for service, perc in service_percent.items %}
+                            <span style="background-color: {% if perc.percent >= 95 %}#00AA33{% elif perc.percent >= 80 %}#FF9000{% else %}#AA0000{% endif %}" class="label label-default">{{service|title}} Activated: {{perc.cnt}}/{{ total_mains }} ({{perc.percent|floatformat:0|intcomma}}%)</span><br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-center"><h4>{{ corpstats.corp.corporation_name }}</h4></td>
+
+                        {% if corpstats.corp.alliance_id %}
+                            <td class="text-center"><h4>{{ corpstats.corp.alliance.alliance_name }}</h4></td>
+                        {% endif %}
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+        <div class="clearfix">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ul class="nav nav-pills pull-left">
+                        <li class="active"><a href="#mains" data-toggle="pill">{% translate 'Mains' %} ({{ total_mains }})</a></li>
+                        <li><a href="#members" data-toggle="pill">{% translate 'Members' %} ({{ total_members }})</a></li>
+                        <li><a href="#unregistered" data-toggle="pill">{% translate 'Unregistered' %} ({{ total_unreg }})</a></li>
+                        <li><a href="#orphans" data-toggle="pill">{% translate 'Orphans' %} ({{ total_orphans }})</a></li>
+                        <li><a href="#tracking" data-toggle="pill">{% translate 'Member Tracking' %}</a></li>
+                    </ul>
+
+                    <div class="pull-right">
+                        {% translate "Last update:" %} {{ corpstats.last_update|naturaltime }}
+
+                        <a class="btn btn-success" type="button" href="{% url 'corpstat:update' corpstats.corp.corporation_id %}" title="Update Now">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </a>
+                        <a class="btn btn-primary" type="button" href="{%  url 'corpstat:export' corpstats.corp.corporation_id %}" title="Export">
+                            <span class="glyphicon glyphicon-download-alt"></span>
+                        </a>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="mains">
+                            {% if mains %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="table-mains">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">{% translate "Main Character" %}</th>
+                                                <th></th>
+                                                {% for service in service_percent %}
+                                                <th class="text-center">{{service|title}}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {% for id, main in mains.items %}
+                                                <tr>
+                                                    <td class="text-center" style="vertical-align:middle">
+                                                        <div class="thumbnail"
+                                                             style="border: 0 none; box-shadow: none; background: transparent;">
+                                                            <img src="{{ main.main.portrait_url_64 }}" class="img-circle">
+                                                            <div class="caption text-center">
+                                                                {{ main.main.character_name }}<br>
+                                                                {% for service, active in main.services.items %}
+                                                                <span style="background-color: {% if active %}#00AA33{% else %}#AA0000{% endif %}" class="label label-default">{{service|title}}</span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <table class="table table-hover">
+                                                            {% for alt in main.alts %}
+                                                                {% if forloop.first %}
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th class="text-center">{% translate "Character" %}</th>
+                                                                        <th class="text-center">{% translate "Corporation" %}</th>
+                                                                        <th class="text-center">{% translate "Alliance" %}</th>
+                                                                        <th class="text-center"></th>
+
+                                                                    </tr>
+                                                                {% endif %}
+
+                                                                <tr>
+                                                                    <td class="text-center" style="width:5%">
+                                                                        <div class="thumbnail" style="border: 0 none; box-shadow: none; background: transparent;">
+                                                                            <img src="{{ alt.portrait_url_32 }}" class="img-circle">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-center" style="width:30%">{{ alt.character_name }}</td>
+                                                                    <td class="text-center" style="width:30%">{{ alt.corporation_name }}</td>
+                                                                    <td class="text-center" style="width:30%">{{ alt.alliance_name }}</td>
+                                                                    <td class="text-center" style="width:5%">
+                                                                        <a href="https://zkillboard.com/character/{{ alt.character_id }}/"
+                                                                           class="label label-danger" target="_blank">
+                                                                            {% translate "Killboard" %}
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </table>
+                                                    </td>
+
+                                                    {% for service, active in main.services.items %}
+                                                        <td>{% if active %}Active{% else %}Inactive {% endif %}</td>
+                                                    {% endfor %}
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="tab-pane fade" id="members">
+                            {% if members %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="table-members">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th class="text-center">{% translate "Character" %}</th>
+                                                <th class="text-center"></th>
+                                                <th class="text-center">{% translate "Main Character" %}</th>
+                                                <th class="text-center">{% translate "Main Corporation" %}</th>
+                                                <th class="text-center">{% translate "Main Alliance" %}</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {% for member in members %}
+                                                <tr>
+                                                    <td><img src="{{ member.portrait_url }}" class="img-circle"></td>
+                                                    <td class="text-center">{{ member.character_name }}</td>
+                                                    <td class="text-center">
+                                                        <a
+                                                            href="https://zkillboard.com/character/{{ member.character_id }}/"
+                                                            class="label label-danger"
+                                                            target="_blank"
+                                                        >{% translate "Killboard" %}</a>
+                                                    </td>
+                                                    <td class="text-center">{{ member.character_ownership.user.profile.main_character.character_name }}</td>
+                                                    <td class="text-center">{{ member.character_ownership.user.profile.main_character.corporation_name }}</td>
+                                                    <td class="text-center">{{ member.character_ownership.user.profile.main_character.alliance_name }}</td>
+                                                </tr>
+                                            {% endfor %}
+
+                                            {% for member in unregistered %}
+                                                <tr class="danger">
+                                                    <td><img src="{{ member.portrait_url }}" class="img-circle"></td>
+                                                    <td class="text-center">{{ member.character_name }}</td>
+                                                    <td class="text-center">
+                                                        <a
+                                                            href="https://zkillboard.com/character/{{ member.character_id }}/"
+                                                            class="label label-danger"
+                                                            target="_blank"
+                                                        >{% translate "Killboard" %}</a>
+                                                    </td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center"></td>
+                                                </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="tab-pane fade" id="unregistered">
+                            {% if unregistered %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="table-unregistered">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th class="text-center">{% translate "Character" %}</th>
+                                                <th class="text-center"></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {% for member in unregistered %}
+                                                <tr class="danger">
+                                                    <td><img src="{{ member.portrait_url }}" class="img-circle"></td>
+                                                    <td class="text-center">{{ member.character_name }}</td>
+                                                    <td class="text-center">
+                                                        <a href="https://zkillboard.com/character/{{ member.character_id }}/"
+                                                           class="label label-danger"
+                                                           target="_blank">
+                                                            {% translate "Killboard" %}
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="col-md-12 alert alert-success">
+                                    <strong>No Unregistered Characters</strong>.
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="tab-pane fade" id="orphans">
+                            {% if orphans %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="table-orphans">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th class="text-center">{% translate "Character" %}</th>
+                                                <th class="text-center"></th>
+                                                <th class="text-center">{% translate "Main Character" %}</th>
+                                                <th class="text-center">{% translate "Main Corporation" %}</th>
+                                                <th class="text-center">{% translate "Main Alliance" %}</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {% for member in orphans %}
+                                                <tr class="danger">
+                                                    <td><img src="{{ member.portrait_url }}" class="img-circle"></td>
+                                                    <td class="text-center">{{ member.character_name }}</td>
+                                                    <td class="text-center"><a
+                                                            href="https://zkillboard.com/character/{{ member.character_id }}/"
+                                                            class="label label-danger"
+                                                            target="_blank">{% translate "Killboard" %}</a></td>
+                                                    <td class="text-center">{{ member.character_ownership.user.profile.main_character.character_name }}</td>
+                                                    <td class="text-center">{{ member.character_ownership.user.profile.main_character.corporation_name }}</td>
+                                                    <td class="text-center">{{ member.character_ownership.user.profile.main_character.alliance_name }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="col-md-12 alert alert-success">
+                                    <strong>No Orphaned Characters</strong>.
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="tab-pane fade" id="tracking">
+                            {% if members %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="table-tracking">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th class="text-center">{% translate 'Character' %}</th>
+                                                <th class="text-center">{% translate 'Ship' %}</th>
+                                                <th class="text-center">{% translate 'Last Online' %}</th>
+                                                <th class="text-center">{% translate 'Joined' %}</th>
+                                                <th class="text-center">{% translate 'Registered' %}</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {% for member in unregistered %}
+                                                <tr class="danger">
+                                                    <td class="text-center" style="vertical-align:middle"><img src="{{ member.portrait_url }}" class="img-circle"></td>
+                                                    <td class="text-center" style="vertical-align:middle">{{ member.character_name }}</td>
+                                                    <td class="text-center" style="vertical-align:middle">{{ member.ship_type_name }}</td>
+                                                    <td class="text-center" style="vertical-align:middle">{{ member.logoff_date|date:"Y-m-d H:i" }}<br><span class="label label-primary">{{ member.logon_date|timesince }} ago</span><br><span class="label label-default">Duration: {{ member.logon_date|timesince:member.logoff_date }}</span></td>
+                                                    <td class="text-center" style="vertical-align:middle">{{ member.start_date|date:"Y-m-d H:i" }}<br><span class="label label-primary">{{ member.start_date|timesince }}</span></td>
+                                                    <td class="text-center" style="vertical-align:middle">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+
+                                            {% for member in tracking %}
+                                                <tr >
+                                                    <td class="text-center" style="vertical-align:middle"><img src="{{ member.portrait_url }}" class="img-circle"></td>
+                                                    <td class="text-center" style="vertical-align:middle">{{ member.character_name }}</td>
+                                                    <td class="text-center" style="vertical-align:middle">{{ member.ship_type_name }}</td>
+                                                    <td class="text-center" style="vertical-align:middle">{{ member.logoff_date|date:"Y-m-d H:i" }}<br><span class="label label-primary">{{ member.logon_date|timesince }} ago</span><br><span class="label label-default">Duration: {{ member.logon_date|timesince:member.logoff_date }}</span></td>
+                                                    <td class="text-center" style="vertical-align:middle">{{ member.start_date|date:"Y-m-d H:i" }}<br><span class="label label-primary">{{ member.start_date|timesince }}</span></td>
+                                                    <td class="text-center" style="vertical-align:middle">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block extra_javascript %}
+    {% include 'bundles/datatables-js.html' %}
+    <script>!function(t){function e(t){var e={columns:[],columnsIdxList:[],bootstrap:!1,autoSize:!0,label:"Filter "};if("bootstrap"in t&&"boolean"==typeof t.bootstrap&&(e.bootstrap=t.bootstrap),"autoSize"in t&&"boolean"==typeof t.autoSize&&(e.autoSize=t.autoSize),"label"in t&&"string"==typeof t.label&&(e.label=t.label),"columns"in t)for(var i=0;i<t.columns.length;i++){var n=t.columns[i];if("idx"in n&&"number"==typeof n.idx){var o=n.idx;e.columns[o]={title:null,maxWidth:null,autoSize:!0},e.columnsIdxList.push(o),"title"in n&&"string"==typeof n.title&&(e.columns[o].title=n.title),"maxWidth"in n&&"string"==typeof n.maxWidth&&(e.columns[o].maxWidth=n.maxWidth),"autoSize"in n&&"boolean"==typeof n.autoSize&&(e.columns[o].autoSize=n.autoSize)}}return e}t(document).on("preInit.dt",function(i,n){if("dt"===i.namespace){var o=new t.fn.dataTable.Api(n),a=o.table().node().id,l=o.init();if("filterDropDown"in l){var r=e(l.filterDropDown);if(0!=r.columns.length){var u=o.table().container(),s=a+"_filterWrapper",c=s+" "+(r.bootstrap?"form-inline":"");t(u).prepend('<div id="'+s+'" class="'+c+'">'+r.label+"</div>"),o.columns(r.columnsIdxList).every(function(){var e=this.index(),i=null!==r.columns[e].title?r.columns[e].title:t(this.header()).html();""==i&&(i="column "+(e+1));var n="form-control "+a+"_filterSelect",o=a+"_filterSelect"+e;t("#"+s).append('<select id="'+o+'" class="'+n+'"></select>');var l=t("#"+o).empty().append('<option value="">('+i+")</option>");})}}}}),t(document).on("init.dt",function(i,n){if("dt"===i.namespace){var o=new t.fn.dataTable.Api(n),a=o.table().node().id,l=o.init();if("filterDropDown"in l){var r=e(l.filterDropDown);o.table().container();o.columns(r.columnsIdxList).every(function(){var e=this,i=e.index(),n=t("#"+(a+"_filterSelect"+i));n.on("change",function(){var i=t.fn.dataTable.util.escapeRegex(t(this).val());e.search(i?"^"+i+"$":"",!0,!1).draw()}),e.data().unique().sort().each(function(t,e){""!=t&&n.append('<option value="'+t+'">'+t+"</option>")})})}}})}(jQuery);</script>
+{% endblock %}
+
+{% block extra_css %}
+    {% include 'bundles/datatables-css.html' %}
+{% endblock %}
+
+{% block extra_script %}
+    $(document).ready(function(){
+        var service_cols = []
+        {% for service in service_percent %}
+        service_cols.push(1+{{forloop.counter}})
+        {% endfor %}
+        $('#table-mains').DataTable({
+            "columnDefs": [
+                { "sortable": false, "targets": [1] },
+                { "visible": false, "targets": service_cols }
+            ],
+            "filterDropDown": {
+                columns: [{% for service in service_percent %}
+                    {
+                        idx: 1+{{ forloop.counter }}
+                    },{% endfor %}
+                ],
+                autoSize: false,
+                bootstrap: true
+            }
+        });
+        $('#table-members').DataTable({
+            "columnDefs": [
+                { "searchable": false, "targets": [0, 2] },
+                { "sortable": false, "targets": [0, 2] },
+            ],
+            "order": [[ 1, "asc" ]],
+        });
+        $('#table-unregistered').DataTable({
+            "columnDefs": [
+                { "searchable": false, "targets": [0, 2] },
+                { "sortable": false, "targets": [0, 2] },
+            ],
+            "order": [[ 1, "asc" ]],
+        });
+        $('#table-tracking').DataTable({
+            "columnDefs": [
+                { "searchable": false, "targets": [0, 5] },
+                { "sortable": false, "targets": [0, 5] },
+            ],
+            "order": [[ 1, "asc" ]],
+        });
+    });
+{% endblock %}
