@@ -1,0 +1,50 @@
+.coveragerc
+.gitattributes
+.gitignore
+.travis.yml
+AUTHORS.rst
+CHANGELOG.rst
+LICENSE.txt
+MANIFEST.in
+README.rst
+doc_requirements.txt
+environment.yml
+environment_pinned_py3.yml
+requirements.txt
+setup.cfg
+setup.py
+test-requirements.txt
+docs/Creating and working with grid objects.ipynb
+docs/Creating and working with grid objects.rst
+docs/Makefile
+docs/Subsetting grid objects with shape files.ipynb
+docs/Subsetting grid objects with shape files.rst
+docs/authors.rst
+docs/changelog.rst
+docs/changes.rst
+docs/conf.py
+docs/examples.rst
+docs/index.rst
+docs/license.rst
+docs/_static/.gitignore
+docs/subsetting_grids_with_shape_files/output_6_1.png
+docs/subsetting_grids_with_shape_files/output_8_1.png
+src/pygeogrids/__init__.py
+src/pygeogrids/_version.py
+src/pygeogrids/geodetic_datum.py
+src/pygeogrids/grids.py
+src/pygeogrids/nearest_neighbor.py
+src/pygeogrids/netcdf.py
+src/pygeogrids/plotting.py
+src/pygeogrids/shapefile.py
+src/pygeogrids.egg-info/PKG-INFO
+src/pygeogrids.egg-info/SOURCES.txt
+src/pygeogrids.egg-info/dependency_links.txt
+src/pygeogrids.egg-info/not-zip-safe
+src/pygeogrids.egg-info/requires.txt
+src/pygeogrids.egg-info/top_level.txt
+tests/__init__.py
+tests/conftest.py
+tests/test_geodatic_datum.py
+tests/test_grid.py
+tests/test_netcdf.py

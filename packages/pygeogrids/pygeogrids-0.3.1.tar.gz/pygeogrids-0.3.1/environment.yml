@@ -1,0 +1,13 @@
+name: pygeogrids_dev
+channels:
+  - conda-forge
+dependencies:
+- numpy
+- pandas
+- netcdf4
+- gdal
+- geos
+- proj4
+- hdf5
+- pyproj
+- pykdtree
