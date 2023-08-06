@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: sbp
+Version: 3.4.5
+Summary: Python bindings for Swift Binary Protocol
+Home-page: https://github.com/swift-nav/libsbp
+Author: Swift Navigation
+Author-email: dev@swiftnav.com
+License: UNKNOWN
+Requires-Dist: construct (==2.9.33)
+Requires-Dist: pyftdi (==0.13.*)
+Requires-Dist: pylibftdi
+Requires-Dist: pyserial
+Requires-Dist: requests (==2.20.*)
+
+SBP Bindings for Python
+
+
