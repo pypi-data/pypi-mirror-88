@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: user_inputs_for_args
+Version: 0.0.2
+Summary: gets inputs from the user on the cmd line for params that you haven't entered programmatically
+Home-page: https://gitlab.com/section.80/user_inputs_for_args
+Author: Brooklyn Germa
+Author-email: brooklyn.germa@gmail.com
+License: UNKNOWN
+Description: # get inputs for args
+        
+        This project is centered around a decorator that gets inputs from the user in 
+        the command line for args that you haven't already passed in programmatically.
+        It also converts the inputted value to the wanted type which is specified in the
+        function's annotations, and also supplies the user with a help menu if you have
+        given the arg's documentation in the function's docstring.
+        
+        ## How to use
+        First download it:
+        
+        ```
+        pip install user_inputs_for_args
+        ```
+        
+        Then, To use this decorator, import it to the file you want to use it in and 
+        then you can apply it by putting `@get_inputs_for_args` behind the function you 
+        want to apply it to like this: 
+        ```
+        @get_inputs_for_args
+        def my_func(arg1, arg2):
+          ...
+        ```
+        Now when an arg is not programmatically passed in it will ask for a value for it 
+        from the user.
+        
+        ## Uses
+        
+        One use for this decorator are when you are debugging and want to manually input
+        values on the command line instead of them being programmatically put in, so you
+        can be sure that nothing has happened to the value before being passed in.
+        
+        ## Contributing
+        
+        You can join the project but there a few standards that I would like to keep in place.
+        - Use single-quotes for strings unless double-quotes are necessary
+        - You must use tests, and your code must be readable
+        - make a new branch when you are starting on a new issue or feature
+        - You must add a new issue/feature to gitlab every time there is something you want to add/fix
+        - Make sure to update documentation after adding new code
+        
+        ## Versioning
+        
+        We use the [SemVer](http://semver.org/) standard for versioning 
+        
+        ## Authors
+        
+        * **Section.80** - *project group* - [Section.80](https://gitlab.com/section.80)
+            * **Brooklyn Germa** - *Founder* - [bGerma](https://gitlab.com/bGerma)
+            * **Abel Germa** - *Founder* - [aGerma](https://gitlab.com/agerma)
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.7
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
