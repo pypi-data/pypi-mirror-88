@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: hipopayflake
+Version: 1.1.6
+Summary: Distributed system ID generator based on snowflake.
+Home-page: https://hipopay.com
+Author: Qingxu Kuang
+Author-email: asahikuang@gmail.com
+License: UNKNOWN
+Description: # hipopayflake
+        
+        >
+        > version: 1.1.6
+        >
+        > author: [KuangQingxu](mailto:asahikuang@gmail?subject=[hipopayflake])
+        >
+        > date: 2020-12-11
+        >
+        > update: 2020-12-11
+        
+        ### Usage:
+        
+            - To be continue
+        
+        ### Packaging And Uploading:
+        
+        - Packing:
+        
+            ```
+            python setup.py sdist bdist_wheel
+            ```
+        
+        - Uploading:
+        
+            ```
+            twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+            ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
