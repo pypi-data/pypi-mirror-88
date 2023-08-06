@@ -1,0 +1,26 @@
+Metadata-Version: 2.0
+Name: pg-xades
+Version: 0.0.7
+Summary: XaDES XML signature. Based on python-xades.
+Home-page: https://github.com/Silverdoses/python-pgxades
+Author: Pragmatic SAS
+Author-email: oscar.martinez@pragmatic.com.co
+License: BSD
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Dist: pg-xmlsig
+Requires-Dist: pytz
+
+XaDES XML Signature created with cryptography and lxml
+
+
