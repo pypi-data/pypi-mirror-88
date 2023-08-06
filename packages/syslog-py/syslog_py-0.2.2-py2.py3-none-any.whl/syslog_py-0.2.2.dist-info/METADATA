@@ -1,0 +1,116 @@
+Metadata-Version: 2.1
+Name: syslog-py
+Version: 0.2.2
+Summary: Syslog client implementation (RFC 3164/RFC 5424) with message transfer from RFC 6587 (Syslog over TCP)
+Home-page: https://github.com/maciejbudzyn/syslog-py
+Author: Maciej Budzyński
+Author-email: maciej.budzyn@gmail.com
+License: UNKNOWN
+Keywords: syslog logging octet-counting octet-stuffing
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+
+# syslog-py
+
+Syslog client for Python 3 (RFC 3164/5424) for UNIX and Windows (fork from pysyslogclient with more features, fixed bugs and options).
+
+## Description
+
+Syslog client following
+
+* RFC3164 (https://www.ietf.org/rfc/rfc3164.txt)
+* RFC5424 (https://www.ietf.org/rfc/rfc5424.txt)
+* RFC6587 (https://www.ietf.org/rfc/rfc6587.txt) - for syslog over TCP
+
+with UNIX and Windows support. TCP and UDP transport is possible.
+
+If TCP is used, on every log message, that is send to the specified server,
+and a connection error occured, the message will be dismissed and
+a reconnect will be tried for the next message.
+
+## Usage
+
+A small CLI client is implemented in *client.py*. To call it, run
+
+```
+python -m pysyslogclient.cli
+```
+
+### Startup client 
+
+To setup the client for RFC 5424 over TCP to send to SERVER:PORT:
+
+```
+import pysyslogclient
+client = pysyslogclient.SyslogClientRFC5424(SERVER, PORT, proto="TCP")
+```
+
+or for RFC3164:
+
+```
+import SyslogClient
+client = pysyslogclient.SyslogClientRFC3164(SERVER, PORT, proto="TCP")
+```
+
+### Log a messsage
+
+Log the message "Hello syslog server" with standard severity *INFO* as facility
+*USER*. As program name *SyslogClient* the PID of the called python interpreter
+is used.
+
+```
+client.log("Hello syslog server")
+
+```
+
+To specify more options, call log with more arguments. For example to log
+the message as program *Logger* with PID *1* as facility *SYSTEM* with severity
+*EMERGENCY*, call log the following way:
+
+```
+client.log("Hello syslog server",
+	facility=pysyslogclient.FAC_SYSTEM,
+	severity=pysyslogclient.SEV_EMERGENCY,
+	program="Logger",
+	pid=1)
+```
+
+For TCP protocol, the octet parameter is available in client constructor and in log method.
+The parameter in log method has precedence over constructor parameter.
+In case of UDP protocol, octet parameter is ignored.
+
+Below in the first message, octet stuffing is in use, in second octet counting (forced by octet parameter in log method).
+```
+import pysyslogclient
+client = pysyslogclient.SyslogClientRFC5424(SERVER, PORT, proto="TCP", octet=OCTET_STUFFING)
+
+client.log("Hello syslog server",
+	facility=pysyslogclient.FAC_SYSTEM,
+	severity=pysyslogclient.SEV_EMERGENCY,
+	program="Logger",
+	pid=1)
+
+client.log("Hello syslog server",
+	facility=pysyslogclient.FAC_SYSTEM,
+	severity=pysyslogclient.SEV_EMERGENCY,
+	program="Logger",
+	pid=1,
+	octet=OCTET_COUNTING)
+```
+
+### Shutdown
+
+To disconnect, call
+
+```
+client.close()
+```
+
+
+
