@@ -1,0 +1,12 @@
+click<8,>=4.0
+rasterio>=1.0a11
+rio-mucho
+
+[:python_version < "3.4"]
+enum34
+
+[test]
+pytest
+colormath==2.0.2
+pytest-cov
+codecov
