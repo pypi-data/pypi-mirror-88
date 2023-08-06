@@ -1,0 +1,1 @@
+locals()['bbob'] = 'aha'
