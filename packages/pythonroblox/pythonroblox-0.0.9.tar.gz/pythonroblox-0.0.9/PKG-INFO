@@ -1,0 +1,176 @@
+Metadata-Version: 2.1
+Name: pythonroblox
+Version: 0.0.9
+Summary: A Package related to Roblox API , providing Way to Users as well as Groups API. More Features Coming Soon.
+Home-page: https://github.com/IBgreat1/pyroblox
+Author: IBgreat1
+Author-email: 
+License: UNKNOWN
+Description: # pythonroblox
+        A Python Roblox API Wrapper , with Access To User , Groups and Marketplace .
+        
+        # User - Class
+        
+        **Intializing**
+        ```py
+        import pythonroblox
+        user = pythonroblox.User()
+        ```
+        **Searching Username**
+        ```py
+        import pythonroblox
+        user = pythonroblox.User()
+        result  = user.search_name("Roblox")
+        print(result.id) #1
+        ```
+        **Searching User ID**
+        ```py
+        import pythonroblox
+        user = pythonroblox.User()
+        result  = user.search_id(1)
+        print(result.name) #Roblox
+        ```
+        
+        **Searching user ID and Name returns the Given Below list of Attributes:**
+        ```
+        id - ID of User
+        banned - Banned Status of User , Returns False if not Banned
+        name - Name of User
+        created_date - Date When the User's Account was created
+        displayName - Display Name of User
+        description - Description of User
+        status - Status of User
+        number_groups - Number of groups the User is in
+        friends_count - The Friends Count of User
+        followers_count - The Followers Count of User
+        following_count - The Following Count of User
+        avatar_url - The Avatar Url of User
+        ```
+        **And Functions :**
+        ```
+        get_groups_data()
+        get_all_groups_data() - Gets Total Group Data
+        roblox_badges() - Returns JSON Data of User's Roblox Badges
+        get_primary_group() - Returns Primary group of User
+        get_username_history() - Returns Username History of User
+        ```
+        # Groups - Class
+        **Initializing**
+        ```py
+        import pythonroblox
+        groups = pythonroblox.Groups()
+        ```
+        **Search Id**
+        ```py
+        import pythonroblox
+        groups = pythonroblox.Groups()
+        result = groups.search_id(1)
+        print(result.name) #RobloHunks
+        ```
+        **Search Name**
+        ```py
+        import pythonroblox
+        groups = pythonroblox.Groups()
+        result = groups.search_name("RobloHunks")
+        print(result.id) #1
+        ```
+        **Search Name and Search ID for Groups Returns the Following Attribrutes :**
+        ```
+        name - Name of group
+        description - Group description
+        owner_name - Group Onwer Name
+        owner_displayName  - Group Owner displayName
+        owner_id  - Group Owner ID
+        shout_details  - Group shout details
+        member_count  - Group Member Count
+        public_entry_allowed - Public Entry Allowed ( True or False)
+        id - Group ID
+        ```
+        **Search Name and Search ID for Groups Returns the Following Functions :**
+        ```
+        get_total_results() -Total Search Result for Search Name
+        get_shout_details() - To get Shout Details
+        ```
+        # Marketplace - Class
+        **Initializing**
+        ```py
+        import pythonroblox
+        mp = pythonroblox.Marketplace()
+        ```
+        **Catalog**
+        ```py
+        import pythonroblox
+        mp = pythonroblox.Marketplace()
+        catalog = mp.Catalog()
+        res = catalog.search_name("Dominus")
+        print(res.id)
+        ```
+        **Game**
+        ```py
+        import pythonroblox
+        mp = pythonroblox.Marketplace()
+        catalog = mp.Game()
+        res = catalog.search_name("Jailbreak")
+        print(res.visits)
+        ```
+        **Catalog Searching Returns Following Attribrutes:**
+        ```
+        asset_type_id
+        product_type
+        asset_id
+        product_id 
+        name 
+        creator_name
+        creator_id
+        creator_type
+        creator_target_id
+        description
+        icon_url
+        created_date
+        updated_date
+        price_in_robux
+        sales 
+        is_public
+        is_limited 
+        is_limited_unique
+        remaining
+        minimum_membership_level 
+        content_rating_type_id 
+        assetStock
+        RAP
+        originalPrice 
+        numberRemaining
+        ```
+        ** Game Searching Returns Following Attributes :**
+        ```
+        self.place_id = data['rootPlaceId']
+        name
+        description = data['description']
+        creator_name 
+        creator_type 
+        creator_id
+        price
+        allowedGearGenres 
+        playing 
+        visits 
+        created
+        updated 
+        studioAccessToApisAllowed
+        createVipServersAllowed
+        universeAvatarType
+        genre
+        icon_url
+        favorites 
+        likes
+        dislikes 
+        ```
+        
+        
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
