@@ -1,0 +1,380 @@
+[tool.poetry]
+name = "prgconfig"
+version = "1.0.0-beta.2"
+description = "Configuration manager using toml language."
+authors = ["Rémy Taymans <remytms@tsmail.eu>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+repository = "https://gitlab.com/remytms/prgconfig"
+keywords = ["config", "toml", "unix"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Development Status :: 4 - Beta",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Software Development :: Libraries",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://gitlab.com/remytms/prgconfig/-/issues"
+
+[tool.poetry.dependencies]
+python = "^3.5"
+toml = "^0.10.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.1.2"
+pytest-cov = "^2.10.1"
+pylint = "^2.6.0"
+tox = "^3.20.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+known_third_party = ["toml"]
+known_first_party = ["prgconfig"]
+
+[tool.towncrier]
+package = "prgconfig"
+package_dir = "src"
+filename = "CHANGES.rst"
+directory = "newsfragments"
+title_format = "prgconfig {version} ({project_date})"
+wrap = 72
+
+
+# Pylint configuration
+# Do not add any config below this line other than pylint one
+
+[tool.pylint.MASTER]
+
+# Pickle collected data for later comparisons.
+persistent = true
+# Use multiple processes to speed up Pylint.
+jobs = 4
+
+[tool.pylint.'MESSAGES CONTROL']
+
+disable = [
+  "import-star-module-level",
+  "old-octal-literal",
+  "oct-method",
+  "print-statement",
+  "unpacking-in-except",
+  "parameter-unpacking",
+  "backtick",
+  "old-raise-syntax",
+  "old-ne-operator",
+  "long-suffix",
+  "dict-view-method",
+  "dict-iter-method",
+  "metaclass-assignment",
+  "next-method-called",
+  "raising-string",
+  "indexing-exception",
+  "raw_input-builtin",
+  "long-builtin",
+  "file-builtin",
+  "execfile-builtin",
+  "coerce-builtin",
+  "cmp-builtin",
+  "buffer-builtin",
+  "basestring-builtin",
+  "apply-builtin",
+  "filter-builtin-not-iterating",
+  "using-cmp-argument",
+  "useless-suppression",
+  "range-builtin-not-iterating",
+  "suppressed-message",
+  "no-absolute-import",
+  "old-division",
+  "cmp-method",
+  "reload-builtin",
+  "zip-builtin-not-iterating",
+  "intern-builtin",
+  "unichr-builtin",
+  "reduce-builtin",
+  "standarderror-builtin",
+  "unicode-builtin",
+  "xrange-builtin",
+  "coerce-method",
+  "delslice-method",
+  "getslice-method",
+  "setslice-method",
+  "input-builtin",
+  "round-builtin",
+  "hex-method",
+  "nonzero-method",
+  "map-builtin-not-iterating",
+  "bad-continuation",
+  "too-many-branches",
+  "too-many-locals",
+  "too-many-arguments",
+  "too-many-ancestors",
+  "too-many-statements",
+  "too-many-instance-attributes",
+]
+
+[tool.pylint.FORMAT]
+# Maximum number of characters on a single line.
+max-line-length = 81
+
+# Regexp for a line that is allowed to be longer than the limit.
+ignore-long-lines = '^\s*(# )?<?https?://\S+>?$'
+
+# Allow the body of an if to be on the same line as the test if there is no
+# else.
+single-line-if-stmt = false
+
+# List of optional constructs for which whitespace checking is disabled. `dict-
+# separator` is used to allow tabulation in dicts, etc.: {1  : 1,\n222: 2}.
+# `trailing-comma` allows a space between comma and closing bracket: (a, ).
+# `empty-line` allows space-only lines.
+no-space-check = ["trailing-comma" , "dict-separator"]
+
+# Maximum number of lines in a module
+max-module-lines = 1000
+
+# String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1
+# tab).
+indent-string = '    '
+
+# Number of spaces of indent required inside a hanging  or continued line.
+indent-after-paren = 4
+
+# Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
+expected-line-ending-format = "LF"
+
+[tool.pylint.SIMILARITIES]
+# Minimum lines number of a similarity.
+min-similarity-lines = 4
+
+# Ignore comments when computing similarities.
+ignore-comments = true
+
+# Ignore docstrings when computing similarities.
+ignore-docstrings = true
+
+# Ignore imports when computing similarities.
+ignore-imports = false
+
+[tool.pylint.VARIABLES]
+
+# Tells whether we should check for unused import in __init__ files.
+init-import = false
+
+# A regular expression matching the name of dummy variables (i.e. expectedly
+# not used).
+dummy-variables-rgx = '(_+[a-zA-Z0-9]*?$)|dummy'
+
+# List of additional names supposed to be defined in builtins. Remember that
+# you should avoid to define new builtins when possible.
+additional-builtins = []
+
+# List of strings which can identify a callback function by name. A callback
+# name must start or end with one of those strings.
+callbacks = [
+  "cb_",
+  "_cb",
+  "complete_",
+  "_complete",
+  "check_",
+  "_check",
+]
+
+# List of qualified module names which can have objects that can redefine
+# builtins.
+redefining-builtins-modules = ["six.moves", "future.builtins"]
+
+[tool.pylint.BASIC]
+
+# Good variable names which should always be accepted, separated by a comma
+good-names = ["ex", "db", "Run", "_"]
+
+# Bad variable names which should always be refused, separated by a comma
+bad-names = ["foo", "bar", "baz", "toto", "tutu", "tata"]
+
+# Colon-delimited sets of names that determine each other's naming style when
+# the name regexes allow several styles.
+name-group = ""
+
+# Include a hint for the correct naming format with invalid-name
+include-naming-hint = false
+
+# List of decorators that produce properties, such as abc.abstractproperty. Add
+# to this list to register other decorators that produce valid properties.
+property-classes = ["abc.abstractproperty"]
+
+# Regular expression matching correct function names
+function-rgx = '[a-z_][a-z0-9_]{2,30}$'
+
+# Naming hint for function names
+function-name-hint = '[a-z_][a-z0-9_]{2,30}$'
+
+# Regular expression matching correct variable names
+variable-rgx = '[a-z_][a-z0-9_]{0,30}$'
+
+# Naming hint for variable names
+variable-name-hint = '[a-z_][a-z0-9_]{2,30}$'
+
+# Regular expression matching correct constant names
+const-rgx = '(([A-Z_][A-Z0-9_]*)|(__.*__))$'
+
+# Naming hint for constant names
+const-name-hint = '(([A-Z_][A-Z0-9_]*)|(__.*__))$'
+
+# Regular expression matching correct attribute names
+attr-rgx = '[a-z_][a-z0-9_]{2,30}$'
+
+# Naming hint for attribute names
+attr-name-hint = '[a-z_][a-z0-9_]{2,30}$'
+
+# Regular expression matching correct argument names
+argument-rgx = '[a-z_][a-z0-9_]{2,30}$'
+
+# Naming hint for argument names
+argument-name-hint = '[a-z_][a-z0-9_]{2,30}$'
+
+# Regular expression matching correct class attribute names
+class-attribute-rgx = '([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$'
+
+# Naming hint for class attribute names
+class-attribute-name-hint = '([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$'
+
+# Regular expression matching correct inline iteration names
+inlinevar-rgx = '[A-Za-z_][A-Za-z0-9_]*$'
+
+# Naming hint for inline iteration names
+inlinevar-name-hint = '[A-Za-z_][A-Za-z0-9_]*$'
+
+# Regular expression matching correct class names
+class-rgx = '[A-Z_][a-zA-Z0-9]+$'
+
+# Naming hint for class names
+class-name-hint = '[A-Z_][a-zA-Z0-9]+$'
+
+# Regular expression matching correct module names
+module-rgx = '(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$'
+
+# Naming hint for module names
+module-name-hint = '(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$'
+
+# Regular expression matching correct method names
+method-rgx = '[a-z_][a-z0-9_]{2,30}$'
+
+# Naming hint for method names
+method-name-hint = '[a-z_][a-z0-9_]{2,30}$'
+
+# Regular expression which should only match function or class names that do
+# not require a docstring.
+no-docstring-rgx = "^_"
+
+# Minimum line length for functions/classes that require docstrings, shorter
+# ones are exempt.
+docstring-min-length = -1
+
+[tool.pylint.ELIF]
+
+# Maximum number of nested blocks for function / method body
+max-nested-blocks = 5
+
+[tool.pylint.TYPECHECK]
+
+# Tells whether missing members accessed in mixin class should be ignored. A
+# mixin class is detected if its name ends with "mixin" (case insensitive).
+ignore-mixin-members = true
+
+# List of module names for which member attributes should not be checked
+# (useful for modules/projects where namespaces are manipulated during runtime
+# and thus existing member attributes cannot be deduced by static analysis. It
+# supports qualified module names, as well as Unix pattern matching.
+ignored-modules = ["sh"]
+
+# List of class names for which member attributes should not be checked (useful
+# for classes with dynamically set attributes). This supports the use of
+# qualified names.
+ignored-classes = ["optparse.Values", "thread._local", "_thread._local"]
+
+# List of members which are set dynamically and missed by pylint inference
+# system, and so shouldn't trigger E1101 when accessed. Python regular
+# expressions are accepted.
+generated-members = []
+
+# List of decorators that produce context managers, such as
+# contextlib.contextmanager. Add to this list to register other decorators that
+# produce valid context managers.
+contextmanager-decorators = ["contextlib.contextmanager"]
+
+[tool.pylint.LOGGING]
+
+# Logging modules to check that the string format arguments are in logging
+# function parameter format
+logging-modules = "logging"
+
+[tool.pylint.MISCELLANEOUS]
+
+# List of note tags to take in consideration, separated by a comma.
+notes = ["FIXME", "XXX", "TODO"]
+
+[tool.pylint.DESIGN]
+
+# Maximum number of arguments for function / method
+max-args = 5
+
+# Argument names that match this expression will be ignored. Default to name
+# with leading underscore
+ignored-argument-names = '_.*'
+
+# Maximum number of locals for function / method body
+max-locals = 15
+
+# Maximum number of return / yield for function / method body
+max-returns = 6
+
+# Maximum number of branch for function / method body
+max-branches = 12
+
+# Maximum number of statements in function / method body
+max-statements = 50
+
+# Maximum number of parents for a class (see R0901).
+max-parents = 7
+
+# Maximum number of attributes for a class (see R0902).
+max-attributes = 7
+
+# Minimum number of public methods for a class (see R0903).
+min-public-methods = 2
+
+# Maximum number of public methods for a class (see R0904).
+max-public-methods = 20
+
+# Maximum number of boolean expressions in a if statement
+max-bool-expr = 5
+
+[tool.pylint.CLASSES]
+
+# List of method names used to declare (i.e. assign) instance attributes.
+defining-attr-methods = ["__init__", "__new__", "setUp"]
+
+# List of valid names for the first argument in a class method.
+valid-classmethod-first-arg = ["cls"]
+
+# List of valid names for the first argument in a metaclass class method.
+valid-metaclass-classmethod-first-arg = ["mcs"]
+
+# List of member names, which should be excluded from the protected access
+# warning.
+exclude-protected = ["_asdict", "_fields", "_replace", "_source", "_make"]
+
+[tool.pylint.EXCEPTIONS]
+
+# Exceptions that will emit a warning when being caught. Defaults to
+# "Exception"
+overgeneral-exceptions = ["Exception"]

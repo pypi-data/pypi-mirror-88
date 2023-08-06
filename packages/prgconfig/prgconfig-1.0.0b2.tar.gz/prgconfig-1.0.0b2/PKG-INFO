@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: prgconfig
+Version: 1.0.0b2
+Summary: Configuration manager using toml language.
+Home-page: https://gitlab.com/remytms/prgconfig
+License: GPL-3.0-or-later
+Keywords: config,toml,unix
+Author: Rémy Taymans
+Author-email: remytms@tsmail.eu
+Requires-Python: >=3.5,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Software Development :: Libraries
+Requires-Dist: toml (>=0.10.2,<0.11.0)
+Project-URL: Bug Tracker, https://gitlab.com/remytms/prgconfig/-/issues
+Project-URL: Repository, https://gitlab.com/remytms/prgconfig
+Description-Content-Type: text/markdown
+
+[![pipeline status](https://gitlab.com/remytms/prgconfig/badges/master/pipeline.svg)](https://gitlab.com/remytms/prgconfig/pipelines)
+[![coverage report](https://gitlab.com/remytms/prgconfig/badges/master/coverage.svg)](https://gitlab.com/remytms/prgconfig/pipelines)
+[![licence](https://img.shields.io/pypi/l/prgconfig.svg)](https://www.gnu.org/licenses/gpl.html)
+[![version](https://img.shields.io/pypi/v/prgconfig.svg)](https://pypi.org/project/prgconfig)
+[![python](https://img.shields.io/pypi/pyversions/prgconfig.svg)](https://pypi.org/project/prgconfig)
+
+prgconfig
+=========
+
+prgconfig is a little library that ease the manage of configuration
+file written in [toml](https://toml.io). It comes with nice default. The
+minimum you have to specify is your program name then it does the rest.
+It aims to fit to standard in use for location of configuration file. It
+is also totally configurable to fit your needs.
+
+
+Installation
+------------
+
+Recommended installation is by using `pip`:
+
+```sh
+pip install prgconfig
+```
+
+
+Usage
+-----
+
+`PrgConfig` is a dict like object.
+
+Basic example:
+
+```python
+from prgconfig import PrgConfig
+
+config = PrgConfig("prgname")
+
+config.load()
+
+print(config["section"]["key"])
+```
+
+See the constructor of `PrgConfig` class to get an idea of possible
+configuration.
+
+
+Roadmap
+-------
+
+See [issues with the `enhancement` tag](https://gitlab.com/remytms/prgconfig/-/issues?scope=all&utf8=%E2%9C%93&state=opened&label_name[]=enhancement)
+
