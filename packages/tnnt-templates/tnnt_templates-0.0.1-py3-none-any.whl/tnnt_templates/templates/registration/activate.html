@@ -1,0 +1,18 @@
+{% extends 'public/middle_box.html' %}
+
+{% load i18n %}
+
+{% block title %}Account Activation{% endblock %}
+
+{% block middle_box_content %}
+    <p style="text-align: center">
+        <img class="login-image" src="https://images.evetech.net/corporations/98000030/logo?size=256">
+    </p>
+
+    <p style="text-align: center; font-size: 150%;">
+        Terra Nanotech<br>
+        Authentication System
+    </p>
+
+    <p class="alert alert-danger">{% translate 'Invalid or expired activation link.' %}</p>
+{% endblock %}
