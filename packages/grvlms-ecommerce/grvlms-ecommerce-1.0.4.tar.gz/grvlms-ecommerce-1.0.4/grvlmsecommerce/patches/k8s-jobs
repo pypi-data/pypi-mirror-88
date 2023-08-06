@@ -1,0 +1,25 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ecommerce-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: ecommerce
+          image: {{ DOCKER_REGISTRY }}{{ ECOMMERCE_DOCKER_IMAGE }}
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: ecommerce.settings.grvlms
+          volumeMounts:
+            - mountPath: /openedx/ecommerce/ecommerce/settings/grvlms.py
+              name: settings
+              subPath: grvlms.py
+      volumes:
+        - name: settings
+          configMap:
+            name: ecommerce-settings

@@ -1,0 +1,65 @@
+Metadata-Version: 2.1
+Name: grvlms-ecommerce
+Version: 1.0.4
+Summary: Ecommerce plugin for Grvlms
+Home-page: https://docs.grvlms.groove.education/
+Author: GrooveTechnology
+Author-email: thuan.ha@groovetechnology.com
+License: AGPLv3
+Project-URL: Documentation, https://docs.grvlms.groove.education
+Project-URL: Code, https://github.com/groovetch/grvlms-ecommerce
+Project-URL: Issue tracker, https://github.com/groovetch/grvlms-ecommerce/issues
+Project-URL: Community, https://groove.education
+Description: ecommerce plugin for `Grvlms <https://docs.grvlms.groove.education>`__
+        ===================================================================================
+        
+        Installation
+        ------------
+        
+        ::
+        
+            pip install git+https://github.com/groovetch/grvlms-ecommerce
+        
+        Usage
+        -----
+        
+        ::
+        
+            grvlms plugins enable ecommerce
+            grvlms ecommerce config -i (variable configuration option)
+            grvlms local start
+            grvlms local init
+            
+        Configuration
+        -------------
+        
+        - ``ECOMMERCE_MYSQL_DATABASE`` (default: ``"ecommerce"``)
+        - ``ECOMMERCE_MYSQL_USERNAME`` (default: ``"ecommerce"``)
+        - ``ECOMMERCE_MYSQL_PASSWORD`` (default: ``"{{ 8|random_string }}"``)
+        - ``ECOMMERCE_SECRET_KEY`` (default: ``"{{ 20|random_string }}"``)
+        - ``ECOMMERCE_OAUTH2_KEY`` (default: ``"ecommerce"``)
+        - ``ECOMMERCE_OAUTH2_SECRET`` (default: ``"{{ 8|random_string }}"``)
+        - ``ECOMMERCE_API_KEY`` (default: ``"{{ 20|random_string }}"``)
+        
+        
+        License
+        -------
+        
+        This software is licensed under the terms of the AGPLv3.
+        
+        Release Note
+        ------------
+        
+        - Merged edt-45/adding-ecommerce-configuration
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.5
+Description-Content-Type: text/x-rst
