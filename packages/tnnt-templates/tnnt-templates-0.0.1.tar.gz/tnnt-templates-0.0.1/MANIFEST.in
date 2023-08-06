@@ -1,0 +1,5 @@
+include LICENSE
+include README.md
+recursive-include tnnt_templates *.py
+recursive-include tnnt_templates/static *
+recursive-include tnnt_templates/templates *
