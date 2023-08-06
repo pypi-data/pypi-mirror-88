@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: sphinx-guru-builder
+Version: 0.1.1
+Summary: Sphinx Builder for Guru
+Home-page: https://github.com/j-martin/sphinx-guru-builder
+License: BSD-2
+Author: Jean-Martin Archer
+Author-email: jm@jmartin.ca
+Requires-Python: >=3.6,<4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: pyaml (>=20.4.0,<21.0.0)
+Project-URL: Repository, https://github.com/j-martin/sphinx-guru-builder
+Description-Content-Type: text/markdown
+
+# sphinx-guru-builder
+
+## Installation
+
+```
+$ pip install sphinx-guru-builder
+```
+
+## Usage
+
+1. Add the extension to your `conf.py`.
+
+```py
+extensions = [
+    "sphinx_guru_builder",
+]
+```
+
+2. Optionally, add `html_published_location` to create a link on each page to
+   the original docs.
+
+```py
+html_published_location = "https://example.com/docs"`
+```
+
+3. Build your docs.
+
+```
+$ sphinx-build -b guru source_dir build_dir
+```
+
+4. Upload the generated `guru.zip` file in the parent directory of the
+   `build_dir`.
+
+See [Guru API docs](https://developer.getguru.com/docs/guru-sync-manual-api) for instruction on how to upload the archive.
+
