@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: zoom-narrator
+Version: 1.0.0
+Summary: Play audio while streaming its closed captions to Zoom
+License: GNU GPL v3
+Author: Daniel Maxwell-Ross
+Author-email: daniel@maxwell-ross.us
+Requires-Python: >=3.9,<4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: aiohttp[speedups] (>=3.7.3,<4.0.0)
+Requires-Dist: asyncclick (>=7.1.2,<8.0.0)
+Requires-Dist: pysubs2 (>=1.0.0,<2.0.0)
