@@ -1,0 +1,112 @@
+from typing import Optional, Literal
+
+from qtpy import QtWidgets, QtCore
+
+from prettyqt import core
+from prettyqt.utils import bidict, InvalidParamError
+
+
+COMPLETION_MODE = bidict(
+    popup=QtWidgets.QCompleter.PopupCompletion,
+    inline=QtWidgets.QCompleter.InlineCompletion,
+    unfiltered_popup=QtWidgets.QCompleter.UnfilteredPopupCompletion,
+)
+
+CompletionModeStr = Literal["popup", "inline", "unfiltered_popup"]
+
+SORT_MODE = bidict(
+    unsorted=QtWidgets.QCompleter.UnsortedModel,
+    case_sensitive=QtWidgets.QCompleter.CaseSensitivelySortedModel,
+    case_insensitive=QtWidgets.QCompleter.CaseInsensitivelySortedModel,
+)
+
+SortModeStr = Literal["unsorted", "case_sensitive", "case_insensitive"]
+
+FILTER_MODE = bidict(
+    starts_with=QtCore.Qt.MatchStartsWith,
+    contains=QtCore.Qt.MatchContains,
+    ends_with=QtCore.Qt.MatchEndsWith,
+)
+
+FilterModeStr = Literal["starts_with", "contains", "ends_with"]
+
+
+QtWidgets.QCompleter.__bases__ = (core.Object,)
+
+
+class Completer(QtWidgets.QCompleter):
+    def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
+        super().__init__(parent)
+
+    def set_sort_mode(self, mode: Optional[SortModeStr]):
+        """Set sort mode to use.
+
+        Args:
+            mode: sort mode to use
+
+        Raises:
+            InvalidParamError: sort mode does not exist
+        """
+        if mode is None:
+            mode = "unsorted"
+        if mode not in SORT_MODE:
+            raise InvalidParamError(mode, SORT_MODE)
+        self.setModelSorting(SORT_MODE[mode])
+
+    def get_sort_mode(self) -> SortModeStr:
+        """Return current sort mode.
+
+        Returns:
+            sort mode
+        """
+        return SORT_MODE.inverse[self.modelSorting()]
+
+    def set_completion_mode(self, mode: CompletionModeStr):
+        """Set completion mode to use.
+
+        Args:
+            mode: completion mode to use
+
+        Raises:
+            InvalidParamError: completion mode does not exist
+        """
+        if mode not in COMPLETION_MODE:
+            raise InvalidParamError(mode, COMPLETION_MODE)
+        self.setCompletionMode(COMPLETION_MODE[mode])
+
+    def get_completion_mode(self) -> CompletionModeStr:
+        """Return current completion mode.
+
+        Returns:
+            completion mode
+        """
+        return COMPLETION_MODE.inverse[self.completionMode()]
+
+    def set_filter_mode(self, mode: FilterModeStr):
+        """Set filter mode to use.
+
+        Args:
+            mode: filter mode to use
+
+        Raises:
+            InvalidParamError: filter mode does not exist
+        """
+        if mode not in FILTER_MODE:
+            raise InvalidParamError(mode, FILTER_MODE)
+        self.setFilterMode(FILTER_MODE[mode])
+
+    def get_filter_mode(self) -> FilterModeStr:
+        """Return current filter mode.
+
+        Returns:
+            filter mode
+        """
+        return FILTER_MODE.inverse[self.filterMode()]
+
+
+if __name__ == "__main__":
+    from prettyqt import widgets
+
+    app = widgets.app()
+    completer = Completer()
+    app.main_loop()
