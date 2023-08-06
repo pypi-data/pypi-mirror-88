@@ -1,0 +1,18 @@
+/*******************************
+         Site Overrides
+*******************************/
+
+.ui.container.cover-page {
+  background-color: @brandColor;
+  height: 20em;
+  display: flex;
+  align-items: center;
+
+  &>.ui.container{
+    vertical-align: middle;
+  }
+
+  .ui.header{
+    color: @invertedTextColor;
+  }
+}
