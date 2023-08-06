@@ -1,0 +1,16 @@
+[Unit]
+Description=Configure Mellanox adapters into switchdev mode
+DefaultDependencies=no
+After=systemd-udevd.service sriov-netplan-shim.service
+Before=network-pre.target openvswitch-switch.service
+Wants=network-pre.target
+
+[Service]
+EnvironmentFile=-/etc/default/mlnx-switchdev-mode
+Type=oneshot
+KillMode=none
+ExecStart=/usr/bin/mlnx-switchdev-mode switch $MLNX_SWITCHDEV_MODE_OPTS
+TimeoutSec=0
+
+[Install]
+WantedBy=multi-user.target
