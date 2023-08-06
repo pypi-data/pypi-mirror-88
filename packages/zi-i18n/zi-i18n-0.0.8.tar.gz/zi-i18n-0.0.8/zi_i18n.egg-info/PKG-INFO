@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: zi-i18n
+Version: 0.0.8
+Summary: A Experimental Internationalization System
+Home-page: https://github.com/null2264/i18n
+Author: null2264
+Author-email: 
+License: GPL GNU-3.0
+Description: # zi-i18n
+        A Experimental Internationalization
+        
+        example:
+        
+        Translation
+        ```python
+        #in "example.py" file
+        from zi_i18n import I18n
+        
+        i18n = I18n("locale", "en_US")
+        print(i18n.translate("example.text"))
+        
+        #in "locale/en_US.zi.lang" file
+        <!example.text: "Test">
+        #output: Test
+        ```
+        
+        Pluralization
+        ```python
+        #in "example.py" file
+        from zi_i18n import I18n
+        
+        i18n = I18n("locale", "en_US")
+        print(i18n.translate("example.plural", count=0))
+        print(i18n.translate("example.plural", count=1))
+        print(i18n.translate("example.plural", count=5))
+        
+        #in "locale/en_US.zi.lang" file
+        <%example.plural: {"zero": "0", "one": "1", "many": ">= 2"}
+        #output:
+        # 0
+        # 1
+        # >= 2
+        ```
+        
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
