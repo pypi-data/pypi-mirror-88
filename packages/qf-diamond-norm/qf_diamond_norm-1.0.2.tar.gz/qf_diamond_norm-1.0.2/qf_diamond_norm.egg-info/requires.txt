@@ -1,0 +1,14 @@
+importlib_metadata
+quantumflow
+cvxpy
+
+[dev]
+pytest>=4.6
+pytest-cov
+flake8
+mypy
+black
+isort
+sphinx
+sphinxcontrib-bibtex
+setuptools_scm
