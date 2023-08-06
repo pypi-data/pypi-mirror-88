@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: justicia
+Version: 0.0.1
+Summary: This library can be used formally verify machine learning models on multiple fairness definitions.
+Home-page: https://github.com/meelgroup/justicia
+Author: Bishwamittra Ghosh
+Author-email: bishwamittra.ghosh@gmail.com
+License: MIT
+Download-URL: https://github.com/meelgroup/justicia/archive/v0.0.1.tar.gz
+Keywords: ML fairness verification,Application of SSAT solvers
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
+
+# Justicia
+This is the implementation of our [AAAI-2021 paper](https://arxiv.org/pdf/2009.06516.pdf).
+
+## Install
+- Install the python library
+`pip install justicia`
+- Install other python dependencies
+`pip install -r requirements.txt`
+
+### Other dependencies
+- [SSAT solver](https://github.com/nianzelee/ssatABC)
+- [PySAT](https://github.com/pysathq/pysat)
+
+
