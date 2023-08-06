@@ -1,0 +1,4 @@
+[MESSAGES CONTROL]
+disable=no-self-use,too-many-instance-attributes,unsubscriptable-object,fixme
+# unsubscriptable for typing Optional, see https://github.com/PyCQA/pylint/pull/3890
+good-names=id, i
