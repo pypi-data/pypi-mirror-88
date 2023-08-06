@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "avro-to-python-types"
+version = "0.1.0"
+description = "A library for converting avro schemas to python types."
+readme = "README.md"
+authors = ["Dan Green-Leipciger"]
+repository = "https://github.com/dangreenisrael/avro-to-python-types"
+license = "MIT"
+keywords = ["avro", "codegen", "avro schema", "typegen"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+astor = "^0.8.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^20.8b1"
+snapshottest = "^0.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
