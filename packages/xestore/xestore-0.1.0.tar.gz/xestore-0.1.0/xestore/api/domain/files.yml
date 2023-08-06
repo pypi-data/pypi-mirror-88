@@ -1,0 +1,71 @@
+files:
+  resource_title: Files
+  item_title: File
+  url: files
+  datasource:
+    source: files
+  additional_lookup:
+    url: regex("[\w]+")
+    field: name
+  versioning: false
+  soft_delete: false
+  cache_control: ''
+  cache_expires: 0
+  allowed_roles: ['superuser', 'admin']
+  allowed_read_roles: ['superuser', 'admin']
+  allowed_item_read_roles: ['superuser', 'admin']
+  allowed_write_roles: ['superuser', 'admin']
+  allowed_item_write_roles: ['superuser', 'admin'] 
+  allowed_item_roles: ['superuser', 'admin']
+  disable_documentation: False
+  embedded_fields: ['data']
+  schema:
+    name:
+      type: string
+      required: true
+      unique: true
+    extension:
+      type: string
+      default: ""
+    data:
+      type: media
+      required: true
+    metadata:
+      type: dict
+    
+        
+private_files:
+  resource_title: Private Files
+  item_title: Private File
+  url: files/private
+  datasource:
+    source: private_files
+  additional_lookup:
+    url: regex("[\w]+")
+    field: name
+  versioning: false
+  soft_delete: false
+  cache_control: ''
+  cache_expires: 0
+  allowed_roles: ['superuser', 'admin', 'expert']
+  allowed_read_roles: ['superuser', 'admin', 'expert']
+  allowed_item_read_roles: ['superuser', 'admin', 'expert']
+  allowed_write_roles: ['superuser', 'admin', 'expert']
+  allowed_item_write_roles: ['superuser', 'admin', 'expert'] 
+  allowed_item_roles: ['superuser', 'admin']
+  disable_documentation: False
+  embedded_fields: ['data']
+  auth_field: user_id
+  schema:
+    name:
+      type: string
+      required: true
+      unique: true
+    extension:
+      type: string
+      default: ""
+    data:
+      type: media
+      required: true
+    metadata:
+      type: dict

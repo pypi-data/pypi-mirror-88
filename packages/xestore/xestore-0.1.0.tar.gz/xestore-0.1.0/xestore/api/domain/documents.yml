@@ -1,0 +1,61 @@
+documents:
+  resource_title: Documents
+  item_title: Document
+  url: documents
+  datasource:
+      source: documents
+  additional_lookup:
+      url: regex("[\w]+")
+      field: name
+  versioning: true
+  cache_control: ''
+  cache_expires: 0
+  allowed_roles: ['superuser', 'admin', 'expert', read:all]
+  allowed_item_roles: ['superuser', 'admin', 'expert', read:all]
+  allowed_read_roles: ['superuser', 'admin', 'expert', read:all]
+  allowed_item_read_roles: ['superuser', 'admin', 'expert', read:all]
+  allowed_write_roles: ['superuser', 'admin', 'expert',]
+  allowed_item_write_roles: ['superuser', 'admin', 'expert',] 
+  
+  disable_documentation: False
+  schema:
+      name:
+        type: string
+        required: true
+        unique: true
+        regex: ^\S+$
+      data:
+        type: dict
+      metadata:
+        type: dict
+
+private_documents:
+  resource_title: Private Documents
+  item_title: Private Document
+  url: documents/private
+  datasource:
+      source: private_documents
+  additional_lookup:
+      url: regex("[\w]+")
+      field: name
+  versioning: true
+  cache_control: ''
+  cache_expires: 0
+  allowed_roles: ['superuser', 'admin', 'expert']
+  allowed_read_roles: ['superuser', 'admin', 'expert']
+  allowed_item_read_roles: ['superuser', 'admin', 'expert']
+  allowed_write_roles: ['superuser', 'admin', 'expert']
+  allowed_item_write_roles: ['superuser', 'admin', 'expert'] 
+  allowed_item_roles: ['superuser', 'admin', 'expert']
+  disable_documentation: False
+  auth_field: user_id
+  schema:
+      name:
+        type: string
+        required: true
+        unique: true
+        regex: ^\S+$
+      data:
+        type: dict
+      metadata:
+        type: dict
