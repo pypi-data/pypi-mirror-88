@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -e
+
+docker-compose run -e CIRCLE_NODE_TOTAL -e CIRCLE_NODE_INDEX --rm testrunner $*
