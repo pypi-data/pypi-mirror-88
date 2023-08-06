@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: labml-python-autocomplete
+Version: 0.0.1
+Summary: A simple model that learns to predict Python source code
+Home-page: https://github.com/lab-ml/python_autocomplete
+Author: Varuna Jayasiri
+Author-email: vpjayasiri@gmail.com
+License: UNKNOWN
+Project-URL: Documentation, https://lab-ml.com/
+Keywords: machine learning
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/markdown
+Requires-Dist: labml (>=0.4.74)
+Requires-Dist: labml-helpers (>=0.4.70)
+Requires-Dist: labml-nn (>=0.4.70torch)
+Requires-Dist: einops
+Requires-Dist: numpy
+
+# Source Code Modeling
+
+This repo trains deep learning models on source code.
+
+### Try it yourself
+
+1. Clone this repo
+2. Install requirements from `requirements.txt`
+3. Run `python_autocomplete/create_dataset.py`. 
+   * It collects repos mentioned in
+ [PyTorch awesome list](https://github.com/bharathgs/Awesome-pytorch-list)
+   * Downloads the zip files of the repos
+   * Extract the zips
+   * Remove non python files
+   * Collect all python code to `data/train.py` and, `data/eval.py`
+4. Run `python_autocomplete/train.py` to train the model.
+ *Try changing hyper-parameters like model dimensions and number of layers*.
+5. Run `evaluate.py` to evaluate the model.
+
+<p align="center">
+  <img src="/python-autocomplete.png?raw=true" width="100%" title="Screenshot">
+</p>
+
+
