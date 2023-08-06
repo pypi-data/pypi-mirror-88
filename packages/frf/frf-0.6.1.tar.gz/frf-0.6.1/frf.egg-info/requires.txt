@@ -1,0 +1,15 @@
+authlib
+cryptography
+fastapi
+marshmallow
+unimatrix>=0.4.1
+unimatrix.ext.model>=0.3.0
+pyjwt
+python-ioc>=1.5.0
+python-multipart
+
+[all]
+uvicorn
+
+[uvicorn]
+uvicorn
