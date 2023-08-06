@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+die_sec = 30
+
+try:
+    from fk.log import setup_logging
+
+    logger = setup_logging(__name__)
+    import datetime
+    import fk.utils
+    from fk.version import __version__ as version
+
+    logger.info(f"Batch version {version} starting...")
+
+except Exception as e:
+    import time
+    import sys
+
+    time.sleep(die_sec)
+    raise e
+    sys.exit(5)
+
+try:
+    import sys
+    from fk.config import EnvironmentConfig
+    from fk.batch.Server import Server
+    from fk.db.check import DatabaseCheck
+except:
+    delay = datetime.timedelta(seconds=die_sec)
+    logger.error(f"IMPORT FAILED - waiting {fk.utils.human_delta(delay)} before terminating", exc_info=True)
+    fk.utils.sleep(delay.total_seconds())
+    sys.exit(2)
+
+
+config = EnvironmentConfig()
+config.apply_config_file("config.json", True)
+config.apply_config_file("local_config.json", False)
+config.apply_config_file("secrets/local_config.json", False)
+config.apply_environment_variables()
+config.verify()
+config.attrify()
+logger.info(config)
+
+db = DatabaseCheck(config)
+if db.verify():
+    logger.info("DB OK")
+else:
+    delay = datetime.timedelta(seconds=die_sec)
+    logger.error(f"DB FAILED - waiting {fk.utils.human_delta(delay)} before terminating")
+    fk.utils.sleep(delay.total_seconds())
+    sys.exit(3)
+
+try:
+    # Make sure to completely free database resources before we start Flask to avoid nasty multi trheading/processing issues
+    del db
+    server = Server(config)
+    ok, message = server.verify()
+    if ok:
+        logger.info("BatchProcessor OK")
+    else:
+        logger.error(f"BatchProcessor failed with {message}")
+        raise Exception(f"Error while preparing batch processor: {message}")
+    server.run()
+
+except:
+    delay = datetime.timedelta(seconds=die_sec)
+    logger.error(f"MAIN FAILED - waiting {fk.utils.human_delta(delay)} before terminating", exc_info=True)
+    fk.utils.sleep(delay.total_seconds())
+    sys.exit(4)
