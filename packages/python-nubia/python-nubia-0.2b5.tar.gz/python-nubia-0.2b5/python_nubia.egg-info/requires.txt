@@ -1,0 +1,11 @@
+jellyfish
+prettytable
+prompt-toolkit>=2
+Pygments
+pyparsing>=2.2.0
+termcolor
+typing-inspect
+wcwidth
+
+[:python_version < "3.7"]
+dataclasses
