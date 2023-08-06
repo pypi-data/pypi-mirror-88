@@ -1,0 +1,28 @@
+.queued {
+    color: blue;
+}
+
+.running {
+    color: blue;
+}
+
+.done {
+    color: green;
+}
+
+.aborting {
+    color: blue;
+}
+
+.aborted {
+    color: orange;
+}
+
+.failed {
+    color: red;
+}
+
+.small-size {
+    font-size: .6em;
+    color: red;
+}
