@@ -1,0 +1,13 @@
+pydantic[email]>=1.0
+xmlschema>=1.2
+Pint>=0.15
+
+[autogen]
+isort>=5.0
+black
+autoflake
+numpydoc
+
+[test]
+pytest
+tox

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=3.4", "black", "isort>=5.0", "xmlschema", "autoflake", "numpydoc", "pydantic"]
+build-backend = "setuptools.build_meta"
+
+[tool.check-manifest]
+ignore = [
+    "*src/ome_types/model/*",
+    "mypy.ini",
+    "coverage.yml",
+    ".pre-commit-config.yaml",
+    "src/ome_autogen.py",
+    ".readthedocs.yml",
+    "src/ome_types/_version.py",  # added by setuptools_scm during build
+]
+
+
+[tool.isort]
+profile = "black"
+line_length = 88
+float_to_top = true
+skip_glob = ["*examples/*", "*vendored*"]
+
+[tool.black]
+target-version = ['py37', 'py38']
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | docs
+)/
+'''
