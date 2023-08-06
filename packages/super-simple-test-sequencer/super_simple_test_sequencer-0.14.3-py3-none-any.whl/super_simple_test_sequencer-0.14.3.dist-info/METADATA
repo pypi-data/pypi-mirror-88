@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: super-simple-test-sequencer
+Version: 0.14.3
+Summary: Super simple test sequencer for production testing
+Home-page: https://www.jotautomation.com
+Author: JOT Automation Ltd.
+Author-email: rami.rahikkala@jotautomation.com
+License: MIT License
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: PyYAML
+Requires-Dist: colorama
+Requires-Dist: coloredlogs
+Requires-Dist: gaiaclient
+Requires-Dist: json2html
+Requires-Dist: tornado
+Requires-Dist: wheel
+
+# Super Simple Test Sequencer
+
+## Install
+
+```
+pip install super-simple-test-sequencer
+```
+
+## Create new test sequence
+
+This command creates new empty/template test sequence to test_definitions/ directory.
+
+```
+super_simple_test_runner.py 
+```
+
+Modify the template at test_definitions/ to create your own sequence.
+
+## Run sequence
+
+```
+super_simple_test_runner.py 
+```
+
+
+# More information
+
+See video of the concept (in finnish):
+https://youtu.be/x7MCSb7BLW4
+
+
