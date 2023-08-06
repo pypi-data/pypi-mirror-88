@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: delfick_project
+Version: 0.7.7
+Summary: Common code I use in all my projects
+Home-page: https://github.com/delfick/delfick_project
+Author: Stephen Moore
+Author-email: delfick755@gmail.com
+License: MIT
+Description: Project helpers
+        ===============
+        
+        This is a collection of code that I use in nearly all my projects:
+        
+        * Mainline helper
+        * Custom python exception class
+        * Logging helpers
+        * Option merging
+        * Validation and Normalisation of data
+        * Module addon system
+        
+        Documentation can be found at https://delfick-project.readthedocs.io/en/latest/
+        
+Platform: UNKNOWN
+Requires-Python: >= 3.6
+Provides-Extra: tests
