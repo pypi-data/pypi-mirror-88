@@ -1,0 +1,3 @@
+
+class TekoJiraException(Exception):
+    pass
