@@ -1,0 +1,4 @@
+[console_scripts]
+build_stix = stix2generator.language.build_stix:main
+generate_stix = stix2generator.generation.generate_stix:main
+
