@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: DistilTag
+Version: 0.2.2
+Summary: UNKNOWN
+Home-page: https://github.com/lopentu/DistilTag
+Author: NTUGIL LOPE Lab
+Author-email: UNKNOWN
+License: GNU GPLv3
+Platform: UNKNOWN
+Requires-Dist: gdown
+Requires-Dist: torch (>=1.6)
+Requires-Dist: transformers (>=3.2)
+Requires-Dist: numpy
+
+DistilTag
+==========
+
+A Chinese segmentation and POS tagger based on DistilBert
+
