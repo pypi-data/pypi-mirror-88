@@ -1,0 +1,1 @@
+This package returns a random user agent out of 10,000 user agents. The user agents are stored in a csv file inside the package. The user can also specify their own user agent data. It must be a csv file with all the agents under header - user_agents
