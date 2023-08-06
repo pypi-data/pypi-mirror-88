@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: cci
+Version: 5.0.0
+Summary: Use the Clang + LLVM toolchain as an interpreter for C code.
+Home-page: https://github.com/duckinator/cci
+Author: Ellen Marie Dash
+Author-email: me@duckie.co
+License: MIT
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: ~=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: tests
+Requires-Dist: bork ; extra == 'tests'
+Requires-Dist: pytest ; extra == 'tests'
+Requires-Dist: pylint ; extra == 'tests'
+Requires-Dist: pytest-pylint ; extra == 'tests'
+Requires-Dist: pytest-mypy ; extra == 'tests'
+
+# cci
+
+cci wraps tools in the LLVM toolchain to allow you to compile and run C
+programs on-the-fly using a JIT compiler, instead of requiring a
+dedicated compilation phase.
+
+## Usage
+
+To use cci, you point the shebang line of a C file at it.
+
+That is sufficient to use it, but you can also specify more arguments
+to e.g. enforce stricter error checking by Clang.
+
+Due to limitations in how shebang lines work, when you use cci, you have
+to put arguments to Clang on the line immediately after the shebang line.
+
+To avoid ambiguity, that line must start with "// cci:".
+
+For example, save the following to "hello-world.c":
+
+    #!/usr/bin/env cci
+    // cci: -std=c11 -Wall -pedantic-errors
+    #include <stdio.h>
+    int main() {
+        printf("Hello, world!\n")
+        return 0;
+    }
+
+Now, mark it as executable (on *nix, `chmod +x hello-world.c`),
+then run `./hello-world.c`.
+
+## Debugging
+
+If you include the argument "-###" in the arguments, it will be
+passed through to Clang for debugging purposes.
+
+
