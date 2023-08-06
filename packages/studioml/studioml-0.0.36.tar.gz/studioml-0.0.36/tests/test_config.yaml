@@ -1,0 +1,40 @@
+## NOTE: to run unit tests in your environment,
+## please provide your own credentials for S3 and RMQ servers access!
+database:
+    type: s3
+    authentication: none
+    aws_access_key: *********
+    aws_secret_key: **************
+    bucket: test-database
+    endpoint: http://******************************/
+
+env:
+    AWS_DEFAULT_REGION: us-west-2
+
+server:
+    authentication: None
+
+storage:
+    type: s3
+    aws_access_key: *********
+    aws_secret_key: **************
+    bucket: test-storage
+    endpoint: http://******************************/
+
+log:
+    name: output.log
+
+saveWorkspaceFrequency: 1m #how often is workspace being saved (minutes)
+saveMetricsFrequency: 1m
+verbose: error
+
+cloud:
+    queue:
+        rmq: amqp://**********************************
+
+resources_needed:
+    cpus: 2
+    ram:  3g
+    hdd:  60g
+    gpus: 0
+
