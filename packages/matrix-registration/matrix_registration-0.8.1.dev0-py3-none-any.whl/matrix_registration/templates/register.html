@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width initial-scale=1.0" />
+  <meta property="og:title" content="{{ translations.server_registration }}">
+  <meta property="og:site_name" content="{{ server_name }}">
+  <meta property="og:type" content="website" />
+  <meta name="og:description" content="{{ translations.register_account }}"/>
+  <meta name="og:image" content="{{ url_for('static', filename='images/icon.png') }}" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/icon.png') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon32x32.png') }}" sizes="32x32">
+  <link rel="preload" as="image" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <meta name="msapplication-TileImage" content="{{ url_for('static', filename='images/tile.png') }}">
+  <meta name="msapplication-TileColor" content="#fff">
+  <title>{{ translations.server_registration }}</title>
+  <link rel="preload" as="font" href="{{ url_for('static', filename='fonts/Nunito_400_Nunito_700.woff2') }}" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" as="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    @font-face {
+      font-family: "Nunito";
+      src: local("Nunito"), url("{{ url_for('static', filename='fonts/Nunito_400_Nunito_700.woff2') }}");
+    }
+    body, .widget::before {
+      background-image: url("/static/images/valley.jpg");
+    }
+  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="blur">
+  <article class="widget register">
+    <div class="center">
+      <header>
+        <h1>{{ translations.server_registration }}</h1>
+        <p>{{ translations.requires_token }}<br>
+          {{ translations.requires_username_and_password }}</p>
+      </header>
+      <section>
+        <form id="registration" action="{{ base_url }}/register" method="post">
+          <div class="group">
+            <input id="username" name="username" type="text" placeholder=" " required
+              pattern="^@?[a-zA-Z_\-=\.\/0-9]+(:{{ server_name|replace('.', '\.') }})?$" required minlength="1"
+              maxlength="200">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label for="username">{{ translations.username }}</label>
+          </div>
+          <div class="group">
+            <input id="password" name="password" type="password" placeholder=" " required minlength="{{ pw_length }}"
+              maxlength="128">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label for="password">{{ translations.password }}</label>
+          </div>
+          <div class="group">
+            <input id="confirm_password" name="confirm" type="password" placeholder=" " required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label for="confirm_password">{{ translations.confirm }}</label>
+          </div>
+          <div class="group">
+            <input id="token" name="token" type="text" placeholder=" " required pattern="^([A-Z][a-z]+)+$">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label for="token">{{ translations.token }}</label>
+          </div>
+          <div class="btn-box">
+            <input class="btn btn-submit" type="submit" value="{{ translations.register }}">
+          </div>
+        </form>
+      </section>
+    </div>
+  </article>
+  <article id="success" class="widget modal hidden">
+    <div class="center">
+      <header>
+        <h2 id="welcome"></h2>
+      </header>
+      <section>
+        <p> {{ translations.click_to_login }}</p>
+        <h3><a href="{{ riot_instance }}"><img src="{{ url_for('static', filename='images/icon32x32.png') }}" height="100px"></a></h3>
+        <p>{{ translations.choose_client }} <a href="https://matrix.org/docs/projects/clients-matrix"
+            a>https://matrix.org/docs/projects/clients-matrix</a></p>
+      </section>
+    </div>
+  </article>
+  <article id="error" class="widget modal hidden">
+    <div class="center">
+      <header>
+        <h2>{{ translations.error }}</h2>
+      </header>
+      <section>
+        <p>{{ translations.error_long }}</p>
+        <h3 id="error_message" class="error"></h3>
+        <p id="error_dialog"></p>
+      </section>
+    </div>
+  </article>
+  <footer class="info">
+    <p>Cover photo by: <a href="https://www.flickr.com/golan" target="_blank">Jesús Roncero</a>,<br>
+      used under the terms of <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC-BY-SA
+        4.0</a>. No warranties are given.
+    </p>
+  </footer>
+
+  <script>
+    // all javascript here is optional, the registration form works fine without
+    /* 
+    What this script does:
+      - confirm password validator needs javascript, otherwise always valid as long as not empty
+      - set token with ?token query parameter
+      - set custom validity messages
+    */
+
+    // see https://stackoverflow.com/a/3028037
+    function hideOnClickOutside(element) {
+      const outsideClickListener = event => {
+        if (!element.contains(event.target) && isVisible(
+            element)) {
+          element.classList.add("hidden")
+          removeClickListener()
+        }
+      }
+
+      const removeClickListener = () => {
+        document.removeEventListener("click", outsideClickListener)
+      }
+      document.addEventListener("click", outsideClickListener)
+    }
+
+    const isVisible = elem => !!elem && !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length)
+
+    // set token input to "?token=" query parameter
+    const urlParams = new URLSearchParams(window.location.search)
+    document.getElementById("token").value = urlParams.get("token")
+
+    // set "?lang=" parameter to user lang
+    const userLang = navigator.language || navigator.userLanguage
+    if (!urlParams.has("lang")) { 
+      urlParams.append("lang", userLang)
+      window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
+    }
+
+    // html5 validators
+    var username = document.getElementById("username")
+    var password = document.getElementById("password")
+    var confirm_password = document.getElementById("confirm_password")
+    var token = document.getElementById("token")
+
+    username.addEventListener("input", function (event) {
+      if (username.validity.typeMismatch) {
+        username.setCustomValidity("{{ translations.username_format }}")
+      } else {
+        username.setCustomValidity("")
+      }
+    })
+
+    token.addEventListener("input", function (event) {
+      if (token.validity.typeMismatch) {
+        token.setCustomValidity("{{ translations.case_sensitive }}")
+      } else {
+        token.setCustomValidity("")
+      }
+    })
+
+    password.addEventListener("input", function (event) {
+      if (password.validity.typeMismatch) {
+        password.setCustomValidity('{{ translations.password_too_short }}')
+      } else {
+        password.setCustomValidity("")
+      }
+    })
+
+    function validatePassword() {
+      if (password.value != confirm_password.value) {
+        confirm_password.setCustomValidity("{{ translations.password_do_not_match }}")
+      } else {
+        confirm_password.setCustomValidity("")
+      }
+    }
+
+    password.onchange = validatePassword
+    confirm_password.onkeyup = validatePassword
+
+    function showError(message, dialog) {
+      document.getElementById("error_message").innerHTML = message
+      document.getElementById("error_dialog").innerHTML = dialog
+      let error = document.getElementById("error")
+      error.classList.remove("hidden")
+      hideOnClickOutside(error)
+    }
+
+    // hijack the submit button to display the json response in a neat modal
+    var form = document.getElementById("registration")
+
+    function sendData() {
+      let XHR = new XMLHttpRequest()
+
+      // Bind the FormData object and the form element
+      let FD = new FormData(form)
+
+      // Define what happens on successful data submission
+      XHR.addEventListener("load", function (event) {
+        console.log(XHR.responseText)
+        let response = JSON.parse(XHR.responseText)
+        try {
+          console.log(response)
+        } catch (e) {
+          if (e instanceof SyntaxError) {
+            showError("{{ translations.internal_error }}")
+            return
+          }
+        }
+        if ("errcode" in response) {
+          if (response["errcode"] == "MR_BAD_USER_REQUEST") {
+            if ("token" in response["error"]) {
+              showError(" {{ translations.token_error }} ", response["error"]["token"][0])
+            } else if ("password" in response["error"]) {
+              showError("{{ translations.password_error }}", response["error"]["password"][0])
+            } else if ("username" in response["error"]) {
+              showError("{{ translations.username_error }}", response["error"]["username"][0])
+            }
+            return
+          } else {
+            showError("{{ translations.homeserver_error }}", response["error"])
+          }
+        } else {
+          document.getElementById("welcome").innerHTML = "{{ translations.welcome }}"  + response['user_id']
+          document.getElementById("success").classList.remove("hidden")
+        }
+
+      })
+
+      // Define what happens in case of error
+      XHR.addEventListener("error", function (event) {
+        showError("{{ translations.internal_error }}")
+      })
+
+      // Set up our request
+      XHR.open("POST", "{{ base_url }}/register")
+
+      // The data sent is what the user provided in the form
+      XHR.send(FD)
+    }
+
+    // take over its submit event.
+    form.addEventListener("submit", function (event) {
+      event.preventDefault()
+
+      sendData()
+    })
+  </script>
+</body>
+
+</html>
