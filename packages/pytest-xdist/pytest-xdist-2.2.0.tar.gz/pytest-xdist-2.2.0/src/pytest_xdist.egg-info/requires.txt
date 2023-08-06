@@ -1,0 +1,9 @@
+execnet>=1.1
+pytest>=6.0.0
+pytest-forked
+
+[psutil]
+psutil>=3.0
+
+[testing]
+filelock
