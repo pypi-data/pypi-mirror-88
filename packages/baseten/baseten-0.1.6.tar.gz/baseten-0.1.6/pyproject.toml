@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "baseten"
+version = "0.1.6"
+description = ""
+authors = [
+    "Amir Haghighat <amir@baseten.co>",
+    "Phil Howes <phil@baseten.co>",
+    "Tuhin Srivastava <tuhin@baseten.co>",
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+click = ">=7.0"
+requests = ">=2.22"
+keyring = ">=19.2"
+joblib = ">=0.12.5"
+pandas = ">=0.25.1"
+jinja2 = ">=2.10.3"
+colorama = ">=0.4.3"
+coolname = ">=1.1.0"
+h5py = ">=2.10.0"
+pyyaml = ">=5.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.0"
+wheel = "^0.33.6"
+watchdog = "^0.9.0"
+flake8 = "^3.7"
+tox = "^3.14"
+coverage = "^4.5"
+ipdb = "^0.12.2"
+pandas = "^0.25.1"
+isort = "^4.3"
+responses = "^0.10.6"
+scikit-learn = "^0.22"
+pre-commit = "^1.20.0"
+matplotlib = "^3.1.2"
+yapf = "^0.29.0"
+tensorflow = "^2.3.0"
+
+[tool.poetry.scripts]
+baseten = 'baseten.cli:cli_group'
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"
