@@ -1,0 +1,20 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:meta="http://namespaces.zope.org/meta"
+    xmlns:plone="http://namespaces.plone.org/plone">
+
+    <!-- The feature "VisaplanBreadcrumbs" will be provided by version 1+.
+         You may provide an oldcrumbs module depending on VisaplanTentativeBreadcrumbs,
+         and a crumbs module depending on VisaplanBreadcrumbs
+      -->
+    <meta:provides feature="VisaplanTentativeBreadcrumbs" />
+    <adapter
+        for="*"
+        name="breadcrumbs"
+        provides=".adapter.IBreadcrumbs"
+        factory=".adapter.Adapter"  />
+    <include package="visaplan.plone.base" />
+    <include package="visaplan.plone.infohubs" />
+
+</configure>
