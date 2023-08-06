@@ -1,0 +1,30 @@
+Metadata-Version: 1.2
+Name: pulp-certguard
+Version: 1.1.0
+Summary: Certguard plugin for the Pulp Project
+Home-page: https://pulp-certguard.readthedocs.io/
+Author: Pulp Project Developers
+Author-email: pulp-list@redhat.com
+License: GPLv2+
+Description: pulp-certguard
+        ==============
+        
+        .. image:: https://travis-ci.com/pulp/pulp-certguard.svg?branch=master
+            :target: https://travis-ci.com/pulp/pulp-certguard
+        
+        A Pulp plugin that provides an X.509 capable ``ContentGuard`` for pulpcore. Instances of
+        ``X509CertGuard`` are useful for requiring clients to submit a certificate proving their entitlement
+        to content before receiving the content.
+        
+        For more information, please see the `documentation <https://pulp-certguard.readthedocs.io/en/
+        latest/>`_ or the `Pulp project page <https://pulpproject.org>`_.
+        
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Framework :: Django
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.6
