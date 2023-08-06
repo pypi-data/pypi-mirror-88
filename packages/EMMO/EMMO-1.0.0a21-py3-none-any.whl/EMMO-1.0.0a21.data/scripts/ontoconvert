@@ -1,0 +1,70 @@
+#!python
+"""Converts file format of input ontology and write it out output file(s).
+"""
+import os
+import argparse
+
+from rdflib.util import guess_format
+
+from emmo.utils import convert_imported, squash_imported
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        'input',
+        help='IRI/file to OWL source.')
+    parser.add_argument(
+        'output',
+        help='Output file name.')
+    parser.add_argument(
+        '--input-format', '-f',
+        help='Input format (default is to infer from input).  Available '
+        'formats: "xml" (rdf/xml), "n3", "nt", "trix", "rdfa"')
+    parser.add_argument(
+        '--output-format', '-F',
+        help='Output format (default is to infer from output.  Available '
+        'formats: "xml" (rdf/xml), "n3", "turtle", "nt", "pretty-xml", "trix"')
+    parser.add_argument(
+        '--recursive', '-r', action='store_true',
+        help='Whether to also convert imported ontologies recursively. '
+        'The output is written to a directory structure matching the input. '
+        'This requires Protege catalog files to be present.')
+    parser.add_argument(
+        '--squash', '-s', action='store_true',
+        help='Whether to also squash imported ontologies into a single output '
+        'file.')
+
+    args = parser.parse_args()
+
+    # Inferred default input and output file formats
+    if args.input_format:
+        input_format = args.input_format
+    else:
+        input_format = guess_format(args.input)
+
+    if args.output_format:
+        output_format = args.output_format
+    else:
+        output_format = guess_format(args.output)
+    if not output_format:
+        output_format = 'xml'
+
+    # Perform conversion
+    if args.recursive:
+        convert_imported(args.input, args.output,
+                         input_format=input_format,
+                         output_format=output_format)
+    elif args.squash:
+        squash_imported(args.input, args.output,
+                        input_format=input_format,
+                        output_format=output_format)
+    else:
+        g = Graph()
+        g.parse(args.input, format=input_format)
+        g.serialize(destination=args.output, format=output_format)
+
+
+
+if __name__ == '__main__':
+    main()
