@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: aprsd-slack-plugin
+Version: 1.0.0
+Summary: Amateur radio APRS daemon which listens for messages and responds
+Home-page: UNKNOWN
+Author: Walter A. Boring IV
+Author-email: something@somewhere.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Topic :: Communications :: Ham Radio
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/x-rst; charset=UTF-8
+Requires-Dist: aprsd (==1.0.0)
+Requires-Dist: certifi (==2020.12.5)
+Requires-Dist: chardet (==3.0.4)
+Requires-Dist: click-completion (==0.5.2)
+Requires-Dist: click (==7.1.2)
+Requires-Dist: flask (==1.1.2)
+Requires-Dist: idna (==2.10)
+Requires-Dist: imapclient (==2.1.0)
+Requires-Dist: itsdangerous (==1.1.0)
+Requires-Dist: jinja2 (==2.11.2)
+Requires-Dist: markupsafe (==1.1.1)
+Requires-Dist: pbr (==5.5.1)
+Requires-Dist: pluggy (==0.13.1)
+Requires-Dist: pyee (==7.0.4)
+Requires-Dist: pyyaml (==5.3.1)
+Requires-Dist: requests (==2.25.0)
+Requires-Dist: shellingham (==1.3.2)
+Requires-Dist: six (==1.15.0)
+Requires-Dist: slack-sdk (==3.1.0)
+Requires-Dist: slackeventsapi (==2.2.1)
+Requires-Dist: urllib3 (==1.26.2)
+Requires-Dist: werkzeug (==1.0.1)
+
+aprsd_slack_plugin
+==================
+
+.. image:: https://github.com/hemna/aprsd-slack-plugin/workflows/python/badge.svg
+    :target: https://github.com/hemna/aprsd-slack-plugin/actions
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://black.readthedocs.io/en/stable/
+
+.. image:: https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336
+    :target: https://timothycrosley.github.io/isort/
+
+This project is a python plugin for the APRSD server daemon written by 
+Craig Lamparter.   The plugin looks for location APRS commands from a ham
+radio, then reports that location to a slack channel.  This is basically a
+location proxy.
+
+Requirements
+------------
+
+Python 3.6+.
+APRSD - http://github.com/craigerl/aprsd
+
+.. note::
+
+    Because `Python 2.7 supports ended January 1, 2020 <https://pythonclock.org/>`_, new projects
+    should consider supporting Python 3 only, which is simpler than trying to support both.
+    As a result, support for Python 2.7 in this example project has been dropped.
+
+
+
