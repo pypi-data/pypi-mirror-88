@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: oebl-irs-workflow
+Version: 0.1.2
+Summary: Workflow module for the IRS extension of the APIS framework
+License: MIT
+Author: Matthias Schlögl
+Author-email: m.schloegl@gmail.com
+Requires-Python: >=3.6,<3.7
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Requires-Dist: Django (>=3.1.4,<4.0.0)
+Requires-Dist: apis-core (>=0.15.0,<0.16.0)
+Requires-Dist: djangorestframework (>=3.12.2,<4.0.0)
