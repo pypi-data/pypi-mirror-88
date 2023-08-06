@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: pdroot
+Version: 1.0.0
+Summary: utilities for working with ROOT files and pandas
+Home-page: https://github.com/aminnj/pdroot
+Author: Nick Amin
+Author-email: amin.nj@gmail.com
+License: BSD
+Download-URL: https://github.com/aminnj/pdroot/tarball/1.0.0
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 2.7
+Requires-Dist: numpy
+Requires-Dist: uproot3
+Requires-Dist: awkward0
+Requires-Dist: numba
+Requires-Dist: pandas
+Requires-Dist: yahist
+Requires-Dist: tqdm
+
+See github for fully rendered README
+
+
