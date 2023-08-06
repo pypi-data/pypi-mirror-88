@@ -1,0 +1,25 @@
+import requests
+
+
+def encode_url(full_url):
+    full_url = full_url.replace("%", "%25")
+    full_url = full_url.replace("!", "%21")
+    full_url = full_url.replace("*", "%2A")
+    full_url = full_url.replace("'", "%27")
+    full_url = full_url.replace("(", "%28")
+    full_url = full_url.replace(")", "%29")
+    full_url = full_url.replace(";", "%3B")
+    full_url = full_url.replace(":", "%3A")
+    full_url = full_url.replace("@", "%40")
+    full_url = full_url.replace("&", "%26")
+    full_url = full_url.replace("=", "%3D")
+    full_url = full_url.replace("+", "%2B")
+    full_url = full_url.replace("$", "%24")
+    full_url = full_url.replace(",", "%2C")
+    full_url = full_url.replace("/", "%2F")
+    full_url = full_url.replace("?", "%3F")
+    full_url = full_url.replace("#", "%23")
+    full_url = full_url.replace("[", "%5B")
+    full_url = full_url.replace("]", "%5D")
+    result = requests.get('https://helloacm.com/api/urlencode/?cached&s=' + full_url)
+    return result.json()
