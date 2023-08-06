@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: pytest-pointers
+Version: 0.2.5
+Summary: Pytest plugin to define functions you test with special marks for better navigation and reports
+Home-page: https://github.com/jaklimoff/pytest-pointers
+Keywords: plugin,pytest
+Author: Jack Klimov
+Author-email: jaklimoff@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: libcst (>=0.3.15,<0.4.0)
+Requires-Dist: rich (>=9.3.0,<10.0.0)
+Project-URL: Repository, https://github.com/jaklimoff/pytest-pointers
+Description-Content-Type: text/markdown
+
+## Pytest Plugin to show real test coverage
+
+### TLTR
+
+With this plugin you will be able to see all methods in project with the number of their tests
+
+![](https://jaklimoff-misc.s3.eu-central-1.amazonaws.com/pytest-pointers/example_output.jpg)
+
