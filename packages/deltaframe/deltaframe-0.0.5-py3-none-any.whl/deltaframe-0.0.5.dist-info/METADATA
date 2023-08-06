@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: deltaframe
+Version: 0.0.5
+Summary: A convenient way to manage to show and log the delta between two Pandas dataframes.
+Home-page: https://github.com/tkanngiesser/deltaframe/tree/master/
+Author: Tino Kanngiesser
+Author-email: tinokanngiesser@gmail.com
+License: Apache Software License 2.0
+Keywords: pandas,delta,log
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: pandas
+
+# deltaframe
+
+> A convenient way to manage to show and log the delta between two Pandas dataframes.
+
+
+## Install
+
+`pip install deltaframe`
+
+## How to use deltaframe
+
+Please see [here](https://tkanngiesser.github.io/deltaframe/)
+
+
+
+
+
