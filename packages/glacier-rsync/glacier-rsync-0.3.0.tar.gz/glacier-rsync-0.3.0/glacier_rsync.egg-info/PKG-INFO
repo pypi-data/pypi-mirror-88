@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: glacier-rsync
+Version: 0.3.0
+Summary: Rsync like utility for backing up files/folders to AWS Glacier
+Home-page: https://github.com/cagdasbas/glacier-rsync
+Author: Cagdas Bas
+Author-email: cagdasbs@gmail.com
+License: UNKNOWN
+Description: ### AWS Glacier Rsync Like Utility
+        Rsync like utility to backup files and folders to AWS Glacier.
+        Utility can compress files and store on glacier. Archive ids will be stored in an sqlite database. 
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: compression
