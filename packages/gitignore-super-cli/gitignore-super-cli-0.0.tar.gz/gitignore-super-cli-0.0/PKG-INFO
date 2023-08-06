@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: gitignore-super-cli
+Version: 0.0
+Summary: Create gitignore templates from your command line
+Home-page: https://github.com/gadhagod/gitignore-cli
+Author: Aarav Borthakur
+Author-email: gadhaguy13@gmail.com
+License: UNKNOWN
+Description: # Gitignore Super CLI
+        
+        Create gitignore templates from your command line!
+        
+        ## Installation
+        
+            pip3 install gitignore-super-cli
+        
+        ## Commands
+        
+        ---------------
+        
+        #### `new`
+        
+            Usage: ignore new [OPTIONS] LANGUAGE [DIRECTORY]
+        
+              Create a gitignore file with a template
+        
+            Options:
+              --help  Show this message and exit.
+        
+            Example:
+              ignore new python
+        
+        ---------------
+        
+        #### `show`
+        
+            Usage: ignore show [OPTIONS] LANGUAGE
+        
+              Display a sample gitignore file
+        
+            Options:
+              --help  Show this message and exit.
+        
+            Example:
+              ignore show python
+        
+        ---------------
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
