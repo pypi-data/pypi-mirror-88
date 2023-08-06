@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: pytestcenter
+Version: 3.1.1
+Summary: Python OO API package to automate Spirent TestCenter (STC) traffic generator
+Home-page: https://github.com/shmir/PyTestCenter/
+Author: Yoram Shamir
+Author-email: yoram@ignissoft.com
+License: Apache Software License
+Keywords: testcenter STC l2l3 test tool spirent automation
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Testing
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+Requires-Dist: future
+Requires-Dist: stcrestclient (==1.8.1)
+Requires-Dist: pytrafficgen (<=3.0.4,>3.0.3)
+
+
+## Python OO API for Spirent TestCenter (STC).
+
+### Functionality
+The current version supports the following test flow:
+
+- Load configuration -> Get/Set attributes -> Start/Stop traffic -> Get statistics.
+
+Supported operations:
+
+- Basic operations - get/set attributes, get/create children.
+- Connect - to chassis or lab server
+- Load configuration - load configuration (tcc or XML), reserve ports and analyze the configuration
+- Start/Stop - arp, ping, devices, ports, streams
+- Statistics - subscribe, read views, unsubscribe
+- Save configuration and results
+- Disconnect
+
+The package also support Add/Remove objects so it supports the following test case:
+
+- Build configuration -> Start/Stop traffic -> Get statistics.
+
+But this is less documented at this version.
+
+### Low level APIs
+
+- StcTclWrapper - a Python wrapper (using Python Tk package) over STC native Tcl API (SpirentTestCenter) .
+- StcPythonWrapper - a Python wrapper over STC native Python API (StcPython.py)
+- StcRestWrapper - a Python wrapper over STC lab server REST API (using stcrestclient package).
+
+### Installation
+pip instsll pytestcenter
+
+**Prerequisite**<br>
+TestCenter application installed for Tcl and Python APIs.<br>
+Lab/Rese server for REST API.
+
+### Getting started
+Under testcenter.test.stc_samples you will find some basic samples.
+See inside for more info.
+
+### Documentation
+http://pytestcenter.readthedocs.io/en/latest/
+
+### Contact
+Feel free to contact me with any question or feature request at yoram@ignissoft.com
+
+
