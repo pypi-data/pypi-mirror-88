@@ -1,0 +1,2 @@
+class MarginError(ValueError):
+    pass
