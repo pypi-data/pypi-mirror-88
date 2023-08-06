@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>pydms-config-server-manager</title>
+<!--    <link rel="stylesheet" href="/static/bootstrap.min.css"/>-->
+<!--    <link rel="stylesheet" href="/static/alertify.min.css"/>-->
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<!--    <script type="text/javascript" src="/static/popper.min.js"></script>-->
+<!--    <script type="text/javascript" src="/static/bootstrap.min.js"></script>-->
+<!--    <script type="text/javascript" src="/static/alertify.min.js"></script>-->
+<!--    <script type="text/javascript" src="/static/jquery.jgrowl.min.js"></script>-->
+<!--    <script type="text/javascript" src="/static/underscore.js"></script>-->
+<!--    <script type="text/javascript" src="/static/jsv.js"></script>-->
+<!--    <script type="text/javascript" src="/static/jsonform.js"></script>-->
+</head>
+<body>
+<div style="padding:30px">
+    <div>
+        {%for child in dirs%}
+        <div><a href="{{child}}/">{{child}}</a></div>
+        {% endfor %}
+        {%for child in files%}
+        <div><a href="{{child}}">{{child}}</a></div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
