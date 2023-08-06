@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: dnspx
+Version: 0.1.8
+Summary: DNS proxy query service tool
+Home-page: https://github.com/kuanghy/dnspx
+Author: Huoty
+Author-email: sudohuoty@163.com
+Maintainer: Huoty
+Maintainer-email: sudohuoty@163.com
+License: Apache License v2
+Keywords: dns,dnsproxy,dnspx,ns
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: Topic :: Internet :: Name Service (DNS)
+Classifier: Topic :: System :: Networking
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.6
+Requires-Dist: dnspython
+Requires-Dist: PyYAML
+Requires-Dist: cacheout
+Provides-Extra: socks
+Requires-Dist: pysocks ; extra == 'socks'
+
+
+**dnspx** is a DNS proxy query service tool. It provides a lightweight
+local DNS server, to accelerate the DNS, avoid pollution of DNS, and so on.
+
+
