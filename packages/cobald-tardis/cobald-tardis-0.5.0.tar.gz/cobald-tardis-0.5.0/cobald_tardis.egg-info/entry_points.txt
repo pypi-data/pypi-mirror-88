@@ -1,0 +1,10 @@
+[cobald.config.sections]
+tardis = tardis.configuration.configuration:Configuration
+
+[cobald.config.yaml_constructors]
+TardisPeriodicValue = tardis.utilities.simulators.periodicvalue:PeriodicValue
+TardisPoolFactory = tardis.resources.poolfactory:create_composite_pool
+TardisRandomGauss = tardis.utilities.simulators.randomgauss:RandomGauss
+TardisSSHExecutor = tardis.utilities.executors.sshexecutor:SSHExecutor
+TardisShellExecutor = tardis.utilities.executors.shellexecutor:ShellExecutor
+
