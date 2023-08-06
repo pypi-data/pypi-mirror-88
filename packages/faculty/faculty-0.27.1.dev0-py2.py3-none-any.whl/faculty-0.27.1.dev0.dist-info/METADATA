@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: faculty
+Version: 0.27.1.dev0
+Summary: Python library for interacting with the Faculty platform.
+Home-page: https://faculty.ai/products-services/platform/
+Author: Faculty
+Author-email: opensource@faculty.ai
+License: Apache Software License
+Platform: UNKNOWN
+Requires-Dist: requests
+Requires-Dist: pytz
+Requires-Dist: six
+Requires-Dist: attrs
+Requires-Dist: marshmallow-enum
+Requires-Dist: enum34 ; python_version < "3.4"
+Requires-Dist: marshmallow[reco] (==3.0.0rc3) ; python_version < "3.5"
+Requires-Dist: marshmallow ; python_version >= "3.5"
+
+faculty
+=======
+
+.. image:: https://github.com/facultyai/faculty/workflows/Tests/badge.svg
+    :target: https://github.com/facultyai/faculty/actions
+
+A Python library for interacting with
+`the Faculty platform <https://faculty.ai/products-services/platform/>`_.
+
+This project is licensed under the Apache License, Version 2.0, except for the
+vendored `marshmallow-oneofschema <https://github.com/marshmallow-code/marshmallow-oneofschema>`_,
+which is licensed under the MIT license (see ``faculty/_oneofschema.py`` for
+copyright and license detail).
+
+
