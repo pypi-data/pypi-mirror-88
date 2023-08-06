@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: endid
+Version: 0.0.3
+Summary: Command line utility to call the Endid.app Slack app
+Home-page: https://github.com/endid-app/endid-python
+Author: Dan Lester
+Author-email: support@endid.app
+License: UNKNOWN
+Description: # endid-python
+        
+        Command-line utility and Python client for calling the Endid Slack app to announce that a task has endid!
+        
+        ## Installation
+        
+        pip install endid
+        
+        ## Usage
+        
+        ### Command Line
+        
+        ```
+        endid -t 7c710a188f874520be1f7ab7815c6cd5
+        ```
+        
+        ```
+        python3 endid.py -t 7c710a188f874520be1f7ab7815c6cd5
+        ```
+        
+        ```
+        python2 endid.py -t 7c710a188f874520be1f7ab7815c6cd5 -m 'Here is a message'
+        ```
+        
+        ```
+        python -m endid.cmd -t 7c710a188f874520be1f7ab7815c6cd5
+        ```
+        
+        ### From Python code
+        
+        ```
+        import endid
+        endid.call(token='7c710a188f874520be1f7ab7815c6cd5')
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=2.7
+Description-Content-Type: text/markdown
