@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: numq
+Version: 1.0.1a2
+Summary: Numerical tools for quantum experiments.
+Home-page: https://github.com/we-taper/numq
+Author: Taper
+Author-email: h.chen.17@ucl.ac.uk
+License: GNU GPLv3
+Project-URL: Source Code, https://github.com/we-taper/numq
+Description: # Install
+        
+        
+        # Setup Cupy
+        
+        Prepare CUDA: `conda install -c anaconda cudatoolkit>=11.0`
+        
+        Depending on CUDA's version, install different packages. Example:
+        
+        CUDA v11.0: `pip install cupy-cuda110`.
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.6, <4
+Description-Content-Type: text/markdown
