@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: recviz
+Version: 0.0.4
+Summary: Simple visualization for recursive functions in Python.
+Home-page: https://github.com/arpitbbhayani/recviz
+Author: Arpit Bhayani
+Author-email: arpit.b.bhayani@gmail.com
+License: UNKNOWN
+Project-URL: Bug Reports, https://github.com/arpitbbhayani/recviz/issues
+Project-URL: Source, https://github.com/arpitbbhayani/recviz
+Description: recviz
+        ===
+        
+        Simple and easy visualization for recursive functions in Python.
+        
+        # Installing recviz
+        
+        ```sh
+        pip install recviz
+        ```
+        
+        # Usage
+        
+        ```py
+        from recviz import recviz
+        
+        
+        @recviz
+        def fib(n):
+          # base condition mimicking the first two numbers
+          # in the sequence
+          if n == 0: return 0
+          if n == 1: return 1
+        
+          # every number is summation of the previous two
+          return fib(n - 1) + fib(n - 2)
+        
+        fib(3)
+        ```
+        
+Keywords: function visualization,utility
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.5, <4
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Provides-Extra: test
