@@ -1,0 +1,26 @@
+/*******************************
+         Site Overrides
+*******************************/
+
+.ui.inverted.menu{
+  background: @brandColor;
+  border-radius: 0px;
+}
+
+.ui.vertical.menu .active.item {
+    background: @primaryColor;
+    pointer-events: none;
+}
+
+.ui.vertical.menu .item i.icon {
+    float: left;
+    margin-right: 0.5em;
+}
+
+.ui.menu .blue.active.item {
+    color: white !important;
+}
+
+.ui.vertical.menu .active.item:hover {
+    background-color: @primaryColor;
+}
