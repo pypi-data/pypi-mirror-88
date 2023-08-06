@@ -1,0 +1,1 @@
+This is a very simple package that allows the user to check whether a package name exists or not in Pypi repository.
