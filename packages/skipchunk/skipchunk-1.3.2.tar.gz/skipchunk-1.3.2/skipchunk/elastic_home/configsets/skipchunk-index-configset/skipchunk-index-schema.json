@@ -1,0 +1,93 @@
+{
+  "mappings": {
+   "dynamic_templates": [
+      {
+        "payloads": {
+          "match": "*_payloads",
+          "mapping": {
+            "type": "text",
+            "term_vector": "with_positions_payloads",
+            "analyzer": "text_en_payloads"
+          }
+        }
+      },
+      {
+        "strings": {
+          "match_mapping_type": "string",
+          "match": "*_s",
+          "mapping": {
+            "type": "keyword"
+          }
+        }
+      },
+      {
+        "texts": {
+          "match": "*_txt",
+          "mapping": {
+            "type": "text",
+            "analyzer": "text_en"
+          }
+        }
+      },
+      {
+        "berts": {
+          "match": "*_vector",
+          "mapping": {
+            "type": "dense_vector",
+            "dims": 768
+          }
+        }
+      },
+      { "pint":    {"match":"*_i" , "mapping": {"type":"integer"  }}},
+      { "plong":   {"match":"*_l" , "mapping": {"type":"long"     }}},
+      { "bool":    {"match":"*_b" , "mapping": {"type":"boolean"  }}},
+      { "pfloat":  {"match":"*_f" , "mapping": {"type":"float"    }}},
+      { "pdouble": {"match":"*_d" , "mapping": {"type":"double"   }}},
+      { "pdate":   {"match":"*_dt", "mapping": {"type":"date"     }}},
+      { "location":{"match":"*_p" , "mapping": {"type":"location" }}},
+      { "currency":{"match":"*_c" , "mapping": {"type":"currency" }}}
+    ],   
+    "properties": {
+       "createtime": {  "type":"date"},
+       "title":      {  "type":"text", "analyzer":"text_en" },
+       "content":    {  "type":"text", "analyzer":"text_en" }
+    }
+  },
+  "settings": {
+    "analysis": {
+      "filter": {
+        "english_stem": {
+          "type": "stemmer",
+          "language": "english"
+        }
+      },
+      "analyzer": {
+        "text_en": {
+          "type": "custom",
+          "char_filter": [
+            "html_strip"
+          ],
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "english_stem"
+          ]
+        },
+        "text_en_payloads": {
+          "type": "custom",
+          "char_filter": [
+            "html_strip"
+          ],
+          "tokenizer": "whitespace",
+          "filter": [
+            "lowercase",
+            "delimited_payload"
+          ]
+        }
+      }  
+    },
+    "index": {
+      "number_of_shards": 1
+    }
+  }
+}
