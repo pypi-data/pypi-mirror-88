@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: braincube-model-sdk
+Version: 0.1.3
+Summary: The Braincube Python Edge SDK
+Home-page: https://mybraincube.com
+Author: Braincube
+Author-email: contact@braincube.com
+License: MIT
+Platform: UNKNOWN
+Requires-Python: >3.6
+Description-Content-Type: text/markdown
+Requires-Dist: Flask-SocketIO (<5,>=4.3.2)
+Requires-Dist: requests (==2.24.0)
+
+
+# Braincube Model SDK
+
+This Python package aims to provide the skeletton of the Braincube Model Manager framework.
+
+This SDK provides the following classes and methods:
+
+- class `Handler`: this class is to be inherited by the user to get notified when a message arrives, and to be able to send messages back to the Edge computing platform.
+- function `run_sdk(handler)`: blocking function that your client should call at some point (earliest possible)
+- function `stop_sdk`: will ask the sdk to stop itself. Not normally needed but if you need to stop the client at some point (and restart it later), you can use that.
+
+
