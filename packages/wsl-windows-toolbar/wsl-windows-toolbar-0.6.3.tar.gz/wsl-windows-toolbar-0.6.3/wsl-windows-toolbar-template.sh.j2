@@ -1,0 +1,20 @@
+#!/bin/bash -i
+
+source {{rcfile}}
+
+{% if exec_dir is defined and exec_dir != "" %}
+
+cd "{{exec_dir}}"
+
+{% endif %}
+
+{% if run_in_terminal is defined and run_in_terminal == True %}
+
+{{command}}
+
+{% else %}
+
+{{command}} > /dev/null 2>&1 &
+disown
+
+{% endif %}
