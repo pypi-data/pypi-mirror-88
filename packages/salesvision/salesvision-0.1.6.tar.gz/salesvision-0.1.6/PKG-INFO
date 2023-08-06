@@ -1,0 +1,359 @@
+Metadata-Version: 2.1
+Name: salesvision
+Version: 0.1.6
+Summary: Salesvision provides accurate, reliable and scalable fashion image analysis
+Home-page: https://github.com/pypa/sampleproject
+Author: broutonlab
+Author-email: poltavsky@broutonlab.com
+License: UNKNOWN
+Description: 
+        # Salesvision API
+        
+        Salesvision API provides accurate, reliable and scalable fashion image analysis by endpoints. 
+        
+        It includes free public methods and python API client
+        
+        # Fashion analysis
+        
+        Fashion analysis includes recognition of items:
+        
+        - Category 
+        - Tags/attributes
+        - Mask 
+        - Color
+        
+        
+        ## Category detection
+        
+        The following solution will detect 27 categories:
+        
+        ![Classes](./images/categories.png)
+        
+        ## Tag/attribute recognition
+        
+        The solution will specify tags from 7 main categories and styles such as described below:
+        
+        ![Initial tags](./images/dataset_example.jpg)
+        
+        On the real world images will have such output for different fashion items:
+        
+        ![Tags](./images/items.png)
+        
+        
+        ## Color extraction
+        
+        Here is example of how color is been extracted from the fashion item mask covered area:
+        
+        ![Mask and color item](./images/clothes_2.png)
+        
+        
+        # Public methods
+        
+        ### Curl HTTP Request
+        
+        > Public endpoint for fashion analysis with time measurement
+        
+        ```shell
+        `IMG_URL=https%3A%2F%2Fis4.revolveassets.com%2Fimages%2Fp4%2Fn%2Fd%2FCAME-WD114_V1.jpg;
+        time curl -X GET "http://87.117.25.190:5015/fashion_analysis/?url=$IMG_URL"`
+        ```
+        
+        > From office local network 
+        
+        ```shell
+        `IMG_URL=https%3A%2F%2Fis4.revolveassets.com%2Fimages%2Fp4%2Fn%2Fd%2FCAME-WD114_V1.jpg;
+        time curl -X GET "http://192.168.0.125:5015/fashion_analysis/?url=$IMG_URL"`
+        ```
+        ## Try it yourself at: 
+        [office local network access link](http://192.168.0.125:5015/docs#/default/analysis_fashion_analysis__get)
+        
+        [global network access link](http://87.117.25.190:5015/docs#/default/analysis_fashion_analysis__get)
+        
+        Parameter | Default | Description
+        --------- | ------- | -----------
+        url | true | fashion image url.
+        
+        *The `json` output will contain result list where each object is a recognized fashion item*
+        
+        Each object will include: 
+        
+        - 1 of 27 fashion classes
+        - Tags description in 7 main categories
+        - Mask of the recognized item
+        - 5 main colors extracted from item mask covered area
+        - Color embedding which can be used later on with fashion item search by color
+        
+        
+        ## Visual analysis method 
+        
+        > The above command returns JSON structured like this:
+        
+        ```json
+        {
+          "result": [
+            {
+              "category": "pants",
+              "description": {
+                "tags": {
+                  "length": "maxi (length)",
+                  "nickname": "jeans",
+                  "opening type": "fly (opening)",
+                  "silhouette": "regular (fit)",
+                  "textile finishing, manufacturing techniques": "washed",
+                  "textile pattern": "plain (pattern)",
+                  "waistline": "low waist"
+                },
+                "colors": [
+                  "172839",
+                  ...
+                ]
+              },
+              "color_embedding": [
+                -0.45759817957878113,
+                ...
+              ]
+            },
+            {
+              "category": "top, t-shirt, sweatshirt",
+              "description": {
+                "tags": {
+                  "length": "above-the-hip (length)",
+                  "nickname": "classic (t-shirt)",
+                  "opening type": "no opening",
+                  "silhouette": "symmetrical",
+                  "textile finishing, manufacturing techniques": "printed",
+                  "textile pattern": "plain (pattern)",
+                  "waistline": "no waistline"
+                },
+                "colors": [
+                  "321d1a",
+                  ...
+                ]
+              },
+              "color_embedding": [
+                -0.5404209494590759,
+                ...
+              ]
+            },
+            {
+              "category": "shoe",
+              "description": {
+                "colors": [
+                  "161615",
+                  ...
+                ]
+              },
+              "color_embedding": [
+                -0.5041476488113403,
+                ...
+              ]
+            },
+            {
+              "category": "headband, head covering, hair accessory",
+              "description": {
+                "colors": [
+                  "35261b",
+                  ...
+                ]
+              },
+              "color_embedding": [
+                -0.5759932398796082,
+                ...
+              ]
+            }
+          ]
+        }
+        ```
+        
+        
+        That method allows us to check accuracy of given masks and bounding boxes recognition by the given image:
+        
+        ![Result of execution](./images/result.jpeg)
+        
+        ### Provided attributes for the recognized `"category": "pants"`:
+        
+        Attribute | Predicted tag
+        --------- | -------------
+        length | maxi
+        nickname | jeans
+        opening type | fly
+        silhouette | regular (fit)
+        textile finishing, manufacturing techniques | washed
+        textile pattern | plain
+        waistline | low waist
+        
+        
+        ## Try it yourself at: 
+        [office local network access link](http://192.168.0.125:5015/docs#/default/analysis_visual_fashion_analysis__get)
+        
+        [global network access link](http://192.168.0.125:5015/docs#/default/analysis_visual_fashion_analysis__get)
+        
+        
+        
+        
+        
+        
+        
+        # Client API
+        ## Setup
+        
+        You can easily setup our SDK with python 3.x language
+        
+        > Install pip package (under development)
+        
+        ```shell
+        
+        pip install salesvision
+        ```
+        
+        ## Authentication
+        
+        > Example of authentification process:
+        > will be replaced with fastapi oauth2
+        
+        ```python
+        from salesvision import Salesvision
+        
+        # connect to Salesvision module to work with its API
+        
+        api = Salesvision(api_url='https://salesvision.com/api', api_key='Your_API_key', secret)
+        
+        ```
+        
+        
+        > Make sure to replace `v` with your API key.
+        
+        Salesvision API will be probably using oAuth2 for authentification process
+        
+        `Authorization: Your_API_key`
+        
+        <aside class="notice">
+        You must replace <code>Your_API_key</code> with your personal API key.
+        </aside>
+        
+        
+        ## Fashion analysis
+        
+        ```python
+        from salesvision import Salesvision
+        
+        # connect to Salesvision module to work with its API
+        api = Salesvision(api_url='https://salesvision.com/api', api_key='Your_API_key', secret)
+        
+        
+        # image can be rather url or local stored file
+        results = api.fashion_analysis(image)
+        ```
+        
+        
+        > The above command returns JSON structured like this:
+        
+        ```json
+        {
+          "result": [
+            {
+              "category": "pants",
+              "description": {
+                "tags": {
+                  "length": "maxi (length)",
+                  "nickname": "jeans",
+                  "opening type": "fly (opening)",
+                  "silhouette": "regular (fit)",
+                  "textile finishing, manufacturing techniques": "washed",
+                  "textile pattern": "plain (pattern)",
+                  "waistline": "low waist"
+                },
+                "colors": [
+                  "172839",
+                  ...
+                ]
+              },
+              "color_embedding": [
+                -0.45759817957878113,
+                ...
+              ]
+            },
+            {
+              "category": "top, t-shirt, sweatshirt",
+              "description": {
+                "tags": {
+                  "length": "above-the-hip (length)",
+                  "nickname": "classic (t-shirt)",
+                  "opening type": "no opening",
+                  "silhouette": "symmetrical",
+                  "textile finishing, manufacturing techniques": "printed",
+                  "textile pattern": "plain (pattern)",
+                  "waistline": "no waistline"
+                },
+                "colors": [
+                  "321d1a",
+                  ...
+                ]
+              },
+              "color_embedding": [
+                -0.5404209494590759,
+                ...
+              ]
+            },
+            {
+              "category": "shoe",
+              "description": {
+                "colors": [
+                  "161615",
+                  ...
+                ]
+              },
+              "color_embedding": [
+                -0.5041476488113403,
+                ...
+              ]
+            },
+            {
+              "category": "headband, head covering, hair accessory",
+              "description": {
+                "colors": [
+                  "35261b",
+                  ...
+                ]
+              },
+              "color_embedding": [
+                -0.5759932398796082,
+                ...
+              ]
+            }
+          ]
+        }
+        ```
+        
+        Under the hood POST request is used
+        
+        ### Query Parameters
+        
+        Parameter | Default | Description
+        --------- | ------- | -----------
+        file:  | false | file in binary format.
+        
+        *The output of this method will contain result list where each object is a recognized fashion item*
+        
+        Each object will include: 
+        
+        - 1 of 27 fashion classes
+        - Tags description in 7 main categories
+        - Mask of the recognized item
+        - 5 main colors extracted from item mask covered area
+        - Color embedding which can be used later on with fashion item search by color
+        
+        
+        <aside class="success">
+            This method used with client API handles image file paths and urls
+        </aside>
+        
+        
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
