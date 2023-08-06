@@ -1,0 +1,6 @@
+define ([
+    'require'
+
+], function( requirejs) {
+
+});

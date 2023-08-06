@@ -1,0 +1,81 @@
+<div class="vp-option-page" id="vp_optImport">
+
+    <style>
+        /* 화살표 접이박스 */
+        #vp-wrapper .vp-option-page .vp-accordion-header {
+            font-weight: bold;
+        }
+        #vp-wrapper .vp-option-page .vp-arrow-right,
+        #vp-wrapper .vp-option-page .vp-arrow-down {
+            background-repeat: no-repeat;
+        }
+        #vp-wrapper .vp-option-page .vp-spread {
+            min-height: 100px;
+        }
+        #vp-wrapper .vp-option-page .vp-minimize {
+            height: 25px;
+            overflow: hidden;
+        }
+        #vp-wrapper .vp-common-block {
+            border-bottom: 1px solid darkgray;
+        }
+
+        /* Prefix & Postfix TextArea */
+        #vp-wrapper #vp_prefixBox textarea,
+        #vp-wrapper #vp_postfixBox textarea {
+            outline: none;
+            resize: none;
+            overflow: auto;
+        }
+
+        /* empty required input */
+        #vp-wrapper #vp_userOption input[type="text"]:invalid{
+            border: 1px solid #c22;
+        }
+        #vp-wrapper #vp_userOption input[type="text"]:valid,
+        #vp-wrapper #vp_userOption input[type="text"]:focus {
+            border: default;
+        }
+
+        /* import library table style */
+        .vp-add-library {
+            width: 95%;
+        }
+    </style>
+
+    <!-- Import 기능 -->
+    <h4><span class="vp-multilang" data-caption-id="funcNavi"> Common > <strong>Import</strong></span></h4>
+    <hr>
+    <form id="vp_optionForm">
+        <div class="vp-accordion-container vp-accordion-gray-color">
+            <div class="vp-accordion-header"><span class="vp-accordion-indicator"></span><span class="vp-accordion-caption" data-caption-id="TODO:Variable">Prefix Code</span></div>
+            <div id="vp_prefixBox" class="vp-accordion-content">
+                <textarea id="vp_prefixCodeArea" rows="3" cols="60"></textarea>
+            </div>
+        </div>
+        <div class="vp-accordion-container vp-accordion-open">
+            <div class="vp-accordion-header"><span class="vp-accordion-indicator"></span><span class="vp-accordion-caption" data-caption-id="TODO:Variable">Required Input & Output</span></div>
+            <div id="vp_userOption" class="vp-list-container vp-accordion-content">
+                <table  id="vp_tblImport" class="vp-tbl-basic w90" style="min-width: 250px; max-width: 450px;">
+                    <colgroup><col width="10%"/><col width="*"/><col width="5%"/><col width="30%"/><col width="8%"/></colgroup>
+                    <tr>
+                        <th></th>
+                        <th>Library</th>
+                        <th></th>
+                        <th>Alias</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td colspan="5"><input type="button" id="vp_addLibrary" value="Add Library" style="width:100%;"/></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="vp-accordion-container vp-accordion-gray-color">
+            <div class="vp-accordion-header"><span class="vp-accordion-indicator"></span><span class="vp-accordion-caption" data-caption-id="TODO:Variable">Postfix Code</span></div>
+            <div id="vp_postfixBox" class="vp-accordion-content">
+                <textarea id="vp_postfixCodeArea" rows="3" cols="60"></textarea>
+            </div>
+        </div>
+    </form>
+</div>

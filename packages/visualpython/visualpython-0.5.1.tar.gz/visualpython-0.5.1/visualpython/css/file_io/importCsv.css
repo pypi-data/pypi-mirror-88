@@ -1,0 +1,49 @@
+.vp-openFileNavigation-btn {
+    margin: 30px auto; 
+
+    width: 100%;
+    min-width: 50px;
+
+    margin: 8px 0;
+    position: relative;
+    display: block;
+    font-size: 12px;
+    overflow: hidden;
+    border-width: 0;
+    outline: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+    color: #ecf0f1;
+    transition: background-color .3s;
+}
+
+.vp-openFileNavigation-btn.black {
+    background-color: #525252;
+}
+
+.vp-openFileNavigation-btn span {
+    display: block;
+    padding: 4px;
+}
+
+.vp-numpy-block {
+    padding: 5px;
+    border-bottom: 1px solid darkgray;
+}
+
+/* // */
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
