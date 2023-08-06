@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: suzieq
+Version: 0.8.0
+Summary: 
+Author: Dinesh G Dutt
+Requires-Python: >=3.7,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: PyYAML
+Requires-Dist: aiofiles
+Requires-Dist: aiohttp (==3.6.2)
+Requires-Dist: async-timeout
+Requires-Dist: asyncssh
+Requires-Dist: dateparser (>=1.0.0,<2.0.0)
+Requires-Dist: faker (>=4.1.1,<5.0.0)
+Requires-Dist: fastapi (>=0.61.1,<0.62.0)
+Requires-Dist: graphviz (>=0.15,<0.16)
+Requires-Dist: jsonpath-ng (>=1.5.1,<2.0.0)
+Requires-Dist: matplotlib (>=3.2.2,<4.0.0)
+Requires-Dist: netconan (>=0.11.2,<0.12.0)
+Requires-Dist: networkx (>=2.4,<3.0)
+Requires-Dist: pandas (==1.1.4)
+Requires-Dist: prompt-toolkit (>2)
+Requires-Dist: pyarrow
+Requires-Dist: python-nubia (==0.2b5)
+Requires-Dist: streamlit (>=0.72.0,<0.73.0)
+Requires-Dist: tabulate (>=0.8.7,<0.9.0)
+Requires-Dist: textfsm
+Requires-Dist: uvicorn (>=0.11.8,<0.12.0)
+Requires-Dist: uvloop
