@@ -1,0 +1,449 @@
+#!python
+
+"""
+loads models computed using scrinet_fit
+
+used with 7d co-prec
+
+example
+
+scrinet_evaluate_coprec_model -v --amp-basis rb/amp/amp_eim_basis.npy  --amp-model-dir ts/amp/fits --phase-basis rb/phase/phase_eim_basis.npy  --phase-model-dir ts/phase/fits --alpha-basis rb/alpha/alpha_eim_basis.npy --alpha-model-dir ts/alpha/fits --beta-basis rb/beta/beta_eim_basis.npy --beta-model-dir ts/beta/fits --gamma-basis rb/gamma/gamma_eim_basis.npy --gamma-model-dir ts/gamma/fits --wf-dir train_wf_data
+
+"""
+
+from scrinet.results import results
+from scrinet.workflow import generators
+from scrinet.interfaces import rotations
+from scrinet.workflow.pipe_utils import init_logger, load_data, load_model, coprec_wave_sur_many, match
+import phenom
+import tensorflow as tf
+import h5py
+import pathlib
+import time
+import tqdm
+import argparse
+import numpy as np
+import os
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.rcParams.update({'font.size': 16})
+
+
+def find_nearest_idx(a, a0):
+    """
+    Find closest index in array 'a' to point 'a0'
+    https://stackoverflow.com/a/10465997/12840171
+    """
+    idx = np.abs(a - a0).argmin()
+    return idx
+
+
+def plot_waveform(times, h1, h2, filename):
+    fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(14, 4))
+    ax1.plot(times, h1, label='data')
+    ax1.plot(times, h2, label='sur', ls='--')
+
+    ax2.plot(times, h1, label='data')
+    ax2.plot(times, h2, label='sur', ls='--')
+    ax2.set_xlim(-500, 100)
+
+    ax1.legend()
+    fig.savefig(filename)
+    plt.close()
+
+
+def plot_corner(wf_ts_coords, matches, max_match, outname):
+    r1, theta1, phi1 = generators.cart_to_polar(
+        wf_ts_coords[:, 1], wf_ts_coords[:, 2], wf_ts_coords[:, 3])
+    r2, theta2, phi2 = generators.cart_to_polar(
+        wf_ts_coords[:, 4], wf_ts_coords[:, 5], wf_ts_coords[:, 6])
+    parameters = ['q', 'chi1x', 'chi1y', 'chi1z', 'chi1', 'theta1', 'phi1',
+                  'ctheta1', 'chi2x', 'chi2y', 'chi2z', 'chi2', 'theta2', 'phi2', 'ctheta2']
+    mask = matches <= max_match
+    samples = np.recarray(len(wf_ts_coords[mask]), dtype=[
+                          (p, float) for p in parameters])
+    samples['q'] = wf_ts_coords[mask, 0]
+    samples['chi1x'] = wf_ts_coords[mask, 1]
+    samples['chi1y'] = wf_ts_coords[mask, 2]
+    samples['chi1z'] = wf_ts_coords[mask, 3]
+    samples['chi2x'] = wf_ts_coords[mask, 4]
+    samples['chi2y'] = wf_ts_coords[mask, 5]
+    samples['chi2z'] = wf_ts_coords[mask, 6]
+
+    samples['chi1'] = r1[mask]
+    samples['theta1'] = theta1[mask]
+    samples['phi1'] = phi1[mask]
+    samples['ctheta1'] = np.cos(theta1[mask])
+
+    samples['chi2'] = r2[mask]
+    samples['theta2'] = theta2[mask]
+    samples['phi2'] = phi2[mask]
+    samples['ctheta2'] = np.cos(theta2[mask])
+
+    zvals = matches[mask]
+
+    # parameters = ['q', 'chi', 'theta', 'ctheta']
+    pars_to_show = ['q', 'chi1', 'ctheta1', 'phi1', 'chi2', 'ctheta2', 'phi2']
+    labels = {'q': r'q', 'chi1': r'$\chi_1$',
+              'ctheta1': r'$\cos(\theta_1)$',
+              'phi1': r'$\phi_1$', 'chi2': r'$\chi_2$',
+              'ctheta2': r'$\cos(\theta_2)$', 'phi2': r'$\phi_2$'}
+    mins = {'q': 0.99*np.min(samples['q']), 'chi1': 0.99 *
+            np.min(samples['chi1']), 'ctheta1': -1, 'phi1': 0,
+            'chi2': 0.99 * np.min(samples['chi2']), 'ctheta2': -1, 'phi2': 0}
+
+    maxs = {'q': 1.01*np.max(samples['q']), 'chi1': 1.01 *
+            np.max(samples['chi1']), 'ctheta1': 1, 'phi1': 2*np.pi,
+            'chi2': 1.01 * np.max(samples['chi2']), 'ctheta2': 1, 'phi2': 2*np.pi}
+
+    fig, axes_dict = results.create_multidim_plot(
+        pars_to_show,
+        samples,
+        zvals=zvals,
+        show_colorbar=True,
+        labels=labels,
+        mins=mins,
+        maxs=maxs,
+        cbar_label='match',
+        cb_scale=14)
+    fig.suptitle(f'matches <= {max_match:.4f}')
+    fig.tight_layout()
+    fig.savefig(outname)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument("--output-dir", type=str, default='evaluate',
+                        help="directory to save data")
+    parser.add_argument("--wf-dir", type=str, required=True,
+                        help="directory of waveform data")
+    parser.add_argument("--num-per-chunk", type=int, default=100,
+                        help="number of waveforms to load at a time")
+
+    parser.add_argument("--amp-basis", type=str,
+                        help="path to amp basis")
+    parser.add_argument("--amp-model-dir", type=str,
+                        help="dir of amp model weights and scalers")
+    parser.add_argument("--phase-basis", type=str,
+                        help="path to phase basis")
+    parser.add_argument("--phase-model-dir", type=str,
+                        help="dir of phase model weights and scalers")
+
+    parser.add_argument("--alpha-basis", type=str,
+                        help="path to alpha basis")
+    parser.add_argument("--alpha-model-dir", type=str,
+                        help="dir of alpha model weights and scalers")
+
+    parser.add_argument("--beta-basis", type=str,
+                        help="path to beta basis")
+    parser.add_argument("--beta-model-dir", type=str,
+                        help="dir of beta model weights and scalers")
+
+    parser.add_argument("--gamma-basis", type=str,
+                        help="path to gamma basis")
+    parser.add_argument("--gamma-model-dir", type=str,
+                        help="dir of gamma model weights and scalers")
+
+    parser.add_argument("-v", "--verbose", help="increase output verbosity",
+                        action="store_true")
+
+    args = parser.parse_args()
+
+    logger = init_logger()
+
+    if args.verbose:
+        logger.info(f"current file: {__file__}")
+        logger.info("verbosity turned on")
+
+        logger.info(f"amp basis: {args.amp_basis}")
+        logger.info(f"amp model dir: {args.amp_model_dir}")
+        logger.info(f"phase basis: {args.phase_basis}")
+        logger.info(f"phase model dir: {args.phase_model_dir}")
+
+        logger.info(f"alpha basis: {args.alpha_basis}")
+        logger.info(f"alpha model dir: {args.alpha_model_dir}")
+        logger.info(f"beta basis: {args.beta_basis}")
+        logger.info(f"beta model dir: {args.beta_model_dir}")
+        logger.info(f"gamma basis: {args.gamma_basis}")
+        logger.info(f"gamma model dir: {args.gamma_model_dir}")
+
+    sub_dir = pathlib.PurePath(args.wf_dir).name
+    output_data_dir = os.path.join(args.output_dir, sub_dir)
+
+    if args.verbose:
+        logger.info("making outdir tree")
+        logger.info(f"making dir: {output_data_dir}")
+    os.makedirs(f"{output_data_dir}", exist_ok=True)
+
+    # specify number of threads to use for tensorflow
+    tf.config.threading.set_inter_op_parallelism_threads(1)
+    tf.config.threading.set_intra_op_parallelism_threads(1)
+    os.environ['OMP_NUM_THREADS'] = str(1)
+    if args.verbose:
+        logger.info(
+            f"tf using {tf.config.threading.get_inter_op_parallelism_threads()} inter_op_parallelism_threads thread(s)")
+        logger.info(
+            f"tf using {tf.config.threading.get_intra_op_parallelism_threads()} intra_op_parallelism_threads thread(s)")
+        logger.info("OMP_NUM_THREADS: 1")
+
+    if args.verbose:
+        logger.info(f"loading amp model")
+
+    amp_model, amp_basis = load_model(
+        basis_file=args.amp_basis,
+        nn_weights_file=os.path.join(args.amp_model_dir, "best.h5"),
+        X_scalers_file=os.path.join(args.amp_model_dir, "X_scalers.npy"),
+        Y_scalers_file=os.path.join(args.amp_model_dir, "Y_scalers.npy"))
+
+    if args.verbose:
+        logger.info(f"loading phase model")
+
+    phase_model, phase_basis = load_model(
+        basis_file=args.phase_basis,
+        nn_weights_file=os.path.join(args.phase_model_dir, "best.h5"),
+        X_scalers_file=os.path.join(args.phase_model_dir, "X_scalers.npy"),
+        Y_scalers_file=os.path.join(args.phase_model_dir, "Y_scalers.npy"))
+
+    if args.verbose:
+        logger.info(f"loading alpha model")
+
+    alpha_model, alpha_basis = load_model(
+        basis_file=args.alpha_basis,
+        nn_weights_file=os.path.join(args.alpha_model_dir, "best.h5"),
+        X_scalers_file=os.path.join(args.alpha_model_dir, "X_scalers.npy"),
+        Y_scalers_file=os.path.join(args.alpha_model_dir, "Y_scalers.npy"))
+
+    if args.verbose:
+        logger.info(f"loading beta model")
+
+    beta_model, beta_basis = load_model(
+        basis_file=args.beta_basis,
+        nn_weights_file=os.path.join(args.beta_model_dir, "best.h5"),
+        X_scalers_file=os.path.join(args.beta_model_dir, "X_scalers.npy"),
+        Y_scalers_file=os.path.join(args.beta_model_dir, "Y_scalers.npy"))
+
+    if args.verbose:
+        logger.info(f"loading gamma model")
+
+    gamma_model, gamma_basis = load_model(
+        basis_file=args.gamma_basis,
+        nn_weights_file=os.path.join(args.gamma_model_dir, "best.h5"),
+        X_scalers_file=os.path.join(args.gamma_model_dir, "X_scalers.npy"),
+        Y_scalers_file=os.path.join(args.gamma_model_dir, "Y_scalers.npy"))
+
+    if args.verbose:
+        logger.info(f"loading wf data from {args.wf_dir}")
+
+    all_matches = []
+    all_coords = []
+    # all_wf_ts_h22 = []
+    # all_sur_hp = []
+
+    # load coords to get number of times to loop
+    with h5py.File(os.path.join(args.wf_dir, 'coords.h5'), 'r') as f:
+        num = f['data'].shape[0]
+
+    num_per_chunk = args.num_per_chunk
+    if args.verbose:
+        logger.info(f"num_per_chunk: {args.num_per_chunk}")
+    if args.num_per_chunk >= num:
+        num_per_chunk = num  # just in case we have fewer than 100 cases
+        if args.verbose:
+            logger.info(
+                f"args.num_per_chunk ({args.num_per_chunk}) >= num ({num})")
+            logger.info("setting num_per_chunk to num")
+    num_chunks = int(num / num_per_chunk)
+    splits = np.array_split(range(num), num_chunks)
+    start_end = []  # contains indicies of the start and end of the chunk
+    # ensure we don't miss any points due to indexing and missing one each time
+    for i in range(len(splits)):
+        if i == 0:
+            start_end.append([splits[i][0], splits[i][-1]])
+        else:
+            start_end.append([splits[i-1][-1], splits[i][-1]])
+
+    for i in range(len(start_end)):
+        start_index = start_end[i][0]
+        end_index = start_end[i][1]
+        if args.verbose:
+            logger.info(f"{i} / {num_chunks - 1}")
+            logger.info(f"start_index: {start_index}, end_index: {end_index}")
+
+        if args.verbose:
+            logger.info("loading data")
+        wf_x, wf_ts_amp, wf_ts_coords = load_data(
+            data_to_model="amp", dir_name=args.wf_dir,
+            start_index=start_index, end_index=end_index)
+        _, wf_ts_phase, _ = load_data(
+            data_to_model="phase", dir_name=args.wf_dir,
+            start_index=start_index, end_index=end_index)
+        _, wf_ts_alpha, _ = load_data(
+            data_to_model="alpha", dir_name=args.wf_dir,
+            start_index=start_index, end_index=end_index)
+        _, wf_ts_beta, _ = load_data(
+            data_to_model="beta", dir_name=args.wf_dir,
+            start_index=start_index, end_index=end_index)
+        _, wf_ts_gamma, _ = load_data(
+            data_to_model="gamma", dir_name=args.wf_dir,
+            start_index=start_index, end_index=end_index)
+
+        q, chi1x, chi1y, chi1z, chi2x, chi2y, chi2z = wf_ts_coords.T
+        m1, m2 = phenom.m1_m2_M_q(M=60, q=q)
+        fref = 10
+        thetaJN = []
+        alpha0 = []
+        phi0 = []
+        for i in range(len(m1)):
+            t1, t2, t3 = rotations.compute_L_to_J_angles(m1[i], m2[i], fref,
+                                                         0, 0,
+                                                         chi1x[i], chi1y[i], chi1z[i],
+                                                         chi2x[i], chi2y[i], chi2z[i]
+                                                         )
+            thetaJN.append(t1)
+            alpha0.append(t2)
+            phi0.append(t3)
+        thetaJN = np.array(thetaJN)
+        alpha0 = np.array(alpha0)
+        phi0 = np.array(phi0)
+
+        wf_ts_h22 = np.zeros(shape=wf_ts_amp.shape, dtype=np.complex128)
+
+        N, M = wf_ts_amp.shape
+
+        hlms = []
+        for i in range(N):
+            modes_dict = {
+                (2, 2): wf_ts_amp[i]*np.exp(1.j*wf_ts_phase[i]),
+                (2, 1): np.zeros(M),
+                (2, 0): np.zeros(M),
+                (2, -1): np.zeros(M),
+                (2, -2): wf_ts_amp[i]*np.exp(-1.j*wf_ts_phase[i])
+            }
+            hlms.append(modes_dict)
+
+        for i in range(wf_ts_h22.shape[0]):
+            wr = rotations.WaveformRotations(
+                wf_x, hlms[i], frame='coprec', alpha=wf_ts_alpha[i], beta=wf_ts_beta[i], gamma=wf_ts_gamma[i])
+            wr.set_alpha0_thetaJN_phi0(alpha0[i], thetaJN[i], phi0[i])
+            wr.from_coprecessing_frame_to_inertial_frame()
+            wf_ts_h22[i] = wr.hlms[(2, 2)]
+
+        qs = wf_ts_coords[:, 0]
+        if wf_ts_coords.shape[1] == 2:
+            chis = wf_ts_coords[:, 1]
+        # chi1xs = wf_ts_coords[:,1]
+        # chi1zs = wf_ts_coords[:,2]
+        total_number_wfs = len(qs)
+
+        if args.verbose:
+            logger.info(f"total number of waveforms: {total_number_wfs}")
+            logger.info("generating surrogate data")
+
+        t1 = time.time()
+        sur_hp, sur_hc = coprec_wave_sur_many(wf_ts_coords, wf_x, alpha0, thetaJN, phi0,
+                                              amp_model, amp_basis,
+                                              phase_model, phase_basis,
+                                              alpha_model, alpha_basis,
+                                              beta_model, beta_basis,
+                                              gamma_model, gamma_basis)
+        t2 = time.time()
+        dt_sur = t2-t1
+
+        if args.verbose:
+            logger.info(f"time taken (surrogate) = {dt_sur:.5f} s")
+            logger.info(
+                f"time per waveform (surrogate) = {dt_sur/total_number_wfs:.5f} s")
+
+        if args.verbose:
+            logger.info("computing matches")
+        matches = np.zeros(len(qs))
+        for i in tqdm.tqdm(range(len(qs))):
+            vs_h = wf_ts_h22[i]
+            vs_hp = np.real(vs_h)
+            # vs_hc = np.imag(vs_h)
+
+            maxmatch = np.max(np.abs(match(vs_hp, sur_hp[i], wf_x)))
+
+            matches[i] = maxmatch
+
+        all_matches.append(matches)
+        all_coords.append(wf_ts_coords)
+        # all_wf_ts_h22.append(wf_ts_h22)
+        # all_sur_hp.append(sur_hp)
+
+    matches = np.concatenate((np.array(all_matches)))
+    wf_ts_coords = np.row_stack((np.array(all_coords)))
+
+    # wf_ts_h22 = np.row_stack((np.array(all_wf_ts_h22)))
+    # sur_hp = np.row_stack((np.array(all_sur_hp)))
+
+    worst_idx = np.argmin(matches)
+
+    if args.verbose:
+        logger.info(f"worst match: {np.min(matches):.7f}")
+        logger.info(f"best match : {np.max(matches):.7f}")
+        logger.info(f"median match : {np.median(matches):.7f}")
+        logger.info(f"st. dev match : {np.std(matches):.7f}")
+
+    if args.verbose:
+        best_idx = np.argmax(matches)
+        best_coords = wf_ts_coords[best_idx]
+        logger.info(f"best coords: {best_coords}")
+
+        worst_coords = wf_ts_coords[worst_idx]
+        logger.info(f"worst coords: {worst_coords}")
+
+    result_file = os.path.join(output_data_dir, "matches.h5")
+    if args.verbose:
+        logger.info(f"saving matches: {result_file}")
+    with h5py.File(result_file, "w") as f:
+        f.create_dataset("coords", data=wf_ts_coords)
+        f.create_dataset("data", data=matches)
+
+    if args.verbose:
+        logger.info("plotting...")
+
+    # plot some waveforms to see what they look like
+    # if args.verbose:
+    #     logger.info("plotting best match waveform")
+    # filename = os.path.join(output_data_dir, "best_match.png")
+    # best_idx = np.argmax(matches)
+    # plot_waveform(wf_x, np.real(wf_ts_h22[best_idx]), sur_hp[best_idx], filename)
+
+    # if args.verbose:
+    #     logger.info("plotting worst match waveform")
+    # filename = os.path.join(output_data_dir, "worst_match.png")
+    # plot_waveform(wf_x, np.real(wf_ts_h22[worst_idx]), sur_hp[worst_idx], filename)
+
+    # if args.verbose:
+    #     logger.info("plotting median match waveform")
+    # filename = os.path.join(output_data_dir, "median_match.png")
+    # median_idx = find_nearest_idx(matches, np.median(matches))
+    # plot_waveform(wf_x, np.real(wf_ts_h22[median_idx]), sur_hp[median_idx], filename)
+
+    plt.figure()
+    plt.scatter(range(len(matches)), 1-matches)
+    plt.axhline(1e-2, ls='--', c='k')
+    plt.axhline(1e-3, ls='--', c='k')
+    plt.yscale('log')
+    plt.ylim(1e-9)
+    plt.xlabel("case")
+    plt.ylabel("mismatch")
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_data_dir, "1d-matches-vs-model.png"))
+    plt.close()
+
+    if args.verbose:
+        logger.info("plotting corner1.png")
+    max_match = np.percentile(matches, 1)
+    plot_corner(wf_ts_coords, matches, max_match=max_match,
+                outname=os.path.join(output_data_dir, "corner1.png"))
+    if args.verbose:
+        logger.info("plotting corner2.png")
+    plot_corner(wf_ts_coords, matches, max_match=1.,
+                outname=os.path.join(output_data_dir, "corner2.png"))
+
+    if args.verbose:
+        logger.info("finished!")
