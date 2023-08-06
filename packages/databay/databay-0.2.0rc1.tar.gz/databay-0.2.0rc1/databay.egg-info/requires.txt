@@ -1,0 +1,12 @@
+APScheduler<4.0.0
+schedule<1.0.0
+
+[HttpInlet]
+aiohttp>=3.6.2
+
+[MongoOutlet]
+pymongo>=3.10.1
+
+[all]
+aiohttp>=3.6.2
+pymongo>=3.10.1
