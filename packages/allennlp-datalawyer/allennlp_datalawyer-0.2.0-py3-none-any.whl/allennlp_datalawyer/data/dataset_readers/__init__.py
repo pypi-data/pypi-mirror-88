@@ -1,0 +1,1 @@
+from allennlp_datalawyer.data.dataset_readers.relations_reader import RelationsDatasetReader
