@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: pybsh
+Version: 1.0.0
+Summary: Use sh-style piping in Python
+Home-page: https://github.com/driazati/pybsh
+Author: driazati
+Author-email: email@example.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# `pybsh`
+
+Use bash-like syntax for running subcommands in Python
+
+```python
+from pybsh import cmd, go
+
+cmd() | "echo hi" | "sed 's/hi/bye/g'" > go
+```
+
+
+## Installation
+
+```bash
+pip install pybsh
+```
+
+### From Source
+
+```bash
+git clone https://github.com/driazati/pybsh.git
+cd pybsh
+pip install --editable .
+```
+
+## API
+
+???
+
