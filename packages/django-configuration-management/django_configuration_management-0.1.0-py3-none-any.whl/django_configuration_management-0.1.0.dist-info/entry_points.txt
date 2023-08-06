@@ -1,0 +1,5 @@
+[console_scripts]
+generate_key=django_configuration_management.cli:generate_key
+reveal_secrets=django_configuration_management.cli:reveal_secrets
+upsert_secret=django_configuration_management.cli:upsert_secret
+
