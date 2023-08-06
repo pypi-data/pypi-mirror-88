@@ -1,0 +1,6 @@
+{% autoescape off %}
+    Hi {{ user }},
+    Please click on the link to confirm your verification,
+    {#    https://{{ domain }}{% url 'verify' verify_uid64=verify_uid64 token=token %}#}
+    https://{{ domain }}/auth/verify/{{ verify_uid64 }}/{{ token }}/
+{% endautoescape %}
