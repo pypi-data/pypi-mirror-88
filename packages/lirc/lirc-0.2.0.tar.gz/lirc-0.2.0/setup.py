@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+from setuptools import setup
+
+packages = \
+['lirc', 'lirc.connection', 'tests']
+
+package_data = \
+{'': ['*']}
+
+setup_kwargs = {
+    'name': 'lirc',
+    'version': '0.2.0',
+    'description': 'Interact with the daemon in the Linux Infrared Remote Control package',
+    'long_description': 'LIRC Python Package\n===================\n\n.. image:: https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8-blue\n   :target: https://www.python.org/downloads/\n   :alt: Python Version\n.. image:: https://img.shields.io/pypi/v/lirc\n   :target: https://pypi.org/project/lirc/\n   :alt: Project Version\n.. image:: https://readthedocs.org/projects/lirc/badge/?version=latest\n  :target: https://lirc.readthedocs.io/en/latest/?badge=latest\n  :alt: Documentation Status\n.. image:: https://github.com/eugenetriguba/lirc/workflows/python%20package%20ci/badge.svg?branch=master\n  :target: https://github.com/eugenetriguba/lirc/actions/\n  :alt: Build Status\n.. image:: https://codecov.io/gh/eugenetriguba/lirc/graph/badge.svg\n  :target: https://codecov.io/gh/eugenetriguba/lirc\n  :alt: Code Coverage\n.. image:: https://api.codeclimate.com/v1/badges/62b96571ae84f2895531/maintainability\n   :target: https://codeclimate.com/github/eugenetriguba/lirc/maintainability\n   :alt: Maintainability\n.. image:: https://img.shields.io/badge/code%20style-black-000000.svg\n    :target: https://github.com/psf/black\n    :alt: Code Formatter\n.. image:: https://img.shields.io/badge/contributions-welcome-brightgreen.svg\n    :target: https://github.com/eugenetriguba/lirc/issues\n    :alt: Contributing\n.. image:: https://img.shields.io/pypi/l/lirc\n   :target: https://pypi.python.org/pypi/lirc/\n   :alt: License\n\nThis is a python package that allows you to interact with the daemon in the\n`Linux Infrared Remote Control <https://lirc.org>`_ package. By interacting\nwith the daemon, it allows you to programmatically send IR signals from a\ncomputer. This package is for emitting IR signals, but it does not support\nlistening to IR codes.\n\nMore information on the lircd daemon, socket interface,\nreply packet format, etc. can be found at https://www.lirc.org/html/lircd.html\n\nInstallation\n------------\n\nThis package is hosted on PyPI and can be installed\nthrough pip.\n\n.. code-block:: bash\n\n  $ pip install lirc\n\nHowever since this is a wrapper around the LIRC daemon, it\nis expected that LIRC is installed and setup on the given\nsystem as well.\n\nMore information on that can be found in the `installation <https://lirc.readthedocs.io/en/latest/installation.html>`_\nportion of the documentation.\n\nUsage Quick Start\n-----------------\n\nCustomizing the Client\n^^^^^^^^^^^^^^^^^^^^^^\n\n.. code-block:: python\n\n  import lirc\n\n  client = lirc.Client()\n\n  print(client.version())\n  >>> \'0.10.1\'\n\nTo use this package, we instantiate a ``Client``. When we initialize\nthe ``Client`` in the example above, we use the defaults by passing\nit no arguments.\n\nThe defaults use the ``LircdConnection`` class. These defaults depend\non your operating system and can be looked up in the full documentation.\nHowever, we can customize these defaults if desired.\n\n.. code-block:: python\n\n  import socket\n  import lirc\n\n  client = lirc.Client(\n    connection=lirc.LircdConnection(\n      address="/var/run/lirc/lircd",\n      socket=socket.socket(socket.AF_UNIX, socket.SOCK_STREAM),\n      timeout = 5.0\n    )\n  )\n\nThe address specifies how to reach the lircd daemon. On Windows, we pass\na ``(hostname, port)`` tuple since we connect over TCP. However on Linux and\nmacOS, we pass in the socket path as a string. For the client in the example\nabove, we set it up using the defaults for a Linux machine. While it illustrates\nwhat is customizable, it is not a practical example since you could just call\n``Client()`` if you\'re on Linux and achieve the same outcome.\n\nSending IR\n^^^^^^^^^^\n\n.. code-block:: python\n\n  import lirc\n\n  client = lirc.Client()\n  client.send("my-remote-name", "KEY_POWER")\n  client.send("my-remote-name", "KEY_3", repeat_count=2)\n\n\nWith sending IR, we can use the `send` method and optionally,\nsend multiple by using the `repeat_count` keyword argument.\n\nHandling Errors\n^^^^^^^^^^^^^^^\n\n.. code-block:: python\n\n  import lirc\n\n  client = lirc.Client()\n\n  try:\n      client.send(\'some-remote\', \'key_power\')\n  except lirc.LircdCommandFailureError as error:\n      print(\'The command we sent failed! Check the error message\')\n      print(error)\n\nIf the command was not successful, a ``LircdCommandFailureError`` exception will be thrown.\nThere are other errors that may be raised, which can be looked up in the full documentation,\nbut this is the most likely when sending commands.\n\n\nFurther Documentation\n---------------------\n\nMore information on how to setup the system installed LIRC, how to use\nthis python library, and a full API specification can be found at\nhttps://lirc.readthedocs.io/\n',
+    'author': 'Eugene Triguba',
+    'author_email': 'eugenetriguba@gmail.com',
+    'maintainer': None,
+    'maintainer_email': None,
+    'url': 'https://github.com/eugenetriguba/lirc',
+    'packages': packages,
+    'package_data': package_data,
+    'python_requires': '>=3.6,<4.0',
+}
+
+
+setup(**setup_kwargs)
