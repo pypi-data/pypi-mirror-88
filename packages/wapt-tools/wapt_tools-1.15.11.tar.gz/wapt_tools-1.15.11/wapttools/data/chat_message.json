@@ -1,0 +1,41 @@
+{
+  "cards": [
+    {
+      "header": {
+        "title": "New version of <b>{package}</b> have beed released"
+      },
+      "sections": [
+        {
+          "widgets": [
+            {
+              "keyValue": {
+                "topLabel": "Current WAPT Package Version",
+                "content": "{old_version}"
+              }
+            },
+            {
+              "keyValue": {
+                "topLabel": "New Upstream Version",
+                "content": "{new_version}"
+              }
+            },
+            {
+              "buttons": [
+                {
+                  "textButton": {
+                    "text": "Go to {package} website >>",
+                    "onClick": {
+                      "openLink": {
+                        "url": "{homepage}"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
