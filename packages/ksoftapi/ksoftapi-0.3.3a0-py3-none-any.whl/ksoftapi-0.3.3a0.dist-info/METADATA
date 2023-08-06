@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: ksoftapi
+Version: 0.3.3a0
+Summary: The official KSoft.SI API Wrapper.
+Home-page: https://github.com/KSoft-Si/ksoftapi.py
+Author: AndyTempel
+Author-email: support@ksoft.si
+License: UNKNOWN
+Download-URL: https://github.com/KSoft-Si/ksoftapi.py/archive/0.3.3a.tar.gz
+Keywords: ksoftapi
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: GNU General Public License (GPL)
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Internet
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: aiohttp
+
+<img align="right" src="https://cdn.ksoft.si/images/ksoft-logo-text.png">
+
+# KSoftAPI.py
+*The official Python Wrapper*
+
+## Install
+Installing via pip: `pip install ksoftapi`
+
+## Example Usage:
+```python
+import ksoftapi
+
+kclient = ksoftapi.Client('Your API key here')
+
+async def find_lyrics(query: str):
+    try:
+        results = await kclient.music.lyrics(query)
+    except ksoftapi.NoResults:
+        print('No lyrics found for ' + query)
+    else:
+        first = results[0]
+        print(first.lyrics)
+```
+
+[Obtain an API key](https://api.ksoft.si/) | [Join the Discord server](https://discordapp.com/invite/gRB2mNh)
+
+
