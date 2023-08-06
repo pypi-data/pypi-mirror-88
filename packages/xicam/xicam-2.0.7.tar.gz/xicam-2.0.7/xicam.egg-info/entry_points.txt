@@ -1,0 +1,50 @@
+[databroker.intents]
+ImageIntent = xicam.core.intents:ImageIntent
+PlotIntent = xicam.core.intents:PlotIntent
+
+[gui_scripts]
+xicam = xicam.run_xicam:main
+
+[xicam.plugins.CatalogPlugin]
+databroker_catalog_plugin = xicam.gui.bluesky.databroker_catalog_plugin:DatabrokerCatalogPlugin
+
+[xicam.plugins.DataHandlerPlugin]
+npy = xicam.core.formats.NPYPlugin:NPYPlugin
+
+[xicam.plugins.IntentCanvasPlugin]
+image_canvas = xicam.gui.canvases:ImageIntentCanvas
+plot_canvas = xicam.gui.canvases:PlotIntentCanvas
+
+[xicam.plugins.OperationPlugin]
+absolute_square = xicam.core.operations:absolute_square
+fourier_transform = xicam.core.operations:fourier_transform
+inverse_fourier_transform = xicam.core.operations:inverse_fourier_transform
+low_band_pass = xicam.core.operations:low_band_pass
+raccoon_face = xicam.core.operations:raccoon_face
+random_array = xicam.core.operations:random_array
+
+[xicam.plugins.PluginType]
+CatalogPlugin = xicam.plugins.catalogplugin:CatalogPlugin
+ControllerPlugin = xicam.plugins.controllerplugin:ControllerPlugin
+DataHandlerPlugin = xicam.plugins.datahandlerplugin:DataHandlerPlugin
+DataResourcePlugin = xicam.plugins.dataresourceplugin:DataResourcePlugin
+EZPlugin = xicam.plugins.ezplugin:_EZPlugin
+Fittable1DModelPlugin = xicam.plugins.fittablemodelplugin:Fittable1DModelPlugin
+GUIPlugin = xicam.plugins.guiplugin:GUIPlugin
+IntentCanvasPlugin = xicam.plugins.intentcanvasplugin:IntentCanvasPlugin
+OperationPlugin = xicam.plugins.operationplugin:OperationPlugin
+QWidgetPlugin = xicam.plugins.widgetplugin:QWidgetPlugin
+SettingsPlugin = xicam.plugins.settingsplugin:SettingsPlugin
+ingestors = xicam.plugins.ingestorplugin:IngestorPlugin
+intents = xicam.plugins.intentplugin:IntentPlugin
+sniffers = xicam.plugins.snifferplugin:SnifferPlugin
+
+[xicam.plugins.SettingsPlugin]
+appearance = xicam.gui.settings.appearance:AppearanceSettingsPlugin
+cammart = xicam.gui.cammart:CamMartSettingsPlugin
+connections = xicam.gui.connections:ConnectionSettingsPlugin
+databroker = xicam.gui.settings.databroker:DatabrokerSettingsPlugin
+execution = xicam.gui.settings.execution:ExecutionSettingsPlugin
+logging = xicam.gui.settings.logging:LoggingSettingsPlugin
+venvs = xicam.gui.cammart.venvs:VenvsSettingsPlugin
+
