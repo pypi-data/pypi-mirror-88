@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+package com.arpedon.measurements;
+
+option java_package = "com.arpedon.measurements";
+
+message MeasurementHeader {
+  required int32 sample_rate = 1;
+
+  message ChannelHeader {
+    required float reference = 1;
+    optional float sensitivity = 2 [default = 1000.0];
+    optional float db_reference = 3 [default = 0];
+    optional float pregain = 4 [default = 0];
+    optional float offset = 5 [default = 0];
+  }
+
+  repeated ChannelHeader channels = 2;
+}
