@@ -1,0 +1,277 @@
+{
+    "class": "apache generic",
+    "separator": " ",
+    "rewrite": {
+        "%[\\d!,+\\-]+": "%",
+        "(?<!\\\\)([\\[\\]])": "\\\\$1",
+        "%%": "%"
+    },
+    "placeholder": "%[<>]?(?:\\w*\\{[^\\}]+\\})?\\^?\\w+",
+    "fields": {
+        "%a": {
+            "id": "remote_addr",
+            "rx": "[\\d.:a-f]+"
+        },
+        "%{c}a": {
+            "id": "remote_addr",
+            "rx": "[\\d.:a-f]+"
+        },
+        "%h": {
+            "id": "remote_host",
+            "rx": "[\\w\\-.:]+"
+        },
+        "%{c}h": {
+            "id": "remote_host",
+            "rx": "[\\w\\-.:]+"
+        },
+        "%A": {
+            "id": "local_address",
+            "rx": "[\\d.:a-f]+"
+        },
+        "%u": {
+            "id": "remote_user",
+            "rx": "[\\-\\w@.]+"
+        },
+        "%l": {
+            "id": "remote_logname",
+            "rx": "[\\w\\-.:]+"
+        },
+        "%t": {
+            "id": "request_time",
+            "rx": "\\[?(\\d[\\d:\\w\\s:./\\-+,;]+)\\]?"
+        },
+        "%{u}t": {
+            "id": "request_time",
+            "rx": "\\d+/\\w+/\\d+:\\d+:\\d+:\\d+\\.\\d+\\s\\+\\d+"
+        },
+        "%{cu}t": {
+            "id": "request_time",
+            "rx": "\\d+-\\w+-\\d+\\s\\d+:\\d+:\\d+\\.\\d+"
+        },
+        "%{msec_frac}t": {
+            "id": "msec_frac",
+            "rx": "[\\d.]+"
+        },
+        "%{usec_frac}t": {
+            "id": "usec_frac",
+            "rx": "[\\d.]+"
+        },
+        "%f": {
+            "id": "request_file",
+            "rx": "[^\\s\"]+"
+        },
+        "%b": {
+            "id": "bytes_sent",
+            "rx": "\\d+|-"
+        },
+        "%B": {
+            "id": "bytes_sent",
+            "rx": "\\d+|-"
+        },
+        "%O": {
+            "id": "bytes_out",
+            "rx": "\\d+"
+        },
+        "%I": {
+            "id": "bytes_in",
+            "rx": "\\d+"
+        },
+        "%S": {
+            "id": "bytes_combined",
+            "rx": "\\d+"
+        },
+        "%E": {
+            "id": "apr_status",
+            "rx": "\\w+"
+        },
+        "%M": {
+            "id": "message",
+            "rx": ".+"
+        },
+        "%L": {
+            "id": "log_id",
+            "rx": "[\\w\\-\\.]+"
+        },
+        "%{c}L": {
+            "id": "log_id",
+            "rx": "[\\w\\-\\.]+"
+        },
+        "%{C}L": {
+            "id": "log_id",
+            "rx": "[\\w\\-\\.]*"
+        },
+        "%V": {
+            "id": "server_name",
+            "rx": "[\\w\\-\\.]+"
+        },
+        "%v": {
+            "id": "virtual_host",
+            "rx": "[\\w\\-\\.]+"
+        },
+        "%p": {
+            "id": "server_port",
+            "rx": "\\d+"
+        },
+        "%{local}p": {
+            "id": "server_port",
+            "rx": "\\d+"
+        },
+        "%{canonical}p": {
+            "id": "canonical_port",
+            "rx": "[\\w.]+"
+        },
+        "%{remote}p": {
+            "id": "remote_port",
+            "rx": "\\d+"
+        },
+        "%P": {
+            "id": "pid",
+            "rx": "\\d+"
+        },
+        "%{g}T": {
+            "id": "tid",
+            "rx": "\\d+"
+        },
+        "%{tid}P": {
+            "id": "tid",
+            "rx": "\\d+"
+        },
+        "%{pid}P": {
+            "id": "pid",
+            "rx": "\\d+"
+        },
+        "%{hextid}P": {
+            "id": "tid",
+            "rx": "\\w+"
+        },
+        "%{hexpid}P": {
+            "id": "pid",
+            "rx": "\\w+"
+        },
+        "%H": {
+            "id": "request_protocol",
+            "rx": "[\\w/\\d.]+"
+        },
+        "%m": {
+            "id": "request_method",
+            "rx": "[\\w.]+"
+        },
+        "%q": {
+            "id": "request_query",
+            "rx": "\\??\\S*"
+        },
+        "%F": {
+            "id": "file_line",
+            "rx": "[/\\w\\-.:(\\d)]+"
+        },
+        "%X": {
+            "id": "connection_status",
+            "rx": "[Xx+\\-.\\d]+"
+        },
+        "%k": {
+            "id": "keepalives",
+            "rx": "\\d+"
+        },
+        "%r": {
+            "id": "request_line",
+            "rx": "(?<request_method>\\w+) (?<request_path>\\S+) (?<request_protocol>[\\w/\\d.]+)"
+        },
+        "%D": {
+            "id": "request_duration_microseconds",
+            "rx": "\\d+"
+        },
+        "%T": {
+            "id": "request_duration_scaled",
+            "rx": "[\\d.]+"
+        },
+        "%{s}T": {
+            "id": "request_duration_seconds",
+            "rx": "\\d+"
+        },
+        "%{us}T": {
+            "id": "request_duration_microseconds",
+            "rx": "\\d+"
+        },
+        "%{ms}T": {
+            "id": "request_duration_milliseconds",
+            "rx": "\\d+"
+        },
+        "%U": {
+            "id": "request_uri",
+            "rx": "\\S+(?<!\")"
+        },
+        "%s": {
+            "id": "status",
+            "rx": "\\d+"
+        },
+        "%>s": {
+            "id": "status",
+            "rx": "-|\\d\\d\\d"
+        },
+        "%R": {
+            "id": "handler",
+            "rx": "[\\w:.\\-]+"
+        },
+        "%^FU": {
+            "id": "ttfu",
+            "rx": "-|\\d+"
+        },
+        "%^FB": {
+            "id": "ttfb",
+            "rx": "-|\\d+"
+        },
+        "%^\u0134S": {
+            "id": "json",
+            "rx": "\\{(?:[\\w:,\\s\\[\\]]+|\"(?:[^\\\\\"]+|\\\\.)*\")\\}"
+        },
+        "%{Referer}i": {
+            "id": "referer",
+            "rx": "[^\"]*"
+        },
+        "%{User-Agent}i": {
+            "id": "user_agent",
+            "rx": "(?:[^\"]+|\\\\\")*"
+        }
+    },
+    "alias": {
+        "remote_address": "remote_addr",
+        "ip": "remote_addr",
+        "user": "remote_user",
+        "file": "request_file",
+        "size": "bytes_sent",
+        "datetime": "request_time",
+        "ctime": "request_time",
+        "date": "request_time",
+        "loglevel": "remote_logname",
+        "module_name": "request_method",
+        "request_flushed": "file_line",
+        "requests_on_connection": "keepalives",
+        "error": "apr_status"
+    },
+    "expand": {
+        "%\\{([^{}]+)\\}t": {
+            "id": "request_time",
+            "class": "strftime"
+        },
+        "%[<>]?\\{([\\w\\-]+)\\}[Conexic]": {
+            "id": "$1",
+            "rx": "\\S+"
+        },
+        "%\\{([\\w\\-]+)\\}\\^t[io]": {
+            "id": "$1",
+            "rx": "\\S+"
+        }
+    },
+    "container": {
+        "message": {
+            "id": "$1",
+            "value": "$2",
+            "rx": "\\[(\\w+) \"(.*?)\"\\]",
+            "class": "apache mod_security"
+        }
+    },
+    "glob": [
+        "/var/log/apache*/*err*.log",
+        "/var/log/apache*/*acc*.log"
+    ]
+}

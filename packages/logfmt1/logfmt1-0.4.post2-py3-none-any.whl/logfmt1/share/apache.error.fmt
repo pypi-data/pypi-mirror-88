@@ -1,0 +1,8 @@
+{
+    "class": "apache combined",
+    "record": "[%t] [%l] [pid %P] %F: %E: [client %a] %M",
+    "alt":    "[%{u}t] [%-m:%l] [pid %P:tid %T] %7F: %E: [client %a] %M",
+    "glob": [
+        "*.access.log"
+    ]
+}

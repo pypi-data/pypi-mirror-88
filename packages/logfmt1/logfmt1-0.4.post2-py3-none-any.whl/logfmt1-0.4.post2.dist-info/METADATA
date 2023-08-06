@@ -1,0 +1,118 @@
+Metadata-Version: 2.1
+Name: logfmt1
+Version: 0.4.post2
+Summary: handle *.log.fmt specifiers and regex conversion
+Home-page: https://fossil.include-once.org/modseccfg/wiki/logfmt1
+License: Apache-2.0
+Keywords: io
+Platform: UNKNOWN
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >= 3.6
+Description-Content-Type: text/x-rst
+
+**logfmt1** is meant for universal log parsing, whilst reducing manual
+configuration or restricting to basic log variants. It handles
+``*.log.fmt`` files to transform LogFormat / placeholder strings to
+regular expressions (with named capture groups).
+
+::
+
+   {
+      "class": "apache combined",
+      "record": "%h %l %u %t \"%r\" %>s %b",
+   }
+
+For instance would resolve to:
+
+::
+
+   (?<remote_host>[\\w\\-.:]+) (?<remote_logname>[\\w\\-.:]+) (?<remote_user>[\\-\\w@.]+)
+   \\[?(?<request_time>\\d[\\d:\\w\\s:./\\-+,;]+)\\]? "(?<request_line>(?<request_method>\\w+)
+   (?<request_path>\\S+) (?<request_protocol>[\\w/\\d.]+))" (?<status>-|\\d\\d\\d)
+   (?<bytes_sent>\\d+|-)'
+
+This python package currently just comes with:
+
+-  ``.fmt`` definitions for apache + strftime + grok placeholders.
+-  ``logex`` - a basic log extractor
+-  And ``update-logfmt`` to create/rewrite ``*.log.fmt`` files globally.
+
+It originated in
+`modseccfg <https://fossil.include-once.org/modseccfg/>`__. You should
+ideally install the `system package <https://apt.include-once.org/>`__
+however:
+
+::
+
+   apt install python3-logfmt1
+
+This will yield the proper ``/usr/share/logfmt/`` structure and the
+run-parts wrapper ``update-logfmt``.
+
+logfmt1
+~~~~~~~
+
+To manually craft a regex:
+
+::
+
+   import logfmt1, json
+   fmt = json.load(open("/.../access.log.fmt", "r"))
+   rx = logfmt1.regex(fmt)
+   rx = logfmt1.rx2re(rx)   # turn into Python regex
+
+Or with plain old guesswork / presuming a standard log format:
+
+::
+
+   rx = logfmt1.regex({"class": "apache combined"})
+
+Though that’s of course not the intended use case, and hinges on
+predefined formats in /usr/share/logfmt/.
+
+logfmt1.logopen()
+~~~~~~~~~~~~~~~~~
+
+``logopen(fn=…)`` is basically a file-like iterator that yields
+dictionaries rather than text strings.
+
+::
+
+   for row in logfmt1.logopen(".../access.log"):
+   print(row["request_time"])
+
+And it provides a basic regex/formatstring debugging feature (via
+``debug=True`` parameter or with ``logex -D``):
+
+.. figure:: https://imgur.com/QBKzDsK.png
+   :alt: failed regex section
+
+   failed regex section
+
+logex
+~~~~~
+
+Very crudementary extractor for log files:
+
+::
+
+   logex .../access.log --tab @host @date +id
+
+Which also handles the ``.fmt`` implicitly. (Kinda the whole point of
+this project.)
+
+update-logfmt
+~~~~~~~~~~~~~
+
+The Python package does bundle a run-parts wrapper, but just the apache
+collector, and a local Python copy of the format database. It should
+discover all (Apache) ``*.log`` files nonetheless and pair them with
+``.fmt`` declarations.
+
+And that’s sort of the main aspect of this project. Establish .log.fmt
+files until application vendors come around to making logs parseable.
+The rules database structure is subject to change, and only one possible
+implementation. There might also be simpler approaches (grok mapping) to
+generate regexps for format strings.
+
+
