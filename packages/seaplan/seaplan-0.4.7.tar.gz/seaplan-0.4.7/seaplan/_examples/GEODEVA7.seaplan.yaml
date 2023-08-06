@@ -1,0 +1,106 @@
+---
+format_version: "0.4"
+variables:
+    station_file:
+      name: 'GPS_TG_liste_stations.csv' 
+      field_separator: ";"
+    printout:
+      show_comments: False
+      print_past: True
+      print_waypoints: False
+    timing:
+      ignore_depart_arrive_times: False
+      ship_speed.kn_i: 8
+      ship_latency.h: 0.2                   
+      action_times.h:
+        "Survey":
+          default: 2.0
+    map:
+      grid:
+        x: .5
+        y: .5
+      bounds: [166,169,-18,-14]   # degrees left, right, bottom, top
+      bathy_map: "WCC_VAN.grd"
+      plot_past_tracks: True
+      show_plot: True
+
+events:
+  - station: "Noumea"
+    lon: 166.41
+    lat: -22.27
+    hours: 1
+    depart_time: 2019-11-23T08:00
+  - station: "Efat_SW2"
+    lon: 168.25
+    lat: -17.75
+  - station: "VILA"
+    action: "Survey"
+  - station: "Efat_SW"
+    lon: 168.15
+    lat: -17.75
+  - station: "Efat_NW"
+    lon: 168.15
+    lat: -17.6
+  - station: "Emae_W"
+    lon: 168.3
+    lat: -17.06
+  - station: "Epi_E"
+    lon: 168.51
+    lat: -16.83
+  - station: "Lopevi_E"
+    lon: 168.4
+    lat: -16.5
+  - station: "ULEI"
+    action: "Survey"
+  - station: "Ambrym_E"
+    lon: 168.33
+    lat: -16.3
+  - station: "Ambrym_N"
+    lon: 168.19
+    lat: -16.07
+  - station: "Aore_Pass"
+    lon: 167.25
+    lat: -15.6
+  - station: "Luganville"
+    lon: 167.22
+    lat: -15.52
+    action: "Visit"
+    hours: 4.
+  - station: "AVNA"
+    action: "Survey"
+  - station: "Santo_SW"
+    lon: 166.75
+    lat: -15.7
+  - station: "LISB"
+    action: "Survey"
+  - station: "TG_Sabine"
+    action: "Survey"
+  - station: "TG_Wusi"
+  - station: "WUSI"
+    action: "Survey"
+  - station: "TG_Wusi"
+    action: "Survey"
+  - station: "WUSI"
+    action: "Survey"
+  - station: "TG_Wusi"
+  - station: "LISB"
+    action: "Survey"
+  - station: "ESPI"
+    action: "Survey"
+  - station: "Malli_p1"
+    lon: 167.1
+    lat: -16.1
+  - station: "SWBY"
+    action: "Survey"
+  - station: "Malli_p2"
+    lon: 167.4
+    lat: -16.51
+  - station: "Efat_SW"
+  - station: "VILA"
+    action: "Visit"
+    hours: 8
+  - station: "Efat_SW2"
+    lon: 168.25
+    lat: -17.75
+  - station: "Noumea"
+    hours: 1
