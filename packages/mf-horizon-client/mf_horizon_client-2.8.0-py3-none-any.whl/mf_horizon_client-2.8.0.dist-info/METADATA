@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: mf-horizon-client
+Version: 2.8.0
+Summary: Lightweight Python wrapper for Mind Foundry Horizon API
+Home-page: https://www.mindfoundry.ai/horizon
+Author: Mind Foundry Ltd
+Author-email: stanley.speel@mindfoundry.ai
+License: UNKNOWN
+Download-URL: https://github.com/MF-HORIZON/mf-horizon-python-client/archive/v2.8.0.tar.gz
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: urllib3
+Requires-Dist: requests
+Requires-Dist: dataclasses
+Requires-Dist: marshmallow
+Requires-Dist: marshmallow-enum
+Requires-Dist: tqdm
+Requires-Dist: scikit-learn
+Requires-Dist: marshmallow-oneofschema
+Provides-Extra: all
+Requires-Dist: black ; extra == 'all'
+Requires-Dist: check-manifest ; extra == 'all'
+Requires-Dist: isort ; extra == 'all'
+Requires-Dist: pylint ; extra == 'all'
+Requires-Dist: mypy ; extra == 'all'
+Requires-Dist: pytest ; extra == 'all'
+Requires-Dist: tox ; extra == 'all'
+Requires-Dist: pre-commit ; extra == 'all'
+Requires-Dist: coverage ; extra == 'all'
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: check-manifest ; extra == 'dev'
+Requires-Dist: coverage ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+
+=================
+mf-horizon-client
+=================
+
+Requires API keys to Mind Foundry Horizon to access. API key can be accessed
+via the Settings panel of the Horizon UI.
+
+Compatible with release v2.4.0 of Mind Foundry Horizon.
+
+https://www.mindfoundry.ai/horizon
+
+
