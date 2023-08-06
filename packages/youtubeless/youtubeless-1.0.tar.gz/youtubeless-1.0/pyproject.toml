@@ -1,0 +1,10 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "youtubeless"
+author = "svinerus"
+author-email = "svinerus@gmail.com"
+home-page = "https://github.com/SvineruS/youtubeless"
+
