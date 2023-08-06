@@ -1,0 +1,12 @@
+<div class="ads-content" style="margin-left:0px;"
+     tal:define="objects here/@@advertisement/getAdvertiselementAboveContent"
+     tal:condition="objects">
+    <tal:loop1 repeat="object_ objects">
+        <a target="_blank"
+           tal:define="url object_/getLocation"
+           tal:attributes="href url"
+           tal:omit-tag="not:url">
+            <img tal:attributes="src string:${object_/absolute_url}/image"/>
+        </a>
+    </tal:loop1>
+</div>

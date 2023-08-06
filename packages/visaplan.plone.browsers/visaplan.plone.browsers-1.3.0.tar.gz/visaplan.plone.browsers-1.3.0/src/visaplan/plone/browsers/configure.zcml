@@ -1,0 +1,309 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+    <!-- -*- extra stuff goes here -*- -->
+
+
+    <include package=".additionallanguages"
+        zcml:condition="installed Products.Archetypes"
+        /><!-- (gf) additionallanguages/browser.py -->
+
+    <include package=".advertisement"
+        /><!-- (gf) advertisement/browser.py -->
+
+    <include package=".article"
+        zcml:condition="installed Products.unitracc"
+        />
+
+    <configure zcml:condition="installed visaplan.kitchen">
+    <!-- currently we use the @@mediathek browser from v.p.structures here -->
+    <include package=".changestate"
+        zcml:condition="installed visaplan.plone.structures"
+        />
+    </configure>
+
+    <include package=".contact"
+        /><!-- (gf) contact/browser.py -->
+
+    <include package=".contenticon"
+        /><!-- (gf) contenticon/browser.py -->
+
+    <include package=".cookie"
+        /><!-- (gf) cookie/browser.py -->
+
+    <include package=".counter"
+        /><!-- (gf) counter/browser.py -->
+
+    <include package=".countrycodetocountry"
+        /><!-- (gf) countrycodetocountry/browser.py -->
+
+    <include package=".event"
+        /><!-- (gf) event/browser.py -->
+
+    <include package=".flashfile"
+        zcml:condition="installed Products.Archetypes"
+        /><!-- (gf) flashfile/browser.py -->
+
+    <include package=".flvpreview"
+        zcml:condition="installed Products.ATContentTypes"
+        /><!-- (gf) flvpreview/browser.py -->
+
+    <include package=".greeting"
+        /><!-- (gf) greeting/browser.py -->
+
+    <include package=".hideactions"
+        /><!-- (gf) hideactions/browser.py -->
+
+    <include package=".isthreecolumnlayoutvisible"
+        /><!-- (gf) isthreecolumnlayoutvisible/browser.py -->
+
+    <include package=".json"
+        /><!-- (gf) json/browser.py -->
+
+    <include package=".languageredirector"
+        /><!-- (gf) languageredirector/browser.py -->
+
+    <include package=".literature"
+        /><!-- (gf) literature/browser.py -->
+
+    <include package=".logging"
+        /><!-- (gf) logging/browser.py -->
+
+    <include package=".logo"
+        zcml:condition="installed visaplan.plone.structures"
+        />
+
+    <include package=".mainpage"
+        /><!-- (gf) mainpage/browser.py -->
+
+    <include package=".management"
+        /><!-- (gf) management/browser.py -->
+
+    <include package=".managementuser"
+        /><!-- (gf) managementuser/browser.py -->
+
+    <include package=".migrator"
+        /><!-- (gf) migrator/browser.py -->
+
+    <include package=".myunitracc"
+        /><!-- (gf) myunitracc/browser.py -->
+
+    <include package=".numbertag"
+        /><!-- (gf) numbertag/browser.py -->
+
+    <include package=".partner"
+        /><!-- (gf) partner/browser.py -->
+
+    <include package=".password"
+        /><!-- (gf) password/browser.py -->
+
+    <include package=".picturenumber"
+        zcml:condition="installed visaplan.kitchen"
+        /><!-- (gf) picturenumber/browser.py -->
+
+    <include package=".redirector"
+        /><!-- (gf) redirector/browser.py -->
+
+    <include package=".reviewstates"
+        /><!-- (gf) reviewstates/browser.py -->
+
+    <include package=".rssfeed"
+        /><!-- (gf) rssfeed/browser.py -->
+
+    <include package=".scaling"
+        zcml:condition="installed Products.ATContentTypes"
+        /><!-- (gf) scaling/browser.py -->
+
+    <!-- the following modules currently rely on the proprietary
+         securitymanager adapter from tomcom.adapter:
+      -->
+    <configure zcml:condition="installed tomcom.adapter">
+	<!-- currently we use MEMBERSFOLDER_UID from v.p.unitracctool here -->
+	<include package=".author"
+	    zcml:condition="installed visaplan.plone.unitracctool"
+	    />
+
+	<!-- requires visaplan.plone.sqlwrapper; see ./booking/configure.zcml: -->
+	<include package=".booking"
+	    zcml:condition="installed visaplan.plone.infohubs"
+	    /><!-- (gf) booking/browser.py -->
+
+	<include package=".defaultimage"
+	    /><!-- (gf) defaultimage/browser.py -->
+
+	<include package=".glossary"
+	    /><!-- (gf) glossary/browser.py -->
+
+	<include package=".myaccount"
+	    /><!-- (gf) myaccount/browser.py -->
+
+	<include package=".mycontent"
+	    /><!-- (gf) mycontent/browser.py -->
+
+	<include package=".news"
+	    /><!-- (gf) news/browser.py -->
+
+	<include package=".nora"
+	    /><!-- (gf) nora/browser.py -->
+
+	<!-- currently we use MEMBERSFOLDER_UID from v.p.unitracctool here -->
+        <configure zcml:condition="installed visaplan.plone.adapters">
+	<include package=".registration"
+	    zcml:condition="installed visaplan.plone.unitracctool"
+	    />
+        </configure>
+
+	<include package=".resolvereviewstate"
+	    /><!-- (gf) resolvereviewstate/browser.py -->
+
+	<include package=".servicearticle"
+	    /><!-- (gf) servicearticle/browser.py -->
+
+	<include package=".servicenews"
+	    /><!-- (gf) servicenews/browser.py -->
+
+	<!-- currently we use the @@temp browser from v.p.structures here -->
+	<include package=".servicetemp"
+	    zcml:condition="installed visaplan.plone.structures"
+	    />
+
+	<include package=".standard"
+	    /><!-- (gf) standard/browser.py -->
+
+	<include package=".viewpreview"
+	    /><!-- (gf) viewpreview/browser.py -->
+    </configure>
+
+    <include package=".sortpriority"
+        zcml:condition="installed Products.Archetypes"
+        /><!-- (gf) sortpriority/browser.py -->
+
+    <include package=".swfplayer"
+        /><!-- (gf) swfplayer/browser.py -->
+
+    <!-- requires visaplan.plone.sqlwrapper; see ./tan/configure.zcml: -->
+    <include package=".tan"
+        /><!-- (gf) tan/browser.py -->
+
+    <include package=".unitraccformula"
+        zcml:condition="installed latex2mathml"
+        />
+
+    <include package=".unitraccmail"
+        zcml:condition="installed visaplan.kitchen"
+        /><!-- (gf) unitraccmail/browser.py -->
+
+    <include package=".unitraccsettings"
+        zcml:condition="installed visaplan.plone.search"
+        /><!-- (gf) unitraccsettings/browser.py -->
+
+    <include package=".unitraccswf"
+        /><!-- (gf) unitraccswf/browser.py -->
+
+    <include package=".unitracctype"
+        /><!-- (gf) unitracctype/browser.py -->
+
+    <configure zcml:condition="installed tomcom.tcconvert">
+	<include package=".unitraccaudio"
+	    /><!-- (gf) unitraccaudio/browser.py -->
+
+	<include package=".unitraccvideo"
+	    /><!-- (gf) unitraccvideo/browser.py -->
+
+	<include package=".unitraccvideomp4"
+	    /><!-- (gf) unitraccvideomp4/browser.py -->
+
+	<include package=".unitraccvideoogg"
+	    /><!-- (gf) unitraccvideoogg/browser.py -->
+    </configure>
+
+    <include package=".untranslated"
+        /><!-- (gf) untranslated/browser.py -->
+
+    <include package=".userlanguage"
+        /><!-- (gf) userlanguage/browser.py -->
+
+    <include package=".usermanagement"
+        zcml:condition="installed visaplan.plone.adapters"
+        /><!-- (gf) usermanagement/browser.py -->
+
+    <include package=".useruid"
+        /><!-- (gf) useruid/browser.py -->
+
+    <include package=".vcard"
+        /><!-- (gf) vcard/browser.py -->
+
+    <!-- currently we use the @@temp and @@mediathek browsers from v.p.structures here -->
+    <include package=".xmlimport"
+        zcml:condition="installed visaplan.plone.structures"
+        />
+
+    <!-- currently disabled: -->
+<!-- include package=".mogrify" -->
+
+<!-- [ still in Products.unitracc ... [ -->
+<!-- include package=".versioninformation" -->
+<!-- ] ... still in Products.unitracc ] -->
+
+<!-- [ moved to visaplan.plone.elearning ... [ -->
+<!-- include package=".coursestatistics" -->
+<!-- include package=".unitracccourse" -->
+<!-- include package=".unitracccoursemanagement" -->
+<!-- ] ... moved to visaplan.plone.elearning ] -->
+
+<!-- [ moved to visaplan.plone.groups ... [ -->
+<!-- include package=".groupboard" -->
+<!-- include package=".groupdesktop" -->
+<!-- include package=".groupsharing" -->
+<!-- include package=".unitraccgroups" -->
+<!-- ] ... moved to visaplan.plone.groups ] -->
+
+<!-- [ moved to visaplan.plone.industrialsector ... [ -->
+<!-- include package=".industrialsector" -->
+<!-- ] ... moved to visaplan.plone.industrialsector ] -->
+
+<!-- [ moved to visaplan.plone.infohubs ... [ -->
+<!-- include package=".hubandinfo" -->
+<!-- ] ... moved to visaplan.plone.infohubs ] -->
+
+<!-- [ moved to visaplan.plone.pdfexport ... [ -->
+<!-- include package=".export" -->
+<!-- ] ... moved to visaplan.plone.pdfexport ] -->
+
+<!-- [ moved to visaplan.plone.search ... [ -->
+<!-- include package=".fcksearch" -->
+<!-- include package=".lightsearch" -->
+<!-- include package=".txng" -->
+<!-- include package=".unitraccckfinder" -->
+<!-- include package=".unitraccsearch" -->
+<!-- ] ... moved to visaplan.plone.search ] -->
+
+<!-- [ moved to visaplan.plone.structures ... [ -->
+<!-- include package=".book" -->
+<!-- include package=".copystructure" -->
+<!-- include package=".mediathek" -->
+<!-- include package=".navigation" -->
+<!-- include package=".presentation" -->
+<!-- include package=".storagefolder" -->
+<!-- include package=".structureauthoring" -->
+<!-- include package=".structurenumber" -->
+<!-- include package=".structuretype" -->
+<!-- include package=".temp" -->
+<!-- include package=".tree" -->
+<!-- ] ... moved to visaplan.plone.structures ] -->
+
+<!-- [ moved to visaplan.plone.subportals ... [ -->
+<!-- include package=".subportal" -->
+<!-- ] ... moved to visaplan.plone.subportals ] -->
+
+<!-- [ moved to visaplan.plone.transform ... [ -->
+<!-- include package=".transform" -->
+<!-- ] ... moved to visaplan.plone.transform ] -->
+
+<!-- [ moved to visaplan.plone.unitracctool ... [ -->
+<!-- include package=".unitraccfeature" -->
+<!-- ] ... moved to visaplan.plone.unitracctool ] -->
+
+</configure>

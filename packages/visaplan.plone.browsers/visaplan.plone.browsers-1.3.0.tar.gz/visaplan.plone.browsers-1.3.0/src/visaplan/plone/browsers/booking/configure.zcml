@@ -1,0 +1,25 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+    zcml:condition="installed visaplan.plone.sqlwrapper">
+
+    <browser:page
+        for="*"
+        name="booking"
+        class=".browser.Browser"
+        permission="zope2.View"
+        allowed_interface=".browser.IBooking"
+        />
+
+    <include package=".templates" />
+    <include package="visaplan.plone.base" />
+    <include package="visaplan.plone.infohubs" />
+
+  <configure zcml:condition="installed visaplan.plone.breadcrumbs">
+  <include package="visaplan.plone.breadcrumbs" />
+  <include package=".oldcrumbs"
+      zcml:condition="have VisaplanTentativeBreadcrumbs"
+      />
+  </configure>
+
+</configure>

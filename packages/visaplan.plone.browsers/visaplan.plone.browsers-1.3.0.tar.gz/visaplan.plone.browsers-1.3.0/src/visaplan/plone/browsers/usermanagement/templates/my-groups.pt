@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="ad-block-above-content"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border', 1)" />
+
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="dummy context/@@authorized/raiseAnon;
+                        groupsharing nocall:here/@@groupsharing;
+                        member python:context.getAdapter('auth')();
+                        user_id member/getId;
+                        groups python:groupsharing.get_groups_by_user_id(user_id);
+                        inherited_memberships python:groupsharing.get_inherited_group_memberships_by_user_id(user_id);
+                        show_actions python:False">
+
+    <div class="area-title">
+        <h1  i18n:translate="">myGROUPS</h1>
+    </div>
+    <div class="area-content">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#1" data-toggle="tab"
+                   i18n:translate="explicit_group_memberships">
+                    Explicit group memberships
+                </a>
+            </li>
+            <li tal:condition="inherited_memberships">
+                <a href="#2" data-toggle="tab"
+                   i18n:translate="inherited_group_memberships">
+                    Inherited group memberships
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="1">
+                <metal:block metal:use-macro="here/edit_group_membership/macros/explicit"/>
+            </div>
+            <div class="tab-pane" id="2">
+                <metal:block metal:use-macro="here/edit_group_membership/macros/inherit"/>
+            </div>
+        </div>
+    </div>
+
+</metal:main>
+
+</body>
+</html>

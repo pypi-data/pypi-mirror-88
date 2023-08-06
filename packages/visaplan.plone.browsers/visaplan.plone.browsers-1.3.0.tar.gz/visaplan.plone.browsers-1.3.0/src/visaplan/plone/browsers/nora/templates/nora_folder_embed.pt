@@ -1,0 +1,27 @@
+<tal:comment replace="nothing"><!--
+Version von ./nora_folder_view.pt für AJAX-Navigation
+
+ACHTUNG: Bisher gibt es noch keine Lösung für die Feeds!
+Aber vielleicht brauchen wir die auch nur bei den Vollseiten ...
+
+../../../../../../../visaplan.UnitraccSkins/src/visaplan/UnitraccSkins/skins/unitracc_templates/news_folder_view.pt
+--></tal:comment>
+<div class="row">
+        <div class="ad-wrapper col-md-12"
+             tal:define="advertisement nocall:context/@@advertisement"
+             tal:condition="python:advertisement.is_enabled()"
+             tal:content="structure python:advertisement.get_ads_html('advertisement-content', limit=1)">
+            <!-- Werbung -->
+        </div>
+
+        <div class="area-breadcrumbs col-md-12"
+             tal:replace="structure here/crumbs"><!-- Breadcrumbs; gf:
+
+../../../../../../../visaplan.UnitraccSkins/src/visaplan/UnitraccSkins/skins/unitracc_templates/crumbs.pt
+           --><a href="#">Startseite</a> | <a href="#">anderswo</a>
+        </div>
+</div>
+<tal:txt tal:content="structure here/listing_nora">
+./listing_nora.pt
+</tal:txt>
+<div tal:replace="structure provider:plone.belowcontentbody" />

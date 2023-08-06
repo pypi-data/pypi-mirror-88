@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+  <metal:main fill-slot="main">
+<tal:ns1 tal:define="
+tan_browser python:context.getBrowser('tan');
+dummy tan_browser/authView;
+filter tan_browser/extract_filters;
+group_id python:filter.get('group_id');
+unitraccgroups python:here.getBrowser('unitraccgroups');
+groupinfo python:group_id and unitraccgroups.groupInfo(group_id);
+hidden python:groupinfo and ('group_id',) or ();
+pformat python:context.getAdapter('pformat');
+"
+>
+  <form action="manage_tans" method="get"
+    metal:use-macro="here/tans_wizard/macros/filter-form">
+  </form>
+	<div id="area-title" tal:condition="groupinfo">
+		<h1 i18n:translate="">
+			TANs for group
+			<a tal:content="groupinfo/title"
+				 tal:define="uid groupinfo/uid;"
+				 tal:omit-tag="not:uid"
+				 tal:attributes="href string:/@@resolveuid/${uid}"
+				 href="/@@resolveuid/abc123"
+				 i18n:name="group"
+				 tal:on-error="group_id">
+				 Name der Gruppe
+			 </a>
+		</h1>
+  </div>
+  <tal:if2 condition="filter | nothing">
+  <form metal:use-macro="here/tans_wizard/macros/csv-export-form">
+    <button class="btn btn-primary">Export CSV</button>
+  </form>
+  <tal:ns2
+    tal:define="rows tan_browser/list_tans_pretty;
+                cols python:'tan status Group duration_days owner_id expiration_date'.split();
+                mp tan_browser/canManage;
+                nolinks not:mp;
+                ">
+  <table metal:use-macro="here/tans_wizard/macros/table">
+  </table>
+  </tal:ns2>
+  </tal:if2>
+</tal:ns1>
+</metal:main>
+</body><!-- vim: set sw=2 sts=2 si ts=2 noet :--></html>

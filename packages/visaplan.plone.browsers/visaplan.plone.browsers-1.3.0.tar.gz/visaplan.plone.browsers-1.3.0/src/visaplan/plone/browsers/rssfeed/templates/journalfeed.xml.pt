@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns="http://purl.org/rss/1.0/"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  i18n:domain="plone"
+><tal:prelude define="
+dummy python:None and context.rssAllowed(site=True);
+dummy python:None and here.debug();
+dummy python:None and here.setHeader();
+"/><tal:block define="
+max_items python:25;
+newsList python: here.getNews(max_items=max_items);
+articlesList python: here.getArticles(max_items=max_items);
+eventsList python: here.getEvents(max_items=max_items);
+objects python: list(newsList) + list(articlesList) + list(eventsList);
+info python: here.getInfo();
+author nocall: here/getAuthor;
+toTime python: info['totime'];
+html4time python: info['html4time'];
+"><metal:main define-macro="main"
+><tal:common define="
+syn syn | context/portal_syndication | nothing;
+max_items max_items | syn/max_items;
+start python: int(request.get('b_start', 0));
+startnumber python: start+1;
+end python: int(request.get('b_end', start+max_items));
+order python: request.set('sort_order', 'reverse');
+dummy python: request.set('sort_on', request.get('sort_on', 'effective'));
+portal_url portal_url | context/portal_url | info/portal_url;
+base_properties context/base_properties | python: {'logoName': 'unitracc-feed.png'}
+">
+<channel rdf:about="" tal:attributes="rdf:about request/URL" >
+  <title i18n:translate="feed_journal_title">
+    UNITRACC journal: news, articles, and calendar
+  </title>
+  <link tal:content="portal_url">http://url.to.portal</link>
+
+  <description
+    tal:replace="nothing"
+    ><metal:d_slot define-slot="description">
+    <tal:text i18n:translate="feed_journal_description">
+      News, articles, and calendar from <span tal:replace="portal_url" i18n:name="portal">unitracc.de</span>
+    </tal:text></metal:d_slot>
+  </description>
+
+  <metal:s_slot define-slot="syndication" />
+
+  <image
+    rdf:resource=""
+    tal:attributes="rdf:resource string:${portal_url}/${base_properties/logoName}" />
+
+  <items metal:define-macro="toc">
+    <rdf:Seq><tal:loop repeat="obj_item python: objects">
+      <rdf:li rdf:resource=""
+              tal:attributes="rdf:resource obj_item/getURL|obj_item/absolute_url"
+      /></tal:loop>
+    </rdf:Seq>
+  </items>
+
+</channel>
+
+<tal:news_loop
+repeat="brain python: newsList"
+><item rdf:about=""
+   tal:define="obj_item brain/getObject|nocall:brain"
+   tal:attributes="rdf:about obj_item/getURL|obj_item/absolute_url"
+   >
+   <title tal:content="obj_item/pretty_title_or_id">Title</title>
+   <link tal:content="obj_item/Identifier">Identifier</link>
+   <description tal:content="obj_item/Description">Description</description>
+   <author tal:define="a python:author(obj_item)"
+           tal:condition="python:a.get('name', None)"
+           metal:define-macro="author">
+   <name tal:content="python:a['name']">
+           Kontakt
+   </name>
+   </author>
+   <tal:inner_loop tal:repeat="item obj_item/Subject"
+   ><dc:subject tal:content="item">Item</dc:subject>
+   </tal:inner_loop
+   ><dc:date tal:content="python: obj_item.effective().HTML4()">Publication date</dc:date>
+   <dc:type tal:content="obj_item/Type">Type</dc:type>
+</item>
+</tal:news_loop
+><tal:namespace define="m_author template/macros/author"
+><tal:articles_loop
+repeat="brain python: articlesList"
+><item rdf:about=""
+   tal:define="obj_item brain/getObject|nocall:brain"
+   tal:attributes="rdf:about obj_item/getURL|obj_item/absolute_url"
+   >
+   <title tal:content="obj_item/pretty_title_or_id">Title</title>
+   <link tal:content="obj_item/Identifier">Identifier</link>
+   <description tal:content="obj_item/Description">Description</description>
+   <author metal:use-macro="m_author">
+   <name>
+           Kontakt
+   </name>
+   </author>
+   <tal:inner_loop tal:repeat="item obj_item/Subject"
+   ><dc:subject tal:content="item">Item</dc:subject>
+   </tal:inner_loop
+   ><dc:date tal:content="python: obj_item.effective().HTML4()">Publication date</dc:date>
+   <dc:type tal:content="obj_item/Type">Type</dc:type>
+</item>
+</tal:articles_loop>
+<tal:events_loop
+define="author nocall: here/getAuthor"
+repeat="brain python: eventsList"
+><item rdf:about=""
+   tal:define="obj_item brain/getObject|nocall:brain"
+   tal:attributes="rdf:about obj_item/getURL|obj_item/absolute_url"
+   >
+   <title tal:content="obj_item/pretty_title_or_id">Title</title>
+   <link tal:content="obj_item/Identifier">Identifier</link>
+   <description>
+      <tal:starttime tal:content="python:toTime(obj_item.start)"/>
+      <tal:ifend condition="python:obj_item.end and toTime(obj_item.start) != toTime(obj_item.end)"
+      > - <tal:endtime content="python:toTime(obj_item.end)"
+      /></tal:ifend>
+        <tal:descr content="obj_item/Description">
+          Description
+        </tal:descr>
+   </description>
+   <author tal:define="a python:author(obj_item)"
+           tal:condition="python:a.get('name', None)">
+   <name tal:content="python:a['name']">
+           Kontakt
+   </name>
+   </author>
+   <tal:inner_loop tal:repeat="item obj_item/Subject"
+   ><dc:subject tal:content="item">Item</dc:subject>
+   </tal:inner_loop
+   ><dc:date tal:content="python: html4time(obj_item.start())">Start</dc:date>
+   <dc:type tal:content="obj_item/Type">Type</dc:type>
+</item>
+</tal:events_loop
+></tal:namespace
+></tal:common
+></metal:main
+></tal:block>
+</rdf:RDF>

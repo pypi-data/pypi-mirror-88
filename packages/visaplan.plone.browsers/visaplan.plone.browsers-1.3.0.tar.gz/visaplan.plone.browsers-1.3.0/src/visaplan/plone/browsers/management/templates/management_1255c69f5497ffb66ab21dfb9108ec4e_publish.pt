@@ -1,0 +1,572 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+    <head>
+      <metal:js fill-slot="head_slot">
+      <metal:js define-macro="chosen-js">
+      <script type="text/javascript">
+          $(document).ready(function () {
+              $('select.chosen').chosen();
+          })
+      </script>
+      </metal:js>
+      </metal:js>
+    </head>
+
+<body>
+
+<metal:no-ads fill-slot="ad-block-above-content"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:main fill-slot="main"
+            tal:define="
+brains python:here.getBrowser('structuretype').getPresentationFolders();
+                        ">
+
+    <metal:block metal:define-macro="main">
+<script type="text/javascript">
+$(document).ready(function () {
+        $('input.switch').on('click', function () {
+            var theform = $(this).closest('form'),
+                theclass = $(this).attr('id');
+            $(theform).find('.switched').each(function () {
+                if ($(this).hasClass(theclass)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            })
+        })
+});
+</script>
+<tal:ns define="
+dummy python:context.getAdapter('authorized')('unitracc: Publish structure types');
+langCode python:context.getAdapter('langcode')();
+workflow nocall:here/@@workflow;
+current_action options/action | request/action | string:5;
+recursion_depth options/recursion_depth | request/recursion_depth | string:2;
+given_uid options/uid | request/uid | nothing;
+given_transition options/transition | request/transition | nothing;
+more_publicity_only options/more_publicity_only | request/more_publicity_only | nothing;
+result options/result | nothing;
+">
+<tal:result condition="result">
+<div class="alert alert-info"
+     tal:define="
+misc python:result['misc'];
+ok python:result['ok'];
+transitions python:result['transitions'];
+pformat python:context.getAdapter('pformat');
+struct python:result['struct'];
+" tal:attributes="class python:misc['info_class'];
+">
+<button class="close" data-dismiss="alert" type="button">×</button>
+<h1 tal:content="result/headline">Validation completed</h1>
+<div tal:define="thumbnail python:struct.get('thumbnail')"
+     tal:condition="thumbnail"
+     style="float:right;padding:0 1em 0.5em 0.5em"
+     ><img src="/++thumbnail++/..."
+           tal:attributes="src thumbnail"
+           alt="Preview image">
+</div>
+<p tal:condition="ok"
+   i18n:translate=""
+   >The validation of "<a href="#" tal:content="struct/title"
+tal:attributes="href struct/url"
+i18n:name="name">Strukturtitel</a>" has succeeded.</p>
+<p i18n:translate=""
+   tal:define="times result/times | nothing"
+   tal:condition="times">
+   Completed at <span tal:content="python:times['completed']" i18n:name="completed">17:31:25</span>;
+   total time was <span tal:content="python:times['total']" i18n:name="total">3:21</span> minutes.
+</p>
+<p tal:condition="python:not ok"
+   i18n:translate="">
+During the validation of
+"<a href="#" tal:content="struct/title"
+tal:attributes="href struct/url"
+i18n:name="name">Strukturtitel</a>"
+some errors occurred.
+</p>
+<h2 i18n:translate="">
+Administrational pages
+</h2>
+<ul tal:define="base_url python:struct['url']">
+<li><a href="#" i18n:translate=""
+tal:attributes="href string:${base_url}/@@sharing">Sharing
+</a></li>
+<li><a href="#" i18n:translate=""
+tal:attributes="href string:${base_url}/manage_listLocalRoles">Local roles (Zope)
+</a></li>
+<li><a href="#" i18n:translate=""
+tal:attributes="href string:${base_url}/folder_contents">Contents
+</a></li>
+<li><a href="#" i18n:translate=""
+tal:attributes="href string:${base_url}/brain_maintenance_view">Brain maintenance
+</a></li>
+</ul>
+<h2 i18n:translate="">
+Associated groups
+</h2>
+<ul>
+<li tal:repeat="grp python:result['groups']">
+<tt tal:content="python:grp['role']">Reader</tt>:
+<a href="#" tal:content="python:grp['groupTitle']"
+tal:attributes="href python:grp['members_url']">Strukturtitel Reader</a>
+(<a href="#" tal:attributes="href python:grp['plone_url']">Plone</a>)
+</li>
+</ul>
+<h2 i18n:translate="">Workflow transitions</h2>
+<dl tal:condition="transitions">
+<tal:transition-loop repeat="tr_dic transitions">
+<dt tal:content="python:tr_dic['name']">make_inherit</dt>
+<dd><ul>
+<li tal:repeat="dic python:tr_dic['thelist']"
+    tal:content="python:dic['txt']">
+Successfully applied in 42 cases
+</li>
+</ul></dd>
+</tal:transition-loop>
+</dl>
+<div tal:define="warnings python:result.get('warnings')"
+     tal:condition="warnings">
+    <h2 i18n:translate="">Warnings</h2>
+    <ul>
+        <li tal:repeat="txt warnings"
+            tal:content="txt">
+        Warnungstext, z.B. bzgl. des Vorschaubilds
+        </li>
+    </ul>
+</div>
+<h2 i18n:translate="">Miscellaneous</h2>
+<dl>
+<dt i18n:translate=""
+    title="Used in log entries for this action"
+    i18n:attributes="title">Logging ID</dt>
+<dd><tt tal:content="misc/logging_id">ABC12345</tt></dd>
+<dt i18n:translate=""
+    title="for URL correction by Javascript"
+    i18n:attributes="title">visible_url</dt>
+<dd><a tal:content="misc/visible_url"
+       href="./management_1255c69f5497ffb66ab21dfb9108ec4e_publish.pt?..."
+       tal:attributes="href misc/visible_url">Die bessere URL (ohne @@copystructure)</a></dd>
+</dl>
+</div><!-- .alert.alert-info -->
+</tal:result>
+    <form method="post">
+
+        <fieldset>
+            <legend i18n:translate="">Structure</legend>
+            <input name="templateId"
+                   value="management_6c7879ebbc919b61c72f77a4a1d9474f_publish"
+                   type="hidden"
+                   tal:attributes="value options/templateId | templateId">
+            <div class="field">
+                <label><i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="label_language">
+                        Language
+                    </tal:block>
+                </label>
+                <select i18n:domain="languagedropdown" name="sourceLanguage"
+                        class=""
+                        onchange="window.location.href=this.options[this.selectedIndex].value"
+                        >
+                    <tal:block tal:repeat="item here/@@additionallanguages/languages">
+                        <option tal:attributes="value string:${portal_url}/${templateId}?set_language=${item/code};
+                                                selected python:item['code']==langCode and 'selected' or None"
+                                tal:content="structure item/name"
+                                i18n:translate=""/>
+                    </tal:block>
+                </select>
+            </div>
+
+            <div class="field">
+                <label><i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="">
+                        Content
+                    </tal:block>
+                </label>
+                <select name="uid" class="chosen col-md-12 form-control"
+                        data-placeholder="Choose one ..."
+                        i18n:attributes="data-placeholder">
+                    <option></option>
+                    <tal:block tal:repeat="brain brains">
+                        <option tal:attributes="value value;
+                                                selected python: value==given_uid and 'selected' or None"
+                                tal:define="value brain/UID"
+                                tal:content="structure brain/Title"
+                                i18n:translate=""/>
+                    </tal:block>
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend i18n:translate="">Action</legend>
+            <div class="pull-left"
+                 style="margin-right: 2em">
+                <div>
+                    <label>
+                        <input type="radio"
+                               name="_action"
+                               id="action-1"
+                               class="switch"
+                               tal:attributes="checked python:current_action == '1'">
+                        <tal:txt i18n:translate="">
+                            Set structure state
+                        </tal:txt>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="radio"
+                               name="_action"
+                               id="action-5"
+                               class="switch"
+                               tal:attributes="checked python:current_action == '5'">
+                        <tal:txt i18n:translate="">
+                            Validate structure
+                        </tal:txt>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="radio"
+                               name="_action"
+                               id="action-3"
+                               class="switch"
+                               tal:attributes="checked python:current_action == '3'">
+                        <tal:txt i18n:translate="">
+                            Delete structure
+                        </tal:txt>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="radio"
+                               name="_action"
+                               id="action-4"
+                               class="switch"
+                               tal:attributes="checked python:current_action == '4'">
+                        <tal:txt i18n:translate="">
+                            Set subportal
+                        </tal:txt>
+                    </label>
+                </div>
+            </div>
+
+            <div tal:attributes="style python:current_action not in '1' and 'display:none' or None"
+                 class="switched action-1">
+                <p i18n:translate="">
+                    Please use the
+                    "<label for="action-5" i18n:name="action" i18n:translate="">
+                        Validate structure
+                    </label>" action for workflow transitions.
+                </p>
+                <p i18n:translate="">
+                Structure validation won't redirect you to the newly validated structure
+                but it will give you a verbose results screen
+                which includes a clickable hyperlink.
+                </p>
+            </div>
+
+            <div tal:attributes="style python:current_action not in '34' and 'display:none' or None"
+                 class="switched action-3 action-4">
+                <p i18n:translate="">
+                    This action is currently disabled.
+                </p>
+            </div>
+
+            <div tal:attributes="style python:current_action not in '5' and 'display:none' or None"
+                 class="switched action-5">
+                <p i18n:translate="explain_structure_validation">
+                    All linked resources (like e.g. images) are made available
+                    to the group of authors which is connected to the structured
+                    element.
+                </p>
+            </div>
+
+            <div tal:attributes="style python:current_action not in '5' and 'display:none' or None"
+                 class="switched action-5">
+            <p i18n:translate="">
+                Page requisites are usually included when changing the workflow state
+                and can be changed in a "more-publicity-only" fashion;
+                this is important e.g. for literature links and standards which are likely used
+                in other structures as well.
+            </p></div>
+
+            <div class="switched action-3"
+                 tal:attributes="style python:current_action != '3' and 'display:none' or None">
+                <p i18n:translate="">
+                Deletes the structure and the associated groups.
+                </p>
+            </div>
+
+            <div class="switched action-4"
+                 tal:attributes="style python:current_action != '4' and 'display:none' or None">
+                <p i18n:translate="">
+                Sets the visibility of structured content for the subportals.
+                </p>
+            </div>
+
+        </fieldset>
+
+        <fieldset class="switched action-1 action-5"
+            tal:attributes="style python:current_action not in '15' and 'display:none' or None"
+            >
+            <legend i18n:translate="">Workflow</legend>
+
+            <div class="field switched action-5"
+                 tal:attributes="style python:current_action not in '25' and 'display:none' or None">
+                <label for="transition"><i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="">
+                    Workflow transition
+                    </tal:block>
+                </label>
+                <select name="transition" id="transition" class="chosen form-control"
+                        tal:define="gtt python:workflow.getTransitionTitle;
+                                    "
+                        data-placeholder="Choose one ..."
+                        i18n:attributes="data-placeholder">
+                    <option></option>
+                    <option value="none"
+                            class="switched action-5"
+                            tal:attributes="style python:current_action not in '5' and 'display:none' or None;
+                                           selected python:given_transition == 'none'"
+                            ><tal:txt i18n:translate="">No workflow state changes</tal:txt>
+                            <em i18n:translate="">(Only fix structure contents to "inherited" state)</em>
+                    </option>
+                    <optgroup label="Internal workflow"
+                              tal:define="transitions python:['make_private', 'make_submitted', 'make_accepted',
+                                                              'make_rejected', 'make_retract', 'make_private_again']">
+                        <option
+                            tal:repeat="value transitions"
+                            tal:attributes="value value;
+                                            selected python:value == given_transition"
+                                tal:content="python:gtt(value)"
+                                i18n:translate="">
+                        Privat setzen
+                        </option>
+                    </optgroup>
+                    <optgroup label="Increase publicity"
+                              i18n:attributes="label"
+                              tal:define="transitions python:['make_restricted', 'make_visible', 'make_public']">
+                        <option
+                            tal:repeat="value transitions"
+                            tal:attributes="value value;
+                                            selected python:value == given_transition"
+                                tal:content="python:gtt(value)"
+                                i18n:translate="">
+                            Für Teilnehmer veröffentlichen
+                        </option>
+                    </optgroup>
+                    <optgroup label="Reduce publicity"
+                              i18n:attributes="label"
+                              tal:define="transitions python:['make_visible_again', 'make_restricted_again', 'make_private_again']">
+                        <option
+                            tal:repeat="value transitions"
+                            tal:attributes="value value;
+                                            selected python:value == given_transition"
+                                tal:content="python:gtt(value)"
+                                i18n:translate="">
+                            Auf Angemeldete einschränken
+                        </option>
+                    </optgroup>
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset class="switched action-1 action-5"
+            tal:attributes="style python:current_action not in '15' and 'display:none' or None"
+            >
+            <legend i18n:translate="">Processing</legend>
+
+            <div class="field switched action-1"
+                 tal:attributes="style python:current_action not in '1' and 'display:none' or None">
+                <label>
+                    <input type="checkbox" name="redirect_to"
+                           value="changed" checked="checked">
+                    <tal:block i18n:translate="">Redirect to published structure</tal:block>
+                </label>
+            </div>
+
+            <div class="field switched action-5"
+                 tal:define="
+use_securitymanager options/use_securitymanager | request/use_securitymanager | string:1;
+use_securitymanager python:bool(use_securitymanager);
+                " tal:attributes="
+style python:current_action not in '5' and 'display:none' or None;
+">
+                <div class="field">
+                    <label>
+                        <input type="checkbox" name="use_securitymanager"
+                               tal:attributes="checked python:use_securitymanager or None"
+                               value="1" checked="checked">
+                        <tal:block i18n:translate="">Use securitymanager</tal:block>
+                    </label>
+                </div>
+            </div>
+
+        </fieldset>
+
+        <fieldset class="switched action-1 action-3 action-4 action-5"
+            tal:attributes="style python:current_action not in '1345' and 'display:none' or None"
+            >
+            <legend i18n:translate="">Referenced objects</legend>
+            <div class="field switched action-1 action-3 action-4"
+                 tal:attributes="style python:current_action not in '134' and 'display:none' or None">
+                <label for="include-references-all0">
+                    <input type="radio" name="include_references"
+                           value="all" id="include-references-all0"/>
+                    <tal:block i18n:translate="">Include all</tal:block>
+                </label>
+            </div>
+            <div class="field switched action-1 action-3 action-4"
+                 tal:attributes="style python:current_action not in '134' and 'display:none' or None">
+                <label for="include-references-temp0">
+                    <input type="radio" name="include_references"
+                           value="temp" checked="checked"
+                           id="include-references-temp0"/>
+                    <tal:block i18n:translate="">Include /temp</tal:block>
+                </label>
+            </div>
+            <div class="field switched action-1 action-3 action-4"
+                 tal:attributes="style python:current_action not in '134' and 'display:none' or None">
+                <label for="include-references-none0">
+                    <input type="radio" name="include_references"
+                           value="none" id="include-references-none0"/>
+                    <tal:block i18n:translate="">Include none</tal:block>
+                </label>
+            </div>
+
+            <div class="field switched action-5"
+                tal:attributes="style python:current_action not in '5' and 'display:none' or None">
+                <label for="recursion-depth">
+                    <i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:txt i18n:translate="">
+                    Recursion depth
+                    </tal:txt></label>
+                <select name="recursion_depth" id="recursion-depth"
+                        class="chosen"
+                        data-placeholder="Choose one ..."
+                        i18n:attributes="data-placeholder">
+                    <option></option>
+                    <option value="0" i18n:translate=""
+                            tal:attributes="selected python:recursion_depth=='0'">
+                    0 - structure only
+                    </option>
+                    <option value="1" i18n:translate=""
+                            tal:attributes="selected python:recursion_depth=='1'">
+                    1 - include directly refered objects (like images and tables)
+                    </option>
+                    <option value="2" i18n:translate=""
+                            tal:attributes="selected python:recursion_depth=='2'">
+                    2 - e.g. include as well images which are used by refered tables
+                    </option>
+                    <option value="3" i18n:translate=""
+                            tal:attributes="selected python:recursion_depth=='3'">
+                    3 - One step even further
+                    </option>
+                </select>
+            </div><!-- .field -->
+
+            <div class="field switched action-5"
+                 tal:attributes="style python:current_action not in '5' and 'display:none' or None">
+                <label>
+                    <input type="checkbox" name="more_publicity_only"
+                           value="1" checked="checked"
+                           tal:attributes="checked python:more_publicity_only == '1'">
+                    <tal:block i18n:translate="">Change workflow state of requisites in "more publicity" direction only</tal:block>
+                </label>
+            </div>
+        </fieldset>
+
+        <fieldset class="switched action-5-disabled"
+            tal:attributes="style python:current_action not in 'x' and 'display:none' or None"
+            >
+            <legend i18n:translate="">Local roles</legend>
+            <div class="field"
+                 tal:define="curval request/move_users_to_roles | nothing;
+                             curval python:int(curval or '0')"
+                 tal:attributes="style python:current_action not in '5' and 'display:none' or None">
+                <label>
+                    <input type="checkbox" name="move_users_to_roles"
+                           value="1" checked="checked"
+                           tal:attributes="checked curval">
+                    <tal:block i18n:translate="">Add users with local roles to
+                    the appropriate associated groups
+                    (e.g., if the user has the local role "Author" for any part
+                    of the structure, it will be added to the associated author group)
+                    </tal:block><tal:comment replace="nothing"><!--
+                    (nicht zu verwechseln mit give_to_author_group aus
+                    ./management_1255c69f5497ffb66ab21dfb9108ec4e_copy.pt -
+                    das bezieht sich auf die Owner-Rolle)
+                    --></tal:comment>
+                </label>
+            </div>
+        </fieldset>
+
+        <fieldset class="switched action-4"
+              tal:attributes="style python:current_action != '4' and 'display:none' or None"
+              tal:define="subportal python:here.getBrowser('subportal');
+                          portale python:subportal.get();">
+            <legend i18n:translate="unitracc_label_subportals">Subportals</legend>
+            <div class="field">
+                <label><i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="unitracc_label_subportals">
+                        Subportals
+                    </tal:block>
+                </label>
+                <tal:block tal:repeat="portal portale">
+                    <div tal:condition="python: 'default_uid' != portal">
+                        <label>
+                            <input type="checkbox" name="subportals"
+                               tal:attributes="value portal;
+                                               checked python: portal==portale['default_uid'];
+                                               disabled python: portal==portale['default_uid']"/>
+                            <tal:block tal:content='python:portale[portal]["title"]'/>
+                        </label>
+                    </div>
+                </tal:block>
+            </div>
+        </fieldset>
+
+        <div class="form-actions">
+            <input type="submit" value="Set state"
+                   disabled="disabled"
+                   i18n:attributes="value"
+                   class="btn btn-primary custom-form-submit switched action-1"
+                   tal:attributes="style python:current_action != '1' and 'display:none' or None"
+                   data-url="/@@temp/publishStructure">
+            <input type="submit" value="Validate"
+                   i18n:attributes="value"
+                   class="btn btn-primary custom-form-submit switched action-5"
+                   tal:attributes="style python:current_action != '5' and 'display:none' or None"
+                   data-url="/@@copystructure/validate">
+            <input type="submit" value="Delete"
+                   disabled="disabled"
+                   i18n:attributes="value"
+                   class="btn btn-primary custom-form-submit switched action-3"
+                   tal:attributes="style python:current_action != '3' and 'display:none' or None"
+                   data-url="/@@temp/deletePrivateStructure">
+            <input type="submit" value="Set subportal"
+                   disabled="disabled"
+                   i18n:attributes="value"
+                   class="btn btn-primary custom-form-submit switched action-4"
+                   tal:attributes="style python:current_action != '4' and 'display:none' or None"
+                   data-url="/@@temp/setSubportal">
+        </div>
+    </form>
+    </tal:ns>
+    </metal:block>
+</metal:main>
+
+</body>
+</html>
+

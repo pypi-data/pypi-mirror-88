@@ -1,0 +1,22 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+    <include package=".browser" />
+
+    <subscriber
+        for="Products.ATContentTypes.interface.file.IATFile
+             Products.Archetypes.interfaces.IObjectInitializedEvent"
+        handler=".events.convert"/>
+
+    <subscriber
+        for="Products.ATContentTypes.interface.file.IATFile
+             Products.Archetypes.interfaces.IObjectEditedEvent"
+        handler=".events.convert"/>
+
+    <subscriber
+        for="Products.ATContentTypes.interface.file.IATFile
+             OFS.interfaces.IObjectWillBeRemovedEvent"
+        handler=".events.delete"/>
+
+</configure>

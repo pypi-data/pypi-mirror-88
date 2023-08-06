@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html lang="de">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>booking_macros.pt (UNITRACC)</title>
+<style type="text/css">
+.makro-dokumentation {
+    border-top: 1px dashed gray;
+    margin-top: 1em;
+}
+.makro-beispiel {
+    border: 1px solid gray;
+    margin: 0.5em;
+    padding: 0.2em;
+    background-color: #ddd;
+}
+/* --- [ aus dem Makro "mail" ... [ */
+table {
+    border-collapse: collapse;
+}
+table td,
+table th {
+    vertical-align: top;
+    text-align: left;
+    padding: 0.2em;
+    border: 1px solid gray;
+}
+table td.text-right,
+table td.right {
+    text-align: right;
+}
+blockquote {
+    display: block;
+    padding-left: 0.5em;
+    border-left: 0.3em solid #eeeeee;
+}
+table, blockquote {
+    margin-bottom: 0.3em;
+}
+/* --- ] ... aus dem Makro "mail" ] */
+</style>
+</head>
+
+<tal:comment replace="nothing"><!--
+--></tal:comment>
+<body tal:define="
+order_id request/order_id | python:140;
+booking nocall:context/@@booking;
+data python:booking.edit_order_view(order_id);
+pformat python:context.getAdapter('pformat');
+">
+
+<ul metal:use-macro="context/booking_macros2/macros/booking-macros-templates"/>
+
+<h1>booking_mail_tests.pt</h1>
+
+<p>Tests für die verwendeten Mail-Templates</p>
+
+<table>
+<thead><tr>
+<th>Mail-Template</th>
+<th>Empfänger
+<th>Zweck, Inhalt
+<th>Verwendung von Makros?
+</tr></thead>
+<tbody><tr>
+  <td><a href="#mail_order_new">mail_order_new.pt</a>
+  <td>Admin
+  <td>Benachrichtigungsmail über eine neue Bestellung
+  <td>Makros?
+<tr>
+  <td><a href="#mail_order_confirmation">mail_order_confirmation.pt</a>
+  <td>Kunde
+  <td>Bestätigungsmail über die neue Bestellung
+  <td>Makros?
+<tr>
+  <td><a href="#mail_order_success">mail_order_success.pt</a>
+  <td>Kunde
+  <td>Benachrichtigungsmail über die erfolgreiche Bezahlung
+  <td>Makros?
+<tr>
+  <td><a href="#mail_payment_pending">mail_payment_pending.pt</a>
+  <td>Kunde
+  <td>Benachrichtigungsmail, daß die Bezahlung offenbar in Arbeit, aber noch nicht abgeschlossen ist
+  <td>Makros?
+<tr>
+  <td><a href="#mail_payment_backend">mail_payment_backend.pt</a>
+  <td>Admin
+  <td>Mail mit allerhand Zahlungsdetails
+  <td>Makros?
+<tr>
+  <td><a href="#mail_order_failed">mail_order_failed.pt</a>
+  <td>Kunde
+  <td>Mail: die Bezahlung ist fehlgeschlagen
+  <td>Makros?
+</tr></tbody>
+
+<h2>Testdaten</h2>
+<table>
+<tr>
+<th>order_id</th>
+<td tal:content="structure order_id">140</td>
+</tr><tr>
+<th>data</th>
+<td>
+<pre tal:content="python:pformat(data)"></pre>
+</td>
+</tr>
+</table>
+
+
+<div id="mail_order_new" class="makro-dokumentation"
+     tal:define="
+templ nocall:context/mail_order_new;
+">
+<h2>Template <tt>mail_order_new.pt</tt></h2>
+<p>Benachrichtigungsmail an den Admin über eine neue Bestellung</p>
+<h3>Aufrufbeispiel</h3>
+<div class="makro-beispiel"
+     tal:on-error="string:Template mail_order_new.pt ist leider noch nicht testbar"
+     tal:content="structure python:templ(data)">
+Die Ausgabe des Template-Aufrufs
+</div><!-- .makro-beispiel -->
+</div><!-- #mail_order_new .makro-dokumentation -->
+
+<div id="mail_order_confirmation" class="makro-dokumentation"
+     tal:define="
+templ nocall:context/mail_order_confirmation;
+">
+<h2>Template <tt>mail_order_confirmation.pt</tt></h2>
+<p>Bestätigungsmail an den User über die neue Bestellung</p>
+<h3>Aufrufbeispiel</h3>
+<div class="makro-beispiel"
+     tal:on-error="string:Template mail_order_confirmation.pt ist leider noch nicht testbar"
+     tal:content="structure python:templ(data)">
+Die Ausgabe des Template-Aufrufs
+</div><!-- .makro-beispiel -->
+</div><!-- #mail_order_confirmation .makro-dokumentation -->
+
+<div id="mail_order_success" class="makro-dokumentation"
+     tal:define="
+templ nocall:context/mail_order_success;
+">
+<h2>Template <tt>mail_order_success.pt</tt></h2>
+<p>Benachrichtigungsmail an den User über die erfolgreiche Bezahlung</p>
+<h3>Aufrufbeispiel</h3>
+<div class="makro-beispiel"
+     tal:on-error="string:Template mail_order_success.pt ist leider noch nicht testbar"
+     tal:content="structure python:templ(data)">
+Die Ausgabe des Template-Aufrufs
+</div><!-- .makro-beispiel -->
+</div><!-- #mail_order_success .makro-dokumentation -->
+
+<div id="mail_payment_pending" class="makro-dokumentation"
+     tal:define="
+templ nocall:context/mail_payment_pending;
+">
+<h2>Template <tt>mail_payment_pending.pt</tt></h2>
+<p>Benachrichtigungsmail an den User, daß die Bezahlung offenbar in Arbeit, aber noch nicht abgeschlossen ist</p>
+<h3>Aufrufbeispiel</h3>
+<div class="makro-beispiel"
+     tal:on-error="string:Template mail_payment_pending.pt ist leider noch nicht testbar"
+     tal:content="structure python:templ(data)">
+Die Ausgabe des Template-Aufrufs
+</div><!-- .makro-beispiel -->
+</div><!-- #mail_payment_pending .makro-dokumentation -->
+
+<div id="mail_payment_backend" class="makro-dokumentation"
+     tal:define="
+templ nocall:context/mail_payment_backend;
+">
+<h2>Template <tt>mail_payment_backend.pt</tt></h2>
+<p>Mail an den Admin mit allerhand Zahlungsdetails</p>
+<h3>Aufrufbeispiel</h3>
+<div class="makro-beispiel"
+     tal:on-error="string:Template mail_payment_backend.pt ist leider noch nicht testbar"
+     tal:content="structure python:templ(data)">
+Die Ausgabe des Template-Aufrufs
+</div><!-- .makro-beispiel -->
+</div><!-- #mail_payment_backend .makro-dokumentation -->
+
+<div id="mail_order_failed" class="makro-dokumentation"
+     tal:define="
+templ nocall:context/mail_order_failed;
+">
+<h2>Template <tt>mail_order_failed.pt</tt></h2>
+<p>Mail an den Kunden: die Bezahlung ist fehlgeschlagen</p>
+<h3>Aufrufbeispiel</h3>
+<div class="makro-beispiel"
+     tal:on-error="string:Template mail_order_failed.pt ist leider noch nicht testbar"
+     tal:content="structure python:templ(data)">
+Die Ausgabe des Template-Aufrufs
+</div><!-- .makro-beispiel -->
+</div><!-- #mail_order_failed .makro-dokumentation -->
+
+
+
+</table>
+
+</body>
+</html>
+

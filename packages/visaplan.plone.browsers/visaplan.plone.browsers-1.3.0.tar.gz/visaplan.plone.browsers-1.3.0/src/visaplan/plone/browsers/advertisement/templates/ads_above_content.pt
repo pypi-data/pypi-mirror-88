@@ -1,0 +1,3 @@
+<tal:x define="a nocall:context/@@advertisement"
+content="structure python:a.get_ads_html('advertisement-content', limit=1)">
+</tal:x>

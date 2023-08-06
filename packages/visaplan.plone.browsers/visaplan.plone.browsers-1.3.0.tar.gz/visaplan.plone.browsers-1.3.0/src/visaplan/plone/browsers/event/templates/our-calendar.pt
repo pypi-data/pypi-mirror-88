@@ -1,0 +1,50 @@
+<tal:ns define="
+groupdesktop python:here.getBrowser('groupdesktop');
+topic string:event;
+enable_xmlimport python:1;
+event_macro here/event_folder_view/macros;
+"><metal:bigmac
+use-macro="here/main_template/macros/master">
+
+
+    <metal:js fill-slot="head_slot">
+    <script type="text/javascript"
+            metal:use-macro="event_macro/chosen-js"></script>
+      </metal:js>
+
+<metal:void fill-slot="column_one_slot"/>
+<metal:void fill-slot="column_two_slot"/>
+<metal:h1 fill-slot="headline">
+<pre tal:define="pformat python:context.getAdapter('pformat')"
+     tal:content="python:pformat(grpinfo)">
+     grpinfo
+</pre>
+<h1 i18n:translate=""
+    tal:condition="gid">
+    Group calendar
+</h1>
+<h1 i18n:translate=""
+    tal:condition="not:gid">
+    My calendar
+</h1>
+</metal:h1>
+<metal:content fill-slot="content">
+<tal:ns2 define="
+event python:here.getBrowser('event');
+brains event/desktop;
+template_id python:here.getAdapter('templateid')();
+url string:${here/absolute_url}/${template_id};
+">
+<metal:fill use-macro="event_macro/calendar">
+  
+</metal:fill>
+</tal:ns2>
+</metal:content>
+<!-- durch use-macro (metal:bigmac) überschrieben: -->
+<pre>
+tal:ns ok. gf:
+../../../skins/unitracc_templates/event_folder_view.pt
+../../../../zkb/skins/zkb/event_folder_view.pt
+../../groupdesktop/templates/our-articles.pt
+</pre>
+<!-- vim: set ts=2 sts=2 sw=2 si et hls :--></metal:bigmac></tal:ns>

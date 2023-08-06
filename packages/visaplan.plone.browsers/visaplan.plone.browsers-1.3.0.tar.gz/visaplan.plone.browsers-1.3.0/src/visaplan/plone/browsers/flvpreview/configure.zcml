@@ -1,0 +1,26 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+    <browser:page
+        for="*"
+        name="flvpreview"
+        class=".browser.Browser"
+        permission="zope2.View"
+        allowed_interface=".browser.IFlvPreview"
+        />
+
+    <include package=".templates" />
+
+    <subscriber
+        for="Products.ATContentTypes.interface.file.IATFile
+             Products.Archetypes.interfaces.IObjectEditedEvent"
+        handler=".events.delete"/>
+
+    <subscriber
+        for="Products.ATContentTypes.interface.file.IATFile
+             OFS.interfaces.IObjectWillBeRemovedEvent"
+        handler=".events.delete"/>
+
+
+</configure>

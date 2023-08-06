@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+<metal:block fill-slot="top_slot"
+tal:define="dummy python:request.set('disable_border',1);
+            dummy python:request.set('span_class', 'col-md-9');
+"/>
+  <head>
+  <metal:scripts fill-slot="javascript_head_slot">
+    <script src="/++resource++tan/tan.js"></script>
+    <script src="/++resource++unitracc-libs/datepicker-de.js"
+            tal:condition="python:lang in ('de', 'es', 'fr', 'en-GB')"
+            tal:attributes="src string:/++resource++unitracc-libs/datepicker-${lang}.js"
+    ></script>
+    </metal:scripts>
+  </head>
+
+<body>
+  <metal:no-ads fill-slot="column_one_slot"/>
+  <metal:main fill-slot="main">
+<tal:ns tal:define="
+tan_browser nocall:context/@@tan;
+dummy here/@@authorized/raiseAnon;
+formdata context/@@tan/formdata;
+tan request/tan | nothing;
+start request/start | nothing;
+"
+>
+  <div id="area-title">
+    <h1 i18n:translate="">
+      Redeem TAN
+    </h1>
+  </div>
+  <form action="@@tan/redeem" method="post">
+    <table>
+      <tr>
+      <td>
+    <label for="tan">
+      <tal:txt i18n:translate="">
+        TAN:
+      </tal:txt>
+    </label>
+      </td>
+      <td>
+      <input type="text" name="tan" id="tan" value="123456789"
+             placeholder="123456789"
+             tal:attributes="value formdata/tan"
+             >
+      </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="start"
+                 i18n:translate="">
+            Desired start
+          </label>
+        </td>
+        <td class="multi-inputs">
+          <input type="text" size="10"
+                 name="start" type="start"
+                 title="dd.mm.yyyy format"
+                 id="input-start-date"
+                 i18n:attributes="title"
+                 tal:attributes="value formdata/start;
+                                 placeholder formdata/date_example"
+                 >
+          <input type="text" readonly="readonly" id="mirror-date">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+           <input type="submit" value="Redeem TAN"
+                  i18n:attributes="value"
+                  class="btn btn-primary">
+           <input type="reset" class="btn btn-default">
+        </td>
+      </tr>
+    </table>
+  </form>
+  </tal:ns>
+</metal:main>
+</body><!-- vim: set sw=2 sts=2 si et :--></html>

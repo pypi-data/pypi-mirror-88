@@ -1,0 +1,28 @@
+<tal:html i18n:domain="plone"
+     tal:define="
+mac1 here/booking_macros/macros;
+div_outer_class string:dbg-outer;
+div_inner_class string:dbg-inner;
+items options/articles;
+order options/order;
+in_backend python:0;
+"><html metal:use-macro="mac1/mail">
+    <metal:void fill-slot="greeting-hello"/>
+    <metal:slot fill-slot="text">
+    <tal:ns2 define="
+mac2 here/booking_macros2/macros;
+mail options/user_email;
+">
+    <p>
+        <tal:txt i18n:translate="">New Order for user: </tal:txt>
+        <tal:block tal:content="options/userid | order/userid"/>,
+        <a href="mailto:xxx" metal:use-macro="mac2/mail-link">heinz@kunz</a>
+    </p>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0"
+           metal:use-macro="mac1/order-overview">
+    </table>
+
+    </tal:ns2>
+    </metal:slot>
+</html>
+</tal:html>

@@ -1,0 +1,90 @@
+<metal:content metal:define-macro="import-main"
+tal:define="
+            untranslated nocall:here/@@untranslated;
+            strings python:untranslated.fromTemplate();
+            content_type python:strings['UnitraccThingy'];
+	    xmlimport nocall:here/@@xmlimport;
+	    dummy python:xmlimport.authImport(content_type);
+            ">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+xmlns:tal="http://xml.zope.org/namespaces/tal"
+xmlns:metal="http://xml.zope.org/namespaces/metal"
+xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+lang="en"
+metal:use-macro="here/main_template/macros/master"
+i18n:domain="plone">
+<head>
+    <title>Import thingies via XML</title>
+</head>
+<body>
+<tal:block tal:define="unlinked_end python:0"
+           metal:fill-slot="breadcrumb">
+    <metal:breadcrumb use-macro="here/crumbs/macros/main"/>
+</tal:block>
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+        <metal:main fill-slot="main">
+            <tal:request content="structure request"
+                         condition="python:0">
+            Der Request
+            </tal:request>
+
+            <div class="area-title">
+                <h1 tal:content="strings/import_text"
+                    i18n:translate="">
+                    Import thingies via XML
+                </h1>
+            </div>
+            <div class="area-content"
+                 >
+                <form method="POST" action="/@@xmlimport/processForm" enctype="multipart/form-data">
+
+                    <label for="workflow"
+                           i18n:translate="">
+                        Workflow status
+                    </label>
+                    <select name="workflow" id="workflow">
+                        <option value="private" i18n:translate="">private</option>
+                        <option value="public" i18n:translate="">public</option>
+                    </select>
+                    <br/>
+                    <label for="file">
+                        <tal:block i18n:translate="">
+                            XML file
+                        </tal:block>
+                    </label>
+                    <input type="file" name="file" id="file" accept="text/xml"/>
+                    <input type="hidden" name="unitraccGroups:lines" value="group_xy"
+                           tal:define="gid request/gid | nothing"
+                           tal:condition="gid"
+                           tal:attributes="value gid"/>
+
+                    <input type="hidden" name="content_type"
+                           value="UnitraccEvent"
+                           tal:attributes="value content_type"/>
+                    <label tal:condition="python:here.getBrowser('w3l')">
+                        <input type="checkbox" name="w3l">
+                        <tal:txt i18n:translate="">
+                        W3L format
+                        </tal:txt>
+                    </label>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary"
+                                i18n:translate="Store">
+                            Save
+                        </button>
+                        <button type="submit" class="btn btn-default"
+                                value="cancel" name="cancel"
+                                i18n:translate="">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </metal:main>
+    </body>
+</html>
+</metal:content>

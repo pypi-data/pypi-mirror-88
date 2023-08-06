@@ -1,0 +1,37 @@
+<html><body>
+<tal:block define="
+toTime python:context.getAdapter('totime');
+registration nocall:here/@@registration;
+portal_id registration/getPortalID;
+">
+<div>**************************************************************</div>
+<div>Neue Registrierung auf <span tal:content="portal_id">UNITRACC</span></div>
+<div>**************************************************************</div>
+<p>Es hat sich ein neuer Nutzer auf <span tal:content="portal_id">UNITRACC</span> registriert:</p>
+<p>Registriert wurde folgender Nutzer:</p>
+    <table>
+        <tr>
+            <td>Nutzername:</td>
+            <td><tal:block tal:content="options/username"/></td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><tal:block tal:content="options/fullname"/></td>
+        </tr>
+        <tr>
+            <td>E-Mail:</td>
+            <td><tal:block tal:content="options/email"/></td>
+        </tr>
+        <tr>
+            <td>Domain:</td>
+            <td><tal:block tal:content="here/portal_url"/></td>
+        </tr>
+        <tr>
+            <td>Datum:</td>
+            <td><tal:block tal:content="python:toTime(context.ZopeTime())"/></td>
+        </tr>
+    </table>
+</tal:block>
+<br/>
+<tal:block tal:content="structure here/mail_footer"/>
+</body></html>

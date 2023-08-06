@@ -1,0 +1,131 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+             for="*"
+             name="csv_user_profiles"
+             template="csv_user_profiles.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="edit_group_membership"
+             template="edit_group_membership.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="js-listing-groups"
+             template="js-listing-groups.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="js-listing-user"
+             template="js-listing-user.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="js-search-groups-add"
+             template="js-search-groups-add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="js-search-to-groups-add"
+             template="js-search-to-groups-add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_duplicateprofiles_view"
+             template="manage_duplicateprofiles_view.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_group_add"
+             template="manage_group_add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_group_details"
+             template="manage_group_details.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_group_view"
+             template="manage_group_view.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_groups_view"
+             template="manage_groups_view.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_users_add"
+             template="manage_users_add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_users_delete"
+             template="manage_users_delete.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_users_lock"
+             template="manage_users_lock.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_users_rename"
+             template="manage_users_rename.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_users_unlock"
+             template="manage_users_unlock.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_users_view"
+             template="manage_users_view.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="my-groups"
+             template="my-groups.pt"
+             permission="zope2.View"
+             />
+
+</configure>

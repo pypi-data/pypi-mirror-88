@@ -1,0 +1,168 @@
+<tal:block tal:condition="python: here.getBrowser('stage').get('advertisement-right-one') or here.getBrowser('stage').get('advertisement-right-two')">
+    <tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+</tal:block>
+<!-- quickfix bis werbung korrekt -->
+<tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone">
+
+<metal:slot metal:fill-slot="column_one_slot"/>
+
+<metal:block metal:fill-slot="breadcrumb"
+tal:define="step python:3">
+
+    <ul class="breadcrumb"
+        metal:use-macro="here/booking_macros/macros/steps">
+        <li>
+            1. Cart
+            <span class="divider">/</span>
+        </li>
+        <li>
+            2. Your details
+            <span class="divider">/</span>
+        </li>
+        <li>
+            3. Payment method
+            <span class="divider">/</span>
+        </li>
+        <li>
+            4. Confirmation
+            <span class="divider">/</span>
+        </li>
+        <li>
+            5. Thanks
+        </li>
+    </ul>
+
+</metal:block>
+
+<metal:main fill-slot="main"
+            tal:define="
+booking nocall:here/@@booking;
+dummy booking/check_access;
+data booking/get_current_order_and_choices;
+order data/order;
+order_id order/order_id;
+choices data/choices;
+payment_types choices/payment_type;
+desktop_path here/@@unitraccfeature/desktop_path;
+pformat python:context.getAdapter('pformat');
+">
+
+<pre tal:condition="python:0"
+     tal:content="python:pformat({'order': order,
+                                  'choices': choices,
+                                  'template': 'order_preferences.pt'})"></pre>
+    <div class="area-title">
+        <h1 class="documentFirstHeading">
+            3.
+            <tal:block i18n:translate="">Order preferences</tal:block>
+        </h1>
+    </div>
+    <div id="area-content">
+
+        <form method="post"
+              action="/@@booking/save_preferences"
+              class="form-horizontal"
+              tal:attributes="action string:${here/absolute_url}/@@booking/save_preferences">
+            <div class="form-group"
+                 tal:define="curval python:order['payment_type'];">
+                <label for="ptype-1" class="control-label col-md-3">
+                    <i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="">Payment method</tal:block>
+                </label><!-- .control-label .col-md-3 -->
+                <div class="col-md-9">
+                    <div class="radio"
+                         tal:repeat="ptype choices/payment_type">
+                        <label
+                             tal:define="disabled ptype/disabled | nothing;
+                                         cls python:disabled and 'radio disabled' or 'radio';
+                                         "
+                             tal:attributes="class cls;
+                                             ">
+                            <input type="radio" name="payment_type"
+                                   value="prepayment"
+                                   tal:attributes="value ptype/payment_type;
+                                                   checked ptype/selected;
+                                                   disabled disabled;
+                                                   ">
+                            <tal:txt content="ptype/payment_type"
+                                     i18n:translate="">
+                            Vorkasse
+                            </tal:txt>
+                        </label>
+                    </div><!-- .radio -->
+                    <div class="radio disabled"
+                         tal:condition="nothing">
+                        <label>
+                            <input type="radio" name="payment_type"
+                                   value="paypal">
+                            Paypal
+                        </label>
+                    </div><!-- .radio.disabled -->
+                </div><!-- .col-md-9 -->
+            </div><!-- .form-group -->
+            <div class="form-group">
+                <label for="asm-1" class="control-label col-md-3">
+                    <i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="">access_settlement_mode_label</tal:block>
+                </label><!-- .control-label .col-md-3 -->
+                <div class="col-md-9">
+                    <div class="radio"
+                         tal:repeat="mode choices/access_settlement_mode">
+                        <label
+                             tal:define="disabled mode/disabled | nothing;
+                                         cls python:disabled and 'radio disabled' or 'radio';
+                                         "
+                             tal:attributes="class cls;
+                                             ">
+                            <input type="radio" name="access_settlement_mode"
+                                   value="immediate"
+                                   id="asm-1"
+                                   tal:attributes="value mode/mode_key;
+                                                   checked mode/selected;
+                                                   disabled disabled;
+                                                   id string:asm-${repeat/mode/number};
+                                                   ">
+                            <tal:txt content="mode/access_settlement_mode_msgid"
+                                     i18n:translate="">
+                            Direkter persönlicher Zugang
+                            </tal:txt>
+                        </label>
+                        <p tal:content="structure mode/access_settlement_mode_description_msgid"
+                           i18n:translate="">
+                        Nach Eingang Ihrer Zahlung wird Ihr persönlicher Zugang direkt aktiviert
+                        </p>
+                    </div><!-- .radio -->
+                </div><!-- .col-md-9 -->
+            </div><!-- .form-group -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <a class="btn btn-default"
+                            href="/myunitracc/mycart"
+                           tal:attributes="href string:$desktop_path/mycart"
+                           i18n:translate="">
+                            Back
+                        </a>
+                    </div>
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary"
+                                name="action" value="update"
+                                i18n:translate="">
+                            Continue
+                        </button>
+                    </div>
+                </div><!-- .col-md-9 -->
+            </div><!-- .row -->
+
+            <input type="hidden" name="formid"
+                   tal:attributes="value request/formid"/>
+
+        </form>
+    </div>
+</metal:main>
+
+</metal:block>
+
+<tal:editors condition="nothing"><!-- vim: set ts=8 sts=4 sw=4 si et :--></tal:editors>

@@ -1,0 +1,35 @@
+<tal:block tal:define="toTime python:context.getAdapter('totime');
+                       registration nocall:here/@@registration">
+<p>**************************************************************</p>
+<p>Neue Registrierungsbestätigung auf <tal:block tal:content="registration/getPortalID"/></p>
+<p>**************************************************************</p>
+<p>Die Registrierung für folgenden Account wurde bestätigt:</p>
+    <table>
+        <tr>
+            <td>Nutzername:</td>
+            <td><tal:block tal:content="options/username"/></td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><tal:block tal:content="options/fullname"/></td>
+        </tr>
+        <tr>
+            <td>E-Mail</td>
+            <td><tal:block tal:content="options/email"/></td>
+        </tr>
+        <tr>
+            <td>Domain:</td>
+            <td><tal:block tal:content="here/portal_url"/></td>
+        </tr>
+        <tr>
+            <td>Datum:</td>
+            <td><tal:block tal:content="python:toTime(context.ZopeTime())"/></td>
+        </tr>
+        <tr tal:condition="options/w3l | nothing">
+            <td>W3L:</td>
+            <td tal:content="options/w3l">W3L-User Dagobert wurde erzeugt</td>
+        </tr>
+    </table>
+</tal:block>
+<br/>
+<tal:block tal:content="structure here/mail_footer"/>

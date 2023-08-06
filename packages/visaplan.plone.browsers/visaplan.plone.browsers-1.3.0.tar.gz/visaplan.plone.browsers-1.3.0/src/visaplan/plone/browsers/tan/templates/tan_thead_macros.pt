@@ -1,0 +1,82 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+  <metal:main fill-slot="main">
+<tal:ns1 tal:define="
+tan_browser python:context.getBrowser('tan');
+dummy tan_browser/authManage;
+"
+>
+<div id="area-title">
+	<h1>Nur Makros</h1>
+</div>
+<table class="datatb">
+	<thead metal:define-macro="thead">
+		<th metal:define-macro="tan"
+		    i18n:translate="">
+		TAN
+		</th>
+		<th metal:define-macro="quantity"
+		    i18n:translate="">
+		Quantity
+		</th>
+		<th metal:define-macro="status"
+		    i18n:translate="">
+		Status
+		</th>
+		<th metal:define-macro="group_id"
+		    i18n:translate="">
+		group_id
+		</th>
+		<th metal:define-macro="Group"
+		    i18n:translate="">
+		Group
+		</th>
+		<th metal:define-macro="changeset"
+		    title="Changeset"
+		    i18n:translate="Changeset_short"
+		    i18n:attributes="title">
+		Cs.
+		</th>
+		<th metal:define-macro="duration_days"
+		    title="duration of arranged group membership"
+		    i18n:attributes="title"
+		    i18n:translate="duration_days_short">
+		D. [d]
+		</th>
+		<th metal:define-macro="owner_id"
+		    i18n:translate="">
+		Redeemed by
+		</th>
+		<th metal:define-macro="expiration_date"
+		    i18n:translate="">
+		expiration_date
+		</th>
+		<th metal:define-macro="additional_info"
+		    i18n:translate="">
+		Additional information
+		</th>
+		<th metal:define-macro="changed_by"
+		    i18n:translate="">
+		Changed by
+		</th>
+		<th metal:define-macro="last_changed_date"
+		    i18n:translate="">
+		Changed at
+		</th>
+	</thead>
+</table>
+  </tal:ns1>
+  </metal:main>
+<!-- vim: set ts=4 sts=4 noet si :--></body></html>

@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+    <metal:block fill-slot="javascript_head_slot">
+        <script type="text/javascript"
+                src="/++resource++usermanagement/manage_groups_view.js"></script>
+
+    </metal:block>
+    <metal:block metal:fill-slot="head_slot">
+        <link rel="stylesheet" type="text/css"
+              href="/++resource++usermanagement/usermanagement.css"/>
+    </metal:block>
+
+
+<body>
+
+<metal:no-ads fill-slot="ad-block-above-content"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:main fill-slot="main"
+            tal:define="dummy context/@@usermanagement/authViewGroups">
+
+    <div class="area-title">
+        <h1 i18n:translate="">
+            Manage Groups
+        </h1>
+    </div>
+    <div id="area-content">
+        <form method="post" class="form-action"
+          action="/manage_group_add">
+            <button class="btn btn-primary"
+                    type="submit">
+                <i class="glyphicon glyphicon-plus icon-white"></i>
+                <tal:block i18n:translate="">Add Group</tal:block>
+            </button>
+        </form>
+        <form method="post" id="search-form"
+              accept-charset="UTF-8"
+              action="manage_groups_view">
+            <div class="input-group">
+                <input id="appendedInputButton" class="col-md-6" type="text" name="SearchableText"
+                   tal:attributes="value request/SearchableText | nothing"/>
+                <button type="submit" class="btn btn-default search-button search-groups" id="appendedInputButton">
+                    <i class="glyphicon glyphicon-search"></i>
+                    <tal:block i18n:translate="">Search</tal:block>
+                </button>
+                <input type="hidden" name="b_start" id="b_start"
+                       tal:attributes="value request/form/b_start | python:0"
+                       />
+            </div>
+        </form>
+
+        <div id="js-listing-groups">
+            <!-- -->
+        </div>
+
+    </div>
+
+</metal:main>
+
+</body>
+</html>

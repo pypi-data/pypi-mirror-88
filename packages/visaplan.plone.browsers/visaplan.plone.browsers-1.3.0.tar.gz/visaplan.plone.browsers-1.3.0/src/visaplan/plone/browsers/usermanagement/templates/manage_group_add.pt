@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:no-ads fill-slot="ad-block-above-content"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="dummy context/@@usermanagement/authManageGroups">
+
+    <div id="content">
+
+        <h1 class="documentFirstHeading"
+            i18n:translate="">
+            Add Group
+        </h1>
+
+        <form method="post" id="search-form"
+              accept-charset="UTF-8"
+              action="/@@usermanagement/addGroup">
+            <input type="hidden" value="group" name="referrer">
+            <div class="field fieldRequired"
+                 title="Required"
+                 i18n:attributes="title title_required">
+                <i class="glyphicon glyphicon-exclamation-sign"></i>
+                <input type="text" name="title"
+                       id="title"
+                       tal:attributes="value request/title | nothing"/>
+            </div>
+
+            <div class="field">
+                <label i18n:translate="">Description</label><br/>
+                <textarea cols="35" rows="6" name="description"><tal:block tal:content="request/description | nothing"/></textarea>
+            </div>
+
+
+            <input class="button-object-actions"
+                   type="submit" value="Add"
+                   i18n:attributes="value"/>
+
+
+        </form>
+
+    </div>
+
+</metal:main>
+
+</body>
+</html><tal:vim replace="nothing"><!-- vim: set ts=8 sts=4 sw=4 et :--></tal:vim>

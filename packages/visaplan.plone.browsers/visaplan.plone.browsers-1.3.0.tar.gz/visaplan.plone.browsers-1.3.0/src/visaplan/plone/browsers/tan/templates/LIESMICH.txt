@@ -1,0 +1,116 @@
+                               # -*- coding: utf-8 -*- vim: tw=79 si sts=2 sw=2
+Überblick über die Templates des TAN-Moduls
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Manche dieser Templates werden nicht unter ihrem Namen verwendet, sondern unter
+einem in configure.zcml definierten (und durch __init__.py generierten) Alias.
+
+Seitentemplates
+---------------
+
+manage_tans.pt:
+  Zentrale Konfigurationsseite, als erste verlinkt aus der Unitracc-Verwaltung.
+
+manage_redeemable_tans.pt:
+  Einlösbare TANs (also mit dem Status 'new' oder 'reserved')
+  Alter Name: manage_available_tans
+  DONE:
+  - evtl. umbenennen in manage_redeemable_tans
+
+create_tan.pt:
+  Formular zum Erzeugen einer neuen TAN;
+  TODO:
+  - Formular generisch machen
+
+manage_tan_changesets.pt:
+  "Letzte Änderungen" - Auflistung der Änderungssätze in absteigender Folge
+  (neueste zuerst) mit Zeitstempel und der Anzahl betroffener TANs.
+  TODO:
+  - Liste generisch machen
+
+manage_tan.pt:
+  Bearbeiten einer konkreten TAN und Ausgabe der Historie.
+  TODO:
+  - Formular generisch machen
+  DONE:
+  - Liste generisch machen
+
+manage_tan_status_summary.pt:
+  Übersicht, wieviele TANs mit welchem Status es gibt;
+  sortiert nach Status (logische Reihenfolge)
+  TODO:
+  - Verlinkung zu Übersichten mit TANs des jeweiligen Status
+
+redeem_tan.pt:
+  TAN einlösen;
+  Alias: tan, mytan
+  TODO:
+  - Formular generisch machen
+
+tans_of_group.pt:
+  TANs der angegebenen Gruppe auflisten
+  TODO:
+  - Lokalisierung der Überschrift
+  DONE:
+  - Liste generisch machen
+
+
+Makro-Container
+---------------
+
+Die folgenden Templates stellen Makros bereit, um die anderen Templates so
+generisch wie möglich halten zu können.  Sie arbeiten mit den Sequenzen "cols"
+(Namen der auszugebenden Spalten, die weitgehend - aber nicht vollständig! -
+mit Spaltennamen aus SQL-Sichten identisch sind) und "rows" (von der SQL-Sicht
+gelieferte Daten)
+
+tan_thead_macros.pt:
+  Makros für den Kopf einer Tabelle; jedes Makro heißt wie die erzeugte Spalte
+  ("col")
+
+tan_tbody_macros.pt:
+  Makros für den Körper einer Tabelle; jedes Makro heißt wie die erzeugte
+  Spalte
+
+tan_forms_macros.pt:
+  Makros für Suchformulare; jedes Makro heißt wie die als Filterkritierum
+  verwendete "Spalte".  Es wird jedoch jeweils eine *Zeile* für eine
+  Formalartabelle erzeugt (--> Makro filter-form aus tans_wizard.pt).
+  Es werden (noch?) nicht alle Spalten der Sicht tan_view als Suchkriterium
+  verwendet; daher sind auch noch nicht alle Makros ausgearbeitet.
+
+tans_wizard.pt:
+  Faßt die Makros aus tan_thead_macros und tan_tbody_macros zusammen und stellt
+  sie in einem Makro "table" bereit; so schon realisiert z. B. in
+  manage_available_tans.pt.
+  - Makro "table"
+    Das Makro verwendet folgende vorher zu definierende Variablen:
+    cols - die Sequenz der Spalten
+    rows - das Ergebnis der Datenbankabfrage
+    nolinks - sollen bestimmte Spalten in einer Variante ohne Hyperlinks
+              generiert werden?  Standardwert, wenn nicht definiert: nein.
+  - Makro "filter-form"
+
+Papierkorb
+----------
+
+Die folgenden Templates sind derzeit ohne Funktion und können nach
+Konsolidierung entfallen:
+
+- manage_tan_form1.pt
+
+Makro-Vorrat
+------------
+Gewonnen mit sed -ne '/define-macro/s,^.*define-macro="\([^"]\+\)".*,\1,p' {Datei}:
+  tan
+  quantity
+  status
+  group_id
+  Group
+  changeset
+  duration_days
+  owner_id
+  expiration_date
+  additional_info
+  changed_by
+  last_changed_date

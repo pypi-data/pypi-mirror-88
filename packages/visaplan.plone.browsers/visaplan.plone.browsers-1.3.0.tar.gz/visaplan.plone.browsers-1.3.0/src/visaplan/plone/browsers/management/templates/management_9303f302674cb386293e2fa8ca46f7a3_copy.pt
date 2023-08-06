@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+    <head>
+      <metal:js fill-slot="head_slot">
+      <metal:js use-macro="here/management_1255c69f5497ffb66ab21dfb9108ec4e_publish/macros/chosen-js"></metal:js>
+      <script type="text/javascript"
+	      src="/++resource++management/userselect-live-keypress.js">
+      </script>
+      </metal:js>
+    </head>
+
+<body>
+
+<metal:no-ads fill-slot="ad-block-above-content"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:main fill-slot="main"
+            tal:define="
+dummy python:context.getAdapter('authorized')('unitracc: Copy structure types');
+dict_ python:{};
+uid request/form/uid | nothing;
+showAll python:0;
+templateId python:here.getAdapter('templateid')();
+langCode python:context.getAdapter('langcode')();
+brains here/@@structuretype/getDocumentationFolders;
+">
+
+    <h1 class="documentFirstHeading padding-top-10">
+        Dokumentationen kopieren
+    </h1>
+
+    <form method="post"
+          metal:use-macro="here/management_1255c69f5497ffb66ab21dfb9108ec4e_copy/macros/form">
+
+
+            <fieldset>
+                <legend>F&uuml;llen Sie alle Felder</legend>
+
+
+                <input type="submit" value="Copy"
+                       i18n:attributes="value"/>
+
+            </fieldset>
+
+
+    </form>
+
+
+
+
+</metal:main>
+
+</body>
+</html>
+

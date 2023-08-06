@@ -1,0 +1,162 @@
+<tal:block tal:condition="python: here.getBrowser('stage').get('advertisement-right-one') or here.getBrowser('stage').get('advertisement-right-two')">
+    <tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+</tal:block>
+<!-- quickfix bis werbung korrekt -->
+<tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone"><!--
+Achtung, noch keine Ausgabe der neuen Kalkulationszeilen (calculated)!
+Bitte angleichen:
+- ./order_view.pt
+- ./order_edit.pt
+- ./order_overview.pt (diese Datei)
+und Makros verwenden aus:
+- ./booking_macros.pt
+- ./booking_macros2.pt
+-->
+
+<metal:slot metal:fill-slot="column_one_slot"/>
+
+<metal:block metal:fill-slot="breadcrumb"
+    tal:define="step python:4">
+
+    <ul class="breadcrumb"
+        metal:use-macro="here/booking_macros/macros/steps">
+        <li>
+            1. Cart
+            <span class="divider">/</span>
+        </li>
+        <li>
+            2. Your details
+            <span class="divider">/</span>
+        </li>
+        <li>
+            3. Payment method
+            <span class="divider">/</span>
+        </li>
+        <li>
+            4. Confirmation
+            <span class="divider">/</span>
+        </li>
+        <li>
+            5. Thanks
+        </li>
+    </ul>
+</metal:block>
+
+<metal:main fill-slot="main"
+            tal:define="
+booking nocall:here/@@booking;
+res python:booking.get_current_order_articles(complete=True);
+order res/order;
+items res/articles;
+desktop_path here/@@unitraccfeature/desktop_path;
+mac1 here/booking_macros/macros;
+mac2 here/booking_macros2/macros;
+">
+
+    <div class="area-title">
+        <h1 class="documentFirstHeading">
+            4.
+            <tal:block i18n:translate="">Confirmation</tal:block>
+        </h1>
+    </div>
+
+    <div id="area-content"
+        tal:define="
+div_inner_class string:list-item;
+div_outer_class nothing;
+in_backend python:False;
+">
+    <metal:mac metal:use-macro="mac1/order-overview">
+        </metal:mac>
+        <div metal:use-macro="mac2/snippet-short-termed-start">
+            <p class="text-warning">
+                Please note that a short-term desire selected start date
+                can not be guaranteed for all payment types.
+            </p>
+        </div>
+        <tal:ns define="
+ptype python:order['payment_type'];
+use_paypal python:ptype == 'paypal';
+pformat python:context.getAdapter('pformat');
+">
+<pre tal:condition="python:0"
+     tal:content="python:pformat({'order': order,
+                                  'template': 'order_overview.pt'})"></pre>
+        <form method="post"
+              class="form-horizontal"
+              tal:condition="not:use_paypal"
+              tal:attributes="action string:${here/portal_url}/@@booking/submit_order"
+              >
+            <input type="hidden" name="oid"
+                   tal:attributes="value order/order_id|nothing"/>
+            <input type="hidden" name="formid"
+                   tal:attributes="value order/formid|nothing"/>
+        <div style="margin-left:3em">
+        <div>
+            <a class="link-overlay"
+                i18n:translate=""
+                tal:attributes="href string:${here/@@booking/get_agb_link}?ajax_load=1"
+                >Terms and conditions</a>
+        </div>
+        <div class="form-group">
+            <label for="booking_tac"
+                   class="checkbox control-label"
+                   style="float:left;">
+                <input type="checkbox" id="booking_tac" name="booking_tac" value="x">
+                <tal:block i18n:translate="">
+                    I accept terms and conditions
+                </tal:block>
+            </label>
+        </div>
+        </div>
+        <div class="pull-left">
+            <a i18n:translate=""
+               class="btn btn-default"
+               tal:attributes="href string:$desktop_path/checkout?formid=${order/formid}">
+                Back
+            </a>
+        </div>
+        <div class="pull-right" tal:condition="items">
+            <button type="submit"
+                    class="btn btn-primary order-last-submit"
+                    i18n:translate="">
+                Order
+            </button>
+        </div>
+        </form>
+        <tal:if-paypal condition="use_paypal">
+        <p i18n:translate=""
+           tal:condition="items">
+            By proceeding, you accept
+            <a class="link-overlay"
+               href="#"
+               tal:attributes="href string:${here/@@booking/get_agb_link}?ajax_load=1"
+               i18n:name="our_terms_and_conditions"
+               i18n:translate=""
+               >our Terms and conditions</a>.
+        </p>
+        <div class="pull-left">
+            <a i18n:translate=""
+               class="btn btn-default"
+               tal:attributes="href string:$desktop_path/checkout?formid=${order/formid}">
+                Back
+            </a>
+        </div>
+        <div class="pull-right"
+             tal:condition="items">
+            <button
+                tal:replace="structure python:booking.get_paypal_button(res)">
+                Buy Now
+            </button>
+        </div>
+        </tal:if-paypal>
+        </tal:ns>
+
+    </div>
+</metal:main>
+
+</metal:block>
+
+<tal:editors condition="nothing"><!-- vim: set ts=8 sts=4 sw=4 si et :--></tal:editors>

@@ -1,0 +1,593 @@
+<!DOCTYPE HTML>
+<html lang="de">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>booking_macros.pt (UNITRACC)</title>
+<style type="text/css">
+.makro-dokumentation {
+    border-top: 1px dashed gray;
+    margin-top: 1em;
+}
+.makro-beispiel {
+    border: 1px solid gray;
+    margin: 0.5em;
+    padding: 0.2em;
+    background-color: #ddd;
+}
+/* --- [ aus dem Makro "mail" ... [ */
+table {
+    border-collapse: collapse;
+}
+table td,
+table th {
+    vertical-align: top;
+    text-align: left;
+    padding: 0.2em;
+    border: 1px solid gray;
+}
+table td.text-right,
+table td.right {
+    text-align: right;
+}
+blockquote {
+    display: block;
+    padding-left: 0.5em;
+    border-left: 0.3em solid #eeeeee;
+}
+table, blockquote {
+    margin-bottom: 0.3em;
+}
+/* --- ] ... aus dem Makro "mail" ] */
+</style>
+</head>
+
+<tal:comment replace="nothing"><!--
+Templates:
+- mycart.pt
+- checkout.pt
+- order_choose_payment_method.pt
+- order_overview.pt
+- order_payment_finished.pt
+
+Das Makro mstep kann nicht hier definiert werden, weil bei seiner Verwendung
+das übergeordnete Makro steps noch nicht abgeschlossen ist; vorher stünde es im
+Namensraum nicht zur Verfügung.
+--></tal:comment>
+<body tal:define="
+order_id request/orderid | python:14;
+booking nocall:context/@@booking;
+data python:booking.edit_order_view(order_id);
+pformat python:context.getAdapter('pformat');
+">
+
+<ul metal:use-macro="context/booking_macros2/macros/booking-macros-templates"/>
+
+<h1>booking_macros.pt</h1>
+<ul>
+<li><tt><a href="#steps">steps</a></tt>,
+verwendet in:
+<div>Verwendet seinerseits <a href="booking_makros2#mstep">das Makro <tt>mstep</tt>
+aus <tt>booking_macros2.pt</tt></a></div>
+</li>
+<li><tt><a href="#mail">mail</a></tt>,
+verwendet in:
+</li>
+<li><tt><a href="#order-overview">order-overview</a></tt>,
+verwendet in:
+</li>
+</ul>
+
+<h2>Testdaten</h2>
+<table>
+<tr>
+<th>order_id</th>
+<td tal:content="structure order_id">140</td>
+</tr><tr>
+<th>data</th>
+<td>
+<pre tal:content="python:pformat(data)"></pre>
+</td>
+</tr>
+</table>
+
+
+<div id="steps" class="makro-dokumentation">
+<h2>Makro <tt>steps</tt></h2>
+<p>Die speziellen "Brotkrümel" (1 bis 5) für den Bestellvorgang;
+der aktuelle Schritt wird hervorgehoben.
+</p>
+<h3>Variablen aus dem Aufrufkontext</h3>
+<table><tr>
+<th>Name</th><th>Bedeutung</th><th>erforderlich?</th><th>Vorgabewert</th>
+</tr><tr>
+<th>step</th><td>Der aktuelle Schritt in der Bestellung</td><td>nein</td><td>Vorgabe: 1</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel"
+     tal:condition="data">
+
+    <ul class="breadcrumb"
+        metal:define-macro="steps"
+        tal:define="desktop_path here/@@unitraccfeature/desktop_path;
+                    root here/portal_url;
+                    prefix string:$root$desktop_path;
+                    formid formid | request/form/formid | nothing;
+                    step step | python:1;
+                    mstep nocall:here/booking_macros2/macros/mstep;">
+    <tal:ns define="nr python:1; method string:mycart">
+    <li metal:use-macro="mstep">
+        1. <metal:slot fill-slot="txt"
+                       i18n:translate="">Cart</metal:slot>
+        <span class="divider">/</span>
+    </li>
+    </tal:ns>
+    <tal:ns define="nr python:2; method string:checkout">
+    <li metal:use-macro="mstep">
+        <metal:slot fill-slot="txt" i18n:translate="">
+            Your details
+        </metal:slot>
+    </li>
+    </tal:ns>
+    <tal:ns define="nr python:3; method string:order_preferences">
+    <li metal:use-macro="mstep">
+        <metal:slot fill-slot="txt" i18n:translate="">
+        Order preferences
+        </metal:slot>
+    </li>
+    </tal:ns>
+    <tal:ns define="nr python:4; method string:order_overview">
+    <li metal:use-macro="mstep">
+        <metal:slot fill-slot="txt" i18n:translate="">
+        Confirmation
+        </metal:slot>
+    </li>
+    </tal:ns>
+    <tal:ns define="nr python:5; method nothing">
+    <li metal:use-macro="mstep">
+        <metal:slot fill-slot="txt" i18n:translate="">
+        Thanks
+        </metal:slot>
+    </li>
+    </tal:ns>
+    </ul>
+</div><!-- .makro-beispiel -->
+</div><!-- #steps .makro-dokumentation -->
+
+<div id="mail" class="makro-dokumentation">
+<h2>Makro <tt>mail</tt></h2>
+<p>Text einer HTML-Mail, incl. eines kleinen CSS-Stylesheets</p>
+<h3>Slots</h3>
+greeting-hello
+text
+greeting-yours
+
+<h3>Variablen aus dem Aufrufkontext</h3>
+<table><tr>
+<th>Name</th><th>Bedeutung</th><th>erforderlich?</th><th>Vorgabewert</th>
+</tr><tr>
+<th>options/greeting</th><td>Spezieller Anredetext</td><td>Nein</td><td>"Dear sir or madam", übersetzt</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel"
+     tal:condition="data">
+
+    <html metal:define-macro="mail">
+<head>
+<style type="text/css">
+table {
+    border-collapse: collapse;
+}
+table td,
+table th {
+    vertical-align: top;
+    text-align: left;
+    padding: 0.2em;
+    border: 1px solid gray;
+}
+table td.text-right,
+table td.right {
+    text-align: right;
+}
+blockquote {
+    display: block;
+    padding-left: 0.5em;
+    border-left: 0.3em solid #eeeeee;
+}
+table, blockquote {
+    margin-bottom: 0.3em;
+}
+</style>
+</head>
+<body>
+<p metal:define-slot="greeting-hello">
+<tal:ns define="greeting options/greeting | nothing">
+<tal:if-given
+     condition="greeting"
+     content="greeting">
+Dear Sir or Madam,
+</tal:if-given><tal:else condition="not:greeting"
+     i18n:translate="">
+Dear Sir or Madam,
+</tal:else></tal:ns>
+</p>
+<div metal:define-slot="text">
+Makro <tt>mail</tt>:
+Der Slot <tt>text</tt> sollte stets explizit gefüllt werden.
+</div>
+<metal:slot define-slot="greeting-yours">
+<p i18n:translate="">
+    With kind regards,
+</p>
+<p i18n:translate="unitracc_team">
+    Your UNITRACC-Team
+</p>
+</metal:slot>
+</body>
+</html>
+    <tal:comment replace="nothing"><!--
+    Noch zu klären:
+    - unterschiedliche CSS-Klassen für äußeres div bei order-address (col-md-6)
+      und order-head (text-right)
+        
+    --></tal:comment>
+</div><!-- .makro-beispiel -->
+</div><!-- #mail .makro-dokumentation -->
+
+<div id="order-overview" class="makro-dokumentation"
+     tal:define="
+res data | options/orderdata;
+order data/order;
+">
+<h2>Makro <tt>order-overview</tt></h2>
+<h3>Aufruf</h3>
+<table><tr>
+<th>Name</th><th>Bedeutung</th><th>erforderlich?</th><th>Vorgabewert</th>
+</tr><tr>
+<th colspan="4">Variablen aus dem Aufrufkontext</th>
+</tr><tr>
+<th>res</th>
+<td>Die kompletten Buchungsdaten, also ein Dict mit den Schlüsseln order, articles, calculated und meta</td><td>ja</td><td>(keiner)</td>
+</tr><tr>
+<th>options</th>
+<td>Benannte Aufrufoptionen für das aufrufende Template</td><td>ja</td><td>(keiner)</td>
+</tr><tr>
+<th colspan="4">Benannte Aufrufoptionen (<tt>options/&hellip;</tt>)</th>
+</tr><tr>
+<th>company</th><td>Feld aus Buchungstabelle</td><td>ja</td><td>(keiner)</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel"
+     tal:condition="data">
+    <metal:macro define-macro="order-overview">
+    <tal:ns define="
+div_outer_class div_outer_class | string:col-md-9;
+div_inner_class div_inner_class | string:row;
+in_backend in_backend | python:0;
+pformat python:context.getAdapter('pformat');
+res res | options/orderdata;
+"><!--
+" tal:on-error="string: Fehler in Makro order-overview (booking_macros.pt)
+-->
+<pre tal:content="python:pformat(res)"
+     tal:condition="python:0"></pre>
+    <metal:slot1 define-slot="order-address">
+        <div class="col-md-6"
+             tal:attributes="class div_outer_class"
+             tal:omit-tag="python:div_outer_class == 0">
+            <div class="row"
+                 tal:attributes="class div_inner_class"
+                 tal:omit-tag="python:div_inner_class == 0">
+                <address>
+                <strong i18n:translate="">
+                    Invoice address
+                </strong>
+                <blockquote>
+                    <strong tal:define="
+firstname python:order.get('firstname', '');
+lastname python:order.get('lastname', '');
+has_name python:firstname or lastname;
+">
+                    <tal:block tal:condition="has_name"
+                               tal:content="string:${firstname} ${lastname}">
+                    </tal:block>
+                    <br tal:condition="has_name"/>
+                    <tal:block tal:condition="order/company"
+                        tal:content="order/company">
+                    </tal:block>
+                    </strong>
+                    <br tal:condition="order/company"/>
+                    <tal:block tal:content="order/street"/>
+                    <tal:block tal:condition="order/additional_info">
+                        <br/>
+                        <tal:txt tal:content="order/additional_info"></tal:txt>
+                    </tal:block><br/>
+                    <tal:block tal:content="order/zip"/>
+                    <tal:block tal:content="order/city"/><br/>
+                    <tal:block tal:content="order/country"/>
+                </blockquote>
+                </address>
+            </div>
+        </div>
+    </metal:slot1>
+    <metal:slot2 define-slot="order-head">
+        <div class="col-md-9"
+             tal:attributes="class div_outer_class"
+             tal:omit-tag="python:div_outer_class == 0">
+            <div class="row"
+                 tal:attributes="class div_inner_class"
+                 tal:omit-tag="python:div_inner_class == 0"
+                 tal:condition="not:in_backend">
+                 <strong i18n:translate="">
+                     Payment method
+                 </strong>
+                 <blockquote>
+                     <div i18n:translate=""
+                          tal:content="order/payment_type">
+                          paypal
+                      </div>
+                 </blockquote>
+                 <metal:slot21 define-slot="order-payment-history"/>
+            </div>
+            <div class="row"
+                 tal:define="value order/access_settlement_mode"
+                 tal:condition="value"
+                 tal:attributes="class div_inner_class"
+                 tal:omit-tag="python:div_inner_class == 0"
+                 ><tal:ns define="
+                 translatable_value string:access_settlement_mode_${value};
+                 ">
+                 <strong i18n:translate="access_settlement_mode_label">
+                 Access settlement mode
+                 </strong>
+                 <blockquote>
+                     <div i18n:translate=""
+                          tal:content="translatable_value">
+                     immediate
+                     </div>
+                 </blockquote>
+            </tal:ns></div>
+            <div class="row"
+                 tal:attributes="class div_inner_class"
+                 tal:omit-tag="python:div_inner_class == 0"
+                 tal:condition="in_backend">
+                <p>
+                    <tal:block i18n:translate="">Order number</tal:block>:
+                    <tal:block tal:content="order/ordernr"/>
+                <br/>
+                    <tal:block i18n:translate="">Booked on</tal:block>:
+                    <tal:block tal:content="order/date_booked"/>
+                <br/>
+                    <tal:block i18n:translate="">
+                        Payment method
+                    </tal:block>:
+                    <tal:block i18n:translate="" tal:content="order/payment_type"/>
+                <br/>
+                    <tal:block i18n:translate="">Status</tal:block>:
+                    <tal:block tal:content="order/payment_status" i18n:translate=""/>
+                <br/>
+                    <tal:block i18n:translate=""
+                               tal:condition="order/date_payed">Payment date</tal:block><tal:block
+                                   tal:content="string:: ${order/date_payed}"
+                               tal:condition="order/date_payed"/>
+                <br tal:condition="order/date_payed"/>
+                    <tal:block i18n:translate="">IP</tal:block>:
+                    <tal:block tal:content="order/ip"/>
+                </p>
+            </div>
+        </div>
+    </metal:slot2>
+<tal:comment condition="nothing"><!--
+           tal:on-error="string:Fehler in Slot order-table"
+--></tal:comment>
+    <table metal:define-slot="order-table"
+           border="0" cellpadding="0" cellspacing="0"
+           class="table table-bordered table-hover"
+           tal:define="
+table_class table_class | default | string:table table-bordered table-hover;
+res res | options/orderdata;
+meta res/meta | python:{'vat_column': 0, 'display_quantity': 1};
+vat_column vat_column | meta/vat_column | python:0;
+display_quantity meta/display_quantity | python:1;
+vat_column python:vat_column and not display_quantity;
+leftside_columns python: 4 + vat_column + (display_quantity * 2);
+colspan python:vat_column and (vat_column + 1) or None;
+order_id order/order_id | nothing;
+editable editable | nothing;
+editable python:order_id and editable and 1 or 0;
+columns python:leftside_columns + 1 + (editable and 1);
+items items | res/articles;
+calculated calculated | res/calculated;
+portal_url here/portal_url;
+">
+        <thead>
+            <tr>
+                <th i18n:translate="">#</th>
+                <th i18n:translate="">Article</th>
+                <th i18n:translate="">Desired start</th>
+                <th i18n:translate="">Duration</th>
+                <th i18n:translate="">Net price</th>
+                <th i18n:translate=""
+                    tal:condition="vat_column">VAT</th>
+<tal:if-quantity condition="display_quantity">
+                <th i18n:translate="">Quantity</th>
+                <th i18n:translate="">Amount</th>
+</tal:if-quantity>
+                <th tal:condition="editable"></th>
+            </tr>
+        </thead>
+        <tbody tal:condition="items">
+            <tal:articles-loop repeat="item items">
+            <tr tal:define="
+article_id item/article_id | article_id;
+qad_criterion item/discount_group;
+uid item/article_uid;
+">
+                <td tal:content="string:${repeat/item/number}.">
+                    1.
+                </td>
+                <td>
+                    <a tal:content="item/article_title"
+                       href="#"
+                       tal:omit-tag="not:editable"
+                       tal:define="
+url python:(qad_criterion != 'enterprise'
+            ) and (portal_url + '/course_overview?cuid=' + uid
+            ) or  ('/resolveuid/' + uid);
+"
+                       tal:attributes="href url">
+                        Artikeltitel
+                    </a>
+                </td>
+                <td tal:define="val item/start">
+                    <input type="text"
+                           tal:condition="editable"
+                           tal:attributes="name string:start_${article_id};
+                                           value val"
+                           placeholder="dd.mm.yyyy"
+                           i18n:attributes="placeholder"
+                           class="datetime input-small"
+                           size="10" style="width:none"/>
+                    <tal:if condition="not:editable">
+                    <tal:txt tal:content="val"
+                       tal:condition="val">
+                        09.07.2014
+                    </tal:txt>
+                    <tal:txt tal:condition="not:val"
+                       i18n:translate="">
+                    After receipt of payment
+                    </tal:txt>
+                    </tal:if>
+                </td>
+                <td>
+                    <tal:txt content="item/duration">31</tal:txt>
+                    <tal:inhalt i18n:translate="">Days</tal:inhalt>
+                </td>
+                <td class="text-right"
+                    tal:content="structure item/amount_formatted">
+                   600,00 €
+                </td>
+                <td tal:condition="vat_column"
+                    class="text-right"
+                    tal:content="structure item/vat">
+                   114,00 €
+                </td>
+<tal:if-quantity condition="display_quantity">
+                <td class="text-right"
+                    tal:content="item/quantity">
+                   2
+                </td>
+                <td class="text-right"
+                    tal:content="item/amount_multiplied_formatted">
+                   1.200,00 €
+                </td>
+</tal:if-quantity>
+                <td tal:condition="editable">
+                    <a tal:attributes="href string:@@booking/delete_article?set=${order_id}_${article_id}">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            </tal:articles-loop>
+        </tbody>
+        <tbody tal:condition="not:items">
+            <tr>
+                <td colspan="5" i18n:translate=""
+                    tal:attributes="colspan columns">
+                    No items in cart
+                </td>
+            </tr>
+        </tbody>
+        <tbody tal:condition="calculated">
+            <tr tal:repeat="row calculated"
+                class="calculated">
+                <th colspan="3"
+                    tal:attributes="colspan leftside_columns"
+                    tal:content="row/article_title">
+                19 % MwSt.
+                </th>
+                <td class="text-right"
+                    tal:content="row/amount_multiplied_formatted">
+                1234.56 €
+                </td>
+                <td tal:condition="editable"></td>
+            </tr>
+        </tbody>
+    </table>
+    </tal:ns>
+    </metal:macro>
+
+
+<div id="payment-types-radio" class="makro-dokumentation"
+     tal:define="
+res data;
+order data/order;
+">
+<h2>Makro <tt>payment-types-radio</tt></h2>
+<p><strong>Achtung</strong> - in order_preferences.pt nicht mehr verwendet!</p>
+<h3>Aufruf</h3>
+<table><tr>
+<th>Name</th><th>Bedeutung</th><th>erforderlich?</th><th>Vorgabewert</th>
+</tr><tr>
+<th colspan="4">Variablen aus dem Aufrufkontext</th>
+</tr><tr>
+<th>res</th>
+<td>Die kompletten Buchungsdaten, also ein Dict mit den Schlüsseln order, articles, calculated und meta</td><td>ja</td><td>(keiner)</td>
+</tr><tr>
+<th>options</th>
+<td>Benannte Aufrufoptionen für das aufrufende Template</td><td>ja</td><td>(keiner)</td>
+</tr><tr>
+<th colspan="4">Benannte Aufrufoptionen (<tt>options/&hellip;</tt>)</th>
+</tr><tr>
+<th>company</th><td>Feld aus Buchungstabelle</td><td>ja</td><td>(keiner)</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+    <tal:ns define="
+payment_types context/@@booking/get_payment_types;
+backoffice python:1;
+curval string:prepayment;
+"><!--
+" tal:on-error="string: Fehler in Makro payment-types-radio (booking_macros.pt)
+-->
+<p>payment_types, curval</p>
+<metal:ptradio define-macro="payment-types-radio">
+<tal:ptradio define="
+classes  python:['radio disabled', 'radio'];
+backoffice backoffice | python:0;
+activity_values python:backoffice and [1,2] or [1];
+">
+<tal:loop repeat="ptype payment_types">
+<div class="radio"
+    tal:define="enabled python: ptype['active'] in activity_values;
+                disabled not:enabled;
+                value   ptype/payment_type;
+                checked python:value == curval;
+                "
+    tal:attributes="class python:classes[enabled]"
+    >
+<label>
+    <input type="radio" name="payment_type"
+           tal:attributes="value value;
+                           checked checked;
+                           disabled disabled;
+                           ">
+    <tal:txt tal:content="value"
+       i18n:translate="">prepayment</tal:txt>
+</label>
+</div><!-- .radio -->
+</tal:loop>
+</tal:ptradio>
+</metal:ptradio>
+</tal:ns>
+</div><!-- .makro-beispiel -->
+</div><!-- #payment-types-radio -->
+
+
+</div><!-- .makro-beispiel -->
+</div><!-- #order-overview .makro-dokumentation -->
+</body>
+</html>

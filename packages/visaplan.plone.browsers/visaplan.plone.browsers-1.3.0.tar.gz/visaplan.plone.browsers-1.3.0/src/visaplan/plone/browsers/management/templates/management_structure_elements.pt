@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+    tal:define="dummy python:context.getAdapter('authorized')('unitracc: Manage structure types');
+                checkperm python:context.getAdapter('checkperm');
+                perm_add python:checkperm('unitracc: Add structure types');
+                perm_copy python:checkperm('unitracc: Copy structure types');
+                perm_publ python:checkperm('unitracc: Publish structure types');
+                ">
+
+        <h1 class="documentFirstHeading padding-top-10"
+            i18n:translate=""
+            >
+            Manage structured contents
+        </h1>
+
+        <tal:loop repeat="folder here/@@management/getStructureElementFolders">
+        <fieldset tal:condition="folder"
+                  tal:on-error="string:">
+            <legend tal:content="folder/title_or_id"
+                    i18n:translate="">
+                Fachbücher
+            </legend>
+
+            <table cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td tal:condition="perm_add">
+                    <form method="post"
+                          tal:attributes="action string:${portal_url}/management_${folder/UID}_add">
+                        <input type="hidden" name="uid"
+                               tal:attributes="value folder/UID"/>
+                        <input type="submit"
+                               class="search-button-type btn btn-default"
+                               value="Add"
+                               i18n:attributes="value"/>
+                    </form>
+                </td>
+                <td tal:condition="perm_copy">
+                    <form method="post"
+                          tal:attributes="action string:${portal_url}/management_${folder/UID}_copy">
+                        <input type="hidden" name="uid"
+                               tal:attributes="value folder/UID"/>
+                        <input type="submit"
+                               class="search-button-type btn btn-default"
+                               value="Copy"
+                               i18n:attributes="value"/>
+                    </form>
+                </td>
+                <td tal:condition="perm_publ">
+                    <form method="post"
+                          tal:attributes="action string:${portal_url}/management_${folder/UID}_publish">
+                        <input type="hidden" name="uid"
+                               tal:attributes="value folder/UID"/>
+                        <input type="submit"
+                               class="search-button-type btn btn-default"
+                               value="Manage"
+                               i18n:attributes="value"/>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+            </table>
+
+
+        </fieldset>
+        </tal:loop>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+

@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+  <script src="../static/tan.js"
+          metal:fill-slot="javascript_head_slot"
+          tal:attributes="src string:${here/portal_url}/++resource++tan/tan.js"></script>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+  <metal:main fill-slot="main">
+<tal:ns1 tal:define="
+tan_browser python:context.getBrowser('tan');
+dummy tan_browser/authView;
+changeset request/changeset | nothing;
+rows tan_browser/changesets_info_pretty;
+cols python:('changeset', 'changed_by', 'last_changed_date', 'Group', 'quantity');
+mp tan_browser/canManage;
+nolinks not:mp;
+aaSorting string:0,desc;
+"
+>
+  <div id="area-title">
+    <h1 i18n:translate="">
+      Last changes
+    </h1>
+  </div>
+  <table class="datatb"
+         metal:use-macro="here/tans_wizard/macros/table"
+    >
+    <thead>
+      <th i18n:translate="Changeset_short"
+          i18n:attributes="title"
+          title="Changeset">
+        Cs.
+      </th>
+      <th i18n:translate="">
+        User
+      </th>
+      <th i18n:translate="">
+        Date
+      </th>
+      <th i18n:translate="">
+        Group
+      </th>
+      <th i18n:translate="">
+        Quantity
+      </th>
+    </thead>
+    <tbody>
+      <tr tal:repeat="row rows">
+        <tal:ns2 define="
+        changeset row/changeset;
+        url string:manage_tans?changeset=$changeset;
+        ">
+        <td>
+          <a href="manage_tans?changeset=42"
+             tal:attributes="href url"
+             tal:content="changeset">
+             42
+           </a>
+         </td>
+         <td>
+           <a href="manage_tan_changesets?user_id=willy"
+              tal:attributes="href
+              string:manage_tan_changesets?user_id=${row/user_id}"
+              tal:content="row/user_id">
+              willy
+           </a>
+         </td>
+         <td>
+          <a href="manage_tans?changeset=42"
+             tal:attributes="href url"
+             tal:content="row/last_changed_date">
+             42
+           </a>
+         </td>
+         <td>
+           <a href="manage_tan_changesets?gid=group_abc123"
+              tal:attributes="href string:manage_tan_changesets?group_id=${row/group_id}"
+              tal:content="row/group_title">
+              group_abc123
+            </a>
+         </td>
+        <td tal:content="row/tan_quantity">
+          10
+        </td>
+        </tal:ns2>
+      </tr>
+    </tbody>
+  </table>
+</tal:ns1>
+</metal:main>
+</body><!-- vim: set sw=2 sts=2 si et :--></html>

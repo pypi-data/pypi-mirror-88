@@ -1,0 +1,111 @@
+<tal:ns tal:define="
+brains here/@@nora/search_all;
+easyvoc nocall:here/@@easyvoc;
+industrialsector nocall:here/@@industrialsector;
+industrialsector_getValue nocall:industrialsector/getValue;
+portal_url here/portal_url;
+batch nocall:here/@@batch;
+batch python:batch(brains, 25);
+contact nocall:here/@@contact;
+contactPerson python:contact.getContactPerson;
+totime python:here.getAdapter('totime');
+"
+tal:condition="brains"
+i18n:domain="plone"><tal:comment replace="nothing"><!--
+Siehe auch (gf):
+../../../../../../../visaplan.UnitraccSkins/src/visaplan/UnitraccSkins/skins/unitracc_templates/listing_article.pt
+../../../../../../../visaplan.UnitraccSkins/src/visaplan/UnitraccSkins/skins/unitracc_templates/listing_news.pt
+
+Es wurde eine Verschachtelung div.area-content > div.row > div.col-md-12 entfernt!
+--></tal:comment>
+    <div class="area-content">
+        <div class="area-content-navigation text-center">
+            <metal:block metal:use-macro="here/batch_macros/macros/navigation"/>
+        </div>
+        <div id="below-navigation">
+        <div class="area-title">
+             <h1 tal:content="here/translated_title_or_id"/>
+        </div>
+                    <tal:loop tal:repeat="brain python:list(batch)">
+                    <div class="row listing-item large"
+                         id="abc123"
+                         tal:define="imgsrc python:brain.getThumbnailPath;
+                                     col2cls python:imgsrc and 'col-md-8' or 'col-md-12';
+                                     "
+                         tal:attributes="id brain/UID | nothing">
+                        <div class="col-md-4"
+                             tal:condition="imgsrc">
+                            <a tal:attributes="href brain/getURL" class="thumbnail">
+                                <img tal:attributes="src imgsrc"
+                                     src=""
+                                     alt=""/>
+                            </a>
+                        </div>
+                        <div class="col-md-8"
+                             tal:attributes="class col2cls">
+                            <div class="info-data"
+                                 metal:define-macro="brain-info-data">
+                                <p class="info date"
+                                   tal:content="python:totime(brain.effective)">
+                                 1.4.2014
+                                </p>
+                                <p class="info"
+                                   tal:content="brain/portal_type"
+                                   i18n:translate="">
+                                    News
+                                </p>
+                                <p class="info subject"
+                                    tal:define="code python:brain.getCode"
+                                    tal:condition="python:code and code != '**'"
+                                    tal:content="python:industrialsector_getValue(code)"
+                                    i18n:translate="">
+                                    Fachbereich
+                                </p>
+                                <p class="info author"
+                                   tal:define="content brain/getContactCompany"
+                                   tal:condition="content"
+                                   tal:content="content">
+                                   S &amp; P Consult GmbH
+                                </p>
+                                <p class="info author"
+                                   tal:define="content python:contactPerson(brain)"
+                                   tal:condition="content"
+                                   tal:content="content">
+                                   Dr. Hase Caesar
+                                </p>
+                            </div>
+                            <metal:mac define-macro="brain-main">
+                            <h3><a tal:content="brain/Title"
+                                   tal:attributes="href brain/getURL">
+                                   Artikel- oder News-Titel
+                                </a>
+                            </h3>
+                            <p tal:content="structure brain/Description"/>
+                            <div class="listing-keywords"
+                                 tal:condition="brain/Subject">
+                                <metal:slot define-slot="miniheader-keywords"/>
+                                <tal:block tal:repeat="subject brain/Subject">
+                                <a href="/search?Subject=..." target="_blank"
+                                   class="label"
+                                   tal:attributes="href string:${here/portal_url}/search?Subject=${subject}"
+                                   tal:content="subject"
+                                   >
+                                   Schlagwort
+                                </a>
+                                </tal:block>
+                            </div>
+                            <a tal:attributes="href brain/getURL" class="btn btn-primary">
+                                <i class="glyphicon glyphicon-chevron-right icon-white"></i>
+                                <tal:block i18n:translate="">more</tal:block>
+                            </a>
+                            </metal:mac>
+                        </div>
+                    </div><!-- .row listing-item large -->
+                    </tal:loop>
+        </div><!-- #below-navigation -->
+        <div class="area-content-navigation text-center">
+            <metal:block metal:use-macro="here/batch_macros/macros/navigation"/>
+        </div>
+    </div>
+    <tal:block tal:content="structure here/portlet_rssfeed"/>
+</tal:ns>

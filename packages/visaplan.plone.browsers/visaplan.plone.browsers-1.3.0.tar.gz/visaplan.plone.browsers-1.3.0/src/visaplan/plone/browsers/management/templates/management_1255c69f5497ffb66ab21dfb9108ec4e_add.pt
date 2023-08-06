@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:no-ads fill-slot="ad-block-above-content"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:main fill-slot="main"
+            tal:define="dummy python:context.getAdapter('authorized')('unitracc: Add structure types');
+                        dict_ python:{};
+                        uid request/form/uid | nothing;
+                        showAll python:0">
+
+    <h1 class="documentFirstHeading padding-top-10">
+        Vortrag hinzuf&uuml;gen
+    </h1>
+
+    <form method="post"
+          tal:attributes="action string:${portal_url}/@@temp/addPresentation">
+
+        <metal:block metal:define-macro="main">
+
+            <fieldset>
+                <legend>F&uuml;llen Sie alle Felder</legend>
+
+                <div class="field">
+                    <label i18n:translate="">Title</label>
+                    <span title="Erforderlich" class="fieldRequired">(Erforderlich)</span><br/>
+                    <input type="text" name="title" class="full-width col-md-12"/>
+                </div>
+
+                <div class="field">
+                    <label i18n:translate="">Language</label>
+                    <span title="Erforderlich" class="fieldRequired">(Erforderlich)</span><br/>
+                    <select name="language"
+                            i18n:domain="languagedropdown">
+                        <tal:block tal:repeat="item here/@@additionallanguages/languages">
+                            <option tal:attributes="value item/code;
+                                                    selected python:item['code']==request.form.get('language') and 'selected' or None;
+                                                    class string:language-${item/code}"
+                                    tal:content="structure item/name"
+                                    i18n:translate=""/>
+                        </tal:block>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label i18n:translate="unitracc_label_code_search">Domain</label>
+                    <span title="Erforderlich" class="fieldRequired">(Erforderlich)</span><br/>
+                     <metal:block metal:use-macro="here/kss-search-codes/macros/main"/>
+                </div>
+
+                <input type="submit" value="Add"
+                       i18n:attributes="value"/>
+
+            </fieldset>
+
+        </metal:block>
+
+    </form>
+
+</metal:main>
+
+</body>
+</html>
+

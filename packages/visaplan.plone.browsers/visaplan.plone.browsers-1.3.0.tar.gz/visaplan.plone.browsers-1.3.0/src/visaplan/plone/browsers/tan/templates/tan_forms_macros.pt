@@ -1,0 +1,235 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+  <metal:main fill-slot="main">
+<tal:ns1 tal:define="
+tan_browser python:context.getBrowser('tan');
+dummy tan_browser/authManage;
+"
+>
+  <div id="area-title">
+    <h1>Nur Makros</h1>
+    <p>Siehe auch:</p>
+    <ul>
+     <li>
+      <a href="tans_wizard.pt">
+         tans_wizard
+        </a>
+     </li>
+     <li>
+      <a href="tan_thead_macros.pt">
+         tan_thead_macros
+        </a>
+     </li>
+     <li>
+      <a
+       href="tans_of_group?group_id=group_56577f841b9a81db7045a981761dca33">
+       TANs der Gruppe group_56577f841b9a81db7045a981761dca33
+      </a>
+     </li>
+     <li>
+     <a href="manage_tan?tan=348089202">
+      TAN 348089202 bearbeiten
+     </a>
+     </li>
+    </ul>
+  </div>
+
+
+<table>
+<tr metal:define-macro="tan">
+  <td>
+    <label for="input-tan"
+           i18n:translate="">
+    TAN
+    </label>
+  </td><td>
+    <input type="text" name="tan" id="input-tan"
+           tal:attributes="value tan | request/tan | nothing"
+           >
+  </td>
+</tr>
+<tr metal:define-macro="quantity">
+  <td>
+    <label for="input-quantity"
+           i18n:translate="">
+    Quantity
+    </label>
+  </td><td>
+    <input type="text" name="quantity" id="input-quantity"
+           tal:attributes="value quantity | request/quantity | nothing"
+           >
+  </td>
+</tr>
+<tr metal:define-macro="status">
+  <td>
+    <label for="input-status"
+           i18n:translate="">
+    Status
+    </label>
+  </td><td>
+    <select
+      name="status" id="input-status"
+      class="input-medium"
+      tal:define="status status | request/status | nothing;
+                  values here/@@tan/tan_statuus;
+                  ">
+      <option metal:define-slot="no-status-value"
+              i18n:translate=""
+              value="">
+      </option>
+      <tal:loop tal:repeat="dic values">
+      <option value="new"
+              tal:define="value python:dic['name']"
+              tal:attributes="value value;
+                              selected python:value == status"
+              tal:content="value"
+              i18n:translate="">
+        new
+      </option>
+      </tal:loop>
+    </select>
+  </td>
+</tr>
+<tr metal:define-macro="group_id">
+  <td>
+  <!--
+           Ungelöstes Problem: Da das Originalelement durch die Chosen-Liste ersetzt wird,
+           klappt die Aktivierung per Label nicht!
+  -->
+    <label for="input-group_id"
+           i18n:translate="">
+    Group
+    </label>
+  </td><td tal:define="name string:group_id;
+                       groups groups | here/@@tan/groups_with_tans">
+    <select name="input-group_id" class="chosen"
+            data-placeholder="Choose one ..."
+            i18n:attributes="data-placeholder"
+            metal:use-macro="here/group-desktop/macros/group-selector"
+            style="width:100%">
+        <option value=""></option>
+        <tal:void metal:fill-slot="empty-selection" />
+    </select>
+  </td>
+</tr>
+<tr metal:define-macro="Group"
+    metal:extend-macro="template/macros/group_id">
+  <td>
+    <label for="input-Group"
+           i18n:translate="">
+    Group
+    </label>
+  </td><td>
+    <input type="text" name="Group" id="input-Group"
+           tal:attributes="value Group | request/Group | nothing"
+           >
+  </td>
+</tr>
+<tr metal:define-macro="changeset">
+  <td>
+    <label for="input-changeset"
+           i18n:translate="">
+    Changeset
+    </label>
+  </td><td>
+    <input type="text" name="changeset" id="input-changeset"
+           class="input-sm"
+           tal:attributes="value changeset | request/changeset | nothing"
+           >
+  </td>
+</tr>
+<tr metal:define-macro="duration_days">
+  <td>
+    <label for="input-duration_days"
+           i18n:translate="">
+    duration_days
+    </label>
+  </td><td>
+    <input type="text" name="duration_days" id="input-duration_days"
+           class="input-sm"
+           tal:attributes="value duration_days | request/duration_days | nothing"
+           >
+  </td>
+</tr>
+<tr metal:define-macro="owner_id">
+  <td>
+    <label for="input-owner_id"
+           i18n:translate="">
+    Redeemed by
+    </label>
+  </td><td>
+    <input type="text" name="owner_id" id="input-owner_id"
+           tal:attributes="value owner_id | request/owner_id | nothing"
+           >
+  </td>
+</tr>
+<tr metal:define-macro="expiration_date">
+  <td>
+    <label for="input-expiration_date"
+           i18n:translate="">
+    expiration_date
+    </label>
+  </td><td>
+    <input type="date" name="expiration_date" id="input-expiration-date"
+           class="input-sm"
+           value="01.03.2015"
+           placeholder="dd.mm.yyyy"
+           tal:attributes="value expiration_date | request/expiration_date | nothing"
+           i18n:attributes="placeholder">
+    <input type="text" readonly="readonly" id="mirror-date">
+  </td>
+</tr>
+<tr metal:define-macro="additional_info">
+  <td>
+    <label for="input-additional_info"
+           i18n:translate="">
+    Additional information
+    </label>
+  </td><td>
+    <input type="text" name="additional_info" id="input-additional_info"
+           tal:attributes="value additional_info | request/additional_info | nothing"
+           >
+  </td>
+</tr>
+<tr metal:define-macro="changed_by">
+  <td>
+    <label for="input-changed_by"
+           i18n:translate="">
+    changed_by
+    </label>
+  </td><td>
+    <input type="text" name="changed_by" id="input-changed_by"
+           tal:attributes="value changed_by | request/changed_by | nothing"
+           >
+  </td>
+</tr>
+<tr metal:define-macro="last_changed_date">
+  <td>
+    <label for="input-last_changed_date"
+           i18n:translate="">
+    last_changed_date
+    </label>
+  </td><td>
+    <input type="text" name="last_changed_date" id="input-last_changed_date"
+           tal:attributes="value last_changed_date | request/last_changed_date | nothing"
+           >
+  </td>
+</tr>
+</table>
+
+
+  </tal:ns1>
+  </metal:main>
+<!-- vim: set ts=4 sts=4 noet si :--></body></html>

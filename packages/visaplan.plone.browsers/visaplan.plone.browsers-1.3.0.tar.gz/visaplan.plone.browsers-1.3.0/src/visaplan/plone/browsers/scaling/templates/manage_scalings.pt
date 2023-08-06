@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="dummy here/@@tpcheck/auth_manage_portal">
+
+<h1 class="documentFirstHeading">Scalings</h1>
+
+<form method="post" tal:attributes="action string:${portal_url}/@@scaling/set">
+
+    <textarea name="scalings"><tal:block tal:content="python:'\n'.join(here.getBrowser('scaling').getAvaliable())"/></textarea>
+    <br/>
+    <input class="button" type="submit" value="Save" i18n:attributes="value label_save"/>
+</form>
+
+</metal:main>
+
+</body>
+</html>
+

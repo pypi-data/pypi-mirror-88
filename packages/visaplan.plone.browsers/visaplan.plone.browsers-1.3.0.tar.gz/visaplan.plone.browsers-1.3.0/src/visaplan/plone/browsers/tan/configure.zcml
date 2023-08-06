@@ -1,0 +1,27 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+    zcml:condition="installed visaplan.plone.sqlwrapper">
+
+    <browser:page
+        for="*"
+        name="tan"
+        class=".browser.Browser"
+        permission="zope2.View"
+        allowed_interface=".browser.ITan"
+        />
+
+    <include package=".templates" />
+    <!-- Pfad: ++resource++tan/ -->
+    <browser:resourceDirectory
+             name="tan"
+             directory="resource" />
+
+  <configure zcml:condition="installed visaplan.plone.breadcrumbs">
+  <include package="visaplan.plone.breadcrumbs" />
+  <include package=".oldcrumbs"
+      zcml:condition="have VisaplanTentativeBreadcrumbs"
+      />
+  </configure>
+
+</configure>

@@ -1,0 +1,272 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<!--
+    Gruppenmitgliedschaften eines Benutzers bearbeiten
+gf:
+    ../resource/edit_group_membership.js    
+    ./js-search-groups-add.pt
+-->
+
+
+    <metal:no-ads fill-slot="ad-block-above-content"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+    <metal:block fill-slot="javascript_head_slot">
+        <script type="text/javascript"
+                src="/++resource++usermanagement/edit_group_membership.js"></script>
+        <link rel="stylesheet" type="text/css"
+              href="/++resource++usermanagement/usermanagement.css"/>
+    </metal:block>
+
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="dummy context/@@usermanagement/authViewGroups;
+                        user_id request/user_id;
+                        author nocall:here/@@author;
+                        brain python:author.getBrainByUserId(user_id);
+                        groupsharing nocall:here/@@groupsharing;
+                        pretty python:1;
+                        groups python:groupsharing.get_groups_by_user_id(user_id, askdb=True, pretty=pretty);
+                        inherited_memberships python:groupsharing.get_inherited_group_memberships_by_user_id(user_id);
+                        show_actions python:True">
+    <div id="area-title">
+        <h1>
+            <tal:block i18n:translate="" >
+                User
+                <span tal:content="user_id"
+                   i18n:name="user_id">Name</span>
+            </tal:block>
+            <a title="Edit"
+               tal:condition="brain"
+               tal:attributes="href string:${brain/getURL}/edit"
+               i18n:attributes="title">
+                <i class="glyphicon glyphicon-pencil"></i>
+            </a>
+        </h1>
+    </div>
+    <div class="area-content">
+        <div i18n:translate="">Add group memberships</div>
+        <form method="post" class="add-group-membership"
+                  action="/@@groupsharing/add_group_membership">
+            <div class="input-group">
+                <input type="text" name="group_query_string" class="user-management-search-field"
+                       tal:attributes="value request/group_query_string | nothing"
+                       id="appendedInputButton"/>
+                <button class="add-group-membership-search-button button-object-actions btn btn-default btn-search"
+                       id="appendedInputButton">
+                    <i class="glyphicon glyphicon-search"></i>
+                    <tal:block i18n:translate="">Search</tal:block>
+                </button>
+            </div>
+            <input type="hidden" name="user_id"
+                   tal:attributes="value user_id"/>
+            <input type="hidden"
+                   name="b_start:int"
+                     id="b_start"
+                   tal:attributes="value request/b_start | python:0"/>
+        </form>
+        <div id="js-search-groups-add">
+            <!-- -->
+        </div>
+
+        <div class="no-group-info"
+             tal:condition="not:groups"
+             i18n:translate="text_user_not_in_any_group">
+            This user does not belong to any group.
+        </div>
+        <tal:block tal:condition="groups">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#1" data-toggle="tab"
+                       i18n:translate="explicit_group_memberships">
+                        Explicit group memberships
+                    </a>
+                </li>
+                <li tal:condition="inherited_memberships">
+                    <a href="#2" data-toggle="tab"
+                       i18n:translate="inherited_group_memberships">
+                        Inherited group memberships
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="1">
+
+                    <div id="search-result-info-text"
+                        i18n:translate="">
+                        User <span tal:content="user_id" i18n:name="name">Groucho</span>
+                        belongs to
+                        <span tal:content="python:len(groups)"
+                            i18n:name="amount">42</span>
+                        group(s):
+                    </div>
+
+                    <form method="post"
+                          action="/form-requires-javascript"
+                          tal:define="m here/manage_group_view/macros;
+                                      "
+                          tal:condition="groups">
+                        <metal:block define-macro="explicit">
+                        <table class="datatb table table-sorted table-bordered table-striped table-hover"
+                               id="1" sort=""
+                               data-member_key="member_id"
+                               data-group_key="group_id"
+                               cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr>
+                                    <th tal:condition="show_actions"><!-- --></th>
+                                    <th i18n:translate="">Assigned folder</th>
+                                    <th i18n:translate="">Assigned role</th>
+                                    <th i18n:translate="listingheader_group_name">Group name</th>
+                                    <th metal:use-macro="m/date-th"/>
+                                    <th i18n:translate="">
+                                        Active
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tal:loop define="
+true_values python:(1, '1', 'True', 'true');
+false_values python:(0, '0', 'False', 'false');
+title_key python:pretty and 'pretty_title' or 'group_title';
+m_links nocall:m/links;
+m_datecells nocall:m/date-cells;
+"
+                                    tal:repeat="info groups">
+                                <tr tal:define="
+group_id info/id;
+group_title python:info.get(title_key, group_id);
+row_nr repeat/info/number;
+member_id group_id;
+start_date info/start_date | nothing;
+end_date info/end_date | nothing;
+">
+                                    <td class="listingCheckbox"
+                                        tal:condition="show_actions">
+                                        <input type="checkbox" class="noborder notify"
+                                               name="group_ids:list"
+                                               tal:attributes="value info/id"/>
+                                    </td>
+                                    <td class="listingCheckbox">
+                                        <a target="_blank"
+                                           tal:condition="info/brain | nothing"
+                                           tal:attributes="href info/brain/getURL">
+                                            <img src="/++resource++unitracc-images/view.png"
+                                                 alt="view">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <tal:block tal:condition="info/role_translation | nothing"
+                                                   tal:content="info/role_translation"
+                                                   i18n:translate=""/>
+                                    </td>
+                                    <td>
+                                        <a href="prefs_group_details" target="_blank"
+                                           tal:attributes="href string:manage_group_view?group_id=$group_id"
+                                           tal:content="group_title"
+                                           tal:omit-tag="not:show_actions"/>
+                                    </td>
+                                    <metal:m use-macro="m_datecells"/>
+                                    <td tal:define="is_active info/active;
+                                                    klass python:is_active and 'glyphicon glyphicon-ok' or 'icon-minus'">
+                                        <i class="glyphicon glyphicon-ok"
+                                           tal:attributes="class klass">
+                                            <q class="invisible" tal:content="is_active"></q>
+                                        </i>
+                                    </td>
+                                    <td>
+                                        <metal:links use-macro="m_links"/>
+                                    </td>
+                                </tr>
+                                </tal:loop>
+                            </tbody>
+                        </table>
+                        </metal:block>
+                        <tal:block tal:condition="show_actions">
+                            <input type="hidden" name="user_id" value="user_id"
+                                   id="user_id"
+                                   tal:attributes="value user_id" />
+                            <!-- für gs.end_group_memberships: -->
+                            <input type="hidden" name="member_var" value="user_id">
+                            <input type="hidden" name="group_var" value="group_ids">
+                            <input type="hidden" name="varnames:list" value="user_id">
+                        <tal:if condition="groups">
+                        <tal:M define="title_delete string:The selected groups will be removed from the list;
+                                       title_remove string:The selected groups will still be visible here;
+                                       perm_mp python:True;
+                                       ">
+                        <metal:m use-macro="m/term-buttons">
+                            <!-- wenn tal:define und metal:use-macro im selben Element verwendet werden,
+                                 wird offenbar der Namensraum des Makros zurückgesetzt,
+                                 sodaß in diesem Fall die Variable perm_mp nicht bekannt wäre ...
+                                 -->
+                            <input class="button-type-attention btn btn-primary col-md-5"
+                                   type="submit"
+                                   value="Remove selected membership associations"
+                                   title="The selected groups will be removed from the list"
+                                   i18n:attributes="value label_remove_selected_membership_associations;
+                                                    title"
+                                   tal:condition="groups"/>
+                        </metal:m>
+                        </tal:M>
+                        </tal:if>
+                        </tal:block>
+                    </form>
+                </div>
+                <div class="tab-pane" id="2"
+                     tal:condition="inherited_memberships">
+                    <metal:block define-macro="inherit">
+                    <table class="datatb table table-bordered table-striped table-sorted"
+                           id="2" sort=""
+                           cellspacing="0" cellpadding="0">
+                        <thead>
+                        <tr>
+                            <th i18n:translate="">Assigned folder</th>
+                            <th i18n:translate="">Assigned role</th>
+                            <th i18n:translate="listingheader_group_name">Group name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tal:block tal:repeat="info inherited_memberships">
+                            <tr>
+                                <td >
+                                    <a target="_blank"
+                                       tal:condition="info/brain | nothing"
+                                       tal:attributes="href info/brain/getURL">
+                                        <img src="/++resource++unitracc-images/view.png"
+                                             alt="view">
+                                    </a>
+                                </td>
+                                <td>
+                                    <tal:block tal:condition="info/role_translation | nothing"
+                                               tal:content="info/role_translation"
+                                               i18n:translate=""/>
+                                </td>
+                                <td>
+                                    <a href="prefs_group_details"
+                                       tal:attributes="href string:manage_group_view?group_id=${info/id}"
+                                       tal:content="info/group_title"
+                                       tal:omit-tag="not:show_actions"/>
+                                </td>
+                            </tr>
+                        </tal:block>
+                        </tbody>
+                    </table>
+                    </metal:block>
+                </div>
+            </div>
+        </tal:block>
+
+    </div>
+
+</metal:main>
+
+</body>
+</html><tal:vim replace="nothing"><!-- vim: set ts=8 sts=4 sw=4 si et :--></tal:vim>

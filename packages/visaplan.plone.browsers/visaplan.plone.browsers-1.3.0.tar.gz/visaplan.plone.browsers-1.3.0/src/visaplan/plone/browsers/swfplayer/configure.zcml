@@ -1,0 +1,18 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+    <browser:page
+      for="*"
+      name="swfplayer"
+      class=".browser.Browser"
+      permission="zope2.View"
+      allowed_interface=".browser.ISWFPlayer"
+      />
+
+    <browser:resourceDirectory
+           name="swfplayer"
+           directory="resource" />
+
+
+</configure>

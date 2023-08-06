@@ -1,0 +1,207 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+<head>
+<metal:mac1 define-macro="javascript_head">
+  <script src="../static/tan.js"
+          metal:fill-slot="javascript_head_slot"
+          tal:attributes="src string:${here/portal_url}/++resource++tan/tan.js"></script>
+</metal:mac1>
+</head>
+
+<body>
+<metal:main fill-slot="main">
+<tal:ns1 tal:define="
+tan_browser python:context.getBrowser('tan');
+dummy tan_browser/authManage;
+rows tan_browser/mock_rows;
+current python:rows[0];
+cols python:('tan', 'status', 'duration_days', 'owner_id',
+             'Group',
+             'expiration_date', 'additional_info', 'changed_by',
+             'last_changed_date');
+nolinks python:1;
+showkeys python:1;
+"
+>
+<h1>Demo/Test der Makros für den TAN-Adapter</h1>
+<h2 id="table"><tt>table</tt> - eine Listentabelle ausgeben</h2>
+<dl>
+    <dt>cols</dt>
+    <dd><p>auszugebende Spalten. Stark angelehnt an die Feldnamen der SQL-View <tt>tan_view</tt>, aber nicht in jedem Fall damit identisch.
+    In manchen Ausgabespalten wird mehr als eine SQL-View-Spalte verwendet.</p>
+    <p>Zu jedem erlaubten Wert gibt es je ein gleichnamiges Makro in <a href="tan_thead_macros.pt">tan_thead_macros</a>
+    und <a href="tan_tbody_macros.pt">tan_tbody_macros</a>.
+    </p>
+    </dd>
+    <dt>rows</dt>
+    <dd>auszugebende Daten, üblicherweise aus der View <tt>tan_view</tt>.
+    Beispieldaten:
+    <pre tal:define="pformat python:here.getAdapter('pformat')"
+         tal:content="python:pformat(rows)"
+         >[{...}, ...]
+    </pre>
+    </dd>
+    <dt>nolinks <em>(optional)</em></dt>
+    <dd>Zur Unterdrückung der Generierung bestimmter Hyperlinks, z.&nbsp;B. wegen fehlender Berechtigungen.
+    Ein einfacher logischer Wert ohne Feinsteuerungsmöglichkeiten.
+    Vorgabewert: <em>False</em>.
+    </dd>
+    <dt>showkeys <em>(optional; für Entwicklungszwecke bzw. diese Demo)</em></dt>
+    <dd>
+    Wenn <em>True</em>, wird ein &lt;tfoot&gt;-Element erzeugt, das die Spaltennamen enthält.
+    Dadurch werden sich meistens die Spaltenbreiten ändern.
+    </dd>
+</dl>
+
+<table metal:define-macro="table"
+       class="datatb table table-bordered table-hover table-sorted"
+       style="clear:both;"
+       tal:attributes="
+                       aaSorting aaSorting | nothing;
+                       ">
+    <tal:mns1
+         tal:define="tan_browser nocall:tan_browser | python:context.getBrowser('tan');
+                     unique unique | python:1;
+                     cols python:tan_browser.sorted_columns(unique, *cols);
+                     "
+         >
+    <metal:headslot define-slot="thead">
+    <thead tal:define="macro here/tan_thead_macros/macros">
+        <tr>
+            <tal:loop1 tal:repeat="col cols">
+            <th metal:use-macro="python:macro[col]">
+                siehe tan_body_macros
+            </th>
+            </tal:loop1>
+            <tal:th metal:define-slot="more-thead-columns"/>
+        </tr>
+    </thead>
+    <tfoot tal:condition="showkeys | python:0">
+        <tr>
+            <td tal:repeat="col cols">
+                &nbsp;<tt tal:content="col">col</tt>
+            </td>
+        </tr>
+    </tfoot>
+    </metal:headslot>
+    <metal:bodyslot define-slot="tbody">
+    <tbody tal:define="macro here/tan_tbody_macros/macros;">
+        <tr tal:define="nolinks nolinks | python:0"
+            tal:repeat="row rows">
+            <tal:loop2 tal:repeat="col cols">
+            <td metal:use-macro="python:macro[col]">
+                siehe tan_body_macros
+            </td>
+            </tal:loop2>
+            <tal:td metal:define-slot="more-tbody-columns"/>
+        </tr>
+    </tbody>
+    </metal:bodyslot>
+    </tal:mns1>
+</table>
+</tal:ns1>
+
+<form metal:define-macro="csv-export-form"
+      method="GET"
+      action="./tan_csv_export"
+      tal:define="tan_browser tan_browser | python:context.getBrowser('tan');
+                  names python: ('group_id', 'status', 'changeset')">
+        <tal:loop3 repeat="name names">
+        <input type="hidden" name="group_id"
+               tal:define="value python:request.get(name);"
+               tal:condition="value"
+               tal:attributes="name name;
+                               value value">
+        </tal:loop3>
+        <metal:slot define-slot="group-fix"
+                    tal:define="group_id request/group_id | nothing"
+                    tal:condition="not:group_id">
+        <input type="hidden" name="group_id"
+               tal:define="value request/gid | nothing"
+               tal:condition="value"
+               tal:attributes="value value;
+               ">
+        </metal:slot>
+        <metal:slot define-slot="more-filters"/>
+        <button class="btn btn-primary"
+                i18n:translate="">
+            Export CSV
+        </button>
+</form>
+
+<metal:form define-macro="filter-form"
+      tal:define="groups groups | here/@@tan/groups_with_tans;
+                  ">
+  <form action="@@tan/filter_tans"
+      method="get"
+      tal:condition="groups"
+      tal:attributes="action action | string:manage_tans;
+                      method method | string:get;
+                      ">
+  <tal:ns2
+      tal:define="tan_browser tan_browser | python:context.getBrowser('tan');
+                  cols cols | python: ('group_id', 'status', 'changeset');
+                  macro here/tan_forms_macros/macros;
+                  hidden hidden | python:();
+                  ">
+
+    <pre tal:define="pformat python:here.getAdapter('pformat')"
+         tal:content="python:pformat({'method': method, 'cols': cols, 'hidden': hidden})"
+         tal:condition="python:0">
+        honk
+    </pre>
+    <table>
+        <metal:slot define-slot="more-filters-insert"/>
+        <tal:loop4 repeat="col cols">
+        <tal:if4-visible-col tal:condition="python:col not in hidden">
+        <tr metal:use-macro="python:macro[col]">
+            <td><label>Gruppe</label></td>
+            <td>
+                <select><option>
+                    aktuelle Gruppe
+                </option></select>
+            </td>
+        </tr>
+        </tal:if4-visible-col>
+        <tal:else4-hidden-col tal:condition="python:col in hidden">
+        <input type="hidden" name="group_id" value="group_abc"
+               tal:attributes="name col;
+                               value python:request.get(col, None)">
+        </tal:else4-hidden-col>
+        </tal:loop4>
+        <tr>
+            <td colspan="2">
+                <metal:slot define-slot="more-filters-append"/>
+                <metal:slot define-slot="buttons">
+                <button class="btn btn-primary"
+                    metal:define-slot="primary-button"
+                    i18n:translate="">
+                    Search
+                </button>
+                <input type="reset" class="btn btn-default"
+                       metal:define-slot="reset-button"/>
+                <metal:slot define-slot="more-buttons"/>
+                </metal:slot>
+            </td>
+        </tr>
+    </table>
+    </tal:ns2>
+  </form>
+  <div tal:condition="not:groups"
+       class="alert"
+       i18n:translate="">
+      No TANs yet
+  </div>
+</metal:form>
+</metal:main>
+</body><!-- vim: set sw=2 sts=2 si ts=2 noet :--></html>

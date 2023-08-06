@@ -1,0 +1,47 @@
+<tal:html i18n:domain="plone"
+     tal:define="
+mac1 here/booking_macros/macros;
+mac2 here/booking_macros2/macros;
+div_outer_class string:dbg-outer;
+div_inner_class string:dbg-inner;
+in_backend python:0;
+"><html metal:use-macro="mac1/mail">
+<metal:slot fill-slot="text">
+<br/>
+<p i18n:translate="failed_info">
+    Unfortunately, an error has occurred in the payment process for your
+    selected UNITRACC online course. As a result, the desired
+    content is not for you not yet be unlocked.
+</p>
+<p i18n:translate="paypal_clause">
+    If you have used PayPal to make the payment, we would ask you to review
+    the transaction details in your PayPal account. If you have used a
+    standard bank transfer to make the payment, please contact your
+    financial institution in order to review the transaction details.
+</p>
+<p i18n:translate="failed_time_clause">
+    For the booking to be completed successfully,
+    the payment for your UNITRACC online course must be received within
+    4 weeks from the booking date. If no such payment is made, the booking
+    will be cancelled automatically by our system after this four week
+    period. In this case, you must rebook the course once again.
+</p>
+<p i18n:translate="mail_further">
+    If you have further questions or comments regarding your selection, or
+    any other UNITRACC products and services, please feel free to contact
+    the UNITRACC-Team at
+    <a href="mailto:some@mail.address"
+       tal:define="address options/mail_from | here/@@booking/get_sending_mail_address"
+       tal:attributes="href string:mailto:$address"
+       tal:content="address"
+       i18n:name="mail_email_link">some@mail.address</a>.
+    We would be glad to assist you further.
+</p>
+</metal:slot>
+<p i18n:translate="unitracc_team">
+    Your UNITRACC-Team
+</p>
+<p>
+    Standard UNITRACC-Mail footer auch rechtlich absichern lassen!
+</p>
+</html></tal:html>

@@ -1,0 +1,27 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:zcml="http://namespaces.zope.org/zcml">
+
+    <browser:page
+        for="*"
+        name="usermanagement"
+        class=".browser.Browser"
+        permission="zope2.View"
+        allowed_interface=".browser.IUserManagement"
+        />
+
+    <include package=".templates" />
+    <include package="visaplan.plone.base" />
+
+    <browser:resourceDirectory
+             name="usermanagement"
+             directory="resource" />
+
+  <configure zcml:condition="installed visaplan.plone.breadcrumbs">
+  <include package="visaplan.plone.breadcrumbs" />
+  <include package=".oldcrumbs"
+      zcml:condition="have VisaplanTentativeBreadcrumbs"
+      />
+  </configure>
+
+</configure>

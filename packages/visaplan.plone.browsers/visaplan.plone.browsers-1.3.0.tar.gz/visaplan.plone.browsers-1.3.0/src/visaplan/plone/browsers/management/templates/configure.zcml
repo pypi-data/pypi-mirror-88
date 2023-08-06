@@ -1,0 +1,167 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+    
+    <include package="Products.CMFCore" />
+    <browser:page
+             for="*"
+             name="js_management_userselection"
+             template="js_management_userselection.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_copy_success"
+             template="mail_copy_success.pt"
+             permission="zope2.View"
+             />
+
+    <configure zcml:condition="installed visaplan.plone.structures">
+    <!-- currently we use the @@copystructure, @@structuretype and @@temp browsers
+         from visaplan.plone.structures here:
+      -->
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_1255c69f5497ffb66ab21dfb9108ec4e_add"
+             template="management_1255c69f5497ffb66ab21dfb9108ec4e_add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_1255c69f5497ffb66ab21dfb9108ec4e_copy"
+             template="management_1255c69f5497ffb66ab21dfb9108ec4e_copy.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_1255c69f5497ffb66ab21dfb9108ec4e_publish"
+             template="management_1255c69f5497ffb66ab21dfb9108ec4e_publish.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_6c7879ebbc919b61c72f77a4a1d9474f_add"
+             template="management_6c7879ebbc919b61c72f77a4a1d9474f_add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_6c7879ebbc919b61c72f77a4a1d9474f_copy"
+             template="management_6c7879ebbc919b61c72f77a4a1d9474f_copy.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_6c7879ebbc919b61c72f77a4a1d9474f_publish"
+             template="management_6c7879ebbc919b61c72f77a4a1d9474f_publish.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_7dbcefcded46f02aa83458d8b13580be_add"
+             template="management_7dbcefcded46f02aa83458d8b13580be_add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_7dbcefcded46f02aa83458d8b13580be_copy"
+             template="management_7dbcefcded46f02aa83458d8b13580be_copy.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_7dbcefcded46f02aa83458d8b13580be_publish"
+             template="management_7dbcefcded46f02aa83458d8b13580be_publish.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_86c045bc109c562f129be4ae034bf3cb_add"
+             template="management_86c045bc109c562f129be4ae034bf3cb_add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_86c045bc109c562f129be4ae034bf3cb_copy"
+             template="management_86c045bc109c562f129be4ae034bf3cb_copy.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_86c045bc109c562f129be4ae034bf3cb_publish"
+             template="management_86c045bc109c562f129be4ae034bf3cb_publish.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_9303f302674cb386293e2fa8ca46f7a3_add"
+             template="management_9303f302674cb386293e2fa8ca46f7a3_add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_9303f302674cb386293e2fa8ca46f7a3_copy"
+             template="management_9303f302674cb386293e2fa8ca46f7a3_copy.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_9303f302674cb386293e2fa8ca46f7a3_publish"
+             template="management_9303f302674cb386293e2fa8ca46f7a3_publish.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_structure_elements"
+             template="management_structure_elements.pt"
+             permission="zope2.View"
+             />
+    </configure>
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_view"
+             template="management_view.pt"
+             permission="zope2.View"
+             />
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="management_embed"
+             class="visaplan.plone.ajaxnavigation.views.AjaxLoadBrowserView"
+             template="management_view.pt"
+             permission="zope2.View"
+             zcml:condition="installed visaplan.plone.ajaxnavigation"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="review_accepted_content"
+             template="review_accepted_content.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="Products.CMFCore.interfaces.ISiteRoot"
+             name="review_submitted_content"
+             template="review_submitted_content.pt"
+             permission="zope2.View"
+             />
+
+</configure>

@@ -1,0 +1,129 @@
+<tal:block tal:define="dummy context/@@usermanagement/authViewGroups;
+                       groupsharing nocall:context/@@groupsharing;
+                       form nocall:request/form;
+                       SearchableText request/form/SearchableText | nothing;
+                       brains python:groupsharing.search_groups(SearchableText);
+                       batch nocall:here/@@batch;
+                       batch python:batch(brains, 50);
+                       template_id string:manage_groups_view;
+                       dummy python:context.getAdapter('updateactualurl')(context.absolute_url()+'/'+template_id);
+                       "
+           i18n:domain="plone">
+
+    <div class="alert alert-info">
+        <tal:block tal:content="python:len(brains)"/>
+        <tal:block tal:condition="not:SearchableText"
+                   i18n:translate="kss-search-result-01">search results found</tal:block><tal:block tal:condition="SearchableText"
+                   i18n:translate="kss-search-result-02">search results found for <tal:block tal:content="SearchableText" i18n:name="SearchableText"/></tal:block>.
+
+    </div>
+    <div class="area-content-navigation text-center">
+        <metal:block metal:use-macro="here/batch_macros/macros/navigation"/>
+    </div>
+
+    <form method="post" action="." id="submit-form">
+        <table class="table table-bordered table-striped table-hover table-sorted"
+               cellspacing="0" cellpadding="0">
+        <thead>
+        <tr>
+            <th>
+                <!-- -->
+            </th>
+            <th i18n:translate="">Assigned folder</th>
+            <th i18n:translate="">Assigned role</th>
+            <th i18n:translate="">
+                Title
+            </th>
+            <th i18n:translate="">
+                Group desktop
+            </th>
+            <th i18n:translate="">
+                Group manager
+            </th>
+            <th>
+                <!-- -->
+            </th>
+        </thead>
+        <tbody>
+        <tal:block
+            define="pretty request/form/pretty | nothing;
+                    true_values python:(1, '1', 'True', 'true');
+                    false_values python:(0, '0', 'False', 'false');
+                    pretty python:pretty in true_values;
+                    title_key python:pretty and 'pretty_title' or 'group_title';
+                    ggibi python:groupsharing.get_group_info_by_id;
+                    "
+            tal:repeat="dict_ batch">
+            <tr tal:define="info python:ggibi(dict_['id'], pretty=pretty);
+                role info/role | nothing;
+                group_id info/id;
+                group_title python:info.get(title_key, group_id);
+                ">
+                <td class="group-ids">
+                    <input type="checkbox" name="group_ids:list"
+                           tal:attributes="value dict_/id"/>
+                </td>
+                <td class="listingCheckbox">
+                    <a target="_blank"
+                       tal:define="brain dict_/brain | info/brain | nothing"
+                       tal:condition="brain | nothing"
+                       tal:attributes="href brain/getURL">
+                        <i class="glyphicon glyphicon-eye-open"></i>
+                    </a>
+                </td>
+                <td>
+                    <tal:block tal:content="info/role_translation | nothing"/>
+                </td>
+                <td>
+                    <a tal:attributes="href string:/manage_group_view?group_id=$group_id"
+                       tal:content="group_title"
+                       tal:condition="python: role != 'learner'"/>
+                    <a tal:attributes="href string:/manage_group_view?group_id=$group_id&course=1"
+                       tal:content="group_title"
+                       tal:condition="python: role == 'learner'"/>
+                </td>
+                <td>
+                    <tal:block tal:content="python:info.get('group_desktop') and 'Yes' or 'No'"
+                               i18n:translate=""/>
+                </td>
+                <td>
+                    <tal:block tal:content="info/group_manager | nothing"/>
+                </td>
+                <td class="group-ids">
+                    <a tal:attributes="href string:${here/portal_url}/manage_group_view?group_id=${info/id}"
+                       tal:condition="python: role != 'learner'"
+                       i18n:attributes="title label_edit_group_memberships">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                    <a tal:attributes="href string:${here/portal_url}/manage_group_view?group_id=${info/id}&course=1"
+                       tal:condition="python: role == 'learner'"
+                       i18n:attributes="title label_edit_group_memberships">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                    <a tal:attributes="href string:${here/portal_url}/manage_group_details?group_id=${dict_/id}&course=1"
+                       tal:condition="python: role == 'learner'">
+                        <img src="/++resource++unitracc-images/edit.png"/>
+                    </a>
+                    <a tal:attributes="href string:${here/portal_url}/manage_group_details?group_id=${dict_/id}"
+                       tal:condition="python: role != 'learner'">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+
+                </td>
+            </tr>
+        </tal:block>
+        </tbody>
+        </table>
+        <div id="buttons">
+        <input class="btn btn-primary"
+               type="button" value="Delete"
+               id="delete-groups"
+               i18n:attributes="value"/>
+        </div><!-- #buttons -->
+
+    </form>
+    <div class="area-content-navigation text-center">
+        <metal:block metal:use-macro="here/batch_macros/macros/navigation"/>
+    </div>
+
+</tal:block>

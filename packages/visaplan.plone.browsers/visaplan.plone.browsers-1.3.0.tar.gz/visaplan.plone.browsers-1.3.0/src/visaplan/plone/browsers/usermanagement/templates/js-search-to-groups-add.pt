@@ -1,0 +1,105 @@
+<tal:block tal:define="
+dummy context/@@usermanagement/authViewGroups;
+groupsharing nocall:here/@@groupsharing;
+list_ python:groupsharing.search_groups_and_users(request.form.get('group_query_string',''));
+template_id string:manage_group_view;
+"
+i18n:domain="plone"><tal:comment replace="nothing"><!--
+Abgleichen mit (gf):
+./js-search-groups-add.pt
+--></tal:comment>
+
+<tal:block tal:condition="not:list_"><br/>
+<h2 i18n:translate="text_nomatches">No matches</h2>
+</tal:block>
+
+<form method="post"
+      tal:condition="list_"
+      action="/@@groupsharing/add_to_group">
+    <script>
+        $(document).ready(function () {
+            $('#addtogrp').each(
+                    function (i, v) {
+                        Unitracc.DataTable(v);
+                    }
+            );
+            var dpo = Unitracc.datepicker_defaults();
+            Unitracc.log(dpo);
+            // $('#add-group').on('draw.dt', function () {
+                $('.datetime').datepicker(dpo);
+            // });
+        });
+    </script>
+
+    <table class="table table-bordered table-sorted"
+           id="addtogrp"
+           data-paging="false"
+           cellspacing="0" cellpadding="0"
+           sort="">
+        <thead>
+            <tr>
+                <th><!-- --></th>
+                <th i18n:translate="">Type</th>
+                <th><!-- --></th>
+                <th i18n:translate="">Name</th>
+                <th i18n:translate="">Username</th>
+                <th i18n:translate=""
+                    title="Assigned role"
+                    i18n:attributes="title"
+                    >Role</th>
+                <th i18n:translate="">Start</th>
+                <th i18n:translate="">End</th>
+            </tr>
+       </thead>
+       <tbody>
+       <tal:block tal:repeat="dict_ list_">
+           <tr tal:define="info python:dict_['type']=='group' and groupsharing.get_group_info_by_id(dict_['id']) or None">
+               <td>
+                   <input type="checkbox" name="ids:list"
+                          tal:attributes="value dict_/id | info/id"/>
+               </td>
+               <td>
+                   <tal:block tal:content="python:dict_['type'].title()"
+                              i18n:translate=""/>
+               </td>
+               <td class="listingCheckbox">
+                   <a target="_blank"
+                      tal:define="brain dict_/brain | info/brain | nothing"
+                      tal:condition="brain | nothing"
+                      tal:attributes="href brain/getURL">
+                       <i class="glyphicon glyphicon-eye-open"></i>
+                   </a>
+               </td>
+               <td>
+                   <tal:block tal:content="info/group_title | dict_/title | nothing"/>
+               </td>
+               <td>
+                   <tal:block tal:condition="python: info is None" tal:content=" dict_/id | nothing"/>
+               </td>
+               <td>
+                   <tal:block tal:content="info/role_translation | nothing"/>
+               </td>
+               <td>
+                   <input class="datetime input-small" size="10" type="text" placeholder="DD.MM.YYYY"
+                           i18n:attributes="placeholder"
+                       tal:attributes="name string:start_${dict_/id}"/>
+               </td>
+               <td>
+                   <input class="datetime input-small" size="10" type="text" placeholder="DD.MM.YYYY"
+                           i18n:attributes="placeholder"
+                       tal:attributes="name string:end_${dict_/id}"/>
+               </td>
+           </tr>
+       </tal:block>
+       </tbody>
+    </table>
+
+    <input type="hidden" name="group_id"
+           tal:attributes="value request/group_id"
+           tal:on-error="structure string:<strong>No group_id!</strong>">
+    <input class="button-object-actions btn btn-primary"
+           type="submit" value="Assign"
+           i18n:attributes="value"/>
+</form>
+
+</tal:block><tal:vim replace="nothing"><!-- vim: set ts=4 sts=4 sw=4 si et :--></tal:vim>

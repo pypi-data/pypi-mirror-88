@@ -1,0 +1,13 @@
+<div class="info"
+  i18n:domain="plone">
+  <p i18n:translate="">
+    Please use the special configuration page
+    <a href="/configure_thingies"
+       i18n:name="link"
+       tal:define="url options/path;
+                   text options/label"
+       tal:attributes="href url"
+       ><tal:txt i18n:translate="" tal:content="text">
+       Configure Thingies</tal:txt></a>
+  </p>
+</div>

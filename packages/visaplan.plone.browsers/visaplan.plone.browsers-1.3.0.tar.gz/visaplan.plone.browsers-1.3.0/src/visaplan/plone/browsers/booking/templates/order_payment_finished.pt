@@ -1,0 +1,158 @@
+<tal:todo replace="nothing"><!-- -*- coding: utf-8 -*- äöü
+- Abgleich mit mail_order_confirmation.pt (Mail)
+  (Code-Dopplungen möglichst auflösen)
+- Hinweis auf versandte Mail (ggf. im Spam-Ordner nachsehen)
+- Nach Verfügbarkeit greeting-Browser verwenden
+- Der Text hebt noch explizit auf Kursbuchung ab (nicht generell genug)
+- Links zu gebuchten Kursen besser in der Liste?
+--></tal:todo>
+<tal:block
+tal:define="stage python:context.getBrowser('stage')"
+tal:condition="python:stage and (stage.get('advertisement-right-one') or stage.get('advertisement-right-two'))">
+    <tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+</tal:block>
+<!-- quickfix bis werbung korrekt -->
+<tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone">
+
+<metal:slot metal:fill-slot="column_one_slot"/>
+
+<metal:block metal:fill-slot="breadcrumb"
+tal:define="step python:5">
+
+    <ul class="breadcrumb"
+        metal:use-macro="here/booking_macros/macros/steps">
+        <li>
+            1. Cart
+            <span class="divider">/</span>
+        </li>
+        <li>
+            2. Your details
+            <span class="divider">/</span>
+        </li>
+        <li>
+            3. Payment method
+            <span class="divider">/</span>
+        </li>
+        <li>
+            4. Confirmation
+            <span class="divider">/</span>
+        </li>
+        <li>
+            5. Thanks
+        </li>
+    </ul>
+</metal:block>
+
+<metal:main fill-slot="main"
+            tal:define="
+booking nocall:here/@@booking;
+object_user here/@@author/get;
+order_id options/order_id | request/order_id;
+orderdata options/orderdata | python:booking.get_complete_order_info_by_order_id(order_id);
+res orderdata;
+order orderdata/order;
+items orderdata/articles;
+portal python: context.getAdapter('portal')();
+mac2 here/booking_macros2/macros;
+bs python:order['booking_state'];
+pformat python:context.getAdapter('pformat');
+">
+    <div class="area-title">
+        <p><strong tal:content="python:booking.make_greeting(order)">
+            <tal:block i18n:translate="">Dear</tal:block>
+            Heinz Kunz
+        </strong></p>
+    </div>
+    <div class="area-content"
+         tal:define="div_outer_class nothing;
+                     div_inner_class string:list-item">
+<pre tal:content="python:pformat(orderdata)"
+     tal:condition="python:0"></pre>
+        <p i18n:translate="">
+            Thank you for your booking.
+            Below you will find the summary.
+            Your order with all the relevant facts:
+        </p>
+        <div metal:use-macro="here/booking_macros/macros/order-overview">
+                <div class="list-item">
+                    <metal:slot fill-slot="order-payment-history">
+                    <tal:block tal:condition="python:order['payment_type']=='paypal'">
+                    <strong i18n:translate="">
+                        Payment status
+                    </strong>
+                    <blockquote
+                        tal:define="rs_history_paypal python:booking.get_paypal_history_by_order_id(order_id);"
+                        tal:on-error="structure string:&lt;!-- Fehler beim Laden der PayPal-Historie--&gt;"
+                        >
+                        <div tal:content="python:rs_history_paypal and rs_history_paypal[0]['payment_status'] or ''"
+                             i18n:translate=""/>
+                    </blockquote>
+                    </tal:block>
+                    </metal:slot>
+                </div>
+            </div>
+            <tal:if-has_articles condition="items">
+            <tal:if-paid condition="python:bs == 'accepted'">
+            <p metal:use-macro="mac2/snippet-payment-received">
+                Danke für die Kohle
+            </p>
+            </tal:if-paid>
+            <tal:if-pending condition="python:bs == 'pending'">
+            <p metal:use-macro="mac2/snippet-payment-pending">
+            ./booking_macros2.pt
+                We were notified about your payment by the payments provider,
+                but the payment could not yet be completed,
+                and we could not process the notification automatically.
+                While we will look into the issue ourselves,
+                further action by you might be necessary.
+            </p>
+            <p metal:use-macro="mac2/snippet-inconvenience">
+              We are sorry for the inconvenience.
+            </p>
+            </tal:if-pending>
+            <tal:if-not-paid condition="python:bs != 'accepted'">
+            <pre tal:define="pformat python:here.getAdapter('pformat')"
+                 tal:condition="python:0"
+                 tal:content="python: pformat(order)">
+                ein dict
+            </pre>
+            <tal:if-not-pending condition="python:bs != 'pending'">
+            <p metal:use-macro="mac2/snippet-presage-invoice">
+                Our team will process your booking immediately and you
+                will receive an invoice per post in the next few days.
+                Please complete the payment within 14 days of receiving
+                the invoice.
+            </p>
+            </tal:if-not-pending>
+            <tal:ns define="
+            macroid orderdata/meta/snippet/after-payment;
+            macro python:mac2[macroid];
+            "><p metal:use-macro="macro">
+                After we have received your payment, the booked course
+                will be made available to you on
+                <a href="http://unitracc.de"
+                   tal:define="url portal/absolute_url"
+                   tal:attributes="href url"
+                   tal:content="url"
+                   >http://unitracc.de</a>
+                as of the selected start date through to the end of the
+                predetermined course end date.
+            </p></tal:ns>
+            </tal:if-not-paid>
+            <p metal:use-macro="mac2/snippet-right-of-rescission">
+                Widerrufsrecht
+            </p>
+            </tal:if-has_articles>
+            <p metal:use-macro="mac2/snippet-questions-order">
+                For questions regarding your bookings or UNITRACC in
+                general, you can of course contact our team any time at
+                <a href="mailto:some@mail.address"
+                   >some@mail.address</a>.
+                We're here to help.
+            </p>
+    </div>
+</metal:main>
+
+</metal:block>

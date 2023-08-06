@@ -1,0 +1,46 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+    <browser:page
+      for="*"
+      name="scaling"
+      class=".browser.Browser"
+      permission="zope2.View"
+      allowed_interface=".browser.IScaling"
+      />
+
+    <include package=".templates" />
+
+    <subscriber
+        for="Products.ATContentTypes.interface.image.IATImage
+             Products.Archetypes.interfaces.IObjectInitializedEvent"
+        handler=".events.delete"/>
+
+    <subscriber
+        for="Products.ATContentTypes.interface.image.IATImage
+             Products.Archetypes.interfaces.IObjectEditedEvent"
+        handler=".events.delete"/>
+
+    <subscriber
+        for="Products.ATContentTypes.interface.image.IATImage
+             OFS.interfaces.IObjectWillBeRemovedEvent"
+        handler=".events.delete"/>
+
+    <subscriber
+        for="Products.ATContentTypes.interface.news.IATNewsItem
+             Products.Archetypes.interfaces.IObjectInitializedEvent"
+        handler=".events.delete"/>
+
+    <subscriber
+        for="Products.ATContentTypes.interface.news.IATNewsItem
+             Products.Archetypes.interfaces.IObjectEditedEvent"
+        handler=".events.delete"/>
+
+    <subscriber
+        for="Products.ATContentTypes.interface.news.IATNewsItem
+             OFS.interfaces.IObjectWillBeRemovedEvent"
+        handler=".events.delete"/>
+
+
+</configure>

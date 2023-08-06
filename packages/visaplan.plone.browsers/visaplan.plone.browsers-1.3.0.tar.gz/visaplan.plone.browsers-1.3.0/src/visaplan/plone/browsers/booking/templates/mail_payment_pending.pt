@@ -1,0 +1,52 @@
+<tal:html i18n:domain="plone"
+     tal:define="
+mac1 here/booking_macros/macros;
+mac2 here/booking_macros2/macros;
+div_outer_class string:dbg-outer;
+div_inner_class string:dbg-inner;
+items options/articles;
+order options/order;
+in_backend python:0;
+"><html metal:use-macro="mac1/mail">
+<metal:slot fill-slot="text">
+<p metal:use-macro="mac2/snippet-payment-pending">
+    We were notified about your payment by the payments provider,
+    but the payment could not yet be completed,
+    and we could not process the notification automatically.
+    While we will look into the issue ourselves,
+    further action by you might be necessary.
+</p>
+<tal:if-info define="
+dic options/payment_info | nothing;
+keys python:'payment_status pending_reason reason_code payer_id payer_email payer_status'.split();
+" condition="dic">
+<p i18n:translate="mail_3rdparty_information">
+    This is what we were told:
+</p>
+<dl metal:use-macro="mac2/dl-cherrypick">
+    <tal:loop repeat="key python:'payment_status pending_reason reason_code payer_id payer_email payer_status'.split()">
+    <tal:item define="val python:dic.get(key)"
+              condition="val">
+    <dt tal:content="key">
+        payment_status
+    </dt>
+    <dd tal:content="val">
+        Pending
+    </dd>
+    </tal:item>
+    </tal:loop>
+</dl>
+</tal:if-info>
+<p i18n:translate="mail_further_contact">
+    Please feel free to contact the UNITRACC-Team at
+    <a href="mailto:some@mail.address"
+       tal:define="address options/mail_from | here/@@booking/get_sending_mail_address"
+       tal:attributes="href string:mailto:$address"
+       tal:content="address"
+       i18n:name="mail_email_link">some@mail.address</a>.
+</p>
+<p metal:use-macro="mac2/snippet-inconvenience">
+We are sorry for the inconvenience.
+</p>
+</metal:slot>
+</html></tal:html>

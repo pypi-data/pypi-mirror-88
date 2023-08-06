@@ -1,0 +1,140 @@
+<tal:block tal:define="
+                       usermanagement nocall:here/@@usermanagement;
+                       dummy usermanagement/authManageUsers;
+                       SearchableText request/SearchableText | nothing;
+                       brains usermanagement/search;
+                       batch nocall:here/@@batch;
+                       batch python:batch(brains, 50);
+                       member nocall:here/@@member;
+                       template_id string:manage_users_view;
+                       dummy python:context.getAdapter('updateactualurl')(here.absolute_url()+'/'+template_id);
+                       toTime python:context.getAdapter('totime');
+                       "
+           i18n:domain="plone">
+
+    <div class="alert alert-info">
+        <tal:block tal:content="python:len(brains)"/>
+        <tal:block tal:condition="not:SearchableText"
+                   i18n:translate="kss-search-result-01">search results found</tal:block><tal:block tal:condition="SearchableText"
+                   i18n:translate="kss-search-result-02">search results found for <tal:block tal:content="SearchableText" i18n:name="SearchableText"/></tal:block>.
+
+    </div>
+    <div class="area-content-navigation text-center">
+        <metal:block metal:use-macro="here/batch_macros/macros/navigation"/>
+    </div>
+
+    <form method="post" action="." id="submit-form">
+
+        <table cellspacing="0" cellpadding="0" style="width:none;"
+               class="table table-bordered table-striped table-hover table-sorted">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" class="user-uids" id="all_users"/>
+                    </th>
+                    <th class="sortable-serverside pointer" rel="getUserIdIndex"
+                        i18n:translate="">
+                        Login
+                    </th>
+                    <th class="sortable-serverside pointer" rel="getFirstnameIndex"
+                        i18n:translate="">
+                        Firstname
+                    </th>
+                    <th class="sortable-serverside pointer" rel="getLastnameIndex"
+                        i18n:translate="">
+                        Lastname
+                    </th>
+                    <th class="sortable-serverside pointer" rel="getEmailIndex"
+                        i18n:translate="">
+                        Email
+                    </th>
+                    <th class="sortable-serverside pointer" rel="created"
+                        i18n:translate="">
+                        Registered
+                    </th>
+                    <th class="sortable-serverside pointer" rel="getLastLogin"
+                        i18n:translate="">
+                        Last login
+                    </th>
+                    <th class="sortable-serverside pointer" rel="getLocked"
+                        i18n:translate="">
+                        Locked
+                    </th>
+                    <th>
+                        <!-- -->
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tal:loop tal:repeat="brain batch">
+                <tr tal:define="dummy python:member.set(brain.getUserId);
+                                user member/get;
+                                userId python:brain.getUserId;
+                                ">
+                    <td class="user-uids">
+                        <input type="checkbox" name="uids:list"
+                               tal:attributes="value brain/UID"/>
+                    </td>
+                    <td>
+                        <tal:block tal:content="userId"/>
+                    </td>
+                    <td>
+                        <tal:block tal:content="python:brain.getFirstname"/>
+                    </td>
+                    <td>
+                        <tal:block tal:content="python:brain.getLastname"/>
+                    </td>
+                    <td>
+                        <tal:block tal:content="python:brain.getEmail"/>
+                    </td>
+                    <td>
+                        <tal:block tal:content="python:toTime(brain.created)"/>
+                    </td>
+                    <td>
+                        <tal:block tal:condition="nocall:user"
+                                   tal:content="python:toTime(user.getProperty('last_login_time'))"/>
+                    </td>
+                    <td>
+                        <tal:block tal:content="python:brain.getLocked and 'Yes' or 'No'"
+                                   i18n:translate=""/>
+                    </td>
+                    <td>
+                        <a title="Edit group memberships"
+                           tal:condition="python:brain.getUserId"
+                           tal:attributes="href string:${here/portal_url}/edit_group_membership?user_id=${userId}"
+                           i18n:attributes="title label_edit_group_memberships">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a title="Edit"
+                           tal:attributes="href string:${brain/getURL}/edit"
+                           i18n:attributes="title">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tal:loop>
+            </tbody>
+        </table>
+        <div id="buttons">
+        <input class="btn btn-default"
+               type="button" value="Delete"
+               id="delete-user"
+               i18n:attributes="value"/>
+        <button class="btn btn-default"
+                id="lock-users"
+                i18n:translate="">
+                Lock
+        </button>
+        <button class="btn btn-default"
+                id="unlock-users"
+                i18n:translate="">
+                Unlock
+        </button>
+
+        </div><!-- #buttons -->
+
+    </form>
+    <div class="area-content-navigation text-center">
+        <metal:block metal:use-macro="here/batch_macros/macros/navigation"/>
+    </div>
+</tal:block>

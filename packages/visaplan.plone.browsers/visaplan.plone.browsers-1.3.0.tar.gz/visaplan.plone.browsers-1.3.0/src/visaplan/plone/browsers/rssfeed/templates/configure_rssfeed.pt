@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="dummy python:context.getAdapter('authorized')('Manage portal');
+                        key here/@@rssfeed/config_storage_key;
+                        settings nocall:here/@@settings;
+                        portal python:context.getAdapter('portal')();
+                        dict_ python:settings.get(key)">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">
+        Configure rss
+    </h1>
+
+    <form method="post" tal:attributes="action string:${portal/absolute_url}/@@settings/set">
+
+        <fieldset>
+            <legend><label for="mapping" i18n:translate="">Mapping</label></legend>
+
+            <div class="field">
+                <div class="help">
+                    Format:RECURSIVE;UID;URL<br/>
+                    Example:1;af0165d42aa47e21564007bdfc7aa3c2;search_rss?portal_type=UnitraccNews&amp;portal_type=UnitraccArticle&amp;sort_on=effective&amp;sort_order=reverse
+                <div>
+                    <textarea rows="10"
+                        name="mapping"
+                        id="mapping"
+                        tal:content="dict_/mapping | nothing">
+1;af0165d42aa47e21564007bdfc7aa3c2;search_rss?portal_type=UnitraccNews&amp;portal_type=UnitraccArticle&amp;sort_on=effective&amp;sort_order=reverse
+                    </textarea>
+                </div>
+            </div>
+
+            <input type="hidden" name="key"
+                   tal:attributes="value key"/>
+            <input class="button" type="submit" value="Save" i18n:attributes="value label_save"/>
+        </fieldset>
+    </form>
+
+</metal:main>
+
+</body>
+</html>
+

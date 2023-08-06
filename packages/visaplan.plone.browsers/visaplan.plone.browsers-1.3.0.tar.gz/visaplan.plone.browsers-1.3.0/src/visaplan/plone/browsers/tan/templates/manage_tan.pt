@@ -1,0 +1,232 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+<head>
+  <script src="../static/tan.js"
+          metal:fill-slot="javascript_head_slot"
+          tal:attributes="src string:${here/portal_url}/++resource++tan/tan.js"></script>
+</head>
+
+<body>
+  <metal:main fill-slot="main">
+<tal:ns tal:define="
+tan_browser nocall:context/@@tan;
+dummy tan_browser/authManageThis;
+tan request/tan | nothing;
+"
+>
+<tal:ns-filter
+  define="cols cols | python: ('tan',);
+          action string:manage_tan;
+          ">
+  <form action="manage_tan" method="get"
+        metal:use-macro="here/tans_wizard/macros/filter-form">
+    <label>
+      <tal:txt i18n:translate="">
+        TAN:
+      </tal:txt>
+      <input type="text" name="tan" value="123456789"
+             tal:attributes="value tan"
+             >
+    </label>
+    <input type="submit" value="Load"
+           i18n:attributes="value"
+           metal:fill-slot="primary-button"
+           class="btn btn-primary">
+    <tal:void metal:fill-slot="reset-button"/>
+  </form>
+  <form action="create_tan" method="get"
+        metal:use-macro="here/manage_tans/macros/tan-new-formlink-form">
+    <input type="submit" value="Add new TAN"
+           i18n:attributes="value"
+           class="btn btn-default">
+  </form>
+</tal:ns-filter>
+
+<tal:if-tan condition="tan">
+<tal:tan-ns
+  define="taninfo tan_browser/tan_values_and_history;
+          current taninfo/current;
+          history taninfo/history;
+          ">
+  <tal:if-tan-found condition="current">
+    <div id="area-title">
+      <h1 i18n:translate="">
+        Edit TAN
+        <span tal:content="current/Pretty_TAN | tan"
+              i18n:name="tan">123.456.789</span>
+      </h1>
+    </div>
+
+    <pre tal:define="pformat python:context.getAdapter('pformat')"
+         tal:condition="python:0"
+         tal:content="python:pformat(taninfo)">
+      taninfo-Dictionary
+    </pre>
+    <form action="@@tan/change" method="post">
+      <input type="hidden" value="123456789"
+             name="tan"
+             tal:attributes="value current/tan">
+      <table>
+        <tr>
+          <td><label for="group_id"
+              i18n:translate="">
+            Group
+          </label></td>
+          <td tal:define="gid current/group_id">
+            <div tal:condition="gid">
+              <a href="manage_group_view?group_id=group_abc123"
+                 tal:attributes="href string:manage_group_view?group_id=${gid}"
+                 tal:content="current/group_title"
+                 >
+              Name der Gruppe
+              </a>
+            </div>
+            <tal:if-group-changeable condition="not:current/Frozen">
+            <div tal:define="groups taninfo/selectable_groups">
+            <select name="group_id" class="chosen"
+                    data-placeholder="Choose one ..."
+                    i18n:attributes="data-placeholder"
+                    metal:use-macro="here/group-desktop/macros/group-selector"
+                    style="width:100%">
+                <option value=""></option>
+                <tal:void metal:fill-slot="empty-selection" />
+            </select>
+            </div>
+            </tal:if-group-changeable>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="status">
+              Status
+            </label>
+          </td>
+          <td>
+            <select id="status" name="status"
+              class="chosen input-sm"
+              tal:define="curval current/status">
+              <tal:loop repeat="val taninfo/status_values">
+              <option value="new"
+                      tal:define="value val/name"
+                      tal:attributes="value value;
+                                      selected python:value == curval"
+                      tal:content="value"
+                      i18n:translate="">
+                new
+              </option>
+              </tal:loop>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="yyy" for="input-duration_days"
+                   i18n:translate="duration_days">
+                Duration [days]
+            </label>
+          </td>
+          <td>
+            <input type="text" name="duration_days" id="input-duration_days"
+                   class="input-sm"
+                   value="31"
+                   tal:attributes="value current/duration_days">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="yyy" for="input-expiration-date"
+                   i18n:translate="expiration_date">
+                Expiration date
+            </label>
+          </td>
+          <td>
+            <input type="date" name="expiration_date" id="input-expiration-date"
+                   class="input-sm"
+                   value="01.03.2015"
+                   placeholder="dd.mm.yyyy"
+                   i18n:attributes="placeholder"
+                   tal:attributes="value current/expiration_date">
+            <input type="text" readonly="readonly" id="mirror-date">
+          </td>
+        </tr>
+        <tr>
+          <td tal:define="red python:current['status'] == 'used'">
+            <label for="owner_id"
+              i18n:translate="redeemed by"
+              tal:condition="red">
+              Redeemed by
+            </label>
+            <label for="owner_id"
+              i18n:translate=""
+              tal:condition="not:red">
+              Owner
+            </label>
+          </td>
+          <td>
+            <input type="text" name="owner_id" id="owner_id"
+                   value="ID des Besitzers"
+                   tal:attributes="value current/owner_id">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="additional_info"
+              i18n:translate="">
+              Additional information
+            </label>
+          </td>
+          <td>
+            <input type="text" name="additional_info" id="additional_info"
+                   value="Zusatzinformationen"
+                   tal:attributes="value current/additional_info">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+          <input type="submit" value="Save"
+                 i18n:attributes="value"
+                 class="btn btn-primary">
+          <input type="reset" class="btn btn-default">
+          </td>
+        </tr>
+      </table>
+    </form>
+
+    <h2 i18n:translate="">
+      History
+    </h2>
+    <tal:history
+    tal:define="rows history;
+                mp tan_browser/canManage;
+                nolinks not:mp;
+                cols python:('status', 'owner_id',
+                             'additional_info', 'changed_by',
+                             'last_changed_date');
+                ">
+    <table metal:use-macro="here/tans_wizard/macros/table">
+    </table>
+    </tal:history>
+
+
+  </tal:if-tan-found>
+  <tal:else-tan-found tal:condition="not:current">
+  <p class="error" i18n:translate="">
+  No TAN <tt i18n:name="tan" tal:content="tan">123 456 789</tt> found!
+  </p>
+  </tal:else-tan-found>
+  </tal:tan-ns>
+  </tal:if-tan>
+
+</tal:ns>
+</metal:main>
+</body><!-- vim: set sw=2 sts=2 si et :--></html>

@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+    <metal:block fill-slot="javascript_head_slot">
+        <link rel="stylesheet" type="text/css" href="/++resource++usermanagement/usermanagement.css"/>
+    </metal:block>
+
+<body>
+
+<metal:no-ads fill-slot="ad-block-above-content"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<div metal:fill-slot="main"
+     tal:define="dummy context/@@usermanagement/authViewGroups;
+                 group_id request/group_id;
+                 groupsharing nocall:here/@@groupsharing;
+                 info python:groupsharing.get_group_info_by_id(group_id);
+                 pg python:context.getAdapter('pg')();
+                 group python:pg.getGroupById(group_id);
+                 ">
+
+    <div id="content">
+
+        <h1 class="documentFirstHeading">
+            <a tal:attributes="href string:${portal_url}/manage_group_view?group_id=${group_id}">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a>
+            <tal:block i18n:translate="heading_edit_groupproperties">
+                Edit Group Properties for <tal:block tal:content="info/group_title | nothing" i18n:name="groupname"/>
+            </tal:block>
+        </h1>
+
+
+        <form method="post"
+              action="/@@groupsharing/update_group">
+
+            <div class="field">
+                <label for="title"
+                       i18n:translate="">Title</label>
+                <div>
+                    <input type="text" id="title"
+                           class="input-xxlarge"
+                           tal:attributes="value info/group_title" size="75" name="title:string">
+                </div>
+            </div>
+            <div class="field">
+                <label for="description"
+                       i18n:translate="">Description</label>
+                <div>
+                    <textarea cols="35" rows="6" name="description:text"
+                              id="description"
+                              tal:content="info/group_description">
+                        Beschreibung der Gruppe
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="checkbox">
+                    <input type="checkbox" id="title" value="1"
+                           size="75" name="group_desktop"
+                           tal:attributes="checked python:info.get('group_desktop') and 'checked' or None"/>
+                    <tal:txt1 i18n:translate="">Group desktop</tal:txt1>
+                </label>
+            </div>
+            <br/>
+            <div class="formControls">
+                <input type="hidden" name="group_id"
+                       tal:attributes="value group_id"/>
+                <button class="button-object-actions btn btn-primary" type="submit"
+                        i18n:translate="label_save">
+                    Save
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

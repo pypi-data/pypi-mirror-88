@@ -1,0 +1,205 @@
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone"><!--
+Achtung, noch keine Ausgabe der neuen Kalkulationszeilen (calculated)!
+Bitte angleichen:
+- ./order_view.pt (diese Datei)
+- ./order_edit.pt
+- ./order_overview.pt
+und Makros verwenden aus:
+- ./booking_macros.pt
+- ./booking_macros2.pt
+-->
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1);
+                         dummy python: here.getBrowser('authorized').authorized('unitracc: Manage Orders');" />
+
+<metal:no-ads fill-slot="column_one_slot"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:cr_outer fill-slot="breadcrumb">
+    <metal:breadcrumb use-macro="here/crumbs/macros/main"/>
+</metal:cr_outer>
+
+<metal:block fill-slot="head_slot">
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/++resource++unitracc-resource/cart.js"></script>
+
+</metal:block>
+
+<metal:main fill-slot="main"
+            tal:define="
+booking nocall:here/@@booking;
+order_id request/id|nothing;
+pformat python:context.getAdapter('pformat');
+data python:booking.get_order_view(order_id);
+order data/order;
+" tal:condition="order">
+        <pre tal:content="python:pformat(data)"
+        tal:condition="python:0"></pre>
+<tal:ns define="                    
+totime python:context.getAdapter('totime');
+paypal_payment_states booking/get_paypal_payment_states;
+">
+    <div class="area-title">
+        <h1>
+            <tal:block i18n:translate="">
+                Order view
+            </tal:block>
+            <a tal:attributes="href string:/order_edit?id=${order_id}">
+                <i class="glyphicon glyphicon-pencil"></i>
+            </a>
+        </h1>
+    </div>
+    <div class="area-content"
+	 tal:condition="order">
+        <div class="col-md-6">
+            <div class="row">
+                <address>
+                    <strong>
+                    <tal:block tal:condition="python:order.get('firstname') or order.get('lastname')"
+                               tal:define="firstname order/firstname|nothing;
+                                           lastname order/lastname|nothing"
+                                           tal:content="string:${firstname} ${lastname}">
+                    </tal:block>
+                    <br tal:condition="python:order.get('firstname') or order.get('lastname')"/>
+                    <tal:block tal:condition="order/company"
+                        tal:content="order/company">
+                    </tal:block>
+                    </strong>
+                    <br tal:condition="order/company"/>
+                    <tal:block tal:content="order/street"/><br/>
+                    <tal:block tal:content="order/zip"/>
+                    <tal:block tal:content="order/city"/><br/>
+                    <tal:block tal:content="order/country"/>
+                    <tal:block tal:condition="order/additional_info">
+                        <br/>
+                        <tal:txt tal:content="order/additional_info"></tal:txt>
+                    </tal:block>
+                </address>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="row">
+                <p>
+                    <tal:block i18n:translate="">Order number</tal:block>:
+                    <tal:block tal:content="order/ordernr"/>
+                <br/>
+                    <tal:block i18n:translate="">Booked on</tal:block>:
+                    <tal:block tal:content="order/date_booked"/>
+                <br/>
+                    <tal:block i18n:translate="">
+                        Payment method
+                    </tal:block>:
+                    <tal:block i18n:translate="" tal:content="order/payment_type"/>
+                <br/>
+                    <tal:block i18n:translate="">Status</tal:block>:
+                    <tal:block tal:content="order/payment_status" i18n:translate=""/>
+                <br/>
+                    <tal:block i18n:translate=""
+                               tal:condition="order/date_payed">Payment date</tal:block><tal:block
+                                   tal:content="string:: ${order/date_payed}"
+                               tal:condition="order/date_payed"/>
+                <br tal:condition="order/date_payed"/>
+                    <tal:block i18n:translate="">IP</tal:block>:
+                    <tal:block tal:content="order/ip"/>
+                </p>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover"
+	       tal:define="vat_column python:0">
+            <thead>
+                <tr>
+                    <th i18n:translate="">Article</th>
+                    <th i18n:translate="">Desired start</th>
+                    <th i18n:translate="">Duration</th>
+                    <th tal:condition="vat_column">
+                        <tal:block i18n:translate="">VAT</tal:block>
+                    </th>
+                    <th i18n:translate="">Net price</th>
+                    <th i18n:translate="">Quantity</th>
+                    <th i18n:translate="">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+		<tr tal:repeat="item data/articles">
+		    <td tal:define="uid python:item['article_uid']">
+			<span tal:content="item/article_title">
+			Artikeltitel
+			</span>
+			<a href="#"
+			   class="pull-right"
+			   target="_blank"
+			   title="Mitglieder der Lerngruppe"
+			   tal:attributes="href string:/manage_group_view?group_id=group_${uid}_learner&course=1"
+			   ><i class="glyphicon glyphicon-edit"></i>
+			</a>
+		    </td>
+		    <td tal:content="item/start">
+			16.07.2014
+		    </td>
+		    <td tal:content="item/duration">
+			31 Tage
+		    </td>
+		    <td tal:content="structure item/vat"
+			tal:condition="vat_column">
+			114,00 
+		    </td>
+		    <td class="text-right"
+			tal:content="structure item/amount">
+			600,00 
+		    </td>
+		    <td class="text-right"
+			tal:content="item/quantity">
+			2
+		    </td>
+		    <td class="text-right"
+			tal:content="structure item/amount_multiplied">
+			1200,00
+		    </td>
+		</tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="5"
+			i18n:translate="">
+			Net amount
+                    </th>
+                    <td colspan="2" class="text-right"
+			tal:content="structure order/net_total">
+			600,00 
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="3"
+			i18n:translate="">
+			VAT
+                    </th>
+                    <td colspan="2" class="text-right"
+                        tal:content="structure order/vat_total">
+			114,00 
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="3" i18n:translate=""
+			>Total amount
+                    </th>
+                    <td colspan="2"
+			class="text-right"
+                        tal:content="structure order/total">
+			714,00 
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+
+        <tal:block
+            tal:define="rs_history_paypal python:order_id and booking.get_paypal_history_by_order_id(order_id);"
+            tal:condition="rs_history_paypal">
+            <h4 i18n:translate="">Paypal history</h4>
+            <metal:block metal:use-macro="here/order_edit/macros/paypal"/>
+        </tal:block>
+    </div>
+    </tal:ns>
+</metal:main>
+
+</metal:block>

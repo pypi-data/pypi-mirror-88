@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+    <head>
+      <metal:js fill-slot="head_slot">
+      <metal:js use-macro="here/management_1255c69f5497ffb66ab21dfb9108ec4e_publish/macros/chosen-js"></metal:js>
+      <script type="text/javascript"
+	      src="/++resource++management/userselect-live-keypress.js">
+      </script>
+      </metal:js>
+    </head>
+
+<body>
+
+<metal:no-ads fill-slot="ad-block-above-content"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:main fill-slot="main"
+            tal:define="
+dummy python:context.getAdapter('authorized')('unitracc: Copy structure types');
+dict_ python:{};
+uid request/form/uid | nothing;
+showAll python:0;
+templateId python:here.getAdapter('templateid')();
+langCode python:context.getAdapter('langcode')();
+">
+
+    <h1 class="documentFirstHeading padding-top-10"
+        i18n:translate="">
+    Copy structure
+    </h1>
+
+    <form method="post"
+          metal:use-macro="here/management_1255c69f5497ffb66ab21dfb9108ec4e_copy/macros/form">
+        <fieldset metal:fill-slot="copy-source"
+                  class="wide-input">
+            <div class="field">
+            <input type="text" readonly="readonly"
+                   tal:attributes="value context/Title"
+                   value="Titel des aktuellen Strukturelements">
+            </div>
+            <input type="hidden" name="sourceLanguage"
+                   tal:attributes="value string:${context/absolute_url}/${templateId}?set_language=${langCode}"
+                   value=".../pfad/zur/struktur/structure_copy_view?set_language=de">
+        </fieldset>
+
+<!-- Anmerkungen:
+  - Der aktuelle Wert für sourceLanguage stammt aus den (sprach-umschaltbaren) Formularen,
+    die jeweils die Auswahl einer Struktur aus einer Liste erlaub(t)en
+  - Das ganze ist noch nicht getestet
+
+gf-Links:
+./management_1255c69f5497ffb66ab21dfb9108ec4e_copy.pt
+../resource/userselect-live-keypress.js
+
+  -->
+    </form>
+
+</metal:main>
+
+</body>
+</html>
+

@@ -1,0 +1,26 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+             for="*"
+             name="import-articles"
+             template="import-articles.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="import-events"
+             template="import-articles.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="import-glossaries"
+             template="import-articles.pt"
+             permission="zope2.View"
+             />
+
+</configure>

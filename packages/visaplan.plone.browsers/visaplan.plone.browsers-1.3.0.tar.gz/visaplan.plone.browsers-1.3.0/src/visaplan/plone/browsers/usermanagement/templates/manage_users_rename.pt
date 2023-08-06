@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:no-ads fill-slot="ad-block-above-content"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">
+        Delete users
+    </h1>
+
+    <form method="post" id="search-form"
+          accept-charset="UTF-8"
+          action="/@@usermanagement/renameUsers">
+
+        <fieldset>
+            <legend i18n:translate="">Actions</legend>
+            <div class="field">
+                <input type="checkbox" name="account" checked="checked" id="cb-account"/>
+                <label i18n:translate="" for="cb-account">Delete user account</label>
+            </div>
+            <div class="field">
+                <input type="checkbox" name="profil" checked="checked" id="cb-profile"/>
+                <label i18n:translate="" for="cb-profile">Delete user profil</label>
+            </div>
+        </fieldset>
+
+<metal:list define-macro="users-list"
+tal:define="
+usermanagement nocall:context/@@usermanagement;
+dummy usermanagement/authManageUsers;
+brains usermanagement/search;
+">
+        <script type="text/javascript">
+$(document).ready(function () {
+        $('input[type=checkbox]#all_users').click(function () {
+            toggleSelect(this, 'uids:list', true);
+            })
+        })
+        </script>
+        <table cellspacing="0" cellpadding="0" class="custom-listing">
+        <tr>
+            <th>
+                <input type="checkbox" class="user-uids" id="all_users"
+                       checked="checked">
+            </th>
+            <th i18n:translate="">
+                Login
+            </th>
+            <th i18n:translate="">
+                UID
+            </th>
+            <th i18n:translate="">
+                Firstname
+            </th>
+            <th i18n:translate="">
+                Lastname
+            </th>
+        </tr>
+        <tal:loop repeat="brain brains">
+        <tr>
+            <td>
+                <input type="checkbox" name="uids:list" checked="checked"
+                       tal:attributes="value brain/UID"/>
+            </td>
+            <td>
+                <tal:block tal:content="python:brain.getUserId"/>
+            </td>
+            <td tal:define="uid python:brain.UID">
+                <tt><a href="@@resolveuid/abc123"
+                       tal:attributes="href string:${here/portal_url}/@@resolveuid/$uid"
+                       tal:content="uid">
+                        abc123
+                    </a></tt>
+            </td>
+            <td>
+                <tal:block tal:content="python:brain.getFirstname"/>
+            </td>
+            <td>
+                <tal:block tal:content="python:brain.getLastname"/>
+            </td>
+        </tr>
+        </tal:loop>
+        </table>
+</metal:list>
+
+        <input type="submit" value="Delete user"
+               class="btn btn-danger"
+               i18n:attributes="value"/>
+
+    </form>
+
+
+</metal:main>
+
+</body>
+</html>

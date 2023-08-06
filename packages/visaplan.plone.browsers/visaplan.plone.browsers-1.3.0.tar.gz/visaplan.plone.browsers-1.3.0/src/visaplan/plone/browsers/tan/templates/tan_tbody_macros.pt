@@ -1,0 +1,142 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+  <metal:main fill-slot="main">
+<tal:ns1 tal:define="
+tan_browser python:context.getBrowser('tan');
+dummy tan_browser/authManage;
+"
+>
+  <div id="area-title">
+    <h1>Makros für Formularkomponenten</h1>
+    <p>Siehe auch:</p>
+    <ul>
+     <li>
+      <a href="tans_wizard.pt">
+         tans_wizard
+        </a>
+     </li>
+     <li>
+      <a href="tan_thead_macros.pt">
+         tan_thead_macros
+        </a>
+     </li>
+     <li>
+      <a
+       href="tans_of_group?group_id=group_56577f841b9a81db7045a981761dca33">
+       TANs der Gruppe group_56577f841b9a81db7045a981761dca33
+      </a>
+     </li>
+     <li>
+     <a href="manage_tan?tan=348089202">
+      TAN 348089202 bearbeiten
+     </a>
+     </li>
+    </ul>
+</div>
+<form metal:define-macro="filter-form">
+        coming soon
+</form>
+<table class="datatb table-bordered table-hover table-sorted">
+ <tal:thead define="m nocall:here/tan_thead_macros/macros">
+    <pre tal:content="python:pformat(m)"
+         tal:define="pformat python:context.getAdapter('pformat')"
+         tal:condition="python:1">
+    Die thead-Makros (ein dict?)
+    </pre>
+ <thead metal:use-macro="m/thead">
+ </thead>
+ </tal:thead>
+ <tbody tal:define="rows tan_browser/mock_rows;
+                    nolinks python:0;
+                    ">
+    <tr tal:repeat="row rows">
+    <td metal:define-macro="tan">
+      <tt tal:define="tan row/tan">
+        <a tal:content="tan"
+           href="manage_tan?tan=123"
+           tal:attributes="href string:manage_tan?tan=$tan"
+           tal:omit-tag="nolinks">
+           123456796
+        </a>
+      </tt>
+    </td>
+        <td metal:define-macro="quantity"
+            class="num"
+            tal:content="row/tan_quantity">
+        42
+        </td>
+        <td metal:define-macro="status"
+            tal:content="row/status"
+            i18n:translate="">
+        new
+        </td>
+        <td metal:define-macro="group_id">
+          <a href="tans_of_group?gid=group_abc123"
+            tal:define="group_id row/group_id"
+            tal:attributes="href string:tans_of_group?gid=$group_id"
+            tal:content="group_id">
+            group_abc123
+          </a>
+        </td>
+        <td metal:define-macro="Group">
+          <a href="manage_tans?group_id=group_abc123"
+            tal:define="group_id row/group_id;
+                        Group row/group_title | string:$group_id (Oops!)"
+            tal:attributes="href string:manage_tans?group_id=$group_id"
+            tal:content="Group">
+            ABC-Gruppe
+          </a>
+        </td>
+        <td metal:define-macro="changeset"
+            class="num"
+            tal:content="row/changeset">
+        42
+        </td>
+        <td metal:define-macro="duration_days"
+            class="num"
+            tal:content="row/duration_days">
+        31
+        </td>
+        <td metal:define-macro="owner_id"
+            tal:content="row/owner_id">
+        owner_id
+        </td>
+        <td metal:define-macro="expiration_date"
+            tal:content="row/expiration_date">
+        2015-04-01
+        </td>
+        <td metal:define-macro="additional_info"
+            tal:content="row/additional_info">
+        Mock-Informationen
+        </td>
+        <td metal:define-macro="changed_by"
+            tal:content="row/changed_by">
+        admin_id
+        </td>
+        <td metal:define-macro="last_changed_date"
+            tal:on-error="row/last_changed_date">
+          <a href="manage_tans?changeset=42"
+            tal:define="url string:manage_tans?changeset=${row/changeset}"
+             tal:attributes="href url"
+             tal:content="row/last_changed_date">
+             2014-03-05 16:08:08
+          </a>
+        </td>
+       </tr>
+    </tbody>
+</table>
+  </tal:ns1>
+  </metal:main>
+<!-- vim: set ts=4 sts=4 noet si :--></body></html>

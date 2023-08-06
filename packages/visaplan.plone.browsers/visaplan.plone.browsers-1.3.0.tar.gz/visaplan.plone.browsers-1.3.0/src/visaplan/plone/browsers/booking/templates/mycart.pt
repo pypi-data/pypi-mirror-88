@@ -1,0 +1,118 @@
+<tal:block tal:condition="python: here.getBrowser('stage').get('advertisement-right-one') or here.getBrowser('stage').get('advertisement-right-two')">
+    <tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+</tal:block>
+<!-- quickfix bis werbung korrekt -->
+<tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+
+<tal:block tal:define="
+booking nocall:here/@@booking;
+global res booking/get_current_order_articles;
+"/>
+
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone">
+
+<metal:block fill-slot="head_slot">
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/++resource++unitracc-resource/cart.js"></script>
+</metal:block>
+
+<metal:slot metal:fill-slot="column_one_slot"/>
+
+<metal:block metal:fill-slot="breadcrumb"
+tal:define="formid request/form/formid | res/order/formid | nothing;
+            step python:1">
+
+    <ul class="breadcrumb"
+        metal:use-macro="here/booking_macros/macros/steps">
+        <li>
+            1. Cart
+            <span class="divider">/</span>
+        </li>
+        <li>
+            2. Your details
+            <span class="divider">/</span>
+        </li>
+        <li>
+            3. Payment method
+            <span class="divider">/</span>
+        </li>
+        <li>
+            4. Confirmation
+            <span class="divider">/</span>
+        </li>
+        <li>
+            5. Thanks
+        </li>
+    </ul>
+
+</metal:block>
+
+
+<metal:main fill-slot="main"
+            tal:define="
+order res/order;
+items res/articles;
+calculated res/calculated;
+mac2 here/booking_macros2/macros;
+">
+
+    <script tal:condition="items">
+        $(function () {
+            $(".datetime").datepicker({
+                dateFormat: "dd.mm.yy",
+                showOn: "focus",
+                // buttonImage: "/popup_calendar.gif",
+                // buttonImageOnly: true,
+            })
+        })
+    </script>
+
+    <div class="area-title">
+        <h1 class="documentFirstHeading">
+            1.
+            <tal:txt i18n:translate="">Cart</tal:txt>
+        </h1>
+    </div>
+
+    <pre tal:define="pformat python:here.getAdapter('pformat')"
+         tal:content="python:pformat(res)"
+         tal:condition="python:0"></pre>
+    <div id="area-content">
+
+        <form method="post" action="@@booking/process_cart"
+              tal:define="editable python:1">
+            <input type="hidden" name="oid" tal:attributes="value order/order_id|nothing">
+            <input type="hidden" name="formid" tal:attributes="value order/formid|nothing">
+            <div metal:use-macro="here/booking_macros/macros/order-overview">
+                ./booking_macros.pt
+                <metal:void fill-slot="order-address"/>
+                <metal:void fill-slot="order-head"/>
+            </div>
+            <div tal:condition="items"
+                 metal:use-macro="mac2/snippet-short-termed-start">
+                <p class="text-warning">
+                    Please note that a short-term desire selected start date
+                    can not be guaranteed for all payment types.
+                </p>
+            </div>
+            <div class="pull-left" style="float: left"
+                 tal:attributes="style nothing">
+                <a href="/shop"
+                   class="btn btn-primary"
+                   i18n:translate="">
+                   Resume shopping
+               </a>
+            </div>
+            <div class="pull-right" tal:condition="items">
+                <button type="submit" class="btn btn-primary" i18n:translate="">
+                    Proceed to checkout
+                </button>
+            </div>
+        </form>
+    </div>
+</metal:main>
+
+</metal:block>
+
+<tal:editors condition="nothing"><!-- vim: set ts=8 sts=4 sw=4 si et :--></tal:editors>

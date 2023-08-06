@@ -1,0 +1,197 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:no-ads fill-slot="ad-block-above-content"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border', 1)" />
+
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="
+dummy context/@@usermanagement/authManageUsers;
+w3l python:context.getBrowser('w3l');
+w3l_devmode python: w3l and w3l.w3l_devmode();
+">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">
+        Add user
+    </h1>
+
+    <form method="post" id="search-form"
+          accept-charset="UTF-8"
+          action="/@@usermanagement/addUser">
+
+        <div class="field" title="title_required" i18n:attributes="title">
+            <label for="firstname">
+                <i class="glyphicon glyphicon-exclamation-sign"></i>
+                <tal:block i18n:translate="unitracc_label_firstname">
+                    Firstname
+                </tal:block>
+            </label>
+            <input type="text" name="firstname" id="firstname"
+                   tal:attributes="value request/firstname | nothing">
+        </div>
+
+        <div class="field" title="title_required" i18n:attributes="title">
+            <label for="lastname">
+                <i class="glyphicon glyphicon-exclamation-sign"></i>
+                <tal:block i18n:translate="unitracc_label_lastname">Lastname</tal:block>
+            </label>
+            <input type="text" name="lastname" id="lastname"
+                   tal:attributes="value request/lastname | nothing">
+        </div>
+
+        <div class="field" title="title_required" i18n:attributes="title">
+            <label for="userId">
+                <i class="glyphicon glyphicon-exclamation-sign"></i>
+                <tal:block i18n:translate="unitracc_label_userId">
+                    User id
+                </tal:block>
+            </label>
+            <input type="text" name="userId" id="userId"
+                   tal:attributes="value request/userId | nothing">
+            <div i18n:translate="" tal:condition="w3l">
+            To create a user for the W3L learning management system as well,
+            the user id is restricted to the characters
+            <q>a</q> to <q>z</q>, <q>A</q> to <q>Z</q>, period (<q>.</q>), and <q>0</q> to <q>9</q>.
+            <em>Note:</em> No dashes (<q>-</q>), no underscores (<q>_</q>)!
+            </div>
+            <div i18n:translate="" tal:condition="w3l_devmode">
+            <strong>W3L development mode</strong>:
+            You may suppress the creation of a valid user
+            by checking the <q><label for="suppress_w3l_user"
+                                      style="display:inline">suppress W3L user creation</label></q>
+            checkbox.
+            </div>
+        </div>
+
+        <div class="field"
+             tal:condition="w3l_devmode">
+            <label>
+                <input type="checkbox"
+                       name="suppress_w3l_user" id="suppress_w3l_user"
+                       value="suppress_w3l_user"
+                       checked>
+                <tal:txt i18n:translate="">
+                Suppress W3L user creation
+                </tal:txt>
+            </label>
+        </div>
+
+        <div class="field" title="title_required" i18n:attributes="title">
+            <label for="email">
+                <i class="glyphicon glyphicon-exclamation-sign"></i>
+                <tal:block i18n:translate="">
+                    Email
+                </tal:block>
+            </label>
+            <input type="text" name="email" id="email"
+                   tal:attributes="value request/email | nothing">
+            <div i18n:translate=""
+                 tal:condition="w3l">
+                To access an existing W3L account, specify the same username and e-mail address:
+                <ul><li>
+                    If the W3L account exists already, and the e-mail address matches, it must be confirmed;
+                    thus, the new user be be initially locked, and mail notification is strongly recommended.
+                </li><li>
+                    If the e-mail address <em>doesn't</em> match, the user creation will fail.
+                </li></ul>
+            </div>
+        </div>
+
+        <div class="field" title="title_required" i18n:attributes="title">
+            <label  for="password">
+                <i class="glyphicon glyphicon-exclamation-sign"></i>
+                <tal:block i18n:translate="label_password">Password</tal:block>
+            </label>
+            <input type="password" name="password" id="password"/>
+        </div>
+
+        <div class="field" title="help_confirm_password" i18n:attributes="title">
+            <label for="confirm_password">
+                <i class="glyphicon glyphicon-exclamation-sign"></i>
+                <tal:block i18n:translate="label_password_confirm" >
+                    Confirm password
+                </tal:block>
+            </label>
+            
+            <input type="password" name="confirm_password" id="confirm_password"/>
+        </div>
+
+        <div class="field">
+            <label>
+            <input type="checkbox" name="locked" id="locked" checked="checked">
+            <tal:txt i18n:translate="unitracc_label_locked_creation">Create locked</tal:txt>
+            </label>
+            <div i18n:translate="description_user_creation_locked">
+            The created user account will initially be locked;
+            it can be unlocked by clicking the <q>unlock</q> link
+            from the notification e-mail.
+            </div>
+        </div>
+
+        <div class="field">
+            <label>
+            <input type="checkbox" name="sendMail" id="sendMail"
+                   tal:attributes="checked python:w3l and 'checked' or None">
+            <tal:txt i18n:translate="">Send mail</tal:txt>
+            </label>
+            <div i18n:translate="description_user_creation_sendMail">
+            Send an e-mail to the newly registered user;
+            if not selected, you'll need to notify him/her by other means.
+            </div>
+        </div>
+
+        <tal:if condition="w3l">
+        <div class="field" tal:condition="not:w3l_devmode"
+            i18n:translate="">
+            <em>Note:</em>
+            <ul><li>
+                Creation of a W3L account will be attempted in any case.
+            </li><li>
+                To prevent a W3L account from being created, choose a user name
+                which violates the rules mentioned above.
+            </li><li>
+                If an existing W3L account is used, the e-mail address must be the same.
+                <br>
+                In this case the new user account will <em>always</em> be initially locked,
+                regardless of the above checkbox.
+            </li></ul>
+        </div>
+        <div class="field" tal:condition="w3l_devmode"
+            i18n:translate="">
+            <em>Note:</em>
+            <ul><li>
+                <strong>W3L development mode</strong>:
+                Creation of a W3L account will be attempted,
+                unless suppressed by the respective checkbox.
+            </li><li>
+                Regardless of this checkbox, it is possible to create a user
+                without W3L access by chosing a user name
+                which violates the rules mentioned above.
+            </li><li>
+                If an existing W3L account is used, the e-mail address must be the same.
+                <br>
+                In this case the new user account will <em>always</em> be initially locked,
+                regardless of the above checkbox.
+            </li></ul>
+        </div>
+        </tal:if>
+
+        <input type="submit" value="Add"
+               class="btn btn-primary"
+               i18n:attributes="value"/>
+
+    </form>
+
+
+</metal:main>
+
+</body>
+<!-- vim: set ts=8 sts=4 sw=4 si et :--></html>

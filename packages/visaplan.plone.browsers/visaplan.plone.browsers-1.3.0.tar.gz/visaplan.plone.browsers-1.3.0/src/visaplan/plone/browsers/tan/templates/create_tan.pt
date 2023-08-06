@@ -1,0 +1,135 @@
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:block fill-slot="javascript_head_slot">
+  <script tal:attributes="src string:${here/portal_url}/++resource++tan/tan.js"></script>
+</metal:block>
+
+<metal:no-ads fill-slot="ad-block-above-content"/>
+<metal:no-ads fill-slot="column_one_slot"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+
+<metal:main metal:fill-slot="main"
+            tal:define="tan nocall:context/@@tan;
+                        dummy tan/auth_unitracc_manage_tans;
+                        enabled python:0;
+                        default python:tan.defaults();
+                        group_id default/group_id;
+                        unitraccgroups nocall:context/@@unitraccgroups;
+                        groupinfo python:group_id and unitraccgroups.groupInfo(group_id);
+                        role python:group_id and groupinfo['role']">
+
+    <div id="area-title"
+         tal:condition="group_id">
+        <h1 i18n:translate="">
+            Create TAN for group
+            <a tal:define="uid groupinfo/uid;"
+               tal:attributes="href string:/@@resolveuid/${uid}"
+               tal:content="groupinfo/title"
+               tal:omit-tag="not:uid"
+               i18n:name="group">
+                Name der Gruppe
+            </a>
+        </h1>
+    </div>
+
+    <div id="area-title"
+         tal:condition="not:group_id">
+        <h1 i18n:translate="">
+            Create TAN
+        </h1>
+    </div>
+
+    <form action="@@tan/addTAN" id="create-form" method="post">
+
+        <input type="hidden" name="group_id"
+               tal:condition="group_id"
+               tal:attributes="value group_id">
+        <input type="hidden" name="gid"
+               tal:condition="group_id"
+               tal:attributes="value group_id">
+
+        <div tal:condition="not:group_id">
+            <tal:select-gid tal:define="gid default/group_id;
+                                        name string:group_id;
+                                        groups default/groups">
+                <label for="input-group_id"
+                       i18n:translate="">
+                    Group
+                </label>
+                <metal:block metal:use-macro="here/group-desktop/macros/group-selector">
+                <metal:erase fill-slot="empty-selection"/>
+                </metal:block>
+             </tal:select-gid>
+        </div>
+
+        <div>
+            <label for="input-duration_days"
+                   i18n:translate="duration_days">
+                Duration [days]
+            </label>
+            <input type="text" name="duration_days" id="input-duration_days"
+                   class="input-sm"
+                   tal:attributes="value default/duration_days">
+        </div>
+
+        <div>
+            <label for="input-expiration-date"
+                   i18n:translate="expiration_date">
+                Expiration date
+            </label>
+            <input type="date" name="expiration_date" id="input-expiration-date"
+                   class="input-sm"
+                   placeholder="dd.mm.yyyy"
+                   tal:attributes="value default/expiration_date"
+                   i18n:attributes="placeholder">
+            <input type="text" readonly="readonly" id="mirror-date">
+        </div>
+
+        <div>
+            <label for="input-status"
+                   i18n:translate="">
+                Status
+            </label>
+            <select name="status" id="input-status" class="input-sm"
+                    tal:define="status default/status;
+                                values python:('new', 'reserved')">
+                <option tal:repeat="value values"
+                        tal:attributes="value value;
+                                        selected python:value == status"
+                        tal:content="value"
+                        i18n:translate=""/>
+            </select>
+        </div>
+
+        <div>
+            <label for="input-quantity"
+                   i18n:translate="">
+                Quantity
+            </label>
+            <input type="text" name="quantity" id="input-quantity"
+                   class="input-sm"
+                   tal:attributes="value default/quantity">
+        </div>
+        <div>
+            <label for="input-additional_info"
+                   i18n:translate="">
+                Additional information
+            </label>
+            <input type="text" name="additional_info" id="input-additional_info" class="input-lg" size="50"
+                   tal:attributes="value request/additional_info | nothing"/>
+        </div>
+        <div>
+            <button class="btn btn-primary" type="submit">
+                <i class="glyphicon glyphicon-plus icon-white"></i>
+                <tal:block i18n:translate="">Create TAN</tal:block>
+            </button>
+        </div>
+    </form>
+
+</metal:main>
+</metal:block>
+<!-- vim: set ts=2 sts=2 sw=2 si et hls :-->

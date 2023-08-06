@@ -1,0 +1,150 @@
+<tal:block tal:condition="python: here.getBrowser('stage').get('advertisement-right-one') or here.getBrowser('stage').get('advertisement-right-two')">
+    <tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+</tal:block>
+<!-- quickfix bis werbung korrekt -->
+<tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone">
+
+<metal:slot metal:fill-slot="column_one_slot"/>
+
+<metal:block metal:fill-slot="breadcrumb"
+    tal:define="step python:2">
+
+    <ul class="breadcrumb"
+        metal:use-macro="here/booking_macros/macros/steps">
+        <li>
+            1. Cart
+            <span class="divider">/</span>
+        </li>
+        <li>
+            2. Your details
+            <span class="divider">/</span>
+        </li>
+        <li>
+            3. Payment method
+            <span class="divider">/</span>
+        </li>
+        <li>
+            4. Confirmation
+            <span class="divider">/</span>
+        </li>
+        <li>
+            5. Thanks
+        </li>
+    </ul>
+
+</metal:block>
+
+<metal:main fill-slot="main"
+            tal:define="booking python:here.getBrowser('booking');
+                        id request/formid|nothing;
+                        dummy booking/check_access;
+                        order booking/get_current_order_articles;
+                        order order/order;
+                        desktop_path here/@@unitraccfeature/desktop_path;
+                        ">
+
+    <div class="area-title">
+        <h1 class="documentFirstHeading">
+            2.
+            <tal:block i18n:translate="">Your details</tal:block>
+        </h1>
+    </div>
+    <div id="area-content">
+
+        <form method="post"
+              class="form-horizontal"
+              tal:attributes="action string:${here/absolute_url}/@@booking/process_order_register">
+            <div class="form-group">
+                <label class="control-label col-md-3" for="input-company"
+                       i18n:translate="">Company</label>
+                <div class="col-md-9">
+                    <input type="text"name="company" id="input-company"
+                           tal:attributes="value request/company | order/company | nothing"/>
+                </div><!-- .col-md-9 -->
+            </div><!-- .form-group -->
+            <div class="form-group">
+                <label class="control-label col-md-3" for="input-firstname"
+                       i18n:translate="">Firstname</label>
+                <div class="col-md-9">
+                    <input type="text"name="firstname" id="input-firstname"
+                           tal:attributes="value request/firstname | order/firstname | nothing"/>
+                </div><!-- .col-md-9 -->
+                <label class="control-label col-md-3" for="input-lastname"
+                       i18n:translate="">Lastname</label>
+                <div class="col-md-9">
+                    <input type="text"name="lastname" id="input-lastname"
+                           tal:attributes="value request/lastname | order/lastname | nothing"/>
+                </div><!-- .col-md-9 -->
+            </div><!-- .form-group -->
+            <div class="form-group">
+                <label class="control-label col-md-3" for="input-street">
+                    <i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="">Street, House number</tal:block>
+                </label>
+                <div class="col-md-9">
+                    <input type="text"name="street" id="input-street"
+                           tal:attributes="value request/street | order/street | nothing"/>
+                </div><!-- .col-md-9 -->
+                <label class="control-label col-md-3" for="input-additional_info">
+                    <tal:block i18n:translate="">Additional address information</tal:block>
+                </label>
+                <div class="col-md-9">
+                    <input type="text"name="additional_info" id="input-additional_info"
+                           tal:attributes="value request/additional_info | order/additional_info | nothing"/>
+                </div><!-- .col-md-9 -->
+            </div><!-- .form-group -->
+            <div class="form-group">
+                <label class="control-label col-md-3" for="input-zip">
+                    <i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="">Zip</tal:block>
+                </label>
+                <div class="col-md-9">
+                    <input type="text" class="col-md-3" name="zip" id="input-zip"
+                           tal:attributes="value request/zip | order/zip | nothing">
+                </div><!-- .col-md-9 -->
+                <label class="control-label col-md-3" for="input-city">
+                    <i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="" >City</tal:block>
+                </label>
+                <div class="col-md-9">
+                    <input type="text"name="city" id="input-city"
+                           tal:attributes="value request/city | order/city | nothing"/>
+                </div><!-- .col-md-9 -->
+            </div><!-- .form-group -->
+            <div class="form-group">
+                <label class="control-label col-md-3" for="input-country">
+                    <i class="glyphicon glyphicon-exclamation-sign"></i>
+                    <tal:block i18n:translate="">Country</tal:block>
+                </label>
+                <div class="col-md-9">
+                    <input type="text"name="country" id="input-country"
+                           tal:attributes="value request/country | order/country | nothing"/>
+                </div><!-- .col-md-9 -->
+            </div><!-- .form-group -->
+            <div class="pull-left">
+                <a class="btn btn-default"
+                    href="/myunitracc/mycart"
+                   tal:attributes="href string:$desktop_path/mycart"
+                   i18n:translate="">
+                    Back
+                </a>
+            </div>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary"
+                        i18n:translate="">
+                    Continue
+                </button>
+            </div>
+
+            <input type="hidden" name="formid"
+                   tal:attributes="value request/formid"/>
+
+        </form>
+    </div>
+</metal:main>
+
+</metal:block>
+
+<tal:editors condition="nothing"><!-- vim: set ts=8 sts=4 sw=4 si et :--></tal:editors>

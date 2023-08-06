@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:no-ads fill-slot="ad-block-above-content"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">
+        Lock users
+    </h1>
+
+    <form method="post" id="search-form"
+          accept-charset="UTF-8"
+          action="/@@usermanagement/lockUsers">
+
+<metal:list use-macro="context/manage_users_delete/macros/users-list"
+><table>
+    gf:
+    manage_users_view.pt
+    manage_users_delete.pt
+    manage_users_unlock.pt
+</table>
+</metal:list>
+
+        <input type="submit" value="Lock users"
+               class="btn btn-default"
+               i18n:attributes="value"/>
+
+    </form>
+
+
+</metal:main>
+
+</body>
+</html>

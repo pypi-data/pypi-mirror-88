@@ -1,0 +1,478 @@
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone"><!--
+Achtung, noch keine Ausgabe der neuen Kalkulationszeilen (calculated)!
+Bitte angleichen:
+- ./order_view.pt
+- ./order_edit.pt (diese Datei)
+- ./order_overview.pt
+und Makros verwenden aus:
+- ./booking_macros.pt
+- ./booking_macros2.pt
+-->
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1);
+                         dummy here/@@tpcheck/auth_manage_portal" />
+
+<metal:no-ads fill-slot="column_one_slot"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+
+<metal:cr_outer fill-slot="breadcrumb">
+    <metal:breadcrumb use-macro="here/crumbs/macros/main"/>
+</metal:cr_outer>
+
+<metal:block fill-slot="head_slot">
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/++resource++unitracc-resource/cart.js"></script>
+    <script type="text/javascript">
+            $(function () {
+                $(".datetime").datepicker({
+                    dateFormat: "dd.mm.yy",
+                    showOn: "both",
+                    buttonImage: "/popup_calendar.gif",
+                    buttonImageOnly: true,
+                })
+            })
+    </script>
+</metal:block>
+
+<metal:main fill-slot="main">
+
+    <div class="area-content"
+         tal:define="
+booking nocall:here/@@booking;
+unitracccourse nocall:here/@@unitracccourse;
+brains unitracccourse/search;
+order_id request/id|nothing;
+pformat python:context.getAdapter('pformat');
+data python:booking.edit_order_view(order_id);
+"><pre tal:content="python:pformat(data)"
+       tal:condition="python:0"></pre>
+<tal:ns2 define="
+order data/order;
+"><tal:ns define="                    
+rs_history_paypal python:order_id and booking.get_paypal_history_by_order_id(order_id);
+paypal_payment_states booking/get_paypal_payment_states;
+reloaded request/articles|nothing;
+totime python:context.getAdapter('totime');
+">
+        <h1>
+            <tal:block i18n:translate="">Edit order</tal:block>
+            <a tal:attributes="href string:/order_view?id=${order_id}">
+                <i class="glyphicon glyphicon-eye-open"></i>
+            </a>
+        </h1>
+        <div class="well"
+             tal:condition="python:0">
+            Zumindest bei Bezahlung sollte es jetzt *durchaus* automatisch passieren!
+            <div class="well-content">
+                <p i18n:translate="">
+                    Please be aware that if you change something on an already payed order that affects the course mangement
+                    you have to it also in the course management. This is not done automaticly.
+                </p>
+            </div>
+        </div>
+<tal:1>
+        <ul class="nav nav-tabs">
+            <li tal:attributes="class python: not reloaded and 'active' or ''">
+                <a href="#details" data-toggle="tabs"
+                    i18n:translate="">
+                       Payment details
+                </a>
+            </li>
+            <li>
+                <a href="#invoice" data-toggle="tabs"
+                    i18n:translate="">
+                       Invoice address
+                </a>
+            </li>
+            <li tal:attributes="class python: reloaded and 'active' or ''">
+                <a href="#articles" data-toggle="tabs"
+                    i18n:translate="">
+                       Articles
+                </a>
+            </li>
+            <tal:pp-history
+                tal:condition="rs_history_paypal"
+                tal:on-error="structure string:<!-- Fehler beim Laden der PayPal-Historie-->">
+            <li tal:attributes="class python: reloaded and 'active' or ''">
+                <a href="#paypal-history" data-toggle="tabs"
+                    i18n:translate="">
+                       Paypal history
+                </a>
+            </li>
+            </tal:pp-history>
+        </ul>
+</tal:1>
+        <div class="tab-content">
+            <div class="tab-pane active" id="details"
+                 tal:attributes="class python: not reloaded and 'tab-pane active' or 'tab-pane'">
+                <form id="order_edit_payment"
+                      class="form-horizontal"
+                      action="/@@booking/edit_order"
+                      method="post">
+                    <input type="hidden" name="id" tal:attributes="value request/id"/>
+
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <tal:block i18n:translate="">IP</tal:block>:
+                    </label>
+                    <p class="form-control-static col-sm-10"
+                       tal:content="order/ip">
+                    0.0.0.0
+                    </p>
+                    </div><!-- .form-group -->
+
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <tal:block i18n:translate="">Order number</tal:block>:
+                    </label>
+                    <p class="form-control-static col-sm-10"
+                       tal:content="order/ordernr">
+                    0.0.0.0
+                    </p>
+                    </div><!-- .form-group -->
+
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <tal:block i18n:translate="">Booked on</tal:block>:
+                    </label>
+                    <p class="form-control-static col-sm-10"
+                       tal:content="order/date_booked">
+                    0.0.0.0
+                    </p>
+                    </div><!-- .form-group -->
+
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <tal:block i18n:translate="">Status</tal:block>:
+                    </label>
+<div class="col-sm-10">
+                    <select name="booking_state"
+                            class="form-control"
+                            tal:define="curval python:order['booking_state'];
+                                        pstates python:booking.get_booking_status_choices();
+                                        ">
+                        <tal:block tal:repeat="state pstates">
+                        <option tal:define="value state/booking_state"
+                                tal:attributes="value value;
+                                                selected python:value == curval"
+                                tal:content="state/booking_state"
+                                i18n:translate="">
+                                new
+                        </option>
+                        </tal:block>
+                    </select>
+</div><!-- .col-sm-10 -->
+                    </div><!-- .form-group -->
+
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label"
+                           i18n:translate="">
+                        Payment date
+                    </label>
+<div class="col-sm-10">
+                    <input name="date_payed:date" placeholder="dd.mm.yyyy"
+                           type="date"
+                           class="datetime input-sm form-control"
+                           tal:attributes="value order/date_payed"/>
+</div><!-- .col-sm-10 -->
+                    </div><!-- .form-group -->
+
+                    <div class="form-group">
+                    <label i18n:translate="">
+                        Payment method
+                    </label>
+
+<tal:ptradio tal:define="
+payment_types python:booking.get_payment_types();
+curval        python:order['payment_type'];
+backoffice    python:True;
+"><metal:ptradio
+ use-macro="context/booking_macros/macros/payment-types-radio">
+                    <div class="radio">
+                    <label>
+                        <input type="radio" name="payment_type"
+                               value="prepayment">
+                        Vorkasse
+                    </label>
+                    </div><!-- .radio -->
+                    <div class="radio disabled">
+                    <label>
+                        <input type="radio" name="payment_type"
+                               value="paypal">
+                        Paypal
+                    </label>
+                    </div><!-- .radio -->
+</metal:ptradio></tal:ptradio>
+                </form>
+            </div>
+            <div class="tab-pane" id="invoice">
+                <form id="order_edit_invoice" action="/@@booking/edit_order" method="post">
+                    <input type="hidden" name="id" tal:attributes="value request/id"/>
+                    <label for="userid">
+                        <i class="glyphicon glyphicon-exclamation-sign"></i>
+                        <tal:block i18n:translate="">User</tal:block>
+                    </label>
+                    <input  id="userid" name="userid" class="input-lg user" data-provide="typeahead"
+                           autocomplete="off"
+                           tal:attributes="value order/userid|nothing"/>
+
+                    <label i18n:translate="">Firstname</label>
+                    <input type="text" class="input-lg" name="firstname"
+                           tal:attributes="value order/firstname|nothing"/>
+
+                    <label i18n:translate="">Lastname</label>
+                    <input type="text" class="input-lg" name="lastname"
+                           tal:attributes="value order/lastname|nothing"/>
+
+                    <label i18n:translate="">Company</label>
+                    <input type="text" class="input-lg" name="company"
+                           tal:attributes="value order/company|nothing"/>
+
+                    <label>
+                        <i class="glyphicon glyphicon-exclamation-sign"></i>
+                        <tal:block i18n:translate="">Street, Housenumber</tal:block>
+                    </label>
+                    <input type="text" class="input-lg" name="street"
+                           tal:attributes="value order/street|nothing"/>
+
+                    <label i18n:translate="">
+                        Additional address information
+                    </label>
+                    <input type="text" class="input-lg" name="additional_info"
+                           tal:attributes="value order/additional_info|nothing"/>
+
+                    <label>
+                        <i class="glyphicon glyphicon-exclamation-sign"></i>
+                        <tal:block i18n:translate="">Zip</tal:block>
+                    </label>
+                    <input type="text" class="input-medium" name="zip"
+                           tal:attributes="value order/zip|nothing"/>
+
+                    <label>
+                        <i class="glyphicon glyphicon-exclamation-sign"></i>
+                        <tal:block i18n:translate="" >City</tal:block>
+                    </label>
+                    <input type="text" class="input-lg" name="city"
+                           tal:attributes="value order/city|nothing"/>
+
+                    <label>
+                        <i class="glyphicon glyphicon-exclamation-sign"></i>
+                        <tal:block i18n:translate="" >Country</tal:block>
+                    </label>
+                    <input type="text" class="input-lg" name="country"
+                           tal:attributes="value order/country|nothing"/>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary submit_add">
+                            <tal:block i18n:translate="Store">Save</tal:block>
+                        </button>
+                        <button type="submit" class="btn btn-default" name="cancel" value="1">
+                            <tal:txt i18n:translate="">Cancel</tal:txt>
+                        </button>
+                    </div>
+                </form>
+            </div>
+<tal:articles>
+            <div class="tab-pane" id="articles"
+                 tal:attributes="class python: reloaded and 'tab-pane active' or 'tab-pane'">
+                <form action="/@@booking/edit_article" method="post">
+                    <input type="hidden" name="id" tal:attributes="value request/id"/>
+<tal:table>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th i18n:translate="">Article</th>
+                                <th i18n:translate="">Desired start</th>
+                                <th i18n:translate="">Duration in days</th>
+                                <th i18n:translate="">VAT</th>
+                                <th i18n:translate="">Net price</th>
+                                <th i18n:translate="">Quantity</th>
+                                <th i18n:translate="">Amount</th>
+                                <th><a href="#addarticle" class="add_article"><i class="glyphicon glyphicon-plus"></i></a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tal:loop tal:repeat="item data/articles">
+                            <tr tal:define="uid python:item['article_uid'];
+                            article_id item/article_id;
+                            ">
+                                <td>
+                                    <input type="hidden" class="row_number"
+                                           value="1"
+                                           tal:attributes="value repeat/item/number"/>
+                                    <a href="#"
+                                       class="pull-right"
+                                       target="_blank"
+                                       title="Mitglieder der Lerngruppe"
+                                       tal:attributes="href string:/manage_group_view?group_id=group_${uid}_learner&course=1;
+                                                       title string:Mitglieder der Lerngruppe ${item/article_title}"
+                                       ><i class="glyphicon glyphicon-edit"></i>
+                                    </a>
+                                    <select class="chosen" tal:attributes="name string:${article_id}-article_uid">
+                                        <option></option>
+                                        <tal:repeat tal:repeat="brain brains">
+                                            <option tal:attributes="value brain/UID;
+                                                                    selected python:brain.UID == uid"
+                                                    tal:content="brain/pretty_title_or_id"/>
+                                        </tal:repeat>
+                                    </select>
+                                    <div tal:condition="python:0">
+                                    <pre
+                                         tal:condition="python:1"
+                                         tal:content="python:pformat(item)">
+                                        ein dict
+                                    </pre>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" class="datetime input-sm"
+                                           tal:attributes="value item/start;
+                                                           name string:${article_id}-start"/>
+                                </td>
+                                <td>
+                                    <input type="text" class="input-sm"
+                                           tal:attributes="value item/duration;
+                                                           name string:${article_id}-duration"/>
+                                </td>
+                                <td>
+                                    <input type="text" class="input-sm"
+                                           tal:attributes="value item/vat_percent;
+                                                           name string:${article_id}-vat_percent"/>
+                                </td>
+                                <td>
+                                    <input type="text" class="input-medium"
+                                           value="600"
+                                           tal:attributes="value item/amount;
+                                                           name string:${article_id}-amount"/>
+                                </td>
+                                <td>
+                                    <input type="text" class="input-medium"
+                                           value="1"
+                                           tal:attributes="value item/quantity;
+                                                           name string:${article_id}-quantity"/>
+                                </td>
+                                <td>
+                                    <a href="#"
+                                       tal:attributes="href string:/@@booking/delete_article?set=${order_id}_${article_id}">
+                                        <i class="glyphicon glyphicon-trash" title="Delete" i18n:attributes="title"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tal:loop>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" i18n:translate="">Net amount</th>
+                                <td colspan="2" class="text-right"
+                                    tal:content="structure order/net_total">
+                                    600,00 
+                                </td>
+                                <td rowspan="3"></td>
+                            </tr>
+                            <tr>
+                                <th colspan="3" i18n:translate="">VAT</th>
+                                <td colspan="2" class="text-right"
+                                    tal:content="structure order/vat_total | nothing">
+                                    114,00 
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="3" i18n:translate="">Total amount</th>
+                                <td colspan="2" class="text-right"
+                                    tal:content="structure order/total">
+                                    714,00 
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+</tal:table>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary submit_add"
+                                i18n:translate="Store">
+                                Save
+                        </button>
+                        <button type="submit" class="btn btn-default" name="cancel" value="1"
+                                i18n:translate="">
+                                Cancel
+                        </button>
+                    </div>
+                </form>
+<tal:invisible>
+                <div class="invisible">
+                    <form id="addarticle" class="addarticlerow" action="@@booking/add_article">
+                        <input type="hidden" id="order_id" name="order_id"
+                               tal:attributes="value order/order_id"/>
+                        <label i18n:translate="">
+                            Article
+                        </label>
+                        <select class="chosen" name="article_uid">
+                            <option></option>
+                            <tal:repeat tal:repeat="brain brains">
+                                <option tal:attributes="value brain/UID"
+                                        tal:content="brain/pretty_title_or_id"/>
+                            </tal:repeat>
+                        </select>
+                        <label i18n:translate="">Desired start</label>
+
+                        <input name="start" placeholder="dd.mm.yyyy" id="start"
+                               class="datetime input-sm"/>
+                        <button type="submit"
+                                i18n:translate=""
+                                class="btn btn-primary"
+                                id="submit_new_article">
+                            Add
+                        </button>
+                    </form>
+                </div>
+</tal:invisible>
+            </div>
+</tal:articles>
+
+<tal:history>
+            <div class="tab-pane" id="paypal-history"
+                 tal:condition="rs_history_paypal"
+                 tal:attributes="class python: reloaded and 'tab-pane active' or 'tab-pane'">
+                <metal:block metal:define-macro="paypal">
+                    <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th i18n:translate="">Article</th>
+                            <th i18n:translate="">Payment status</th>
+                            <th i18n:translate="">Payment date</th>
+                            <th i18n:translate="">Payer status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr tal:repeat="dict_ rs_history_paypal">
+                            <td>
+                                <tal:block tal:content="dict_/item_name"/>
+                            </td>
+                            <td>
+                                <a href="#" data-toggle="tooltip" class="bootstrap-tooltip"
+                                   tal:attributes="title python:paypal_payment_states[dict_['payment_status']]"
+                                   tal:content="dict_/payment_status"/>
+                            </td>
+                            <td>
+                                <tal:block tal:content="python:totime(dict_['payment_date'],1)"/>
+                            </td>
+                            <td>
+                                <tal:block tal:content="dict_/payer_status"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </metal:block>
+            </div><!-- #paypal-history -->
+</tal:history>
+        </div>
+    </tal:ns>
+    <p tal:condition="not:order"
+       i18n:translate="">No such order found.</p>
+    </tal:ns2>
+    </div>
+
+</metal:main>
+
+</metal:block>

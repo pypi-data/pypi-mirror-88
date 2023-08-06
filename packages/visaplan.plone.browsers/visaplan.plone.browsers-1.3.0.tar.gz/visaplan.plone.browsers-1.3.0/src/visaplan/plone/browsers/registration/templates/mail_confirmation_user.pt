@@ -1,0 +1,29 @@
+<tal:block i18n:domain="plone"
+    tal:define="registration nocall:here/@@registration;
+                mailFrom registration/getMailFrom;
+                portalID registration/getPortalID">
+<p i18n:translate="mail_registration01">Welcome to <tal:block i18n:name="portal_id" tal:content="portalID"/>!</p>
+<p i18n:translate="mail_registration02">You have successfully registered.</p>
+<p i18n:translate="mail_registration03">Please retain this e-mail and memorise your user name for logging in to <tal:block i18n:name="portal_id" tal:content="portalID"/>.</p>
+<div>
+<p i18n:translate="mail_registration04">
+Your user name is: <tal:block tal:content="options/username | nothing" i18n:name="username"/>
+<br/>
+The following user has been registered:<br/>
+Name: <tal:block tal:content="options/firstname | nothing" i18n:name="firstname"/> <tal:block tal:content="options/lastname | nothing" i18n:name="lastname"/><br/>
+Email: <tal:block tal:content="options/email | nothing" i18n:name="email"/><br/>
+</p>
+</div>
+<br/>
+<div i18n:translate="mail_registration05">
+Use your user name and password to login to <tal:block i18n:name="portal_id" tal:content="portalID"/>.<br/>
+<br/>
+Once you forget your password, then you can request to set a new one, after stating your user name via the \"<a tal:attributes="href options/forgot_password_link" i18n:name="forgot_password_link" i18n:translate="label_forgot">Forgot password?</a>\" option (in login menu on the homepage).
+<br/>
+<br/>
+In case of questions concerning registration or any general problems please contact <a tal:attributes="href string:mailto:${mailFrom}" tal:content="mailFrom" i18n:name="mailFrom"/>.<br/>
+<br/>
+Thank you for your registration,<br/>
+</div>
+</tal:block>
+<tal:block tal:content="structure here/mail_footer"/>

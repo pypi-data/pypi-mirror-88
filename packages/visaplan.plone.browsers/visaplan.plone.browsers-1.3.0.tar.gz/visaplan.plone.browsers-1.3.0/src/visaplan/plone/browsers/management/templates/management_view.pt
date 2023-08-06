@@ -1,0 +1,815 @@
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone"><!--
+Anmerkung zur Ajax-Navigation:
+- Die Ajax-Navigation war auf dieser Seite für jedes a-Element explizit abgeschaltet worden
+  (data-fullpage-only="true")
+- Wahrscheinlich funktionieren die meisten Seiten aber durchaus schon.
+- Es werden daher zunächst alle entsprechenden Attribute auf "false" geändert
+  (damit sie noch da sind und ggf. einfach wieder geändert werden können)
+- und durch ein title-Attribut ergänzt.
+- Für Seiten, die schon per Ajax nachladbar sind, kann das data-fullpage-only-Attribut entfernt und das title-Attribut entsprechend geändert werden.
+
+- title-Attribut ...
+  - für noch nicht verifizierte Ziele: "might work via AJAX navigation already; if not, open in a new tab"
+  - für noch nicht funktionierende Ziele: "doesn't work yet via AJAX navigation"
+  - für verifizierte Ziele: "loads via AJAX already!"
+
+Klassen für a-Links (noch ohne entsprechendes CSS):
+- zmi-page    für ZMI-Seiten, die (spätestens beim Klick auf ein Tab) nicht Ajax-verträglich sind
+- plone-page  für Plone-Seiten, die durchaus per Ajax ladbar sein sollten.
+Es wird angestrebt, die Links per CSS mit einem entsprechenden Logo zu versehen, und evtl.
+- die Klasse zmi-page als Ajax-Ausnahme zu konfigurieren
+  und/oder
+- alle (so gekennzeichneten) ZMI-Seiten automatisch per target="_blank" in einem neuen Tab zu öffnen
+-->
+
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)"/>
+
+<metal:no-ads metal:fill-slot="ad-block-above-content"/>
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+    tal:define="
+mgmt python:here.getBrowser('management');
+dummy python:mgmt.canAccessSiteManagement(True);
+checkperm python:here.getAdapter('checkperm');
+perm_mp python:checkperm('Manage portal');
+span_class python:perm_mp and 'col-md-4' or 'col-md-6';
+perm_emop python:1;
+perm_omop python:0;
+perm_mu python:checkperm('Manage users');
+perm_mg python:checkperm('Manage Groups');
+perm_mst python:checkperm('unitracc: Manage structure types');
+perm_sac python:checkperm('unitracc: Manage submitted and accepted content');
+perm_pst python:checkperm('unitracc: Publish structure types');
+perm_kw python:checkperm('unitracc: Manage Keywords');
+perm_stg python:mgmt.canAccessStage();
+perm_tan python:checkperm('unitracc: Manage TANs');
+has_booking here/@@unitraccfeature/has_booking;
+has_courses here/@@unitraccfeature/has_courses;
+perm_mc python:has_courses and checkperm('unitracc: Manage courses');
+perm_mo python:has_booking and checkperm('unitracc: Manage Orders');
+perm_mep python:checkperm('unitracc: Manage Export Profiles');
+pr python:here.getBrowser('projectreview');
+">
+
+<div class="area-title">
+    <h1>Unitracc-Verwaltung</h1>
+</div>
+
+<div class="area-content">
+<p><strong>Note:</strong> The pages linked here <em>should</em> already work when loaded vis AJAX;
+there has been superficial testing.
+Please regard the tooltips and <a href="http://bugs.unitracc.de">tell the development department about problems</a>.
+</p>
+    <div class="row">
+        <!-- [ linke Spalte ... [ -->
+        <div class="col-md-6"
+             tal:attributes="class span_class">
+            <div class="box" tal:condition="python:perm_sac">
+                <h2 class="subsection-header">Redaktion</h2>
+            </div>
+            <div class="list-item">
+                <ul>
+                    <li tal:condition="python:perm_sac">
+                        <a href="/@@review_submitted_content"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            Manage submitted content
+                        </a>
+                    </li>
+                    <li tal:condition="python:perm_sac">
+                        <a href="/@@review_accepted_content"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            Manage accepted content
+                        </a>
+                    </li>
+                    <li tal:condition="python:perm_sac">
+                        <a href="/@@resolveuid/e8dfc4253bc0ad402d48dc862d20821c"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Media center
+                        </a>
+                    </li>
+                    <li tal:condition="python:perm_sac">
+                        <a href="/@@resolveuid/a8bbe3be69129c027e1a1c584bc925cd"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Contacts
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <tal:user-stuff condition="python:(perm_mu or perm_mg
+                                               or perm_mp)">
+            <div class="box">
+                <h2 class="subsection-header">Benutzerverwaltung</h2>
+            </div>
+            <div class="list-item">
+                <ul>
+                    <li tal:condition="python:perm_mu or perm_mp">
+                        <a href="/@@manage_users_view"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           tal:condition="python:perm_mu"
+                           i18n:translate="">
+                            User Management
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="/@@manage_duplicateprofiles_view"
+                                   data-fullpage-only="false"
+                                   title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                                    i18n:translate="">
+                                   Cleanup duplicate profiles
+                               </a>
+                           </li>
+                       </ul>
+                    </li>
+                    <li tal:condition="perm_mg">
+                        <a href="/@@manage_groups_view"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            Groups Management
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            </tal:user-stuff>
+            <div class="box" tal:condition="perm_mc">
+                <h2 class="subsection-header" i18n:translate="">Course Manager</h2>
+            </div>
+            <div class=" list-item"
+                 tal:condition="perm_mc">
+                <ul>
+                    <li>
+                        <a href="/@@manage_course_view"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                           Course Manager
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/@@manage_statistic_course"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                           Course statistics manager
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="box" tal:condition="perm_mo">
+                <h2 class="subsection-header" i18n:translate="">
+                    Booking management
+                </h2>
+            </div>
+
+            <div class="list-item" tal:condition="perm_mo">
+                <ul>
+                    <li>
+                        <a href="/@@order_management"
+                           data-fullpage-only="true"
+                           title="doesn't work via AJAX navigation yet"
+                           i18n:translate="">
+                            Booking management
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/@@order_add"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            Add booking
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <tal:if-projectreview condition="pr">
+            <div class="box">
+                <h2 class="subsection-header" i18n:translate="">
+                    Review Management System
+                </h2>
+            </div>
+            <div class="list-item">
+                <ul>
+                    <li>
+                        <a href="/@@pr_main">
+                            Verbundprojekte
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            </tal:if-projectreview>
+
+            <div class="box" tal:condition="python:perm_tan">
+                <h2 class="subsection-header" i18n:translate="">
+                    TAN Manager
+                </h2>
+            </div>
+
+            <div class="list-item" tal:condition="python:perm_tan">
+                <ul>
+                    <li>
+                        <a href="/@@manage_tans"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            TAN Manager
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/@@create_tan"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            Create TAN
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/@@manage_tan"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            Edit TAN ...
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/@@manage_tan_status_summary"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            TAN status summary
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/@@manage_tan_changesets"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            Last changes
+                        </a>
+                    </li>
+                <ul>
+            </div>
+        </div>
+        <!-- ] ... linke Spalte ] -->
+
+        <!-- [ rechte bzw. mittlere Spalte ... [ -->
+        <div class="col-md-4"
+             tal:attributes="class span_class">
+            <div class="box" tal:condition="python:perm_mp or perm_mst or perm_pst">
+                <h2 class="subsection-header">Inhaltsverwaltung</h2>
+            </div>
+            <div class="list-item">
+                <ul>
+                    <li tal:condition="python:perm_mp or perm_mst or perm_pst">
+                        <a href="/@@management_structure_elements"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            Manage structured contents
+                        </a>
+                    </li>
+                    <li tal:condition="python:perm_mp or (0 and perm_mst)"
+                        tal:replace="nothing">
+                    11.9.2014: Seite existiert nicht!
+                        <a href="/portal_lock_manager/pane_manage_locks"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Lock Manager
+                        </a>
+                    </li>
+                    <li tal:condition="python:perm_mp">
+                        <a href="/@@configure_rssfeed"
+                           data-fullpage-only="false"
+                           title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                           i18n:translate="">
+                            Configure rss
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="box" tal:condition="python:perm_mep or perm_mst">
+                <h2 class="subsection-header" i18n:translate="">Export</h2>
+            </div>
+            <div class="list-item">
+                <ul>
+                    <li tal:condition="python:perm_mep">
+                        <a href="/manage_export_profiles"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Manage Export Profiles
+                        </a> (PDF creation)
+                    </li>
+<tal:disabled replace="nothing">
+                    <li tal:condition="perm_mst">
+                        <a href="/@@transmin"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                           Import structure
+                       </a>
+                    </li>
+                    <li tal:condition="perm_mst">
+                        <a href="/transmex?path_multiline=true"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                           Export structure(s)
+                       </a>
+                    </li>
+</tal:disabled>
+                </ul>
+            </div>
+
+            <div class="box" tal:condition="python:perm_mp or perm_stg">
+                <h2 class="subsection-header">Navigations-/Layoutverwaltung</h2>
+            </div>
+            <div class="list-item">
+                <ul>
+                    <li tal:condition="python:perm_stg">
+                        <a href="/@@configure_stage"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Configure stage
+                        </a>
+                    </li>
+                    <li tal:condition="python:perm_mp">
+                        <a href="/configure-industrial-drop-down"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Configure Know-How Dropdown
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="box" tal:condition="python:perm_kw or perm_mp">
+                <h2 class="subsection-header">Inhaltsstrukturierung</h2>
+            </div>
+            <div class=" list-item">
+                <ul>
+                    <li tal:condition="python:perm_kw">
+                        <a href="/@@prefs_keywords_view"
+                           data-fullpage-only="true"
+                           title="doesn't work via AJAX navigation yet"
+                           i18n:translate="">
+                            Keywordmanager
+                        </a>
+                    </li>
+                    <li tal:condition="python:perm_mp">
+                        <a href="/@@configure_easyvoc"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Configure easyvoc vocabularies
+                        </a>
+                        /
+                        <a href="/@@configure_easyvoc">
+                            Vokabularliste hinzuf&uuml;gen
+                        </a>
+                    </li>
+                    <li tal:condition="python:perm_mp">
+                        <a href="/@@manage_easyvoc">
+                            Verwaltung Eintr&auml;ge Auswahllisten
+                        </a>
+                        /
+                        <a href="/@@manage_easyvoc"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Edit easyvoc vocabularies
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div><!-- .col-md-4 -->
+        <!-- ] ... rechte bzw. mittlere Spalte ] -->
+
+        <!-- [ rechte Spalte für Systemadministration ... [ -->
+        <div class="col-md-4"
+             tal:condition="python:perm_mp"
+             tal:attributes="class span_class">
+            <div class="box">
+                <h2 class="subsection-header">Systemadministration</h2>
+            </div>
+            <div class="list-item"
+                 tal:condition="python:perm_mp"><!-- [ Systemadministration ... [ -->
+                <ul tal:define="zopeurl python:mgmt._zopesrv_url() and None">
+                    <li>
+                        <a href="/@@versioninformation_view"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Version information
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/@@unitraccfeature_view"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           i18n:translate="">
+                            Unitraccfeature view
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/@@plone_control_panel"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                            i18n:translate="">
+                            Plone Configuration
+                        </a>
+                        <img src="/logoIcon.png"
+                             alt="">
+                        <ul>
+                            <li>
+                                <span i18n:translate="">
+                                Products administration
+                                </span>
+                                <ul>
+                                    <li>
+                                        <a href="/portal_quickinstaller/manage_workspace"
+                                           class="zmi-page"
+                                           data-fullpage-only="true"
+                                           i18n:translate=""
+                                          >Plone-Quickinstaller</a>
+                                        <img src="/misc_/CMFPlone/product_icon.png"
+                                             alt="">
+                                    </li>
+
+                                    <li i18n:domain="plone">
+                                        <a href="/portal_setup/manage_main"
+                                           class="zmi-page"
+                                           data-fullpage-only="true"
+                                           title="Generic Setup Tool"
+                                           i18n:translate="">
+                                           Generic Setup Tool
+                                        </a>
+                                        <img src="/misc_/GenericSetup/tool.png"
+                                             alt="">
+                                        <ul>
+                                            <li>
+                                                <a href="/portal_setup/manage_upgrades"
+                                                   class="zmi-page"
+                                                   data-fullpage-only="true"
+                                                   i18n:translate="">
+                                                   Upgrades
+                                               </a>
+                                               <ul>
+                                                   <li>
+                                                   <a href="/portal_setup/manage_upgrades?profile_id=Products.unitracc:default"
+                                                      class="zmi-page"
+                                                      data-fullpage-only="true"
+                                                      i18n:translate="">
+                                                      Unitracc Profile upgrades
+                                                   </a>
+                                                   </li>
+                                               </ul>
+                                            </li>
+                                            <li>
+                                                <a href="/portal_setup/manage_importSteps"
+                                                   class="zmi-page"
+                                                   data-fullpage-only="true"
+                                                   i18n:translate="">
+                                                   Site Configuration Import Steps
+                                               </a>
+                                            </li>
+                                            <li>
+                                                <a href="/portal_setup/manage_exportSteps"
+                                                   class="zmi-page"
+                                                   data-fullpage-only="true"
+                                                   i18n:translate="">
+                                                   Site Configuration Export Steps
+                                               </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <span i18n:translate="">
+                                    Static resources
+                                </span>
+                                <ul>
+                                    <li>
+                                        <a href="/portal_css/manage_cssForm"
+                                           data-fullpage-only="true"
+                                           class="zmi-page"
+                                           title="A ZMI page; not loadable via AJAX"
+                                           i18n:translate="">
+                                            Stylesheets Registry
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/portal_javascripts/manage_jsForm"
+                                           data-fullpage-only="true"
+                                           class="zmi-page"
+                                           title="A ZMI page; not loadable via AJAX"
+                                           i18n:translate="">
+                                            JavaScripts Registry
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/portal_skins/custom/manage"
+                                           data-fullpage-only="true"
+                                           class="zmi-page"
+                                           title="A ZMI page; not loadable via AJAX"
+                                           i18n:translate="">
+                                            custom skin
+                                        </a>
+                                        <ul tal:condition="perm_omop">
+                                            <li>
+                                                <a href="/portal_skins/custom/ppt.css/manage_main"
+                                                   class="zmi-page"
+                                                   title="A ZMI page; not loadable via AJAX"
+                                                   data-fullpage-only="true">
+                                                    CSS f&uuml;r Vortr&auml;ge bearbeiten
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                             </li>
+
+                             <li>
+                                 <a href="/portal_catalog/manage_main"
+                                    data-fullpage-only="true"
+                                    class="zmi-page"
+                                    title="A ZMI page; not loadable via AJAX"
+                                    i18n:domain="zope"
+                                    i18n:translate="">
+                                    Catalog
+                                </a>
+                                <img src="/misc_/CMFPlone/book_icon.png"
+                                     alt="">
+                                <ul>
+                                     <li>
+                                         <a href="/portal_user_catalog/manage_main"
+                                            data-fullpage-only="true"
+                                            class="zmi-page"
+                                            title="A ZMI page; not loadable via AJAX"
+                                            i18n:translate="">
+                                            User catalog
+                                        </a>
+                                     </li>
+                                     <li>
+                                         <a href="/reference_catalog/manage_main"
+                                            data-fullpage-only="true"
+                                            class="zmi-page"
+                                            title="A ZMI page; not loadable via AJAX"
+                                            i18n:translate="">
+                                            Catalog of content references
+                                        </a>
+                                     </li>
+                                </ul>
+                             </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <span i18n:translate="">
+                         Miscellaneous
+                        </span>
+                        <ul>
+                            <li>
+                                <a href="/@@manage_settings">
+                                   <span i18n:translate="">
+                                       Miscellaneous Settings
+                                   </span>
+                                   (<tt>@@settings</tt>)
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/@@configure_subportal"
+                                           data-fullpage-only="false"
+                                           title="might work via AJAX navigation already; if not, open in a new tab"
+                                           i18n:translate="">
+                                           Subportal configuration
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/@@configure_registration"
+                                           data-fullpage-only="false"
+                                           title="might work via AJAX navigation already; if not, open in a new tab"
+                                           i18n:translate="">
+                                            Configure registration
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/@@configure_mainpage"
+                                           data-fullpage-only="false"
+                                           title="might work via AJAX navigation already; if not, open in a new tab"
+                                           i18n:translate="">
+                                           Configure mainpage
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/@@ckeditor-controlpanel"
+                                   data-fullpage-only="false"
+                                   class="plone-page"
+                                   title="might work via AJAX navigation already; if not, open in a new tab"
+                                   i18n:translate="">
+                                    Configure editor
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a title="portal_properties &rarr; ckeditor_properties"
+                                           data-fullpage-only="true"
+                                           class="zmi-page"
+                                           href="/portal_properties/ckeditor_properties/manage_workspace">
+                                            CKEditor-Eigenschaften
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/@@discussion-settings"
+                                   data-fullpage-only="false"
+                                   class="plone-page"
+                                   title="might work via AJAX navigation already; if not, open in a new tab"
+                                   i18n:translate="">
+                                    Configure discussion
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li tal:condition="perm_mp">
+                        <a href="/manage"
+                           data-fullpage-only="true"
+                           class="zmi-page"
+                           title="Zope Management Interface"
+                           i18n:attributes="title"
+                           ><tal:txt i18n:translate="">
+                            Zope Administration
+                            </tal:txt>
+                            <img src="/zope_icon.png"
+                                 alt="ZMI">
+                        </a>
+                        <ul tal:condition="perm_emop">
+                            <tal:rem replace="nothing"><!--
+                            Extended Management OPtions
+                            --></tal:rem>
+                            <tal:if-mp tal:condition="perm_mp">
+                            <li>
+                                <a href="/acl_users/source_users/manage_users"
+                                   data-fullpage-only="true"
+                                   class="zmi-page"
+                                   title="A ZMI page; not loadable via AJAX"
+                                   i18n:attributes="title">
+                                    Zope-Benutzerkonten
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/acl_users/source_groups/manage_groups"
+                                   data-fullpage-only="true"
+                                   class="zmi-page"
+                                   title="A ZMI page; not loadable via AJAX"
+                                   i18n:attributes="title">
+                                    Zope-Gruppenverwaltung
+                                </a>
+                            </li>
+                            </tal:if-mp>
+
+                            <li tal:condition="perm_omop">
+                                <tal:rem replace="nothing"><!--
+                                Outdated  Management OPtions
+                                --></tal:rem>
+                                (alte)
+                                <a href="/@@usergroup-userprefs">
+                                    Verwaltung Benutzer
+                                </a>
+                                <div><strong>(Achtung: Hier keine E-Mail-Adressen mehr pflegen!)</strong></div>
+                            </li>
+                            <li tal:condition="zopeurl">Zope-Instanz
+                                <ul>
+                                    <li><a href="/manage"
+                                           data-fullpage-only="true"
+                                           class="zmi-page"
+                                           title="A ZMI page; not loadable via AJAX"
+                                           tal:attributes="href string:$zopeurl/manage"
+                                           i18n:translate="">
+                                            Zope Management Interface
+                                        </a>
+                                    </li>
+                                    <li><a href="/manage"
+                                           data-fullpage-only="true"
+                                           class="zmi-page"
+                                           title="A ZMI page; not loadable via AJAX"
+                                           tal:attributes="href string:$zopeurl/Control_Panel/Database/main/manage_main"
+                                           i18n:translate="">
+                                            Database Management
+                                        </a>
+                                    </li>
+                            </li>
+                            <li><a href="/portal_types/manage"
+                                   data-fullpage-only="true"
+                                   class="zmi-page"
+                                   title="A ZMI page; not loadable via AJAX"
+                                   i18n:attributes="title"
+                                   i18n:translate="">Types tool</a>:
+                                <ul>
+                                    <li><a href="/portal_types/Folder/manage_propertiesForm"
+                                           data-fullpage-only="true"
+                                           class="zmi-page"
+                                           title="A ZMI page; not loadable via AJAX"
+                                           i18n:attributes="title"
+                                           i18n:translate="">
+                                            "<span i18n:name="type">Folder</span>" properties
+                                        </a>
+                                    </li>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <span i18n:translate="">
+                        Development options
+                        </span>
+                        <ul>
+                            <li>
+                                <a href="/@@prefs_error_log_form"
+                                   data-fullpage-only="false"
+                                   title="should work via AJAX navigation already; if you encounter problems, open in a new tab"
+                                   i18n:translate="heading_error_log">Error log</a>
+                            </li>
+                            <li tal:condition="zopeurl">
+                                <a href="/@@reload"
+                                   data-fullpage-only="true"
+                                   class="zmi-page"
+                                   title="A ZMI page; not loadable via AJAX"
+                                   tal:attributes="href string:$zopeurl/@@reload"
+                                   i18n:translate="">
+                                   Code reload
+                               </a>
+                           </li>
+                           <li tal:define="
+w3l_browser nocall:context/@@w3l | nothing;
+" tal:condition="w3l_browser">
+                               <a href="/@@w3lservice_test"
+                                  data-fullpage-only="false"
+                                  title="might work via AJAX navigation already; if not, open in a new tab"
+                                  i18n:translate="">
+                                  Interactive W3L service test
+                              </a>
+                          </li>
+                           <li>
+                               <a href="/versioninformation_view?show_all=1"
+                                  data-fullpage-only="false"
+                                  title="might work via AJAX navigation already; if not, open in a new tab"
+                                  i18n:translate="">
+                                  Complete version information
+                              </a>
+                          </li>
+                        </ul>
+                    </li>
+
+                </ul><!-- ] ... Systemadministration ] -->
+            </div>
+        </div><!-- .col-md-4 -->
+        <!-- ] ... rechte Spalte für Systemadministration ] -->
+
+        <div class="col-md-4"
+             tal:condition="perm_mp"
+             tal:attributes="class span_class"
+             tal:repeat="action_category context/@@management/get_management_actions">
+            <div class="box">
+                <h2 class="subsection-header"
+                    tal:content="action_category/title"/>
+            </div>
+            <div class="list-item">
+                <ul>
+                    <li tal:repeat="action action_category/children">
+                        <a tal:attributes="href action/url;
+                                           target action/target;
+                                           class action/class"
+                           data-fullpage-only="false"
+                           title="might work via AJAX navigation already; if not, open in a new tab"
+                           tal:content="action/title"
+                           i18n:translate=""/>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div><!-- .area-content -->
+    </tal:main-macro>
+</metal:main>
+
+<!-- vim: set et sw=4: --></metal:block>

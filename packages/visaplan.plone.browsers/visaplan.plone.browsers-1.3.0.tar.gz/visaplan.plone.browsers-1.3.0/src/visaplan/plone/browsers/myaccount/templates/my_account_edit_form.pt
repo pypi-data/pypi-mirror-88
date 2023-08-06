@@ -1,0 +1,200 @@
+<tal:block tal:define="dummy python: request.set('span_class', 'col-md-9')">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border', 1)" />
+
+
+<body>
+
+<metal:cr_outer fill-slot="breadcrumb">
+    <metal:breadcrumb use-macro="here/crumbs/macros/main"/>
+</metal:cr_outer>
+
+<metal:no-ads fill-slot="ad-block-above-content"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:main fill-slot="main"
+            tal:define="userId options/userId | nothing;
+                        author python:here.getBrowser('author').get(userId);
+                        easyvoc nocall:here/@@easyvoc;
+                        spanclass string:col-md-8;
+                        ">
+    <input type="hidden" class="hidden" tal:attributes="value string:${userId}" id="hiddenuid">
+    <div tal:condition="not:nocall:author"
+         i18n:translate="please_contact_admin">
+        Your user has no profile. Please contact the Administration.
+    </div>
+        <tal:block tal:condition="nocall:author">
+            <tal:block tal:define="schematas author/Schemata;
+                                   errors    options/errors | python:{}">
+
+                <h1 class="documentFirstHeading" i18n:translate="label_edit_myaccount">
+                    myACCOUNT edit
+                </h1>
+                <div id="card" metal:use-macro="here/card_large/macros/card">
+                </div>
+                <div id="subtitle_active" style="clear:left">
+                        <p i18n:translate="card_on_help" id="card_preview_on"
+                           style="display:none">
+                            This is how your businesscard would like look for
+                            registered users.
+                        </p>
+                        <p i18n:translate="card_off_help" id="card_preview_off"
+                           style="display:none">
+                            This is how your businesscard looks like for registered
+                            users.
+                        </p>
+                    </div>
+                <div class="FormTabbing">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#general" data-toggle="tab" i18n:translate="">
+                                General
+                            </a>
+                        </li>
+                        <li >
+                            <a href="#businesscard" data-toggle="tab" i18n:translate="label_schema_unitracc_card">
+                                MyBusinessCard edit
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="general" class="tab-pane active">
+                            <form method="post" enctype="multipart/form-data"
+                                  tal:attributes="action string:${portal_url}/@@myaccount/set">
+
+                                <tal:fields
+                                    define="
+                                    here nocall:author;
+                                    visible_only python:[];
+                                    disabled python:['userId', 'locked'];
+                                    "
+                                    repeat="field python:schematas['default'].editableFields(here, visible_only=False)">
+                                    <tal:ns define="fieldname python:field.getName();
+                                                    mode python:((fieldname in visible_only) and 'view'
+                                                                 or (fieldname not in disabled) and 'edit'
+                                                                 ) or None"
+                                            condition="mode">
+                                        <metal:fieldMacro use-macro="python:here.widget(fieldname, mode=mode)" />
+                                    </tal:ns>
+                                </tal:fields>
+
+                                <div>
+                                <input type="submit" value="Save"
+                                       class="btn btn-default"
+                                       i18n:attributes="value label_save"/>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="businesscard" class="tab-pane">
+                            <form id="identitiycard" method="post" enctype="multipart/form-data"
+                              tal:attributes="action string:${portal_url}/@@myaccount/set">
+                                <label i18n:translate="unitracc_label_formOfAddress">Form of Address</label>
+                                <select disabled="disabled" class="col-md-8">
+                                    <option tal:condition="python:author.getFormOfAddress()" selected="selected">
+                                        <tal:block
+                                        tal:define="FoA python:author.getFormOfAddress()"
+                                        tal:content="python:easyvoc.getValue('unitracc-form-of-address', FoA)"
+                                        i18n:translate=""/>
+                                    </option>
+                                    <option tal:condition="python:not author.getFormOfAddress()" selected="selected" i18n:translate="">
+                                    Please select
+                                    </option>
+
+                                </select>
+                                <div>
+                                <label>
+                                    <div i18n:translate="unitracc_label_academicTitle">
+                                    Academic title
+                                    </div>
+                                    <input type="text"
+                                           class="col-md-8"
+                                           readonly="readonly"
+                                           tal:attributes="value python:author.getAcademicTitle();
+                                                           class spanclass;
+                                                           ">
+                                </label>
+                                </div>
+                                <div>
+                                <label>
+                                    <div i18n:translate="unitracc_label_firstname">
+                                    Firstname
+                                    </div>
+                                    <input type="text"
+                                           class="col-md-8"
+                                           readonly="readonly"
+                                           tal:attributes="value python:author.getFirstname();
+                                                           class spanclass;
+                                                           ">
+                                </label>
+                                </div>
+                                <div>
+                                <label>
+                                    <div i18n:translate="unitracc_label_lastname">
+                                    Lastname
+                                    </div>
+                                    <input type="text"
+                                           class="col-md-8"
+                                           readonly="readonly"
+                                           tal:attributes="value python:author.getLastname();
+                                                           class spanclass;
+                                                           ">
+                                </label>
+                                </div>
+                                <tal:block tal:define="here nocall:author">
+                                    <tal:fields repeat="field python:schematas['card'].editableFields(here, visible_only=False)">
+                                        <metal:fieldMacro use-macro="python:here.widget(field.getName(), mode='edit')" />
+                                    </tal:fields>
+                                </tal:block>
+
+                                <div>
+                                <input type="submit" value="Save"
+                                       class="btn btn-default"
+                                       i18n:attributes="value label_save"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </tal:block>
+        </tal:block>
+    <script type="text/javascript">
+        $(document).ready(
+            function () {
+                insertrevertedinput();
+            })
+        function insertrevertedinput() {
+            $('#excludeFromNav_help').hide()
+            var field = '<input id="reverted" onclick="javascript:Boxreverted()" type="checkbox"';
+            var orgvalue = $('#excludeFromNav').is(':checked');
+            if (!orgvalue) {
+                 field += 'checked="checked"';
+                 $('#card_preview_on').show();
+            } else {
+                 $('#card_preview_off').show();
+            }
+            field += "/>"
+            $('#excludeFromNav').before(field);
+            $('#excludeFromNav').hide();
+        }
+
+        function Boxreverted() {
+            if ($('#reverted').is(':checked')) {
+                // console.log($('#reverted').is(':checked'))
+                $('#excludeFromNav').removeAttr('checked');
+            } else {
+                $('#excludeFromNav').attr('checked', 'checked');
+            }
+        }
+    </script>
+</metal:main>
+
+</body>
+</html>
+</tal:block>

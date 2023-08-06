@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html lang="de">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Makros für Zope-Formulare</title>
+</head>
+<body
+tal:define="formfield python:{'type': 'text',
+                              'name': 'dummy',
+                              'children':[],
+                              };
+            ftype string:text;
+            ">
+<h1>Makros für Zope-Formulare</h1>
+<p>Siehe die Dokumentation &bdquo;<a href="http://old.zope.org/Members/Zen/howto/FormVariableTypes" lang="en">Form Variable Types and Typechecking</a>&ldquo;</p>
+
+<metal:hidden define-macro="hidden">
+  <tal:ns define="ftype ftype | formfield/type | string:hidden;
+  ">
+    <input type="hidden"
+           tal:attributes="type ftype;
+                           name formfield/name;
+                           id formfield/id | nothing;
+                           value formfield/value | nothing">
+  </tal:ns>
+</metal:hidden>
+
+<metal:string define-macro="string">
+<tal:ns define="
+label formfield/label | formfield/name;
+type formfield/type | string:text;
+">
+<div>
+<label tal:omit-tag="not:label">
+  <tt tal:content="label">name</tt>
+  <div metal:define-slot="input-container">
+    <input metal:define-slot="input"
+           class="input-xxlarge"
+           tal:attributes="type python:(type == 'string') and 'text' or type;
+                           name formfield/name;
+                           id formfield/id | nothing;
+                           value formfield/value | nothing">
+  </div>
+</label>
+</div>
+</tal:ns>
+</metal:string>
+
+<metal:text define-macro="text">
+<tal:ns define="
+label formfield/label | formfield/name;
+type formfield/type | string:text;
+">
+<div>
+<label tal:omit-tag="not:label">
+  <tt tal:content="label">name</tt>
+  <div metal:define-slot="input-container">
+    <textarea metal:define-slot="input"
+              class="input-xxlarge"
+              tal:define="type formfield/type;
+                          name formfield/name;
+                          id formfield/id | nothing;
+                          "
+              tal:attributes="name string:$name:$type;
+                              id id"
+              tal:content="formfield/value | nothing">
+    Mehrzeiliger Text mit normalisierten Zeilenumbrüchen
+    </textarea>
+  </div>
+</label>
+</div>
+</tal:ns>
+</metal:text>
+
+<metal:text define-macro="pformat">
+<tal:ns define="
+label formfield/label | formfield/name;
+">
+<div>
+<label tal:omit-tag="not:label">
+  <tt tal:content="label">name</tt>
+	<pre tal:define="pformat python:context.getAdapter('pformat');
+	                 value formfield/value"
+			 tal:content="python: pformat(value)">
+		formatierte Ausgabe einer Python-Struktur
+	</pre>
+</label>
+</div>
+</tal:ns>
+</metal:text>
+
+<metal:fieldset define-macro="fieldset">
+<tal:ns define="
+label formfield/label | formfield/name;
+children formfield/children | python:[];
+">
+<fieldset>
+  <legend tal:condition="label"
+          tal:content="label">
+    Beschriftung des Fieldsets
+  </legend>
+  <tal:if-has-children condition="children">
+  <tal:loop define="dispatcher here/simpleforms/macros/dispatcher"
+            repeat="formfield children">
+  <metal:dispatch use-macro="dispatcher">
+    Schleife über die Kindelemente des Fieldsets
+  </metal:dispatch>
+  </tal:loop>
+  </tal:if-has-children>
+</fieldset>
+</tal:ns>
+
+</metal:fieldset>
+
+<metal:dispatcher define-macro="dispatcher">
+  <tal:ns define="
+ftype formfield/type | string:string;
+macros here/simpleforms/macros;
+macro python:macros[ftype];
+">
+<metal:dispatch use-macro="macro">
+  Aufruf des passenden Makros
+</metal:dispatch>
+</tal:ns>
+</metal:dispatcher>
+
+</body>
+</html>
+<!-- vim: set ts=2 sts=2 sw=2 si noet hls :-->

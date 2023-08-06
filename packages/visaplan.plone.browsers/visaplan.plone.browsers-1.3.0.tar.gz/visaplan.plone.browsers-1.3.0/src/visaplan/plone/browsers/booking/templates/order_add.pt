@@ -1,0 +1,225 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python: request.set('disable_border',1);
+                             dummy python: here.getBrowser('authorized').authorized('unitracc: Manage Orders');" />
+    <body>
+        <metal:no-ads fill-slot="column_one_slot"/>
+        <metal:no-ads fill-slot="column_two_slot"/>
+        <metal:cr_outer fill-slot="breadcrumb">
+            <metal:breadcrumb use-macro="here/crumbs/macros/main"/>
+        </metal:cr_outer>
+        <metal:block fill-slot="head_slot">
+            <script type="text/javascript"
+                    tal:attributes="src string:${portal_url}/++resource++unitracc-resource/cart.js"></script>
+            <script type="text/javascript">
+                    $(function () {
+                        $(".datetime").datepicker({
+                            dateFormat: "dd.mm.yy",
+                            showOn: "both",
+                            buttonImage: "/popup_calendar.gif",
+                            buttonImageOnly: true,
+                        })
+                    })
+            </script>
+        </metal:block>
+
+        <metal:main fill-slot="main" >
+            <div class="area-content"
+                 tal:define="booking nocall:here/@@booking;
+                             payment_types python:booking.get_payment_types;
+                             ">
+                <h1 i18n:translate="">
+                    Add new booking
+                </h1>
+                <form method="post"
+                      class="form-horizontal"
+                      id="order_add"
+                      action="/@@booking/insert_backend_booking">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="userid">
+                            <i class="glyphicon glyphicon-exclamation-sign"></i>
+                            <tal:txt i18n:translate="">User</tal:txt>
+                        </label>
+                        <div class="col-md-9">
+                        <input name="user"
+                               id="userid"
+                               class="user"
+                               data-provide="typeahead"
+                               autocomplete="off"
+                               tal:attributes="value request/user|nothing"/>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="article">
+                            <i class="glyphicon glyphicon-exclamation-sign"></i>
+                            <tal:txt i18n:translate="">Article</tal:txt>
+                        </label>
+                        <div class="col-md-9">
+                        <select class="chosen" name="article" id="article"
+                                tal:define="articles python:booking.get_bookable_courses();
+                                            selected_article python:request.get('article', None);
+                                            "
+                                data-placeholder="Choose one ..."
+                                i18n:attributes="data-placeholder">
+                                <option></option>
+                                <tal:repeat tal:repeat="course articles">
+                                <option tal:define="value python:course.UID"
+                                        tal:attributes="value value;
+                                                        selected python:value == selected_article;
+                                                        "
+                                        tal:content="python:course.pretty_title_or_id()"
+                                        >
+                                        Kurstitel
+                                </option>
+                                </tal:repeat>
+                        </select>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="firstname"
+                               i18n:translate="">Firstname</label>
+                        <div class="col-md-9">
+                        <!-- .input-lg --><input name="firstname"
+                               id="firstname"
+                               tal:attributes="value request/firstname|nothing"/>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="lastname"
+                               i18n:translate="">Lastname</label>
+                        <div class="col-md-9">
+                        <!-- .input-lg --><input name="lastname"
+                               id="lastname"
+                               tal:attributes="value request/lastname|nothing"/>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="company"
+                               i18n:translate="">Company</label>
+                        <div class="col-md-9">
+                        <!-- .input-lg --><input name="company"
+                               id="company"
+                               tal:attributes="value request/company|nothing"/>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="street">
+                            <i class="glyphicon glyphicon-exclamation-sign"></i>
+                            <tal:txt i18n:translate="">Street, Housenumber</tal:txt>
+                        </label>
+                        <div class="col-md-9">
+                        <!-- .input-lg --><input name="street"
+                               id="street"
+                               tal:attributes="value request/street|nothing"/>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="zip">
+                            <i class="glyphicon glyphicon-exclamation-sign"></i>
+                            <tal:txt i18n:translate="">Zip</tal:txt>
+                        </label>
+                        <div class="col-md-9">
+                        <!-- .input-medium --><input name="zip"
+                               id="zip"
+                               tal:attributes="value request/zip|nothing">
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="city">
+                            <i class="glyphicon glyphicon-exclamation-sign"></i>
+                            <tal:txt i18n:translate="">City</tal:txt>
+                        </label>
+                        <div class="col-md-9">
+                        <!-- .input-lg --><input name="city"
+                               id="city"
+                               tal:attributes="value request/city|nothing"/>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="country">
+                            <i class="glyphicon glyphicon-exclamation-sign"></i>
+                            <tal:txt i18n:translate="" >Country</tal:txt>
+                        </label>
+                        <div class="col-md-9">
+                        <!-- .input-lg --><input name="country"
+                               id="country"
+                               tal:attributes="value request/country|nothing"/>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="additional_info">
+                            <tal:txt i18n:translate="">Additional address information</tal:txt>
+                        </label>
+                        <div class="col-md-9">
+                        <!-- .input-lg --><input name="additional_info"
+                               id="additional_info"
+                               tal:attributes="value request/additional_info|nothing"/>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="payment_type_1">
+                            <i class="glyphicon glyphicon-exclamation-sign"></i>
+                            <tal:txt i18n:translate="">Payment method</tal:txt>
+                        </label>
+                        <tal:loop repeat="ptype payment_types">
+                        <label tal:condition="python: ptype['active'] in [2,1]">
+                            <input type="radio" name="payment_type"
+                                   id="payment_type"
+                                   tal:define="nr repeat/ptype/number"
+                                   tal:attributes="value ptype/payment_type;
+                                                   checked python:repeat['ptype'].number()==1 and 'checked' or '';
+                                                   id string:payment_type_${nr}
+                                                   " />
+                            <tal:txt i18n:translate=""
+                               tal:content="ptype/payment_type"></tal:txt>
+                        </label>
+                        </tal:loop>
+                    </div><!-- .form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3"
+                               for="start">
+                            <tal:txt i18n:translate="">Desired start</tal:txt>
+                        </label>
+                        <div class="col-md-9">
+                            <input class="datetime" name="start"
+                                   id="start"
+                                   placeholder="dd.mm.yyyy"
+                                   i18n:attributes="placeholder"
+                                   tal:attributes="value request/start|nothing"/>
+                        </div><!-- .col-md-9 -->
+                    </div><!-- .form-group -->
+                    <div class="clear"></div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary submit_add">
+                            <tal:block i18n:translate="Store">Save</tal:block>
+                        </button>
+                        <button type="submit" class="btn btn-default" name="cancel" value="1">
+                            <tal:txt i18n:translate="Cancel">Cancel</tal:txt>
+                        </button>
+                    </div>
+
+
+                </form><!-- .form-horizontal -->
+            </div>
+        </metal:main>
+    </body>
+</html>

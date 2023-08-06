@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+  <metal:main fill-slot="main">
+<tal:ns tal:define="
+tan_browser python:context.getBrowser('tan');
+dummy tan_browser/authView;
+changeset request/changeset | nothing
+"
+>
+  <div id="area-title">
+    <h1 i18n:translate="">
+      TAN Manager
+    </h1>
+  </div>
+  <h2 i18n:translate="">
+    TAN status summary
+  </h2>
+  <table
+    class="table-bordered table-sorted"
+    tal:define="rows tan_browser/tan_status_summary;
+                mp tan_browser/canManage;
+                nolinks not:mp;
+                "
+    >
+    <thead>
+      <th i18n:translate="">
+        Quantity
+      </th>
+      <th i18n:translate="">
+        Status
+      </th>
+      <th i18n:translate="">
+        Explanation
+      </th>
+    </thead>
+    <tbody>
+      <tr tal:repeat="row rows">
+        <td tal:content="row/quantity"
+            class="align-right">
+          42
+        </td>
+        <td>
+          <tt><a href="manage_tans?status=new"
+                 tal:define="status row/status"
+                 tal:attributes="href string:manage_tans?status=$status"
+                 tal:omit-tag="nolinks"
+                 tal:content="status"
+                 i18n:translate="">
+              new
+          </a></tt>
+        </td>
+        <td tal:content="row/description">
+          Beschreibung des Status
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</tal:ns>
+</metal:main>
+</body><!-- vim: set sw=2 sts=2 si et :--></html>

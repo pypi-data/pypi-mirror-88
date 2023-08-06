@@ -1,0 +1,40 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+             for="*"
+             name="configure_registration"
+             template="configure_registration.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_confirmation_admin"
+             template="mail_confirmation_admin.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_confirmation_user"
+             template="mail_confirmation_user.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_registration_admin"
+             template="mail_registration_admin.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_registration_user"
+             template="mail_registration_user.pt"
+             permission="zope2.View"
+             />
+
+</configure>

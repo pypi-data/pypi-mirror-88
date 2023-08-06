@@ -1,0 +1,33 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+             for="*"
+             name="manage_settings"
+             template="manage_settings.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="settings_snippet_context_config_hint"
+             template="settings_snippet_context_config_hint.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="settings_snippet_global_config_hint"
+             template="settings_snippet_global_config_hint.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="simpleforms"
+             template="simpleforms.pt"
+             permission="zope2.View"
+             />
+
+</configure>

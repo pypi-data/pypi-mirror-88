@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="dummy context/@@tpcheck/auth_manage_portal;
+                        settings nocall:here/@@settings;
+                        mainpage nocall:here/@@mainpage;
+                        key mainpage/config_storage_key;
+                        dict_ python:settings.get(key,{})">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">
+        Configure mainpage
+    </h1>
+
+    <form method="post" action="/@@settings/set"
+          tal:attributes="action string:${portal_url}/@@settings/set">
+
+        <fieldset>
+            <legend i18n:translate="">Default</legend>
+
+            <tal:f1 define="key string:folder_uid;
+                            label string:Main page folder uid;
+                            ">
+            <metal:mac define-macro="field-and-link">
+            <div class="field"
+                 tal:define="uid python:dict_.get(key, '')">
+                <label for="folder_uid"
+                       tal:attributes="for key"
+                       i18n:translate=""
+                       tal:content="label"
+                       >
+                    Main page folder uid</label>
+                <input type="text" size="40" name="folder_uid"
+                       id="folder_uid"
+                       tal:attributes="value uid;
+                                       name key;
+                                       id key;
+                                       "/>
+                <metal:slot define-slot="link">
+                <div tal:condition="uid">
+                    <a href="/@@resolveuid/NNN/stage_edit"
+                       i18n:translate=""
+                       tal:attributes="href string:/@@resolveuid/${uid}/stage_edit;
+                                       id string:${key}-link">
+                        Edit stage
+                    </a>
+                </div>
+                </metal:slot>
+            </div>
+            </metal:mac>
+            </tal:f1>
+
+            <tal:f2 define="key string:page_uid;
+                            label string:Fallback default page uid;
+                            ">
+            <div class="field"
+                 metal:use-macro="template/macros/field-and-link">
+            </div>
+            </tal:f2>
+
+        </fieldset>
+
+        <input type="hidden" name="key"
+               tal:attributes="value key"/>
+        <input type="submit" value="Save"
+               i18n:attributes="value label_save"/>
+
+    </form>
+
+</metal:main>
+
+</body>
+</html>

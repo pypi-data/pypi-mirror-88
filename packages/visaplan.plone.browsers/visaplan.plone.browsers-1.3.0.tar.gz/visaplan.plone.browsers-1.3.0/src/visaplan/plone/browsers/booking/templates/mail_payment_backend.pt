@@ -1,0 +1,49 @@
+<tal:html i18n:domain="plone"
+     tal:define="
+mac1 here/booking_macros/macros;
+mac2 here/booking_macros2/macros;
+div_outer_class string:dbg-outer;
+div_inner_class string:dbg-inner;
+in_backend python:0;
+"><html metal:use-macro="mac1/mail">
+<metal:void fill-slot="greeting-hello"/>
+<metal:slot fill-slot="text">
+<p i18n:translate="">
+There was payment activity.
+</p>
+<tal:if-order define="dic options/order | nothing"
+condition="dic">
+<h3 i18n:translate="">Order details</h3>
+<dl tal:define="keys python:dic.keys()">
+<tal:loop repeat="key keys">
+<dt tal:content="key">
+    key
+</dt>
+<dd tal:content="python:dic[key]">
+    val
+</dd>
+</tal:loop>
+</dl>
+</tal:if-order>
+<tal:if-info define="dic options/payment_info | nothing"
+             condition="dic">
+<tal:ns define="keys python:('payment_status pending_reason reason_code payer_id payer_email payer_status'
+    ' memo'
+    ' txn_id parent_txn_id txn_type test_ipn'
+    ' item_number custom'
+    ' address_name userid ordernr timestamp').split()">
+<h3 i18n:translate="">
+Payment status information:
+</h3>
+<dl metal:use-macro="mac2/dl-cherrypick">
+    <dt>
+        payment_status
+    </dt>
+    <dd>
+        Pending
+    </dd>
+</dl>
+    </tal:ns>
+</tal:if-info>
+</metal:slot>
+</html></tal:html>

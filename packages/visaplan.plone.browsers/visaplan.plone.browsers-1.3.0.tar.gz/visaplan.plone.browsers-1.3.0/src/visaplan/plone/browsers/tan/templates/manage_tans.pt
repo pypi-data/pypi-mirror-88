@@ -1,0 +1,70 @@
+<metal:block metal:use-macro="context/main_template/macros/master"
+             i18n:domain="plone">
+
+<metal:no-ads fill-slot="column_one_slot"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:block fill-slot="main"
+           tal:define="tan_browser nocall:context/@@tan;
+                       dummy tan_browser/auth_unitracc_manage_tans;
+                       filter tan_browser/extract_filters">
+
+    <div id="area-title">
+        <h1 i18n:translate="">
+            TAN Manager
+        </h1>
+    </div>
+
+    <tal:ns1 define="groups here/@@tan/groups_with_tans;
+                     ">
+    <metal:block metal:use-macro="here/tans_wizard/macros/filter-form"/>
+
+    <metal:block define-macro="tan-new-formlink-form">
+        <form action="create_tan" method="get"
+              tal:define="gid gid | request/gid | nothing;
+                          "
+              >
+            <input type="hidden" name="gid" value="group_abc123"
+                   tal:condition="gid"
+                   tal:attributes="value gid"/>
+            <input type="submit" value="Create TAN" class="btn btn-default"
+                   i18n:attributes="value"/>
+        </form>
+    </metal:block>
+
+    <tal:if-groups-with-tans condition="groups">
+    <ul tal:condition="tan_browser/canView">
+        <li>
+            <a href="manage_tan_changesets"
+               i18n:translate="">Last changes</a>
+        </li>
+        <li>
+        <a href="manage_redeemable_tans"
+           i18n:translate="">Redeemable TANs</a>
+        </li>
+    </ul>
+    </tal:if-groups-with-tans>
+    </tal:ns1>
+
+    <tal:block tal:condition="filter | nothing">
+        <form action="tan_csv_export"
+              metal:use-macro="here/tans_wizard/macros/csv-export-form">
+            <button class="btn btn-primary">Export CSV</button>
+        </form>
+        <tal:block tal:define="
+        rows tan_browser/list_tans_pretty;
+        cols python:('tan', 'status', 'Group', 'duration_days',
+                     'owner_id',
+                     'expiration_date', 'last_changed_date');
+        mp tan_browser/canManage;
+        nolinks not:mp;
+        aaSorting python:'%d,desc' % (len(cols)-1,);
+        ">
+            <metal:block metal:use-macro="here/tans_wizard/macros/table"/>
+        </tal:block>
+  </tal:block>
+
+</metal:block>
+</metal:block><!-- vim: set sw=2 sts=2 si et :-->

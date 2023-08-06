@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:calendar fill-slot="javascript_head_slot">
+        <script type="text/javascript"
+                tal:attributes="src string:$portal_url/++resource++usermanagement/manage_users_view.js"></script>
+    </metal:calendar>
+
+    <metal:no-ads fill-slot="ad-block-above-content"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border', 1)" />
+
+<style type="text/css"
+       metal:fill-slot="style_slot">
+thead th,
+tbody th {
+    text-align: left;
+}
+tbody th,
+tbody td {
+    vertical-align: top;
+}
+</style>
+<body>
+
+<metal:main fill-slot="main">
+<tal:ns define="
+user_id request/user_id | nothing;
+thelist context/@@usermanagement/listUsersHavingDuplicateProfiles;
+">
+
+    <div class="area-title">
+        <h1 i18n:translate=""
+            tal:condition="user_id">
+            Cleanup duplicate profiles for user <tt i18n:name="id" tal:content="user_id"/>
+        </h1>
+        <h1 i18n:translate=""
+            tal:condition="not:user_id">
+            Cleanup duplicate profiles
+        </h1>
+    </div>
+    <div id="area-content">
+        <form method="post" id="search-form"
+              action="@@usermanagement/deleteProfiles"
+              accept-charset="UTF-8"
+              tal:condition="thelist">
+            <input type="hidden" name="user_id" value="filter"
+                   tal:condition="user_id"
+                   tal:attributes="value user_id">
+            <table class="table">
+                <thead>
+                    <th i18n:translate="">Login</th>
+                    <th i18n:translate="">
+                        Profiles
+                    </th>
+                </thead>
+                <tbody>
+                <tal:loop repeat="item thelist">
+                <tr tal:define="user_id item/user_id;
+                    profiles item/profiles;
+                    max python:len(profiles)-1;
+                    ">
+                    <th scope="row">
+                        <tt tal:content="user_id">therp.user</tt>
+                    </th>
+                    <td>
+                        <div tal:repeat="profile profiles">
+                            <input type="checkbox"
+                                   name="specs:list"
+                                   value="abc123:1:therp.user"
+                                   tal:attributes="disabled not:max;
+                                   value string:${profile/uid}:${max}:${user_id};
+                                   ">
+                            <a href="/@@resolveuid/abc123"
+                               tal:attributes="href string:/@@resolveuid/${profile/uid}"
+                               tal:content="profile/label">
+                                therp.user (Tobias Herp)
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tal:loop>
+                </tbody>
+            </table>
+            <button i18n:translate=""
+                class="btn btn-primary">
+                Delete selected profiles
+            </button>
+        </form>
+        <tal:if-all-ok condition="not:thelist">
+        <div tal:condition="not:user_id"
+             i18n:translate="">
+        No duplicate profiles found!
+         </div>
+        <div tal:condition="user_id"
+             i18n:translate="">
+        No duplicate profiles found for user <tt i18n:name="id" tal:content="user_id"/>.
+         </div>
+        </tal:if-all-ok>
+    </div>
+</tal:ns>
+
+</metal:main>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1);" />
+<metal:block fill-slot="head_slot">
+        <script type="text/javascript"
+                tal:attributes="src string:${portal_url}/++resource++unitracc-resource/cart.js"></script>
+</metal:block>
+
+<metal:block metal:fill-slot="breadcrumb">
+    <tal:block metal:use-macro="here/crumbs/macros/main"/>
+</metal:block>
+
+<metal:no-ads fill-slot="column_one_slot"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+
+
+
+<metal:main fill-slot="main"
+            tal:define="dummy here/@@tpcheck/auth_unitracc_manage_orders;
+                        booking nocall:here/@@booking;
+                        result booking/get_backend_bookings">
+
+    <div class="area-title">
+        <h1 i18n:translate="">
+            Booking management
+        </h1>
+    </div>
+
+    <div class="area-content">
+        <a href="/order_add" class="btn btn-primary fancybox"
+           style="margin-bottom:20px;" data-fancybox-type="iframe">
+            <i class="glyphicon glyphicon-plus icon-white"></i>
+            <tal:block i18n:translate="">Add booking</tal:block>
+        </a>
+        <ul class="nav nav-tabs" id="tabs" data-tabs="tabs">
+            <li class="active">
+                <a href="#tab-new" data-toggle="tabs">
+                    <tal:block i18n:translate="">
+                        New bookings
+                    </tal:block>
+                    <span class="label"
+                          tal:content="python:len(result['new'])"/>
+                </a>
+            </li>
+            <li>
+                <a href="#tab-failed" data-toggle="tabs">
+                    <tal:block i18n:translate="">
+                        Failed bookings
+                    </tal:block>
+                    <span class="label"
+                          tal:content="python:len(result['failed'])"/>
+                </a>
+            </li>
+            <li>
+                <a href="#tab-paid" data-toggle="tabs">
+                    <tal:block i18n:translate="">
+                        Payed bookings
+                    </tal:block>
+                    <span class="label"
+                          tal:content="python:len(result['paid'])"/>
+                </a>
+            </li>
+            <li tal:define="rows python:result['other']"
+                tal:condition="rows">
+                <a href="#tab-other" data-toggle="tabs">
+                    <tal:block i18n:translate="">
+                        Other bookings
+                    </tal:block>
+                    <span class="label"
+                          tal:content="python:len(rows)"/>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab-new">
+                    <table class="datatb table table-bordered table-hover table-sorted"
+                           tal:define="rows result/new">
+                        <metal:macro define-macro="tablehead">
+                        <thead>
+                            <tr>
+                                <th i18n:translate="">
+                                    Order number
+                                </th>
+                                <th i18n:translate="">
+                                    Name
+                                </th>
+                                <th i18n:translate="">
+                                    Booked on
+                                </th>
+                                <th i18n:translate="">
+                                    Payment method
+                                </th>
+                                <th i18n:translate="">
+                                    Status
+                                </th>
+                                <th i18n:translate="">
+                                    Payment date
+                                </th>
+                                <th i18n:translate="access_settlement_mode_label">
+                                Access settlement mode
+                                </th>
+                                <th i18n:translate="">
+                                    Articles
+                                </th>
+                                <th i18n:translate="">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        </metal:macro>
+                        <tbody >
+                            <metal:macro2 define-macro="tablebody">
+                                <tr tal:repeat="row rows">
+                                    <td tal:content="row/ordernr"></td>
+                                    <td tal:content="row/all_names"></td>
+                                    <td tal:content="row/date_booked"></td>
+                                    <td tal:content="row/payment_type"
+                                        i18n:translate=""></td>
+                                    <td tal:content="row/payment_status"
+                                        i18n:translate=""></td>
+                                    <td tal:content="row/date_payed|nothing"></td>
+                                    <td><span tal:define="asm_msgid row/asm_msgid"
+                                              tal:condition="asm_msgid"
+                                              tal:replace="asm_msgid"
+                                              i18n:translate="">
+                                    Zugangscodes per Mail
+                                    </span>
+                                    </td>
+                                    <td>
+                                        <tal:articles-loop repeat="article row/articles">
+                                            <a tal:attributes="href string:/@@resolveuid/${article/article_uid}"
+                                               tal:content="article/article_title"></a><br/>
+                                           <tal:block tal:condition="article/start_wanted">
+                                            <b i18n:translate="">
+                                                Desired start
+                                            </b>
+                                            <tal:block tal:content="article/start_wanted|nothing"/>
+                                            <br/>
+                                           </tal:block>
+                                           <b tal:condition="article/start_ddmmyyyy"
+                                              i18n:translate="">
+                                               Start
+                                           </b>
+                                           <tal:block tal:content="article/start_ddmmyyyy|nothing"/>
+                                           <br tal:condition="article/start_ddmmyyyy"/>
+                                           <b tal:condition="article/start_ddmmyyyy"
+                                              i18n:translate="">
+                                               Ends
+                                           </b>
+                                           <tal:block tal:content="article/ends_ddmmyyyy|nothing"/>
+                                            <hr/>
+                                        </tal:articles-loop>
+                                    </td>
+                                    <td tal:define="order_id row/order_id">
+                                        <i class="glyphicon glyphicon-home tipsy"
+                                           tal:attributes="id order_id"></i>
+                                        <div class="invisible" style="display:none"
+                                             tal:attributes="id string:${order_id}_additional">
+                                            <div class="progress-indicator">
+                                                <address>
+                                                    <strong i18n:translate="">
+                                                        Invoice address
+                                                    </strong>
+                                                    <tal:block tal:condition="python:row['firstname'] or row['lastname']"
+                                                               tal:define="firstname row/firstname|nothing;
+                                                                           lastname row/lastname|nothing"
+                                                                           tal:content="string:${firstname} ${lastname}">
+                                                    </tal:block>
+                                                    <br tal:condition="python:row['firstname'] or row['lastname']"/>
+                                                    <tal:block tal:condition="row/company"
+                                                        tal:content="row/company">
+                                                    </tal:block>
+                                                    <br tal:condition="row/company"/>
+                                                    <tal:block tal:content="row/street"/><br/>
+                                                    <tal:block tal:content="row/zip"/>
+                                                    <tal:block tal:content="row/city"/><br/>
+                                                    <tal:block tal:content="row/country"/>
+                                                    <tal:block tal:condition="row/additional_info">
+                                                        <br/>
+                                                        <tal:txt tal:content="row/additional_info"></tal:txt>
+                                                    </tal:block>
+                                                </address>
+                                                <b>IP: </b>
+                                                <tal:block tal:content="row/ip"/>
+                                            </div>
+                                        </div>
+                                        <i class="glyphicon glyphicon-trash" title="delete booking"
+                                           tal:attributes="onclick string:deleteorder(${order_id})"
+                                           i18n:attributes="title"></i>
+                                        <i class="glyphicon glyphicon-ok" title="mark as payed"
+                                           tal:condition="python:row['payment_type']=='prepayment' and row['payment_status'] == 'pending'"
+                                           tal:attributes="onclick string:acceptpayment(${order_id})"
+                                           i18n:attributes="title"></i>
+                                        <a tal:attributes="href string:/order_view?id=${order_id}">
+                                            <i class="glyphicon glyphicon-eye-open"></i>
+                                        </a>
+                                        <a tal:attributes="href string:/order_edit?id=${order_id}">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </metal:macro2>
+                        </tbody>
+                    </table>
+
+            </div>
+            <div class="tab-pane" id="tab-failed">
+                <table class="datatb table table-bordered table-striped table-hover table-sorted"
+                       tal:define="rows result/failed">
+                    <metal:table use-macro="template/macros/tablehead"/>
+                    <tbody>
+                        <metal:table use-macro="template/macros/tablebody"/>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="tab-paid">
+                <table class="datatb table table-bordered table-striped table-hover table-sorted"
+                       tal:define="rows result/paid">
+                    <metal:table use-macro="template/macros/tablehead"/>
+                    <tbody>
+                        <metal:table use-macro="template/macros/tablebody"/>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="tab-other">
+                <table class="datatb table table-bordered table-striped table-hover table-sorted"
+                       tal:define="rows result/other">
+                    <metal:table use-macro="template/macros/tablehead"/>
+                    <tbody>
+                        <metal:table use-macro="template/macros/tablebody"/>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</metal:main>
+
+</metal:block>

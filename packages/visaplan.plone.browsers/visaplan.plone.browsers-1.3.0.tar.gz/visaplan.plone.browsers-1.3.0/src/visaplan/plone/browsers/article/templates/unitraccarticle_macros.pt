@@ -1,0 +1,107 @@
+<tal:page>
+<tal:comment replace="nothing"><!--
+Makros für UnitraccArticle-Darstellung:
+
+brain-info-data - entnommen aus listing_article.pt
+brain-main - entnommen aus listing_article.pt
+item - für Karusseldarstellung
+
+Anmerkungen:
+- die div-Klassen .item und ggf. .active sowie
+  col-md-* kommen aus dem carousel-Makro
+- erforderlich im Aufrufkontext (tal:define):
+  article nocall:context/@@article;
+  getFirstImage nocall:article/getFirstImage;
+  industrialsector nocall:context/@@industrialsector;
+  industrialsector_getValue nocall:industrialsector/getValue;
+  contact nocall:context/@@contact;
+  contactPerson python:contact.getContactPerson;
+  totime python:here.getAdapter('totime');
+
+--></tal:comment>
+<metal:mac define-macro="item">
+<tal:ns define="
+url brain/getURL;
+">
+<div class="article-box">
+<a href="#"
+   class="thumbnail"
+   tal:define="img_src python:getFirstImage(brain, '240x240')"
+   tal:condition="img_src"
+   tal:attributes="href url">
+    <img tal:attributes="src img_src"
+         class="img-responsive"
+         alt="">
+</a>
+<h3><a href="#"
+       tal:attributes="href url"
+       tal:content="brain/Title">
+       Artikeltitel
+</a></h3>
+<div class="info-data"
+     metal:define-macro="brain-info-data">
+    <p class="info date"
+       tal:content="python:totime(brain.effective)">
+     1.4.2014
+     </p>
+     <tal:ns tal:define="
+     code python:brain.getCode;
+     code python:code != '**' and code or None;
+     " tal:condition="code">
+     <p class="info subject"
+         tal:define="industrialsector_getValue industrialsector_getValue | nocall:context/@@industrialsector/getValue"
+         tal:content="python:industrialsector_getValue(code)"
+         i18n:translate="">
+         Fachbereich
+     </p>
+     </tal:ns>
+     <p class="info author"
+        tal:define="content brain/getContactCompany"
+        tal:condition="content"
+        tal:content="content">
+        S &amp; P Consult GmbH
+     </p>
+     <p class="info author"
+        tal:define="content python:contactPerson(brain)"
+        tal:condition="content"
+        tal:content="content">
+        Dr. Hase Caesar
+     </p>
+</div><!-- .info-data -->
+<p tal:content="structure brain/Description"
+   >
+Beschreibung des Artikels.
+Gegenwärtig wird kein HTML-Text unterstützt.
+</p>
+</div><!-- .article-box -->
+</tal:ns>
+</metal:mac>
+
+
+<metal:mac define-macro="brain-main">
+<h3><a tal:content="brain/Title"
+       tal:attributes="href brain/getURL">
+       Artikel- oder News-Titel
+    </a>
+</h3>
+<p tal:content="structure brain/Description"/>
+<p></p>
+<div class="listing-keywords"
+     tal:condition="brain/Subject">
+    <metal:slot define-slot="miniheader-keywords"/>
+    <tal:block tal:repeat="subject brain/Subject">
+    <a href="/search?Subject=..." target="_blank"
+       class="label"
+       tal:attributes="href string:${here/portal_url}/search?Subject=${subject}"
+       tal:content="subject"
+       >
+       Schlagwort
+    </a>
+    </tal:block>
+</div>
+<a tal:attributes="href brain/getURL" class="btn btn-primary">
+    <i class="glyphicon glyphicon-chevron-right icon-white"></i>
+    <tal:block i18n:translate="">more</tal:block>
+</a>
+</metal:mac>
+</tal:page>

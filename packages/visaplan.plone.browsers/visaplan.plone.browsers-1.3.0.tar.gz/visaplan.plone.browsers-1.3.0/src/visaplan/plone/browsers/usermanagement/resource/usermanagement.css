@@ -1,0 +1,63 @@
+.background-color-ghostwhite {
+background-color: GhostWhite;
+}
+
+.div-fieldset {
+padding:15px 15px 15px 10px;
+border: 1px solid #8CACBB;
+margin-top: 2px;
+}
+
+.div-legend {
+display:inline;
+padding:5px 10px 5px 10px;
+border-top: 1px solid #8CACBB;
+border-left: 1px solid #8CACBB;
+border-right: 1px solid #8CACBB;
+}
+
+.background-color-white {
+background-color: white;
+}
+
+.div-fieldset .listing {
+margin-top:0px;
+}
+
+.documentFirstHeading {
+margin-bottom: 0.75em;
+}
+
+.documentFirstHeading q {
+font-family: inherit;
+font-style: normal;
+font-size: 100%;
+}
+
+.no-group-info {
+font-weight:bold;
+padding-top:10px;
+}
+
+.group-membership-tabbing {
+margin-top:15px;
+}
+
+.user-search #SearchableText,
+.user-management-search-field {
+font-size:18px;
+}
+
+.user-search .button-object-actions,
+.add-group-membership .button-object-actions {
+margin-bottom: 0px;
+}
+
+.custom-no-sort-listing th {
+white-space:nowrap;
+}
+
+#js-search-to-groups-add .listing-bar,
+#js-search-groups-add .listing-bar {
+padding-top:10px;
+}

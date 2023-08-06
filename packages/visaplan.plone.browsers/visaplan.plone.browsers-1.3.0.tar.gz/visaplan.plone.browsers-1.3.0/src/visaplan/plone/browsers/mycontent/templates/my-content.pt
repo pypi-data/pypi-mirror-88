@@ -1,0 +1,312 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+    <metal:block fill-slot="top_slot"
+                     tal:define="dummy python:request.set('disable_border',1)" />
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+<body>
+<metal:crumbs fill-slot="breadcrumb">
+    <div id="crumbs" metal:define-macro="breadcrumbs">
+        <!-- [ Makro my-content/breadcrumbs ... [ -->
+        <tal:ns define="desktop_path here/@@unitraccfeature/desktop_path">
+        <a href="/"
+           i18n:translate="">Home</a>
+           &nbsp;|&nbsp;
+        <a href="#" i18n:translate=""
+           tal:attributes="href desktop_path">myUNITRACC</a>
+
+        <metal:slot1 define-slot="my-content">
+        <!-- [ Slot my-content/my-content ... [ -->
+            <metal:macro define-macro="myunitracc-subcrumb"
+               tal:define="method method | string:my-content;
+                           url string:$desktop_path/${method};
+                           text text | string:myCONTENT">
+        <!-- [ Makro my-content/myunitracc-subcrumb ... [ -->
+               &nbsp;|&nbsp;
+            <a href="#" i18n:translate=""
+               tal:content="text"
+               tal:attributes="href url">myCONTENT</a>
+        <!-- ] ... Makro my-content/myunitracc-subcrumb ] -->
+            </metal:macro>
+        <!-- ] ... Slot my-content/my-content ] -->
+        </metal:slot1>
+
+        <!-- [ Slot my-content/more-breadcrumbs ... [ -->
+        <metal:slot2 define-slot="more-breadcrumbs"/>
+        <!-- ] ... Slot my-content/more-breadcrumbs ] -->
+        </tal:ns>
+        <!-- ] ... Makro my-content/breadcrumbs ] -->
+    </div>
+</metal:crumbs>
+<metal:main fill-slot="main"
+            tal:define="
+dummy python:here.getAdapter('authorized')('unitracc: View myCONTENT');
+mycontent nocall:here/@@mycontent;
+mycontent_getCount python:mycontent.getCount;
+">
+    <h1 class="documentFirstHeading">
+        myCONTENT
+    </h1>
+    <p i18n:translate="my_content_desc">
+        In this section of UNITRACC you can create new content for UNITRACC and you can access your former saved data.
+    </p>
+    <div class="my-content-sub">
+        <div i18n:translate="">
+            Contributions
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccNews')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-news"
+               i18n:translate="">
+                Own news
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccArticle')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-articles"
+               i18n:translate="">
+                Own articles
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccEvent')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-events"
+               i18n:translate="">
+                Own events
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccImage')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-images"
+               i18n:translate="">
+                Own images
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccBinary')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-binaries"
+               i18n:translate="">
+                Own binaries
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccAnimation')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-animations"
+               i18n:translate="">
+                Own animations
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccAudio')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-audios"
+               i18n:translate="Own audios">
+                Own audio files
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccVideo')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-videos"
+               i18n:translate="">
+                Own videos
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccTable')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-tables"
+               i18n:translate="">
+                Own tables
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccGlossary')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-glossaries"
+               i18n:translate="Own glossaries">
+                Own lexicon entries
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccLiterature')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-literatures"
+               i18n:translate="Own literatures">
+                Own literature references
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccFormula')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-formulas"
+               i18n:translate="">
+                Own formulas
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccStandard')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-standards"
+               i18n:translate="">
+                Own standards
+            </a>
+        </div>
+    </div>
+    <div class="my-content-type">
+        <div class="float-right">
+            <tal:block tal:content="python:mycontent_getCount('portal_type=UnitraccCourse')"/>
+            <tal:block i18n:translate="" >
+                elements
+            </tal:block>
+        </div>
+        <div>
+            <a tal:attributes="href string:${here_url}/my-courses"
+               i18n:translate="">
+                Own courses
+            </a>
+        </div>
+    </div>
+    <tal:block tal:define="both mycontent/getBothLists;
+                           collab python:both[0];
+                           watched python:both[1];
+                           EDITPERM string:Modify portal content;
+                           mygroupids python: (collab or watched) and here.getAdapter('auth')().getGroups()"
+                           >
+        <tal:if1 condition="collab">
+        <br/><br/><br/>
+        <div class="my-content-sub">
+            <div i18n:translate="">
+                Collaboration
+            </div>
+        </div>
+        <tal:loop1 repeat="brain collab">
+             <div class="my-content-type visualClear"
+                  tal:define="theurl string:${brain/getURL};
+                              editable python:1 or brain.getAdapter('checkperm')(EDITPERM);
+                              langarg string:set_language=${brain/Language}">
+                <a class="float-right"
+                   href=".../dingsda/structure-edit"
+                   tal:condition="editable"
+                   onclick="window.open(this.href, 'Popup', 'fullscreen=yes,menubar=no,toolbar=no,resizable=yes,location=no,scrollbars=yes');return false"
+                   tal:attributes="href string:$theurl/structure-edit?$langarg"
+                   i18n:translate="">
+                   Edit
+                </a>
+                <a tal:attributes="href string:$theurl?$langarg"
+                   href=".../dingsda?set_language=de"
+                   tal:content="brain/Title">Mustervortrag Layouttest</a>
+             </div>
+        </tal:loop1>
+        </tal:if1>
+        <tal:if2 condition="watched">
+        <br/><br/><br/>
+        <div class="my-content-sub">
+            <div i18n:translate="">
+                Watchlist
+            </div>
+        </div>
+        <tal:loop2 repeat="brain watched">
+             <div class="my-content-type visualClear"
+                  tal:define="theurl string:${brain/getURL};
+                              langarg string:set_language=${brain/Language}">
+                <a tal:attributes="href string:$theurl?$langarg;
+                                   "
+                   href=".../dingsda?set_language=de"
+                   tal:content="brain/Title">Mustervortrag Layouttest</a>
+             </div>
+        </tal:loop2>
+        </tal:if2>
+    </tal:block>
+</metal:main>
+</body>
+<!-- vim: set ts=8 sts=4 sw=4 si et :--></html>

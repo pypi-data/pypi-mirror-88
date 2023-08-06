@@ -1,0 +1,103 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="dummy context/@@authorized/managePortal;
+                        registration nocall:here/@@registration;
+                        dict_ registration/getConfigure">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">
+        Configure registration
+    </h1>
+
+   <form method="post" tal:attributes="action string:${portal_url}/@@registration/setConfigure">
+        <fieldset>
+            <legend>Basic</legend>
+
+            <div class="field">
+                <label>Portal ID</label><br/>
+                <input type="text" name="portal_id"
+                       tal:attributes="value dict_/portal_id | nothing"/>
+            </div>
+
+            <div class="field">
+                <label>E-Mail From</label><br/>
+                <input type="text" name="mailFrom"
+                       tal:attributes="value dict_/mailFrom | nothing"/>
+            </div>
+
+            <div class="field">
+                <label>E-Mail Site Administration</label><br/>
+                <input type="text" name="bcc"
+                       tal:attributes="value dict_/bcc | nothing"/>
+            </div>
+
+            <div class="field">
+                <label>Portal Domains</label><br/>
+                <textarea cols="35" rows="5" name="portal_domains" class="form-element" tal:content="dict_/portal_domains | nothing"/>
+            </div>
+
+            <fieldset>
+                <legend>DE</legend>
+                <div class="field">
+                    <label>Portal Title</label><br/>
+                    <input type="text" name="portal_title_de" size="80"
+                           tal:attributes="value dict_/portal_title_de | nothing"/>
+                </div>
+
+                <div class="field">
+                    <label>Portal Description</label><br/>
+                    <textarea cols="35" rows="5" name="portal_description_de" class="form-element" tal:content="dict_/portal_description_de | nothing"/>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>EN</legend>
+                <div class="field">
+                    <label>Portal Title</label><br/>
+                    <input type="text" name="portal_title_en" size="80"
+                           tal:attributes="value dict_/portal_title_en | nothing"/>
+                </div>
+
+                <div class="field">
+                    <label>Portal Description</label><br/>
+                    <textarea cols="35" rows="5" name="portal_description_en" class="form-element" tal:content="dict_/portal_description_en | nothing"/>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>ES</legend>
+                <div class="field">
+                    <label>Portal Title</label><br/>
+                    <input type="text" name="portal_title_es" size="80"
+                           tal:attributes="value dict_/portal_title_es | nothing"/>
+                </div>
+
+                <div class="field">
+                    <label>Portal Description</label><br/>
+                    <textarea cols="35" rows="5" name="portal_description_es" class="form-element" tal:content="dict_/portal_description_es | nothing"/>
+                </div>
+            </fieldset>
+
+        </fieldset>
+        <br/>
+        <input type="submit" value="Save"
+               i18n:attributes="value label_save"/>
+    </form>
+
+</metal:main>
+
+</body>
+</html>
+

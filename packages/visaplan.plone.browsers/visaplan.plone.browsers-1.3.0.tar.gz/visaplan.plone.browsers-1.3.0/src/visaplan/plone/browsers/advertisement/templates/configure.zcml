@@ -1,0 +1,33 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+             for="*"
+             name="ad_content"
+             template="ad_content.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="ads_above_content"
+             template="ads_above_content.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="ads_skyscraper"
+             template="ads_skyscraper.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="ads_top_right"
+             template="ads_top_right.pt"
+             permission="zope2.View"
+             />
+
+</configure>

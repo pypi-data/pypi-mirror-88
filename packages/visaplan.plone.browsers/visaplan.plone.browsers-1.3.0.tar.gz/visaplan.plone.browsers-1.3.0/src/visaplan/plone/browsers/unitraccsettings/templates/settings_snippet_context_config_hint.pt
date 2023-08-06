@@ -1,0 +1,9 @@
+<div class="info"
+  i18n:domain="plone">
+  <p i18n:translate="">
+     Please use the special configuration pages
+     <tt i18n:name="suffix">&hellip;/<tal:path
+             content="options/path">configure_thingies</tal:path></tt>
+     to apply changes.
+  </p>
+</div>

@@ -1,0 +1,194 @@
+<html i18n:domain="plone">
+<head>
+    <meta http-equiv="Content-Type"
+          content="text/html;charset=utf-8" />
+</head>
+<body tal:define="dummy here/@@usermanagement/authManageUsers;
+                  usermanagement nocall:here/@@usermanagement;
+                  acl python:context.getAdapter('acl')();
+                  easyvoc nocall:here/@@easyvoc;
+                  countrycodetocountry nocall:here/@@countrycodetocountry;
+                  toTime python:context.getAdapter('totime');
+                  brains usermanagement/search">
+   <table border="1">
+    <tr>
+        <th>
+            Erstellt
+        </th>
+        <th>
+            Letzter login
+        </th>
+        <th>
+            Benutzername
+        </th>
+        <th>
+            Akademischer Titel
+        </th>
+        <th>
+            Anrede
+        </th>
+        <th>
+            Vorname
+        </th>
+        <th>
+            Nachname
+        </th>
+        <th>
+             Geburtsdatum
+        </th>
+        <th>
+            E-Mail
+        </th>
+        <th>
+            Newsletter
+        </th>
+        <th>
+            Gesperrt
+        </th>
+        <th>
+            Sprache
+        </th>
+        <th>
+             Strasse privat
+        </th>
+        <th>
+            PLZ privat
+        </th>
+        <th>
+            Stadt privat
+        </th>
+        <th>
+            Land privat
+        </th>
+        <th>
+            Telefon privat
+        </th>
+        <th>
+            Firma
+        </th>
+        <th>
+            Abteilung
+        </th>
+        <th>
+            Position
+        </th>
+        <th>
+             Strasse gesch&auml;ftlich
+        </th>
+        <th>
+             Addresszusatz gesch&auml;ftlich
+        </th>
+        <th>
+            PLZ gesch&auml;ftlich
+        </th>
+        <th>
+            Stadt gesch&auml;ftlich
+        </th>
+        <th>
+            Land gesch&auml;ftlich
+        </th>
+        <th>
+            Telefon gesch&auml;ftlich
+        </th>
+        <th>
+            Fax gesch&auml;ftlich
+        </th>
+        <th>
+            Weblink gesch&auml;ftlich
+        </th>
+    </tr>
+    <tal:block tal:repeat="brain brains">
+        <tr>
+            <td>
+               <tal:block tal:content="python:toTime(brain.created)"/>
+            </td>
+            <td tal:define="user python:acl.getUser(brain.getUserId)">
+               <tal:block tal:condition="user"
+                          tal:content="python:toTime(user.getProperty('last_login_time'))"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getUserId"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getAcademicTitle"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:easyvoc.getValue('unitracc-form-of-address',brain.getFormOfAddress)"
+                          i18n:translate=""/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getFirstname"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getLastname"/>
+            </td>
+            <td>
+               <tal:block tal:condition="python:brain.getDateOfBirth"
+                          tal:content="python:toTime(brain.getDateOfBirth)"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getEmail"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getNewsletter"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getLocked and 'Ja' or 'Nein'"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getPreferredLanguage"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getPrivatStreet"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getPrivatZip"/>&nbsp;
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getPrivatCity"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:countrycodetocountry(brain.getPrivatCountry)"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getPrivatPhone"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessCompany"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessDepartment"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessPosition"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessStreet"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessAdditionalAddress"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessZip"/>&nbsp;
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessCity"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:countrycodetocountry(brain.getBusinessCountry)"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessPhone"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessFax"/>
+            </td>
+            <td>
+               <tal:block tal:content="python:brain.getBusinessWeblink"/>
+            </td>
+        </tr>
+    </tal:block>
+    </table>
+
+</body>
+</html>

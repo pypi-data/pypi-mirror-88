@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone">
+
+    <browser:page
+        for="*"
+        name="additionallanguages"
+        class=".browser.Browser"
+        permission="zope2.View"
+        allowed_interface=".browser.IAdditionalLanguagesInterFace"/>
+
+
+</configure>

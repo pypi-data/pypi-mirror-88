@@ -1,0 +1,10 @@
+<ul>
+    <li tal:repeat="brain here/@@usermanagement/search">
+        <img src="/add.png" class="user-select"
+             tal:attributes="rel python:brain.getUserId">&nbsp;
+        <tal:block tal:content="python:brain.getUserId"/>,
+        <tal:block tal:content="python:brain.getLastname"/>,
+        <tal:block tal:content="python:brain.getFirstname"/>,
+        <tal:block tal:content="python:brain.getEmail"/>
+    </li>
+</ul>

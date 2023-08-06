@@ -1,0 +1,20 @@
+<tal:x i18n:translate="mail_registration_user01"
+     i18n:domain="plone"
+     tal:omit-tag=""
+     tal:define="registration nocall:here/@@registration;
+                 charset python:options.get('charset', '');
+                 charset python:charset.strip() or 'utf-8';
+                 dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;; charset=%s' % charset);
+">
+<p>Welcome <span i18n:name="fullname" tal:replace="options/fullname | nothing"/>!</p>
+<p>Your user access has been compiled. Please activate it by going to the following site.</p>
+<p><a i18n:name="url"
+        tal:define="url options/url | nothing"
+        tal:content="url"
+        tal:omit-tag=""
+        tal:attributes="href url"/></p>
+<p>If the link does not work, copy and paste it to your browser address bar and load the page.</p>
+<p>If you have not created an account on <tal:block i18n:name="portal_id" tal:content="registration/getPortalID"/>, this email should be ignored.</p>
+</tal:x>
+
+<tal:footer content="structure here/mail_footer_plain"/>

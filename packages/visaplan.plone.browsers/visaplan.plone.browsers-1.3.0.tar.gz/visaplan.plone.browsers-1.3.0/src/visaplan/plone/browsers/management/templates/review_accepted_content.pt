@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="dummy python:here.getAdapter('authorized')('unitracc: Manage submitted and accepted content');
+                                management nocall:here/@@management;
+                                state string:accepted;
+                                ">
+
+        <div class="padding-top-10">
+
+            <h1 class="documentFirstHeading padding-top-10" i18n:translate="">Accepted content</h1>
+
+            <metal:block metal:use-macro="here/review_submitted_content/macros/listing">
+<!-- Derzeit noch eine relativ statische Lösung mit JSON-Daten im Seitentext
+-->
+            </metal:block>
+
+        </div>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+

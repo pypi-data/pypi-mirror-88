@@ -1,0 +1,531 @@
+<!DOCTYPE HTML>
+<html lang="de">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>booking_macros2.pt (UNITRACC): Hilfsmakro für booking_macros.pt</title>
+<style type="text/css">
+.makro-dokumentation {
+    border-top: 1px dashed gray;
+    margin-top: 1em;
+}
+.makro-beispiel {
+    border: 1px solid gray;
+    margin: 0.5em;
+    padding: 0.2em;
+    background-color: #ddd;
+}
+</style>
+</head>
+<body tal:define="
+options python:{'user_email': 'tobias.herp@priv.at',
+                };
+" i18n:domain="plone">
+
+<ul class="sibling-pages"
+    metal:define-macro="booking-macros-templates">
+<tal:ns define="
+pages python:[p[:-3] for p in (
+'booking_macros.pt',
+'booking_macros2.pt',
+'booking_mail_tests.pt',
+)];
+" tal:repeat="page pages">
+<li>
+<strong tal:omit-tag=""><a href="#"
+tal:attributes="href page"
+tal:content="page">booking_macros</a></strong>
+</li>
+</tal:ns>
+</ul>
+
+<h1>booking_macros2.pt</h1>
+
+
+<ul>
+<li><tt><a href="#mstep">mstep</a></tt>:
+Verwendet in ...
+</li>
+<li><tt><a href="#dl-keys-and-values">dl-keys-and-values</a></tt>:
+Verwendet in ...
+</li>
+<li><tt><a href="#dl-cherrypick">dl-cherrypick</a></tt>:
+Verwendet in ...
+</li>
+<li>Textbausteine:
+	<ul>
+	<li>
+	Verwendet in Mail (&hellip;)
+	und HTML-Seite (<a href="order_payment_finished"
+	                   tal:omit-tag="">./order_payment_finished.pt</a>)
+	 zur Auftragsbestätigung,
+	in Abhängigkeit von der Erledigungsart (<tt>access_settlement_mode</tt>):
+	<ul>
+		<li><tt><a href="#snippet-awaiting-course-payment">snippet-awaiting-course-payment</a></tt>
+		(klassische Erledigungsart <tt>immediate</tt>; nur möglich bei Einzelbuchung von Kursen)
+		</li>
+		<li><tt><a href="#snippet-awaiting-payment-tans_email">snippet-awaiting-payment-tans_email</a></tt>
+		(Erledigungsart <tt>tans_email</tt>: Versand der Zugangscodes per E-Mail)
+		</li>
+		<li><tt><a href="#snippet-awaiting-payment-tans_postal">snippet-awaiting-payment-tans_postal</a></tt>
+		(Erledigungsart <tt>tans_postal</tt>: Versand der Zugangscodes per Briefpost)
+		</li>
+	</ul>
+	</li>
+	<li><tt><a href="#snippet-presage-invoice">snippet-presage-invoice</a></tt>:
+	Verwendet in ./mail_order_confirmation.pt
+	</li>
+	<li><tt><a href="#snippet-questions-order">snippet-questions-order</a></tt>:
+	Verwendet in ./mail_order_confirmation.pt und ./order_payment_finished.pt
+	</li>
+	<li><tt><a href="#snippet-short-termed-start">snippet-short-termed-start</a></tt>:
+	Verwendet in ./order_overview.pt und ./mycart.pt
+	</li>
+	<li><tt><a href="#snippet-right-of-rescission">snippet-right-of-rescission</a></tt>:
+	Verwendet in ...
+	</li>
+	<li><tt><a href="#snippet-inconvenience">snippet-inconvenience</a></tt>:
+	Verwendet in ...
+	</li>
+	<li><tt><a href="#snippet-payment-received">snippet-payment-received</a></tt>:
+	Verwendet in ...
+	</li>
+	<li><tt><a href="#snippet-payment-pending">snippet-payment-pending</a></tt>:
+	Verwendet in ...
+	</li>
+	</ul>
+</li>
+<li><tt><a href="#mail-link">mail-link</a></tt>:
+Ein simpler Mail-Link
+</li>
+</ul>
+
+
+<div id="mstep" class="makro-dokumentation"
+tal:define="
+formid string:abc123formid;
+step python:1;
+prefix string:/prefix;
+">
+<h2>Makro <tt>mstep</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><th>Bedeutung</th><th>erforderlich?</th><th>Vorgabewert</th>
+</tr><tr>
+<th>formid</th><td>Der selbstgebaute Cross-site-scripting-Schutz</td><td>ja</td><td></td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="mstep">mstep</tt>:
+  Für die Navigation innerhalb einer Bestellung
+</h3>
+<ul tal:define="step python:1; nr python:1; method string:bonk">
+  <li>
+  <dl>
+    <dt>step</dt>
+    <dd>
+      Der aktuelle Schritt (derselbe für alle 5 Aufrufe des Makros auf einer Seite)
+    </dd>
+    <dt>
+      nr
+    </dt>
+    <dd>Die Nummer, eine Zahl von 1 bis 5; bei Verwendung des Makros anzugeben</dd>
+    <dt>method</dt>
+    <dd>
+    Die Methode, z.B. <tt>mycart</tt>.
+    Wenn <em>nothing</em>, kann kein Link erzeugt werden.
+    </dd>
+  </dl>
+  </li>
+  <li metal:define-macro="mstep">
+      <strong tal:omit-tag="python:step != nr">
+      <a tal:attributes="href string:$prefix/$method?formid=$formid"
+         tal:omit-tag="python:step == 5 or step &lt; nr or not formid or not method">
+         <tal:nr replace="nr">1</tal:nr>.
+         <metal:slot define-slot="txt"
+                     i18n:translate="">Cart</metal:slot>
+      </a>
+      </strong>
+  </li>
+</ul>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #mstep .makro-dokumentation -->
+
+<div id="dl-keys-and-values" class="makro-dokumentation"
+tal:define="
+rows python:[('eins', 1), ('zwei', 2)];
+">
+<h2>Makro <tt>dl-keys-and-values</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="dl-keys-and-values">dl-keys-and-values</tt>:
+  Eine Sequenz von 2-Tupeln ausgeben, wie von dict.items()</h3>
+<dl metal:define-macro="dl-keys-and-values">
+    <tal:loop repeat="row rows">
+    <tal:item define="key python:row[0];
+                      val python:row[1];">
+    <dt><tt tal:content="key">key</tt></dt>
+    <dd><tt tal:content="val">val</tt></dd>
+    </tal:item>
+    </tal:loop>
+</dl>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #dl-keys-and-values .makro-dokumentation -->
+
+
+<div id="dl-cherrypick" class="makro-dokumentation"
+tal:define="
+dic python:{'eins': 1, 'zwei': 2, 'drei': 3};
+keys python:['zwei', 'drei', 'vier'];
+">
+<h2>Makro <tt>dl-cherrypick</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="dl-cherrypick">dl-cherrypick</tt>:
+  Eine Auswahl von Schlüsseln des gegebenen <tt>dict</tt>s</h3>
+<dl metal:define-macro="dl-cherrypick">
+    <tal:loop define="default default | nothing"
+              repeat="key keys">
+    <tal:item define="val python:dic.get(key, default)"
+              condition="python:val is not None">
+    <dt><tt tal:content="key">key</tt></dt>
+    <dd><tt tal:content="val">val</tt></dd>
+    </tal:item>
+    </tal:loop>
+</dl>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #dl-cherrypick .makro-dokumentation -->
+
+<div id="snippet-awaiting-course-payment" class="makro-dokumentation">
+<h2>Makro <tt>snippet-awaiting-course-payment</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+<h3>
+  <tt id="snippet-awaiting-course-payment">snippet-awaiting-course-payment</tt>:
+  Textbaustein zur Ankündigung der direkten Freischaltung
+</h3>
+<p metal:define-macro="snippet-awaiting-course-payment"
+   i18n:translate="">
+    After we have received your payment, the booked course
+    will be made available to you on
+    <a href="http://unitracc.de"
+       tal:define="url here/portal_url"
+       tal:attributes="href url"
+       tal:content="url"
+       i18n:name="location">http://unitracc.de</a>
+    as of the selected start date through to the end of the
+    predetermined course end date.
+</p>
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-awaiting-course-payment .makro-dokumentation -->
+
+<div id="snippet-awaiting-payment-tans_email" class="makro-dokumentation">
+<h2>Makro <tt>snippet-awaiting-payment-tans_email</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+<td>options/user_email</td>
+<td>Mail-Adresse des Benutzers</td>
+<td>ja*</td>
+<td>"<tt>YOUR@EMAIL.ADDRESS</tt>";
+Ausschließlich zur Testbarkeit des Templates
+ <tt>order_payment_finished.pt</tt>
+(die Bestätigungsseite nach abgesendetem Auftrag)
+</td>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+<h3>
+  <tt id="snippet-awaiting-payment-tans_email">snippet-awaiting-payment-tans_email</tt>:
+  Textbaustein zur Ankündigung von per E-Mail zugesandten TANs (Zugangscodes)
+</h3>
+<p metal:define-macro="snippet-awaiting-payment-tans_email"
+   i18n:translate="">
+    After we have received your payment, we will send the required
+		access codes to your e-mail address
+		<strong tal:content="options/user_email | string:YOUR@EMAIL.ADDRESS"
+		        i18n:name="mail_to">tobias.herp@priv.at</strong>;
+		distribute them to your employees as needed.
+		After registering free of charge on
+    <a href="http://unitracc.de"
+       tal:define="url here/portal_url"
+       tal:attributes="href url"
+       tal:content="url"
+       i18n:name="location">http://unitracc.de</a>,
+		the respective users can redeem their access codes and gain access
+		to the booked contents.
+</p>
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-awaiting-payment-tans_email .makro-dokumentation -->
+
+<div id="snippet-awaiting-payment-tans_postal" class="makro-dokumentation">
+<h2>Makro <tt>snippet-awaiting-payment-tans_postal</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+<h3>
+  <tt id="snippet-awaiting-payment-tans_postal">snippet-awaiting-payment-tans_postal</tt>:
+  Textbaustein zur Ankündigung von postalisch zugesandten TANs
+</h3>
+<p metal:define-macro="snippet-awaiting-payment-tans_postal"
+   i18n:translate="">
+    After we have received your payment, we will send the required
+		access codes to the above postal invoice address;
+		distribute them to your employees as needed.
+		After registering free of charge on
+    <a href="http://unitracc.de"
+       tal:define="url here/portal_url"
+       tal:attributes="href url"
+       tal:content="url"
+       i18n:name="location">http://unitracc.de</a>,
+		the respective users can redeem their access codes and gain access
+		to the booked contents.
+</p>
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-awaiting-payment-tans_postal .makro-dokumentation -->
+
+<div id="snippet-presage-invoice" class="makro-dokumentation">
+<h2>Makro <tt>snippet-presage-invoice</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="snippet-presage-invoice">snippet-presage-invoice</tt>:
+  Textbaustein zur Ankündigung einer Rechnung mit Bitte um Bezahlung
+</h3>
+<p metal:define-macro="snippet-presage-invoice"
+   i18n:translate="">
+    Our team will process your booking immediately and you
+    will receive an invoice per post in the next few days.
+    Please complete the payment within 14 days of receiving
+    the invoice.
+</p>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-presage-invoice .makro-dokumentation -->
+
+<div id="snippet-questions-order" class="makro-dokumentation">
+<h2>Makro <tt>snippet-questions-order</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="snippet-questions-order">snippet-questions-order</tt>:
+  Textbaustein (Ermunterung zu Fragen)
+</h3>
+<p metal:define-macro="snippet-questions-order"
+   i18n:translate="">
+    For questions regarding your bookings or UNITRACC in
+    general, you can of course contact our team any time at
+    <a href="mailto:some@mail.address"
+       tal:define="address options/mail_from | here/@@booking/get_sending_mail_address"
+       tal:attributes="href string:mailto:$address"
+       tal:content="address"
+       i18n:name="mail_email_link">some@mail.address</a>.
+    We're here to help.
+</p>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-questions-order .makro-dokumentation -->
+
+<div id="snippet-short-termed-start" class="makro-dokumentation">
+<h2>Makro <tt>snippet-short-termed-start</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="snippet-short-termed-start">snippet-short-termed-start</tt>:
+  Textbaustein
+</h3>
+<div metal:define-macro="snippet-short-termed-start">
+    <p i18n:translate="short_termed_start"
+       class="text-warning">
+        Please note that a short-term desire selected start date
+        can not be guaranteed for all payment types.
+    </p>
+</div>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-short-termed-start .makro-dokumentation -->
+
+<div id="snippet-right-of-rescission" class="makro-dokumentation">
+<h2>Makro <tt>snippet-right-of-rescission</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="snippet-right-of-rescission">snippet-right-of-rescission</tt>:
+  Textbaustein XXX
+</h3>
+<p metal:define-macro="snippet-right-of-rescission"
+   i18n:translate="mail_right_of_rescission">
+   Right of rescission
+</p>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-right-of-rescission .makro-dokumentation -->
+
+<div id="snippet-inconvenience" class="makro-dokumentation">
+<h2>Makro <tt>snippet-inconvenience</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="snippet-inconvenience">snippet-inconvenience</tt>:
+  Textbaustein XXX
+</h3>
+<p metal:define-macro="snippet-inconvenience"
+   i18n:translate="mail_inconvenience_sorry">
+  We are sorry for the inconvenience.
+</p>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-inconvenience .makro-dokumentation -->
+
+
+<div id="snippet-payment-received" class="makro-dokumentation"
+tal:define="
+options python:{'domain': 'http://unitracc.de',
+                'start': '<heute>',
+								'duration': 31,
+                };
+">
+<h2>Makro <tt>snippet-payment-received</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><th>Bedeutung</th><th>erforderlich?</th><th>Vorgabewert</th>
+</tr><tr>
+<th>options</th>
+<td>Benannte Aufrufoptionen für das aufrufende Template</td><td>ja</td><td>(keiner)</td>
+</tr><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="snippet-payment-received">snippet-payment-received</tt>:
+  Textbaustein XXX
+</h3>
+<pre tal:define="pformat python:context.getAdapter('pformat')"
+     tal:condition="python:0"
+     tal:content="python:pformat(options)"/>
+<p metal:define-macro="snippet-payment-received"
+   i18n:translate="mail_success_info"
+	 tal:on-error="string:snippet-payment-received"
+   tal:define="desktop_path here/@@unitraccfeature/desktop_path">
+    We have successfully received the payment for your selected UNITRACC
+    online course. Your selection will be made available on your
+    personal
+    <a tal:attributes="href string:${options/domain}$desktop_path"
+      i18n:translate="desktop" i18n:name="desktop">UNITRACC-desktop</a> as of
+      <tal:block i18n:name="mail_start"
+                 tal:content="options/start">[Startdatum]</tal:block>,
+    for a period of <tal:block i18n:name="mail_duration"
+                 tal:content="options/duration">[Tage]</tal:block> days.
+</p>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-payment-received .makro-dokumentation -->
+
+<div id="snippet-payment-pending" class="makro-dokumentation">
+<h2>Makro <tt>snippet-payment-pending</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="snippet-payment-pending">snippet-payment-pending</tt>:
+  Textbaustein XXX
+</h3>
+<p metal:define-macro="snippet-payment-pending"
+   i18n:translate="mail_pending_info">
+    We were notified about your payment by the payments provider,
+    but the payment could not yet be completed,
+    and we could not process the notification automatically.
+    While we will look into the issue ourselves,
+    further action by you might be necessary.
+</p>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #snippet-payment-pending .makro-dokumentation -->
+
+
+<div id="mail-link" class="makro-dokumentation"
+tal:define="
+mail string:tobias.herp@visaplan.com;
+txt string:Tobias Herp;
+">
+<h2>Makro <tt>mail-link</tt></h2>
+<h3>Variablen</h3><table><tr>
+<th>Name</th><td>Bedeutung</td><td>erforderlich?</td><td>Vorgabewert</td>
+</tr><tr>
+</tr></table>
+<h3>Beispiel</h3>
+<div class="makro-beispiel">
+
+<h3>
+  <tt id="mail-link">mail-link</tt>:
+  Textbaustein XXX
+</h3>
+
+<metal:mac define-macro="mail-link"
+><a tal:define="mail mail | options/user_email;
+                txt txt | options/userid | nothing"
+    href="mailto:xxx"
+    tal:attributes="href string:mailto:$mail"
+    tal:content="mail"
+    >heinz@kunz.de</a></metal:mac>
+
+</div><!-- .makro-beispiel -->
+</div><!-- #mail-link .makro-dokumentation -->
+
+</body>
+</html>
+<!-- vim: set ts=2 sts=2 sw=2 si noet hls :-->

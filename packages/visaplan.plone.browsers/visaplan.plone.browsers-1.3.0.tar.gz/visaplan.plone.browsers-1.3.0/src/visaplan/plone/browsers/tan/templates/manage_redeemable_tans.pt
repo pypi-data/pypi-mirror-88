@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+	<metal:block fill-slot="top_slot"
+	             tal:define="dummy python:request.set('disable_border',1)" />
+<body>
+	<metal:no-ads fill-slot="column_one_slot"/>
+	<metal:no-ads fill-slot="column_two_slot"/>
+	<metal:main fill-slot="main">
+<tal:ns1 tal:define="
+tan_browser python:context.getBrowser('tan');
+dummy tan_browser/authView;
+changeset request/changeset | nothing;
+group_id request/gid | request/group_id | nothing;
+unitraccgroups python:here.getBrowser('unitraccgroups');
+groupinfo python:group_id and unitraccgroups.groupInfo(group_id);
+rows tan_browser/list_redeemable;
+cols python:('tan', 'status', 'group_id',
+             'duration_days', 'owner_id', 'expiration_date',
+             'additional_info', 'changed_by', 'last_changed_date');
+nolinks python:0;
+"
+>
+	<div id="area-title">
+		<h1 i18n:translate="">
+			Redeemable TANs
+		</h1>
+		<p i18n:translate=""
+		   tal:condition="not:rows">
+			Currently none.
+		</p>
+	</div>
+	<table metal:use-macro="here/tans_wizard/macros/table" >
+	</table>
+</tal:ns1>
+</metal:main>
+</body><!-- vim: set sw=2 sts=2 si ts=2 noet :--></html>

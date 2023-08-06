@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="dummy context/@@authorized/managePortal;
+                        flvpreview nocall:here/@@flvpreview;
+                        settings nocall:here/@@settings;
+                        key flvpreview/configStorageKey;
+                        dict_ python:settings.get(key)">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">
+        Configure flv preview
+    </h1>
+
+   <form method="post" tal:attributes="action string:${portal_url}/@@settings/set">
+        <fieldset>
+            <legend>Default</legend>
+
+            <div class="field">
+                <label>Scalings</label><br/>
+                <textarea name="scalings"><tal:block tal:content="dict_/scalings | nothing"/></textarea>
+            </div>
+        </fieldset>
+        <br/>
+        <input type="hidden" name="key"
+               tal:attributes="value key"/>
+        <input type="submit" value="Save"
+               i18n:attributes="value label_save"/>
+    </form>
+
+</metal:main>
+
+</body>
+</html>

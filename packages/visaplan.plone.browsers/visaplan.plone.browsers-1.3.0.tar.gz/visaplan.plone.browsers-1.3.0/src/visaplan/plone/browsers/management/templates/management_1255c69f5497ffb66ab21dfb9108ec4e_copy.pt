@@ -1,0 +1,266 @@
+<tal:comment replace="nothing"><!-- -*- coding: utf-8 -*- äöü --></tal:comment>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+    <head>
+      <metal:js fill-slot="head_slot">
+      <metal:js use-macro="here/management_1255c69f5497ffb66ab21dfb9108ec4e_publish/macros/chosen-js">
+./management_1255c69f5497ffb66ab21dfb9108ec4e_publish.pt
+../resource/userselect-live-keypress.js
+      </metal:js>
+      <script type="text/javascript"
+	      src="/++resource++management/userselect-live-keypress.js">
+      </script>
+      </metal:js>
+    </head>
+
+<body>
+
+<metal:no-ads fill-slot="ad-block-above-content"/>
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+
+<metal:main fill-slot="main"
+            tal:define="
+dummy python:context.getAdapter('authorized')('unitracc: Copy structure types');
+dict_ python:{};
+uid request/form/uid | nothing;
+showAll python:0;
+templateId python:here.getAdapter('templateid')();
+langCode python:context.getAdapter('langcode')();
+brains python:here.getBrowser('structuretype').getPresentationFolders();
+">
+
+    <h1 class="documentFirstHeading padding-top-10">
+        Vortrag kopieren
+    </h1>
+
+    <form method="post"
+          metal:define-macro="form"
+          tal:attributes="action string:${portal_url}/@@copystructure/copyStructure">
+
+        <fieldset>
+            <legend>F&uuml;llen Sie alle Felder</legend>
+
+            <metal:main-macro metal:define-macro="main">
+
+            <p i18n:translate="avoid_return_key_hint"><strong>Hint:</strong>
+            Avoid the <tt>return</tt> key in this form unless filtering users!
+            </p>
+
+            <fieldset class="wide-input"
+                metal:define-slot="copy-source">
+                <legend i18n:translate="">Source</legend>
+                <div class="field">
+                    <label i18n:translate="label_original_language"
+                           for="copyform-sourceLanguage">Original language</label>
+                    <span title="Erforderlich"
+                          class="fieldRequired"
+                          i18n:translate="label_required">(Required)</span><br/>
+                    <select i18n:domain="languagedropdown"
+                            name="sourceLanguage"
+                            id="copyform-sourceLanguage"
+                            onchange="window.location.href=this.options[this.selectedIndex].value">
+                        <tal:block tal:repeat="item here/@@additionallanguages/languages">
+                            <option tal:attributes="value string:${portal_url}/${templateId}?set_language=${item/code};
+                                                    selected python:item['code']==langCode and 'selected' or None"
+                                    tal:content="structure item/name"
+                                    i18n:translate="">
+                            Deutsch
+                            </option>
+                        </tal:block>
+                    </select>
+                </div>
+                <div class="field">
+                    <label i18n:translate="" for="copyform-copyFrom">Copy from</label>
+                    <span title="Erforderlich" class="fieldRequired"
+                          i18n:translate="label_required">(Required)</span><br/>
+                    <select name="copyFrom" id="copyform-copyFrom"
+			    class="chosen col-md-12"
+                            data-placeholder="Choose one ..."
+                            i18n:attributes="data-placeholder">
+			<option></option>
+                        <tal:block tal:define="given_choice python:request.form.get('copyFrom')"
+                                   tal:repeat="brain brains">
+                            <option tal:attributes="value brain/UID;
+                                                    selected python:brain.UID==given_choice and 'selected' or None"
+                                    value="abc123"
+                                    i18n:translate=""
+                                    tal:content="structure brain/Title">
+                            D-02 Der beschreibende Titel des Vortrags
+                            </option>
+                        </tal:block>
+                    </select>
+                </div>
+            </fieldset>
+
+            <fieldset class="wide-input">
+                <legend i18n:translate="">Destination</legend>
+                <div class="field">
+                    <label i18n:translate="label_language" for="copyform-language">Language</label>
+                    <span title="Erforderlich" class="fieldRequired"
+                          i18n:translate="label_required">(Required)</span><br/>
+                    <select name="language" id="copyform-language"
+                            i18n:domain="languagedropdown">
+                        <tal:block tal:define="given_choice python:request.form.get('language')"
+                                   tal:repeat="item here/@@additionallanguages/languages">
+                            <option tal:attributes="value item/code;
+                                                    selected python:item['code']==given_choice and 'selected' or None;
+                                                    class string:language-${item/code}"
+                                    value="de"
+                                    tal:content="structure item/name"
+                                    i18n:translate="">
+                            Deutsch
+                            </option>
+                        </tal:block>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label i18n:translate="" for="copyform-title">Title</label>
+                    <span title="Erforderlich" class="fieldRequired"
+                          i18n:translate="label_required">(Required)</span><br/>
+                    <input type="text"
+                           name="title"
+                           id="copyform-title"
+                           class="full-width col-md-12"
+                           tal:attributes="value python:request.form.get('title')"
+                           value="Der Titel der Kopie">
+                </div>
+            </fieldset>
+
+            <fieldset tal:define="given_choice python:request.form.get('copyType')">
+                <legend i18n:translate="">Type</legend>
+                <div class="field">
+                    <input type="radio"
+                           name="copyType"
+                           value="1"
+                           tal:attributes="checked python:given_choice == '1'"
+                           id="copyform-copyType-1">
+                    <label i18n:translate="" for="copyform-copyType-1">Independent copy</label>
+                </div>
+
+                <div class="field">
+                    <input type="radio"
+                           name="copyType"
+                           value="2"
+                           tal:attributes="checked python:given_choice == '2'"
+                           id="copyform-copyType-2">
+                    <label i18n:translate="" for="copyform-copyType-2">Create translation</label>
+                </div>
+            </fieldset>
+
+            <fieldset tal:define="given_choice python:request.form.get('copy_depth', '2')">
+                <legend><label i18n:translate="" for="copy-depth">Referenced objects</label></legend>
+                <div class="field">
+                    <label i18n:translate="" for="copy-depth">Copy depth</label>
+                    <span title="Erforderlich"
+                          class="fieldRequired"
+                          i18n:translate="label_required">(Required)</span><br/>
+                <select name="copy_depth" id="copy-depth"
+                        class="chosen"
+                        data-placeholder="Choose one ..."
+                        i18n:attributes="data-placeholder">
+                    <option></option>
+                    <option value="0" i18n:translate=""
+                            tal:attributes="selected python:given_choice=='0'">
+                    0 - copy structure only
+                    </option>
+                    <option value="1" i18n:translate=""
+                            tal:attributes="selected python:given_choice=='1'">
+                    1 - additionally copy directly refered objects (like images and tables)
+                    </option>
+                    <option value="2" i18n:translate=""
+                            tal:attributes="selected python:given_choice=='2'">
+                    2 - e.g. copy as well images which are used by refered tables
+                    </option>
+                    <option value="3" i18n:translate=""
+                            tal:attributes="selected python:given_choice=='3'">
+                    3 - One step even further
+                    </option>
+                </select>
+                </div><!-- .field -->
+            </fieldset>
+
+            <fieldset>
+                <legend i18n:translate="">Ownership</legend>
+                <div class="field"
+                     tal:define="given_choice python:request.form.get('user_id');
+                     ">
+                    <label i18n:translate="" for="user_id_search">Owner</label>
+                    <p>Filter eingeben, <tt>Return</tt> drücken und durch Klick auf Pluszeichen auswählen:</p>
+                    <input type="test"
+                           id="user_id_search"
+                           value=""
+                           tal:attributes="value given_choice">
+                    <div id="user_id_selected" style="display: block">
+                        <span i18n:translate="">selected:</span>
+                        <input type="text"
+                               name="user_id" id="user_id"
+                               value="" readonly="readonly"
+                               tal:attributes="value given_choice">
+                    </div>
+                    <div id="user_id_search_results"><!-- --></div>
+                </div>
+
+                <tal:ns define="
+                     use_group python:int(request.form.get('give_to_author_group') or '1');
+                     " >
+                <div class="field">
+                    <input type="radio"
+                           name="give_to_author_group:int"
+                           value="1"
+                           tal:attributes="checked python:use_group"
+                           id="copyform-give_to_author_group-1">
+                    <label i18n:translate=""
+                        for="copyform-give_to_author_group-1">Give to author group, and add the given user to this group</label>
+                </div>
+
+                <div class="field">
+                    <input type="radio"
+                           name="give_to_author_group:int"
+                           value="0"
+                           tal:attributes="checked python:not use_group"
+                           id="copyform-give_to_author_group-2">
+                    <label i18n:translate=""
+                        for="copyform-give_to_author_group-2">Use the given user directly</label>
+                </div>
+                </tal:ns>
+            </fieldset>
+
+            <fieldset
+                tal:define="
+use_securitymanager options/use_securitymanager | request/use_securitymanager | string:1;
+use_securitymanager python:bool(use_securitymanager);
+                ">
+                <div class="field">
+                    <label>
+                        <input type="checkbox" name="use_securitymanager"
+                               tal:attributes="checked python:use_securitymanager or None"
+                               value="1" checked="checked">
+                        <tal:block i18n:translate="">Use securitymanager</tal:block>
+                    </label>
+                </div>
+            </fieldset>
+            </metal:main-macro>
+
+            <input type="submit" value="Copy"
+                   class="btn btn-primary"
+                   i18n:attributes="value"/>
+
+        </fieldset>
+
+
+    </form>
+
+</metal:main>
+
+</body>
+</html>
+

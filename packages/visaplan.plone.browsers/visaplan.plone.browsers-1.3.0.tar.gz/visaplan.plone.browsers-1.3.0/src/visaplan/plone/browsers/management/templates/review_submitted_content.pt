@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="dummy python:here.getAdapter('authorized')('unitracc: Manage submitted and accepted content');
+                                management nocall:here/@@management;
+                                state string:submitted;
+                                ">
+
+        <div class="padding-top-10">
+
+            <h1 class="documentFirstHeading padding-top-10" i18n:translate="">Submitted content</h1>
+
+            <metal:block metal:define-macro="listing">
+<div class="well"
+tal:define="
+show_all python:request.get('all', False);
+template_id template/getId;
+template_id python:template_id[:-3];
+action_url string:/${template_id};
+">
+<div tal:condition="show_all">
+Showing <em>all</em> objects of <tt tal:content="state">submitted</tt> state!
+</div>
+<dl tal:replace="nothing">
+<dt>action_url:</dt>
+<dd tal:content="action_url">/template_id</dd>
+</dl>
+<form class="form" action="#" method="GET"
+tal:attributes="action action_url">
+<button type="submit"
+name="all"
+value="1"
+title="This may take a while!"
+i18n:attributes="title"
+i18n:translate="">
+Show all
+</button>
+</form>
+</div><!-- .well -->
+
+<script type="text/javascript"
+        tal:content="structure python:management.getJavascriptDatatables(state)">
+$(document).ready(function () {
+    $('table.objects').each(function () {
+        Unitracc.DataTable(this, {
+            sDom: Unitracc.sDom_12,
+            data: dataset,
+            columns: [
+                    {render:
+                        function (data, type, row, meta) {
+                            return '<a href="'+row.view_url+'">'+row.title+'</a>'
+                        }
+                     },
+                    {data: 'creator_name'},
+                    {data: 'portal_type'},
+                    {data: 'modification_time'},
+                    {data: 'edit_url',
+                     render:
+                        function (data, type, row, meta) {
+                            return '<a href="'+data+
+                            '"><img src="/++resource++unitracc-images/edit.png" alt="edit"></a>'
+                        }
+                     },
+                    ],
+            deferRender: true
+        });
+    });
+});
+</script>
+                <table cellspacing="0" cellpadding="0"
+                       class="objects table table-bordered table-hover table-sorted"
+                       sort="-1" aaSorting="3,desc">
+                <thead><tr>
+                    <th class="border-bottom-e4e4e4 color-737373 align-left"
+                        i18n:translate="">
+                        Title
+                    </th>
+                    <th class="border-bottom-e4e4e4 color-737373 align-left" width="15%"
+                        i18n:translate="">
+                        Creator
+                    </th>
+                    <th class="border-bottom-e4e4e4 color-737373 align-left" width="10%"
+                        i18n:translate="">
+                        Type
+                    </th>
+                    <th class="border-bottom-e4e4e4 color-737373 align-left" width="15%"
+                        i18n:translate="modification_date">
+                        Modification date
+                    </th>
+                    <td class="border-bottom-e4e4e4 color-737373" width="4%">
+                        &nbsp;
+                    </td>
+                </tr></thead><tbody>
+                <tal:loop condition="nothing">
+                <tr>
+                    <td class="my-code-listing-item border-bottom-e4e4e4">
+                        <a tal:attributes="href string:${brain/getURL}/view"
+                           tal:content="brain/Title"/>
+                    </td>
+                    <td class="my-code-listing-item border-bottom-e4e4e4">
+                        <tal:block tal:define="dummy python:member.set(brain.Creator)"
+                                   tal:content="member/getFullname"/>
+                    </td>
+                    <td class="my-code-listing-item border-bottom-e4e4e4 no-wrap">
+                        <tal:block tal:content="brain/portal_type"
+                                   i18n:translate=""/>
+                    </td>
+                    <td class="my-code-listing-item border-bottom-e4e4e4 no-wrap">
+                        <tal:block tal:content="python:toTime(brain.modified,1)"/>
+                    </td>
+                    <td class="my-code-listing-item border-bottom-e4e4e4">
+                        <a tal:attributes="href string:${brain/getURL}/view">
+                            <img src="/++resource++unitracc-images/edit.png" alt="edit">
+                        </a>
+                    </td>
+                </tr>
+                </tal:loop>
+                </tbody>
+                </table>
+
+            </metal:block>
+
+        </div>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+

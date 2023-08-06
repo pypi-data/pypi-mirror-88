@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+    <metal:no-ads fill-slot="column_two_slot"/>
+
+<body>
+
+<metal:main fill-slot="main"
+            tal:define="dummy context/@@authorized/managePortal;
+                        format here/@@scaling/getScalingFormat">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">
+        Configure Image
+    </h1>
+
+   <form method="post" tal:attributes="action string:${here/absolute_url}/@@scaling/setImageConfig">
+        <fieldset>
+            <legend>Default</legend>
+
+            <div class="field">
+                <label>Format</label><br/>
+                <select name="format">
+                    <option value="JPEG"
+                            tal:attributes="selected python:'JPEG'==format and 'selected' or None">JPG</option>
+                    <option value="PNG"
+                            tal:attributes="selected python:'PNG'==format and 'selected' or None">PNG</option>
+                </select>
+
+            </div>
+
+        </fieldset>
+        <br/>
+        <input type="submit" value="Save"
+               i18n:attributes="value label_save"/>
+    </form>
+
+</metal:main>
+
+</body>
+</html>
+

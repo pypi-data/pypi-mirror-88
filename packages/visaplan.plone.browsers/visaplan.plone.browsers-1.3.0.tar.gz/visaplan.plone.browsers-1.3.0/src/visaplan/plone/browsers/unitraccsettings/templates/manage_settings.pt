@@ -1,0 +1,137 @@
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone">
+
+<metal:no-ads fill-slot="column_two_slot"/>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)"/>
+
+<metal:no-ads metal:fill-slot="ad-block-above-content"/>
+<metal:main fill-slot="main">
+<div class="area-title">
+    <h1>
+        <span i18n:translate="">
+           Miscellaneous Settings
+        </span>
+        (<tt>@@settings</tt>)
+    </h1>
+</div><!-- .area-title -->
+
+<div class="area-content"
+    tal:define="
+key request/key | nothing;
+settings python:context.getBrowser('unitraccsettings');
+">
+    <div class="row">
+        <div class="col-md-12"
+             tal:condition="not:key">
+            <table tal:define="
+                pages python:settings.get_known_pages();
+                prefix templateId;
+                ">
+                <thead>
+                    <tr>
+                        <th i18n:translate="">Key</th>
+                        <th i18n:translate="">Configuration page</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr tal:repeat="page pages">
+                    <td tal:define="key page/key">
+                        <tt><a href="manage_settings?key=registration"
+                               tal:attributes="href string:$prefix?key=$key"
+                               tal:content="key">
+                               registration
+                            </a></tt>
+                    </td>
+                    <td tal:define="cpage page/configpage;
+                                    isglobal python:cpage and cpage['isglobal']"
+                        tal:on-error="python:here.getAdapter('pformat')(cpage)">
+                        <a href="/configure_thingies"
+                           tal:condition="cpage"
+                           tal:omit-tag="not:isglobal"
+                           tal:attributes="href string:${portal_url}${cpage/path}"
+                           i18n:translate=""
+                           tal:content="cpage/label | cpage/path">
+                           Configure thingies
+                       </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div><!-- .col-md-12 -->
+        <div class="col-md-12"
+             tal:condition="key">
+        <tal:ns define="
+val python:settings.get(key, {});
+formdata python:settings.formdata();
+meta formdata/meta;
+readonly meta/readonly | python:True;
+formfields python:formdata.get('formfields');
+pformat python:context.getAdapter('pformat');
+macros here/simpleforms/macros;
+">
+            <dl tal:define="messages formdata/messages | nothing"
+                tal:condition="messages">
+                <tal:message_loop repeat="message messages">
+                <dt tal:content="message/class">info</dt>
+                <dd tal:content="structure message/html"
+                    tal:on-error="message/text | string:Weder html noch text vorhanden!">Text</dd>
+                </tal:message_loop>
+            </dl>
+            <pre tal:condition="request/verbose | nothing"
+                 tal:content="python: pformat(val)">
+                {'foo': 'bar'}
+            </pre>
+            <tal:if-debug condition="python:0">
+            <pre tal:condition="python:0"
+                 tal:content="python: pformat(macros)">
+                {'foo': 'bar'}
+            </pre>
+            <pre tal:content="python: pformat(formdata)">
+                {'foo': 'bar'}
+            </pre>
+            </tal:if-debug>
+            <form action="@@unitraccsettings/set"
+                  tal:condition="python: formfields and not readonly"
+                  method="post">
+                  <pre tal:condition="python:0"
+                       tal:content="python:pformat(formfields)"></pre>
+            <tal:loop repeat="formfield formfields"
+                >
+                <div metal:use-macro="here/simpleforms/macros/dispatcher">
+                </div>
+            </tal:loop>
+            <div tal:define="savetext formdata/savetext"
+                 tal:condition="savetext">
+                <button type="submit" class="btn btn-primary"
+                        tal:content="savetext"
+                    i18n:translate="">
+                    Store
+                </button>
+                <input type="reset" class="btn btn-default">
+            </div>
+            </form>
+            <form action="@@unitraccsettings/reset"
+                  tal:define="has_defaults meta/has_defaults"
+                  tal:condition="has_defaults"
+                  method="post">
+                <input type="hidden" name="key" value="registration"
+                         tal:attributes="value key">
+                <label tal:condition="meta/has_data">
+                    <input type="checkbox" name="force-reset" value="x">
+                    <tal:txt i18n:translate="">
+                    Override existing settings
+                    </tal:txt>
+                </label>
+                <button type="submit" class="btn btn-primary"
+                        i18n:translate="">
+                    Reset to default
+                </button>
+            </form>
+        </tal:ns>
+        </div><!-- .col-md-12 -->
+    </div><!-- .row -->
+</div><!-- .area-content -->
+</metal:main>
+
+<!-- vim: set et sw=4: --></metal:block>

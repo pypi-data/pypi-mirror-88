@@ -1,0 +1,145 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+             for="*"
+             name="booking_macros"
+             template="booking_macros.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="booking_macros2"
+             template="booking_macros2.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="booking_mail_tests"
+             template="booking_mail_tests.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="checkout"
+             template="checkout.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_order_confirmation"
+             template="mail_order_confirmation.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_order_failed"
+             template="mail_order_failed.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_order_new"
+             template="mail_order_new.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_order_success"
+             template="mail_order_success.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_payment_backend"
+             template="mail_payment_backend.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mail_payment_pending"
+             template="mail_payment_pending.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="mycart"
+             template="mycart.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="order_add"
+             template="order_add.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="order_choose_payment_method"
+             template="order_choose_payment_method.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="order_edit"
+             template="order_edit.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="order_management"
+             template="order_management.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="order_overview"
+             template="order_overview.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="order_payment_finished"
+             template="order_payment_finished.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="order_preferences"
+             template="order_preferences.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="order_view"
+             template="order_view.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="paypal_button"
+             template="paypal_button.pt"
+             permission="zope2.View"
+             />
+
+</configure>

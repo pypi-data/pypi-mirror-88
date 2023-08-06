@@ -1,0 +1,36 @@
+<tal:html i18n:domain="plone"
+     tal:define="
+mac1 here/booking_macros/macros;
+div_outer_class string:dbg-outer;
+div_inner_class string:dbg-inner;
+in_backend python:0;
+"><html metal:use-macro="mac1/mail">
+<metal:slot fill-slot="text">
+<p i18n:translate="mail_success_info"
+   tal:define="desktop_path here/@@unitraccfeature/desktop_path">
+    We have successfully received the payment for your selected UNITRACC
+    online course. Your selection will be made available on your
+    personal
+    <a tal:attributes="href string:${options/domain}$desktop_path"
+       i18n:translate="desktop" i18n:name="desktop">UNITRACC-desktop</a> as of
+      <tal:block i18n:name="mail_start"
+                 tal:content="options/start">[Startdatum]</tal:block>,
+    for a period of <tal:block i18n:name="mail_duration"
+                 tal:content="options/duration">[Tage]</tal:block> days.
+</p>
+<p i18n:translate="mail_further">
+    If you have further questions or comments regarding your selection, or
+    any other UNITRACC products and services, please feel free to contact
+    the UNITRACC-Team at
+    <a href="mailto:some@mail.address"
+       tal:define="address options/mail_from | here/@@booking/get_sending_mail_address"
+       tal:attributes="href string:mailto:$address"
+       tal:content="address"
+       i18n:name="mail_email_link">some@mail.address</a>.
+    We would be glad to assist you further.
+</p>
+<p i18n:translate="mail_success_wish">
+    We wish you much success!
+</p>
+</metal:slot>
+</html></tal:html>

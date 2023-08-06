@@ -1,0 +1,49 @@
+<form method="post"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="formid options/formid;
+                  order_id options/order_id"
+      tal:attributes="action options/url">
+
+    <!-- Identify your business so that you can collect the payments. -->
+    <input type="hidden" name="business"
+           tal:attributes="value options/business"/>
+
+    <!-- Specify a Buy Now button. -->
+    <input type="hidden" name="cmd" value="_xclick">
+
+    <!-- Specify details about the item that buyers will purchase. -->
+    <input type="hidden" name="item_name"
+           tal:attributes="value options/title"/>
+    <input type="hidden" name="amount"
+           tal:attributes="value options/value"/>
+    <input type="hidden" name="currency_code"
+           tal:attributes="value options/currency_code | string:EUR"
+           value="EUR"/>
+
+    <input type="hidden" name="item_number"
+           tal:attributes="value order_id">
+
+    <input type="hidden" name="custom"
+           tal:attributes="value order_id">
+
+
+    <!-- Display the payment button. -->
+    <input type="image" name="submit" border="0"
+           src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif"
+           alt="Buy Now"
+           tal:attributes="src options/img_src"
+           i18n:attributes="alt"
+           />
+    <img alt="" border="0" width="1" height="1" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"/>
+
+    <input type="hidden" name="return"
+           tal:attributes="value string:${here/portal_url}/order_payment_finished?formid=${formid}&order_id=${order_id}"/>
+    <input type="hidden" name="notify_url"
+           tal:attributes="value string:${here/portal_url}/@@booking/paypal_finished"/>
+
+    <input type="hidden" name="cancel_return"
+           tal:attributes="value string:${here/portal_url}/order_choose_payment_method?formid=${formid}&order_id=${order_id}"/>
+
+
+</form>

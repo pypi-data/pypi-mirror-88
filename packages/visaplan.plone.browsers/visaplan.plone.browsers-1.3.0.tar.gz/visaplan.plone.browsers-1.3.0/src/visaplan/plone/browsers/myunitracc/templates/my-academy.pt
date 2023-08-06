@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+    <metal:no-ads fill-slot="column_two_slot"/>
+
+<body>
+
+<metal:cr_outer fill-slot="breadcrumb">
+<metal:cr_inner use-macro="here/my-content/macros/breadcrumbs"
+><metal:slot fill-slot="more-breadcrumbs" tal:define="method string:my-academy; text string:myACADEMY">
+<a metal:use-macro="here/my-content/macros/myunitracc-subcrumb" href="#">myACADEMY</a>
+</metal:slot>
+</metal:cr_inner>
+</metal:cr_outer>
+
+<metal:main fill-slot="main" tal:define="getbrain python:here.getAdapter('getbrain');
+                                         industrialsector nocall:here/@@industrialsector;
+                                         toTime python:context.getAdapter('totime')">
+
+        <h1 class="documentFirstHeading">
+            myACADEMY -
+            <tal:block i18n:translate="" >
+                My courses
+            </tal:block>
+        </h1>
+
+    <p i18n:translate="my_academy_desc">
+        The section myACADEMY provides a summary of your booked courses.
+    </p>
+
+    <metal:macro define-macro="my-courses">
+
+        <table cellspacing="0" cellpadding="0" class="my-content-listing sortable" width="100%">
+            <thead>
+                <tr>
+                    <th class="sorting_disabled color-737373" width="10%"
+                        i18n:translate="">
+                        Area
+                    </th>
+                    <th class="color-737373 align-left" width="65%">
+                        <tal:block i18n:translate="" >Title</tal:block>
+                        <tal:block>/</tal:block>
+                        <tal:block i18n:translate="" >Description</tal:block>
+                    </th>
+                    <th class="color-737373 align-left" width="12%"
+                        i18n:translate="">
+                        Begins
+                    </th>
+                    <th class="color-737373 align-left" width="12%"
+                        i18n:translate="">
+                        Ends
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tal:loop repeat="course_uid here/@@myunitracc/getCourseData">
+                    <tr tal:define="brain python:getbrain(course_uid)"
+                        tal:condition="brain">
+                        <td class="my-code-listing-item center">
+                            <tal:block tal:define="image python:industrialsector.getImage(brain.getCode)"
+                                       tal:condition="image">
+                                <img alt="" tal:attributes="src string:${portal_url}/code/${image}.png;
+                                                            title python:industrialsector.getValue(brain.getCode)"/>
+                            </tal:block>
+                        </td>
+                        <td class="my-code-listing-item">
+                            <p>
+                                <a tal:attributes="href string:/@@resolveuid/${brain/UID}"
+                                   tal:content="brain/Title" />
+                            </p>
+                            <p tal:condition="brain/Description"
+                               tal:content="python:' '.join(brain.Description.split()[:15])+'...'"/>
+                        </td>
+                        <td class="my-code-listing-item center">
+                            <tal:block tal:condition="brain/EffectiveDate"
+                                       tal:content="python:toTime(brain.EffectiveDate)"/>
+                            <tal:block tal:condition="not:brain/EffectiveDate"
+                                       tal:content="string:---"/>
+                        </td>
+                        <td class="my-code-listing-item center">
+                            <tal:block tal:condition="brain/ExpirationDate"
+                                       tal:content="python:toTime(brain.ExpirationDate)"/>
+                            <tal:block tal:condition="not:brain/ExpirationDate"
+                                       tal:content="string:---"/>
+                        </td>
+                    </tr>
+                </tal:loop>
+            </tbody>
+        </table>
+
+    </metal:macro>
+
+</metal:main>
+
+</body>
+</html><tal:comment replace="nothing"><!-- vim: set ts=8 sts=4 sw=4 si et :--></tal:comment>
+

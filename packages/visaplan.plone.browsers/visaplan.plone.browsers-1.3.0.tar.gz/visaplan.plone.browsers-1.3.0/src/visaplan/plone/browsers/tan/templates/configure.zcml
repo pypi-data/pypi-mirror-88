@@ -1,0 +1,96 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+             for="*"
+             name="create_tan"
+             template="create_tan.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_redeemable_tans"
+             template="manage_redeemable_tans.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_tan"
+             template="manage_tan.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_tan_changesets"
+             template="manage_tan_changesets.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_tan_form1"
+             template="manage_tan_form1.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_tan_status_summary"
+             template="manage_tan_status_summary.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="manage_tans"
+             template="manage_tans.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="redeem_tan"
+             template="redeem_tan.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="tan_forms_macros"
+             template="tan_forms_macros.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="tan_tbody_macros"
+             template="tan_tbody_macros.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="tan_thead_macros"
+             template="tan_thead_macros.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="tans_of_group"
+             template="tans_of_group.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="tans_wizard"
+             template="tans_wizard.pt"
+             permission="zope2.View"
+             />
+
+</configure>

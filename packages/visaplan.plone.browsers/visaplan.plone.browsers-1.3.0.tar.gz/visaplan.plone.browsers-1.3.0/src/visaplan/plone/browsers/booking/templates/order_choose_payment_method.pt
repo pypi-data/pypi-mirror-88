@@ -1,0 +1,120 @@
+<tal:block tal:condition="python: here.getBrowser('stage').get('advertisement-right-one') or here.getBrowser('stage').get('advertisement-right-two')">
+    <tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+</tal:block>
+<!-- quickfix bis werbung korrekt -->
+<tal:block tal:define="dummy python:request.set('span_class','col-md-9')"/>
+<metal:block metal:use-macro="here/main_template/macros/master"
+             i18n:domain="plone">
+
+<metal:slot metal:fill-slot="column_one_slot"/>
+
+<metal:block metal:fill-slot="breadcrumb"
+tal:define="step python:3">
+
+    <ul class="breadcrumb"
+        metal:use-macro="here/booking_macros/macros/steps">
+        <li>
+            1. Cart
+            <span class="divider">/</span>
+        </li>
+        <li>
+            2. Your details
+            <span class="divider">/</span>
+        </li>
+        <li>
+            3. Payment method
+            <span class="divider">/</span>
+        </li>
+        <li>
+            4. Confirmation
+            <span class="divider">/</span>
+        </li>
+        <li>
+            5. Thanks
+        </li>
+    </ul>
+
+</metal:block>
+
+<metal:main fill-slot="main"
+            tal:define="
+booking nocall:here/@@booking;
+id request/formid|nothing;
+dummy booking/check_access;
+order booking/get_current_order_articles;
+order order/order;
+order_id order/order_id;
+payment_types python:booking.get_active_payment_types(order_id=order_id);
+desktop_path here/@@unitraccfeature/desktop_path;
+pformat python:context.getAdapter('pformat');
+">
+
+<pre tal:condition="python:0"
+     tal:content="python:pformat({'order': order,
+                                  'template': 'order_choose_payment_method.pt'})"></pre>
+    <div class="area-title">
+        <h1 class="documentFirstHeading">
+            3.
+            <tal:block i18n:translate="">Payment method</tal:block>
+        </h1>
+    </div>
+    <div id="area-content">
+
+        <form method="post"
+              tal:attributes="action string:${here/absolute_url}/@@booking/save_payment">
+        <fieldset>
+            <div class="row">
+                <div>
+                    <div class="col-md-3"
+                         tal:define="curval python:order['payment_type'];"
+                        >
+                        <label for="ptype-1">
+                            <i class="glyphicon glyphicon-exclamation-sign"></i>
+                            <tal:block i18n:translate="">Payment method</tal:block>
+                        </label>
+                        <metal:ptradio use-macro="context/booking_macros/macros/payment-types-radio">
+                        <div class="radio">
+                        <label>
+                            <input type="radio" name="payment_type"
+                                   value="prepayment">
+                            Vorkasse
+                        </label>
+                        </div><!-- .radio -->
+                        <div class="radio disabled">
+                        <label>
+                            <input type="radio" name="payment_type"
+                                   value="paypal">
+                            Paypal
+                        </label>
+                        </div><!-- .radio -->
+                        </metal:ptradio>                       
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="pull-left">
+                <a class="btn btn-primary"
+                    href="/myunitracc/mycart"
+                   tal:attributes="href string:$desktop_path/mycart"
+                   i18n:translate="">
+                    Back
+                </a>
+            </div>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary"
+                        i18n:translate="">
+                    Continue
+                </button>
+            </div>
+
+            <input type="hidden" name="formid"
+                   tal:attributes="value request/formid"/>
+
+        </fieldset>
+        </form>
+    </div>
+</metal:main>
+
+</metal:block>
+
+<tal:editors condition="nothing"><!-- vim: set ts=8 sts=4 sw=4 si et :--></tal:editors>

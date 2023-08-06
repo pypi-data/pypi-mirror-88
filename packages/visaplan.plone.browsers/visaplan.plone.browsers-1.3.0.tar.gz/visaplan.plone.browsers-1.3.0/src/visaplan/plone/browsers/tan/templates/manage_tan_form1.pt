@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone"
+      >
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+  <metal:main fill-slot="main">
+<tal:ns1 tal:define="
+tan_browser python:context.getBrowser('tan');
+dummy tan_browser/authView;
+changeset request/changeset | nothing
+"
+>
+  <div id="area-title">
+    <h1 i18n:translate="">
+      TANs for groups
+    </h1>
+  </div>
+  <form action="manage_tans" method="get">
+    <table>
+      <tr>
+        <th>
+          <label for="group_id" i18n:translate="">
+            TANs for group
+          </label>
+        </th>
+      <td tal:define="gid request/group_id | request/gid | nothing;
+                      groups tan_browser/selectable_groups;
+                      ">
+        <div tal:condition="gid">
+          <a href="manage_group_view?group_id=group_abc123"
+             tal:define="groupdict python:tan_browser.get_groupinfo(gid)"
+             tal:attributes="href string:manage_group_view?group_id=${gid}"
+             tal:content="groupdict/group_title"
+             tal:on-error="groupdict">
+          Name der Gruppe
+          </a>
+        </div>
+        <select name="group_id" class="chosen"
+                data-placeholder="Choose one ..."
+                i18n:attributes="data-placeholder"
+                metal:use-macro="here/group-desktop/macros/group-selector"
+                style="width:100%">
+            <option value=""></option>
+            <tal:void metal:fill-slot="empty-selection" />
+        </select>
+      </td>
+    </tr>
+    <tr tal:condition="tan_browser/canManage">
+      <th>
+        <label for="user_id" i18n:translate="">
+          User
+        </label>
+      </th>
+      <td>
+        <input type="text" name="user_id" id="user_id"
+               value="willy"
+               tal:attributes="value request/user_id | nothing">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <input type="submit" value="Load"
+        i18n:attributes="value"
+        class="btn btn-primary">
+      </td>
+    </tr>
+  </table>
+  </form>
+</tal:ns1>
+</metal:main>
+</body><!-- vim: set sw=2 sts=2 si et :--></html>

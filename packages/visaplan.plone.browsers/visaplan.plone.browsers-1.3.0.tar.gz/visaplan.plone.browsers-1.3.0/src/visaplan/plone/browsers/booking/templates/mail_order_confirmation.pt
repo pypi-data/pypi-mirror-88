@@ -1,0 +1,63 @@
+<tal:todo replace="nothing"><!-- -*- coding: utf-8 -*- äöü
+- Abgleich mit order_payment_finished.pt (Browser-Seite)
+  (Code-Dopplungen möglichst auflösen)
+- Richtigen Namen verwenden, nicht die User-ID!
+- Nach Verfügbarkeit greeting-Browser verwenden
+- Platzhalter "Widerrufsrecht" durch Text ersetzen
+--></tal:todo><tal:html i18n:domain="plone"
+     tal:define="
+mac1 here/booking_macros/macros;
+"><html metal:use-macro="mac1/mail">
+<metal:slot fill-slot="text"
+tal:define="
+mac2 here/booking_macros2/macros;
+div_outer_class string:dbg-outer;
+div_inner_class string:dbg-inner;
+orderdata options/orderdata;
+items options/articles;
+order options/order;
+ptype order/payment_type;
+in_backend python:0;
+">
+<p i18n:translate="">
+    Thank you for your booking.
+    Below you will find the summary.
+    Your order with all the relevant facts:
+</p>
+<div metal:use-macro="mac1/order-overview">
+    Rechnungsadresse
+    Auflistung der Bestellung
+</div>
+<p metal:use-macro="mac2/snippet-presage-invoice">
+    Our team will process your booking immediately and you
+    will receive an invoice per post in the next few days.
+    Please complete the payment within 14 days of receiving
+    the invoice.
+</p>
+<tal:ns define="
+macroid orderdata/meta/snippet/after-payment;
+macro python:mac2[macroid];
+"><p metal:use-macro="macro">
+    After we have received your payment, the booked course
+    will be made available to you on
+    <a href="http://unitracc.de"
+       tal:define="url portal/absolute_url"
+       tal:attributes="href url"
+       tal:content="url"
+       >http://unitracc.de</a>
+    as of the selected start date through to the end of the
+    predetermined course end date.
+</p></tal:ns>
+<p metal:use-macro="mac2/snippet-right-of-rescission">
+    Widerrufsrecht
+</p>
+<p metal:use-macro="mac2/snippet-questions-order">
+    For questions regarding your bookings or UNITRACC in
+    general, you can of course contact our team any time at
+    <a href="mailto:some@mail.address"
+       >some@mail.address</a>.
+    We're here to help.
+</p>
+
+</metal:slot>
+</html></tal:html>

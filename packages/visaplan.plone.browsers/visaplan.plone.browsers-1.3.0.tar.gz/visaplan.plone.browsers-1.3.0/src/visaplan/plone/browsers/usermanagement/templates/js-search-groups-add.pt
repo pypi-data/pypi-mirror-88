@@ -1,0 +1,99 @@
+<tal:block tal:define="
+dummy context/@@usermanagement/authViewGroups;
+groupsharing nocall:here/@@groupsharing;
+list_ python:groupsharing.search_groups(request.form.get('group_query_string', ''));
+template_id string:edit_group_membership;
+show_actions python:True;
+"
+i18n:domain="plone"><tal:comment replace="nothing"><!--
+Abgleichen mit (gf):
+./js-search-to-groups-add.pt
+--></tal:comment>
+
+<tal:block tal:condition="not:list_"><br/>
+<h2 i18n:translate="text_nomatches">No matches</h2>
+</tal:block>
+
+<form method="post"
+      tal:condition="list_"
+      action="/@@groupsharing/add_group_membership">
+    <script>
+        $(document).ready(function () {
+            $('table.datatb').each(
+                    function (i, v) {
+                        Unitracc.DataTable(v);
+                    }
+            );
+            var dpo = Unitracc.datepicker_defaults();
+            Unitracc.log(dpo);
+            // $('#add-group').on('draw.dt', function () {
+                $('.datetime').datepicker(dpo);
+            // });
+        });
+    </script>
+    <table class="datatb table table-bordered table-hover table-sorted"
+           id="add-group"
+           sort="">
+
+        <thead>
+            <tr>
+                <th i18n:translate="">Add group</th>
+                <th i18n:translate="">Assigned folder</th>
+                <th i18n:translate="">Assigned role</th>
+                <th i18n:translate="listingheader_group_name">Group name</th>
+                <th i18n:translate="">Start</th>
+                <th i18n:translate="">End</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tal:block tal:repeat="dict_ list_">
+            <tr tal:define="info python:groupsharing.get_group_info_by_id(dict_['id'])">
+                <td>
+                   <input type="checkbox" name="group_ids:list"
+                           tal:attributes="value info/id"/>
+
+                </td>
+                <metal:block metal:define-macro="td">
+                <td class="listingCheckbox">
+                    <a target="_blank"
+                       tal:condition="info/brain | nothing"
+                       tal:attributes="href info/brain/getURL">
+                        <img src="/++resource++unitracc-images/view.png"
+                             alt="view">
+                    </a>
+                </td>
+                <td>
+                    <tal:block tal:condition="info/role_translation | nothing"
+                               tal:content="info/role_translation"
+                               i18n:translate=""/>
+                </td>
+                <td>
+                    <a href="prefs_group_details"
+                       tal:attributes="href string:manage_group_view?group_id=${info/id}"
+                       tal:content="info/group_title"
+                       tal:omit-tag="not:show_actions"/>
+                </td>
+                </metal:block>
+                <td>
+                    <input class="datetime input-small" size="10" type="text" placeholder="DD.MM.YYYY"
+                           i18n:attributes="placeholder"
+                        tal:attributes="name string:start_${dict_/id}"/>
+                </td>
+                <td>
+                    <input class="datetime input-small" size="10" type="text" placeholder="DD.MM.YYYY"
+                           i18n:attributes="placeholder"
+                        tal:attributes="name string:end_${dict_/id}"/>
+                </td>
+            </tr>
+        </tal:block>
+        </tbody>
+    </table>
+
+    <input type="hidden" name="user_id"
+           tal:attributes="value request/user_id"/>
+    <input class="button-object-actions btn btn-primary"
+           type="submit" value="Assign"
+           i18n:attributes="value"/>
+</form>
+
+</tal:block><tal:vim replace="nothing"><!-- vim: set ts=4 sts=4 sw=4 si et :--></tal:vim>

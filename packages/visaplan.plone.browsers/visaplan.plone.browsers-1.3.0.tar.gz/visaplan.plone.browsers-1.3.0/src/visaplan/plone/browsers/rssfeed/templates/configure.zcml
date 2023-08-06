@@ -1,0 +1,40 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+             for="*"
+             name="articlesfeed"
+             template="articlesfeed.xml.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="configure_rssfeed"
+             template="configure_rssfeed.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="eventsfeed"
+             template="eventsfeed.xml.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="journalfeed"
+             template="journalfeed.xml.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="newsfeed"
+             template="newsfeed.xml.pt"
+             permission="zope2.View"
+             />
+
+</configure>
