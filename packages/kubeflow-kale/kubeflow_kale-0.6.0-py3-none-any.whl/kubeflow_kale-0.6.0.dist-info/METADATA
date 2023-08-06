@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: kubeflow-kale
+Version: 0.6.0
+Summary: Convert JupyterNotebooks to Kubeflow Pipelines deployments
+Home-page: https://github.com/kubeflow-kale/kale
+Author: Stefano Fioravanzo
+Author-email: stefano.fioravanzo@gmail.com
+License: Apache License Version 2.0
+Platform: UNKNOWN
+Requires-Python: >=3.6.0
+Requires-Dist: kfp
+Requires-Dist: autopep8 (<1.5,>=1.4)
+Requires-Dist: astor (>=0.8.1)
+Requires-Dist: nbformat (<5.0,>=4.4)
+Requires-Dist: networkx (<3.0,>=2.3)
+Requires-Dist: jinja2 (<3.0,>=2.10)
+Requires-Dist: graphviz (<1.0,>=0.13)
+Requires-Dist: pyflakes (>=2.1.1)
+Requires-Dist: dill (<0.4,>=0.3)
+Requires-Dist: IPython (>=7.6.0)
+Requires-Dist: jupyter-client (>=5.3.4)
+Requires-Dist: jupyter-core (>=4.6.0)
+Requires-Dist: nbconvert (<6.0.0,>=5.6.1)
+Requires-Dist: ipykernel (>=5.1.4)
+Requires-Dist: notebook (>=6.0.0)
+Requires-Dist: packaging (>20)
+Requires-Dist: ml-metadata (==0.24.0)
+Requires-Dist: progress (>=1.5)
+Requires-Dist: kfserving (>=0.4.0)
+Requires-Dist: kubernetes (>=11.0.0)
+Provides-Extra: dev
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-clarity ; extra == 'dev'
+Requires-Dist: testfixtures ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: flake8-docstrings ; extra == 'dev'
+
+UNKNOWN
+
+

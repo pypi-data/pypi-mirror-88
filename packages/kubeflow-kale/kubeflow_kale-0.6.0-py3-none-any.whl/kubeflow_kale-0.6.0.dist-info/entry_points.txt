@@ -1,0 +1,5 @@
+[console_scripts]
+kale = kale.cli:main
+kale-volumes = kale.cli:kale_volumes
+kale_server = kale.cli:server
+
