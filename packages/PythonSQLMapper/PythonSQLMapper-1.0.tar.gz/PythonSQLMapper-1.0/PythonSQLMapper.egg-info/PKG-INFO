@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: PythonSQLMapper
+Version: 1.0
+Summary: SQL mapping library for python.
+Home-page: https://github.com/marvelph/PythonSQLMapper
+Author: Kenji Nishishiro
+Author-email: marvel@programmershigh.org
+License: MIT
+Description: # PythonSQLMapper
+        ## SQL mapping library for python
+        PythonSQLMapper is a database framework for mapping SQL to objects.
+        It has a similar design to [iBATIS](http://ibatis.apache.org), but is simpler.
+        
+        It was originally written in Objective-C for iOS and macOS as [CocoaSQLMapper](https://github.com/marvelph/CocoaSQLMapper).
+        PythonSQLMapper is a reimplementation in Python.
+        
+        This library was written by [Kenji Nishishiro](mailto:marvel@programmershigh.org).
+        ## Build instructions
+        ```
+        pip install PythonSQLMapper
+        ```
+        ## How to use PythonSQLMapper
+        Please read the source.
+        
+        ## Licence
+        MIT License
+        
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
