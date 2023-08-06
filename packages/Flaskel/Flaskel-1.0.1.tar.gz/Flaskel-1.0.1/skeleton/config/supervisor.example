@@ -1,0 +1,9 @@
+[program:<NAME>]
+user = <USER>
+group = <GROUP>
+directory = <HOME>
+command = <APP_CLI>
+process_name = %(program_name)s
+autostart = true
+autorestart = true
+autorestart = unexpected
