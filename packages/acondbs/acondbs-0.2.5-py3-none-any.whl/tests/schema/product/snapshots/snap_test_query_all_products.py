@@ -1,0 +1,542 @@
+# -*- coding: utf-8 -*-
+# snapshottest: v1 - https://goo.gl/zC4yUc
+from __future__ import unicode_literals
+
+from snapshottest import Snapshot
+
+
+snapshots = Snapshot()
+
+snapshots['test_schema[deep] 1'] = {
+    'data': {
+        'allProducts': {
+            'edges': [
+                {
+                    'node': {
+                        'contact': None,
+                        'datePosted': None,
+                        'dateProduced': '2020-02-01',
+                        'dateUpdated': None,
+                        'name': 'map1',
+                        'note': None,
+                        'paths': {
+                            'edges': [
+                                {
+                                    'node': {
+                                        'note': None,
+                                        'path': 'site1:/path/to/map1',
+                                        'pathId': '1'
+                                    }
+                                },
+                                {
+                                    'node': {
+                                        'note': None,
+                                        'path': 'site2:/another/way/map1',
+                                        'pathId': '2'
+                                    }
+                                }
+                            ]
+                        },
+                        'postedBy': None,
+                        'producedBy': None,
+                        'productId': '1',
+                        'relations': {
+                            'edges': [
+                                {
+                                    'node': {
+                                        'other': {
+                                            'name': 'beam1',
+                                            'productId': '4',
+                                            'typeId': 2,
+                                            'type_': {
+                                                'name': 'beam',
+                                                'typeId': '2'
+                                            }
+                                        },
+                                        'otherProductId': 4,
+                                        'relationId': '1',
+                                        'reverse': {
+                                            'relationId': '2',
+                                            'typeId': 1,
+                                            'type_': {
+                                                'name': 'parent',
+                                                'typeId': '1'
+                                            }
+                                        },
+                                        'reverseRelationId': 2,
+                                        'typeId': 2,
+                                        'type_': {
+                                            'name': 'child',
+                                            'typeId': '2'
+                                        }
+                                    }
+                                },
+                                {
+                                    'node': {
+                                        'other': {
+                                            'name': 'beam2',
+                                            'productId': '5',
+                                            'typeId': 2,
+                                            'type_': {
+                                                'name': 'beam',
+                                                'typeId': '2'
+                                            }
+                                        },
+                                        'otherProductId': 5,
+                                        'relationId': '6',
+                                        'reverse': {
+                                            'relationId': '4',
+                                            'typeId': 1,
+                                            'type_': {
+                                                'name': 'parent',
+                                                'typeId': '1'
+                                            }
+                                        },
+                                        'reverseRelationId': 4,
+                                        'typeId': 2,
+                                        'type_': {
+                                            'name': 'child',
+                                            'typeId': '2'
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        'typeId': 1,
+                        'type_': {
+                            'name': 'map',
+                            'typeId': '1'
+                        },
+                        'updatedBy': None
+                    }
+                },
+                {
+                    'node': {
+                        'contact': None,
+                        'datePosted': None,
+                        'dateProduced': '2020-02-10',
+                        'dateUpdated': None,
+                        'name': 'map2',
+                        'note': None,
+                        'paths': {
+                            'edges': [
+                                {
+                                    'node': {
+                                        'note': None,
+                                        'path': 'site1:/path/to/map2',
+                                        'pathId': '6'
+                                    }
+                                }
+                            ]
+                        },
+                        'postedBy': None,
+                        'producedBy': None,
+                        'productId': '2',
+                        'relations': {
+                            'edges': [
+                            ]
+                        },
+                        'typeId': 1,
+                        'type_': {
+                            'name': 'map',
+                            'typeId': '1'
+                        },
+                        'updatedBy': None
+                    }
+                },
+                {
+                    'node': {
+                        'contact': None,
+                        'datePosted': None,
+                        'dateProduced': '2020-03-19',
+                        'dateUpdated': None,
+                        'name': 'map3',
+                        'note': None,
+                        'paths': {
+                            'edges': [
+                                {
+                                    'node': {
+                                        'note': None,
+                                        'path': 'site1:/path/to/map3',
+                                        'pathId': '7'
+                                    }
+                                },
+                                {
+                                    'node': {
+                                        'note': None,
+                                        'path': 'site2:/another/way/map3',
+                                        'pathId': '8'
+                                    }
+                                }
+                            ]
+                        },
+                        'postedBy': None,
+                        'producedBy': None,
+                        'productId': '3',
+                        'relations': {
+                            'edges': [
+                            ]
+                        },
+                        'typeId': 1,
+                        'type_': {
+                            'name': 'map',
+                            'typeId': '1'
+                        },
+                        'updatedBy': None
+                    }
+                },
+                {
+                    'node': {
+                        'contact': None,
+                        'datePosted': None,
+                        'dateProduced': '2020-02-05',
+                        'dateUpdated': None,
+                        'name': 'beam1',
+                        'note': None,
+                        'paths': {
+                            'edges': [
+                                {
+                                    'node': {
+                                        'note': None,
+                                        'path': 'site1:/path/to/beam1',
+                                        'pathId': '4'
+                                    }
+                                },
+                                {
+                                    'node': {
+                                        'note': None,
+                                        'path': 'site2:/another/way/beam1',
+                                        'pathId': '5'
+                                    }
+                                }
+                            ]
+                        },
+                        'postedBy': None,
+                        'producedBy': None,
+                        'productId': '4',
+                        'relations': {
+                            'edges': [
+                                {
+                                    'node': {
+                                        'other': {
+                                            'name': 'map1',
+                                            'productId': '1',
+                                            'typeId': 1,
+                                            'type_': {
+                                                'name': 'map',
+                                                'typeId': '1'
+                                            }
+                                        },
+                                        'otherProductId': 1,
+                                        'relationId': '2',
+                                        'reverse': {
+                                            'relationId': '1',
+                                            'typeId': 2,
+                                            'type_': {
+                                                'name': 'child',
+                                                'typeId': '2'
+                                            }
+                                        },
+                                        'reverseRelationId': 1,
+                                        'typeId': 1,
+                                        'type_': {
+                                            'name': 'parent',
+                                            'typeId': '1'
+                                        }
+                                    }
+                                },
+                                {
+                                    'node': {
+                                        'other': {
+                                            'name': 'beam2',
+                                            'productId': '5',
+                                            'typeId': 2,
+                                            'type_': {
+                                                'name': 'beam',
+                                                'typeId': '2'
+                                            }
+                                        },
+                                        'otherProductId': 5,
+                                        'relationId': '3',
+                                        'reverse': {
+                                            'relationId': '5',
+                                            'typeId': 1,
+                                            'type_': {
+                                                'name': 'parent',
+                                                'typeId': '1'
+                                            }
+                                        },
+                                        'reverseRelationId': 5,
+                                        'typeId': 2,
+                                        'type_': {
+                                            'name': 'child',
+                                            'typeId': '2'
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        'typeId': 2,
+                        'type_': {
+                            'name': 'beam',
+                            'typeId': '2'
+                        },
+                        'updatedBy': None
+                    }
+                },
+                {
+                    'node': {
+                        'contact': None,
+                        'datePosted': None,
+                        'dateProduced': '2020-03-04',
+                        'dateUpdated': None,
+                        'name': 'beam2',
+                        'note': None,
+                        'paths': {
+                            'edges': [
+                                {
+                                    'node': {
+                                        'note': None,
+                                        'path': 'site1:/path/to/beam2',
+                                        'pathId': '3'
+                                    }
+                                }
+                            ]
+                        },
+                        'postedBy': None,
+                        'producedBy': None,
+                        'productId': '5',
+                        'relations': {
+                            'edges': [
+                                {
+                                    'node': {
+                                        'other': {
+                                            'name': 'map1',
+                                            'productId': '1',
+                                            'typeId': 1,
+                                            'type_': {
+                                                'name': 'map',
+                                                'typeId': '1'
+                                            }
+                                        },
+                                        'otherProductId': 1,
+                                        'relationId': '4',
+                                        'reverse': {
+                                            'relationId': '6',
+                                            'typeId': 2,
+                                            'type_': {
+                                                'name': 'child',
+                                                'typeId': '2'
+                                            }
+                                        },
+                                        'reverseRelationId': 6,
+                                        'typeId': 1,
+                                        'type_': {
+                                            'name': 'parent',
+                                            'typeId': '1'
+                                        }
+                                    }
+                                },
+                                {
+                                    'node': {
+                                        'other': {
+                                            'name': 'beam1',
+                                            'productId': '4',
+                                            'typeId': 2,
+                                            'type_': {
+                                                'name': 'beam',
+                                                'typeId': '2'
+                                            }
+                                        },
+                                        'otherProductId': 4,
+                                        'relationId': '5',
+                                        'reverse': {
+                                            'relationId': '3',
+                                            'typeId': 2,
+                                            'type_': {
+                                                'name': 'child',
+                                                'typeId': '2'
+                                            }
+                                        },
+                                        'reverseRelationId': 3,
+                                        'typeId': 1,
+                                        'type_': {
+                                            'name': 'parent',
+                                            'typeId': '1'
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        'typeId': 2,
+                        'type_': {
+                            'name': 'beam',
+                            'typeId': '2'
+                        },
+                        'updatedBy': None
+                    }
+                }
+            ]
+        }
+    }
+}
+
+snapshots['test_schema[first-two] 1'] = {
+    'data': {
+        'allProducts': {
+            'edges': [
+                {
+                    'node': {
+                        'name': 'map1',
+                        'productId': '1',
+                        'typeId': 1
+                    }
+                },
+                {
+                    'node': {
+                        'name': 'map2',
+                        'productId': '2',
+                        'typeId': 1
+                    }
+                }
+            ]
+        }
+    }
+}
+
+snapshots['test_schema[first-two-sort] 1'] = {
+    'data': {
+        'allProducts': {
+            'edges': [
+                {
+                    'node': {
+                        'name': 'map3',
+                        'productId': '3',
+                        'typeId': 1
+                    }
+                },
+                {
+                    'node': {
+                        'name': 'beam2',
+                        'productId': '5',
+                        'typeId': 2
+                    }
+                }
+            ]
+        }
+    }
+}
+
+snapshots['test_schema[filters-type_name-first-two] 1'] = {
+    'data': {
+        'allProducts': {
+            'edges': [
+                {
+                    'node': {
+                        'name': 'map1',
+                        'productId': '1',
+                        'typeId': 1
+                    }
+                },
+                {
+                    'node': {
+                        'name': 'map2',
+                        'productId': '2',
+                        'typeId': 1
+                    }
+                }
+            ]
+        }
+    }
+}
+
+snapshots['test_schema[filters-type_id-first-two] 1'] = {
+    'data': {
+        'allProducts': {
+            'edges': [
+                {
+                    'node': {
+                        'name': 'map1',
+                        'productId': '1',
+                        'typeId': 1
+                    }
+                },
+                {
+                    'node': {
+                        'name': 'map2',
+                        'productId': '2',
+                        'typeId': 1
+                    }
+                }
+            ]
+        }
+    }
+}
+
+snapshots['test_schema[filters-type_id-sort] 1'] = {
+    'data': {
+        'allProducts': {
+            'edges': [
+                {
+                    'node': {
+                        'name': 'map3',
+                        'productId': '3',
+                        'typeId': 1
+                    }
+                },
+                {
+                    'node': {
+                        'name': 'map2',
+                        'productId': '2',
+                        'typeId': 1
+                    }
+                },
+                {
+                    'node': {
+                        'name': 'map1',
+                        'productId': '1',
+                        'typeId': 1
+                    }
+                }
+            ]
+        }
+    }
+}
+
+snapshots['test_schema[filters-type_name-sort] 1'] = {
+    'data': {
+        'allProducts': {
+            'edges': [
+                {
+                    'node': {
+                        'name': 'map3',
+                        'productId': '3',
+                        'typeId': 1
+                    }
+                },
+                {
+                    'node': {
+                        'name': 'map2',
+                        'productId': '2',
+                        'typeId': 1
+                    }
+                },
+                {
+                    'node': {
+                        'name': 'map1',
+                        'productId': '1',
+                        'typeId': 1
+                    }
+                }
+            ]
+        }
+    }
+}
+
+snapshots['test_schema[total-count] 1'] = {
+    'data': {
+        'allProducts': {
+            'totalCount': 3
+        }
+    }
+}
