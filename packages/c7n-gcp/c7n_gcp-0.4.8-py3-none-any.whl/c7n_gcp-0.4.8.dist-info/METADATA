@@ -1,0 +1,92 @@
+Metadata-Version: 2.1
+Name: c7n-gcp
+Version: 0.4.8
+Summary: Cloud Custodian - Google Cloud Provider
+Home-page: https://cloudcustodian.io
+Author: Cloud Custodian Project
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=3.6,<4.0
+Description-Content-Type: text/markdown
+Requires-Dist: argcomplete (==1.12.2)
+Requires-Dist: attrs (==20.3.0)
+Requires-Dist: boto3 (==1.16.32)
+Requires-Dist: botocore (==1.19.32)
+Requires-Dist: c7n (==0.9.8)
+Requires-Dist: certifi (==2020.12.5)
+Requires-Dist: cffi (==1.14.4)
+Requires-Dist: chardet (==3.0.4)
+Requires-Dist: google-auth-httplib2 (==0.0.4)
+Requires-Dist: grpcio (==1.34.0)
+Requires-Dist: httplib2 (==0.18.1)
+Requires-Dist: importlib-metadata (==1.7.0)
+Requires-Dist: jmespath (==0.10.0)
+Requires-Dist: jsonpickle (==1.3)
+Requires-Dist: jsonschema (==3.2.0)
+Requires-Dist: protobuf (==3.14.0)
+Requires-Dist: pyasn1-modules (==0.2.8)
+Requires-Dist: pyasn1 (==0.4.8)
+Requires-Dist: pyrsistent (==0.17.3)
+Requires-Dist: python-dateutil (==2.8.1)
+Requires-Dist: pytz (==2020.4)
+Requires-Dist: pyyaml (==5.3.1)
+Requires-Dist: ratelimiter (==1.2.0.post0)
+Requires-Dist: retrying (==1.3.3)
+Requires-Dist: s3transfer (==0.3.3)
+Requires-Dist: six (==1.15.0)
+Requires-Dist: tabulate (==0.8.7)
+Requires-Dist: urllib3 (==1.26.2)
+Requires-Dist: zipp (==3.4.0)
+Requires-Dist: six (==1.15.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
+Requires-Dist: google-api-core (==1.23.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: google-api-python-client (==1.12.8) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: google-auth (==1.23.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: google-cloud-core (==1.4.4) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: google-cloud-logging (==1.15.1) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: google-cloud-monitoring (==0.34.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: googleapis-common-protos (==1.52.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: idna (==2.10) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: pycparser (==2.20) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: uritemplate (==3.0.1) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: google-resumable-media (==1.1.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+Requires-Dist: requests (==2.25.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+Requires-Dist: urllib3 (==1.26.2) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version < "4"
+Requires-Dist: google-cloud-storage (==1.33.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
+Requires-Dist: google-crc32c (==1.0.0) ; python_version >= "3.5"
+Requires-Dist: rsa (==4.6) ; python_version >= "3.5" and python_version < "4"
+Requires-Dist: cachetools (==4.1.1) ; python_version >= "3.5" and python_version < "4.0"
+
+# Custodian GCP Support
+
+Status - Alpha
+
+# Features
+
+ - Serverless ✅
+ - Api Subscriber ✅
+ - Metrics ✅
+ - Resource Query ✅
+ - Multi Account (c7n-org) ✅
+
+# Getting Started
+
+
+## via pip
+
+```
+pip install c7n_gcp
+```
+
+By default custodian will use credentials associated to the gcloud cli, which will generate
+warnings per google.auth (https://github.com/googleapis/google-auth-library-python/issues/292)
+
+The recommended authentication form for production usage is to create a service account and
+credentials, which will be picked up via by the custodian cli via setting the
+*GOOGLE_APPLICATION_CREDENTIALS* environment variable.
+
+
+# Serverless
+
+Custodian supports both periodic and api call events for serverless policy execution.
+
+
