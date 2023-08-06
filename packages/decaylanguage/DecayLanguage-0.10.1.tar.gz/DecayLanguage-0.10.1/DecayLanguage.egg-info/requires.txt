@@ -1,0 +1,26 @@
+attrs>=19.2
+plumbum>=1.6.9
+numpy>=1.12
+pandas>=0.22
+six>=1.11
+lark-parser<0.8.6,>=0.8.0
+particle==0.14.*
+pydot
+
+[:python_version < "3.3"]
+cachetools
+
+[:python_version < "3.4"]
+enum34>=1.1
+
+[:python_version < "3.5"]
+pathlib2>=2.3
+
+[:python_version < "3.7"]
+importlib_resources>=1.0
+
+[notebook]
+graphviz
+
+[test]
+pytest
