@@ -1,0 +1,17 @@
+astropy
+gwcs
+sunpy[asdf,net]>=2.0rc1
+
+[asdf]
+asdf
+dkist>=0.1a3
+
+[docs]
+sphinx
+sphinx-automodapi
+
+[test]
+pytest
+pytest-doctestplus
+pytest-cov
+dkist-data-simulator
