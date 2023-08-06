@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: mkdocs-ringcentral-api-index
+Version: 0.1.4
+Summary: An MkDocs plugin to generate a table of contents page for a swagger specification to make navgating to an API Reference easier.
+Home-page: https://github.com/byrnereese/mkdocs-ringcentral-api-index
+Author: Byrne Reese
+Author-email: byrne@majordojo.com
+License: MIT
+Keywords: mkdocs swagger api documentation
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.0
+Requires-Dist: pyyaml
+Requires-Dist: jinja2
+Requires-Dist: markdown
+Requires-Dist: mkdocs (>=1.0.4)
+
+UNKNOWN
+
+
