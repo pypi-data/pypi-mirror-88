@@ -1,0 +1,12 @@
+httptools==0.1.*
+Jinja2==2.11.2
+certifi>=2020.12.5
+cchardet~=2.1.5
+guardpost~=0.0.5
+rodi~=1.0.8
+essentials==1.1.4
+essentials-openapi==0.1.1
+python-dateutil==2.8.1
+
+[:python_version < "3.8"]
+typing_extensions
