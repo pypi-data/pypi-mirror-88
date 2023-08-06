@@ -1,0 +1,11 @@
+numpy>=1.16.3
+matplotlib>=3.0
+pillow>=5.2.0
+termcolor
+packaging
+
+[tensorflow]
+tensorflow<2.0,>=1.14
+
+[torch]
+torch>=1.3
