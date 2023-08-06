@@ -1,0 +1,13 @@
+aiohttp==3.7.3
+jinja2==2.11.2
+bcrypt==3.2.0
+
+[dev]
+black
+pre-commit
+twine
+
+[test]
+pytest
+pytest-aiohttp
+tox
