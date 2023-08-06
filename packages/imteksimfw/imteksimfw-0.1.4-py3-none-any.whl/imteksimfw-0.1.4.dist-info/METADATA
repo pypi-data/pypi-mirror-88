@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: imteksimfw
+Version: 0.1.4
+Summary: Fireworks additions
+Home-page: https://github.com/IMTEK-Simulation/imteksimfw
+Author: Johannes Laurin Hoermann
+Author-email: johannes.hoermann@imtek.uni-freiburg.de
+License: MIT
+Download-URL: https://github.com/IMTEK-Simulation/imteksimfw/tarball/0.1.4
+Platform: UNKNOWN
+Requires-Python: >=3.6.5
+Description-Content-Type: text/markdown
+Requires-Dist: dill (>=0.3.1.1dtoolcore>=3.17.0)
+Requires-Dist: dtool-create (>=0.23.0)
+Requires-Dist: dtool-lookup-api (>=0.1.0)
+Requires-Dist: fireworks (>=1.9.5)
+Requires-Dist: jinja2 (>=2.10)
+Requires-Dist: jinja2-time (>=0.2.0)
+Requires-Dist: monty (>=4.0.2)
+Requires-Dist: paramiko (>=2.4.2)
+Requires-Dist: six (>=1.15.0)
+Requires-Dist: ruamel.yaml (>=0.16.12)
+Provides-Extra: testing
+Requires-Dist: mock-ssh-server (>=0.8.1) ; extra == 'testing'
+Requires-Dist: dtool-smb (>=0.1.0) ; extra == 'testing'
+Requires-Dist: requests (>=2.24.0) ; extra == 'testing'
+Requires-Dist: urllib3 (<1.26,>=1.25.11) ; extra == 'testing'
+Requires-Dist: dtool-lookup-server (>=0.15.0) ; extra == 'testing'
+Requires-Dist: dtool-lookup-server-direct-mongo-plugin (>=0.1.2) ; extra == 'testing'
+
+# IMTEK-Simulation custom FireWorks extensions
+
+[![PyPI](https://img.shields.io/pypi/v/imteksimfw)](https://pypi.org/project/imteksimfw/) [![Tests](https://img.shields.io/github/workflow/status/IMTEK-Simulation/imteksimfw/test?label=tests)](https://github.com/IMTEK-Simulation/imteksimfw/actions?query=workflow%3Atest)
+
+
+Johannes Hörmann, johannes.hoermann@imtek.uni-freiburg.de, Mar 2020
+
+# Quick start
+
+Install the official FireWorks package, i.e. by `pip install fireworks`,
+(https://github.com/materialsproject/fireworks) and subsequently make this
+package available to your FireWorks environment, i.e. by
+`pip install imteksimfw`.
+
+## Custom FireTasks quick start
+
+To use custom FireTasks within `imteksimfw`, append
+
+    ADD_USER_PACKAGES:
+      - imteksimfw.fireworks.user_objects.firetasks
+
+to your `~/.fireworks/FW_config.yaml`.
+
+Configuration samples part of the [FireWorks RocketLauncher Manager](https://github.com/jotelha/fwrlm)
+include this line already.
+
+
