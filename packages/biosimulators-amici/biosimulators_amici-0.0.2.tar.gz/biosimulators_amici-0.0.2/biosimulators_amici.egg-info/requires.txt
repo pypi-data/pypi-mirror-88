@@ -1,0 +1,14 @@
+amici
+biosimulators_utils>=0.1.10
+numpy
+sympy>=1.7
+
+[all]
+biosimulators_utils[docker]
+python_dateutil
+
+[docs]
+
+[tests]
+biosimulators_utils[docker]
+python_dateutil
