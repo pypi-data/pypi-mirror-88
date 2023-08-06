@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: Pit2ya
+Version: 0.3.9
+Summary: Ergonomic continuation of Toggl time entries
+Home-page: https://github.com/Exr0nProjects/pit2ya
+Author: Exr0n
+Author-email: mail@exr0n.com
+License: MIT
+Keywords: toggl togglcli wrapper
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: iterfzf (==0.5.0.20.0)
+Requires-Dist: pendulum (==2.1.2)
+Requires-Dist: togglCli (==2.4.0)
+
+More ergonomic wrapper around TogglCli for continuing Toggl time entries.
+
+
