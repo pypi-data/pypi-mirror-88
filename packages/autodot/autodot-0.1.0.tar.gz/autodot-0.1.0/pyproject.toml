@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "autodot"
+version = "0.1.0"
+description = "Automated dotfile management using Python & Python/Click!"
+authors = ["Aubrey Taylor"]
+license = "MIT"
+readme = "README.md"
+keywords = []
+classifiers = []
+repository = "https://github.com/aubricus"
+documentation = "https://aubricus.github.io/autodot/"
+
+[tool.poetry.dependencies]
+python = "~3.6 || ~3.7 || ~3.8"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+pydocstyle = "^5.1.1"
+pdoc3 = "^0.9.2"
+pytest = "^6.1.2"
+coverage = "^5.3"
+pdbpp = "^0.10.2"
+click = "^7.1.2"
+klak = "^0.4.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+

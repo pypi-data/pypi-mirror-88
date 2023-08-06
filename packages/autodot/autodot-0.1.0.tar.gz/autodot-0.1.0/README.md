@@ -1,0 +1,80 @@
+# autodot
+
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme) [![code style black](https://img.shields.io/badge/code%20style-black-%23000000)](https://github.com/psf/black) [![License MIT](https://img.shields.io/github/license/aubricus/autodot)](./LICENSE)
+
+_Automated dotfile management using Python & Python/Click!_
+
+## Background
+
+TODO: Update
+
+## Install
+
+### Dependencies
+
+- Python 3.6, 3.7, 3.8 ([pyenv] recommended)
+
+### Installation
+
+```bash
+pip install -U autodot
+```
+
+## Usage
+
+See the [documentation](https://aubricus.github.io/test_20200912_1/).
+
+```bash
+# TODO: Update
+```
+
+## Features
+
+- _TODO: Update_
+
+## Support
+
+- Python 3.6, 3.7, 3.8
+- MacOS: Tested locally, Python 3.8.2 via [pytest]
+- Linux: Ubuntu Latest, Python 3.6, 3.7, 3.8) via [GitHub Actions]
+- Windows: Not tested. ☹️
+
+## Maintainers
+
+-  [aubricus](https://github.com/aubricus)
+
+## Attribution
+
+- _TODO:Update_
+
+## Contributing
+
+Issues & pull-requests accepted. See the [CONTRIBUTING.md]
+
+_Small note: If editing the [README.md], please conform to the [standard-readme specification]._
+
+## License
+
+[MIT](./LICENSE) &copy; Aubrey Taylor 2020
+
+<!-- Links -->
+
+[setuptools]: https://setuptools.readthedocs.io/en/latest/
+[twine]: https://github.com/pypa/twine
+[pytest]: https://docs.pytest.org/en/latest/
+[tox]: https://tox.readthedocs.io/en/latest/
+[standard readme]: https://github.com/RichardLitt/standard-readme
+[black]: https://github.com/psf/black
+[pyenv]: https://github.com/pyenv/pyenv
+[github api]: https://developer.github.com/v3/licenses/
+[cookiecutter]: https://github.com/cookiecutter/cookiecutter
+[cookiecutter/cookiecutter]: https://github.com/cookiecutter/cookiecutter
+[aubricus/cookiecutter-cookiecutter]: https://github.com/aubricus/cookiecutter-cookiecutter
+[standard-readme specification]: https://github.com/RichardLitt/standard-readme
+[readme.md]: ./README.md
+[poetry]: https://python-poetry.org/docs/
+[contributing.md]: ./CONTRIBUTING.md
+[pydocstyle]: https://www.pydocstyle.org/en/stable/
+[editorconfig]: https://editorconfig.org/
+[toml]: https://toml.io/en/
+[github actions]: https://docs.github.com/en/actionss
