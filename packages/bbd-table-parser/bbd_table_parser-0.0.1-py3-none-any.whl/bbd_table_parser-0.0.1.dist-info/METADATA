@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: bbd-table-parser
+Version: 0.0.1
+Summary: Package to parse inline tables for use with pytest-bdd.
+Home-page: https://gitlab.com/GreatIrishElk/table_parse
+Author: Simon Murphy
+Author-email: murphysimon@outlook.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# Table Parser
+
+Intended to be used with [pytest_bdd](https://pypi.org/project/pytest-bdd/) for parsing inline tables from str into dict
+
+Example:
+```gherkin
+Given I have a thing
+When I do stuff:
+    | Heading | Other Heading |
+    | to do   | Also          |
+    | more    | Other         |
+Then everything is great
+```
+
+```python
+from pytest_bdd import when, parsers
+from table_parser.table_parser import table_parser
+
+@when(parsers.cfparse('I do stuff:\n{table}'))
+def verify_date_from_request(table):
+    table_dict = table_parser(table)
+```
+
