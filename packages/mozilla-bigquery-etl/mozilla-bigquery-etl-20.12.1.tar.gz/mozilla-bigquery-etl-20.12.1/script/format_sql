@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Format SQL.
+
+exec python3 -m bigquery_etl.format_sql.format "$@"
