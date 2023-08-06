@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: harpoontools
+Version: 0.1.6
+Summary: CLI tools going with Harpoon
+Home-page: https://github.com/Te-k/harpoontools
+Author: Tek
+Author-email: tek@randhome.io
+License: GPLv3
+Keywords: osint
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: harpoon (==0.1.6)
+
+# Harpoon Tools
+
+CLI tools using [Harpoon](https://github.com/Te-k/harpoon) features
+
+## Tools
+
+* **ipinfo** : provides information on an IP address (ASN and location)
+* **asninfo** : provides information on an ASN number
+* **dns** : provides DNS information on a domain or IP
+* **asncount** : count IP addresses by ASN numbers
+* **countrycount** : count IP addresses by countries
+* **htraceroute**: traceroute adding AS and geolocation of IPs (you need to have traceroute installed)
+* **myip**: get your public IP and location from ipinfo.io
+
+## Install
+
+Install [Harpoon](https://github.com/Te-k/harpoon) and then harpoontools :
+
+```
+pip install harpoon
+pip install harpoontools
+```
+
+Configure Harpoon and download static files:
+```
+harpoon config -u
+harpoon config
+```
+
+## Licence
+
+This code is licensed under GPLv3
+
+
