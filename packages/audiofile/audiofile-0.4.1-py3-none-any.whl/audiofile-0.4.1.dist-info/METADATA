@@ -1,0 +1,207 @@
+Metadata-Version: 2.1
+Name: audiofile
+Version: 0.4.1
+Summary: Fast reading of all kind of audio files
+Home-page: https://github.com/audeering/audiofile/
+Author: Hagen Wierstorf
+Author-email: hwierstorf@audeering.com
+License: MIT License
+Project-URL: Documentation, https://audeering.github.io/audiofile/
+Keywords: audio tools
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Multimedia :: Sound/Audio
+Requires-Dist: audeer
+Requires-Dist: numpy
+Requires-Dist: soundfile
+Requires-Dist: sox
+
+=========
+audiofile
+=========
+
+|tests| |coverage| |docs| |python-versions| |license|
+
+The Python package **audiofile** handles all kind of audio files
+with a focus on `reading speed`_.
+
+It can read and request information
+on channels, duration, number of samples and sampling rate
+for all files that are supported by
+ffmpeg_,
+sox_,
+and mediainfo_.
+In addition,
+it can write WAV, FLAC, and OGG files.
+
+Have a look at the installation_ and usage_ instructions as a starting point.
+
+Code example for reading a file:
+
+.. code-block:: python
+
+    import audiofile as af
+
+    signal, sampling_rate = af.read('signal.wav')
+
+
+.. _ffmpeg: https://www.ffmpeg.org/
+.. _installation: https://audeering.github.io/audiofile/installation.html
+.. _mediainfo: https://mediaarea.net/en/MediaInfo/
+.. _usage: https://audeering.github.io/audiofile/usage.html
+.. _reading speed: https://audeering.github.io/audiofile/benchmark.html
+.. _sox: http://sox.sourceforge.net/
+.. _virtualenv: https://virtualenv.pypa.io/
+
+.. |tests| image:: https://github.com/audeering/audiofile/workflows/Test/badge.svg
+    :target: https://github.com/audeering/audiofile/actions?query=workflow%3ATest
+    :alt: Test status
+.. |coverage| image:: https://codecov.io/gh/audeering/audiofile/branch/master/graph/badge.svg?token=LVF0621BKR
+    :target: https://codecov.io/gh/audeering/audiofile/
+    :alt: code coverage
+.. |docs| image:: https://img.shields.io/pypi/v/audiofile?label=docs
+    :target: https://audeering.github.io/audiofile/
+    :alt: audiofile's documentation
+.. |python-versions| image:: https://img.shields.io/pypi/pyversions/audiofile.svg
+    :target: https://pypi.org/project/audiofile/
+    :alt: audiofile's supported Python versions
+.. |license| image:: https://img.shields.io/badge/license-MIT-green.svg
+    :target: https://github.com/audeering/audiofile/blob/master/LICENSE
+    :alt: audiofile's MIT license
+
+Changelog
+=========
+
+All notable changes to this project will be documented in this file.
+
+The format is based on `Keep a Changelog`_,
+and this project adheres to `Semantic Versioning`_.
+
+
+Version 0.4.1 (2020-12-17)
+--------------------------
+
+* Added: ``bit_depth`` to usage section of documentation
+* Fixed: handling of file names that include ``~`` or ``..``
+    by using ``audeer.safe_path``
+
+
+Version 0.4.0 (2020-11-26)
+--------------------------
+
+* Added ``audiofile.bit_depth()``
+  which returns bit depth of WAV and FLAC files
+* Added: ``bit_depth`` argument to ``audiofile.write()``
+* Deprecated: ``precision`` argument of ``audiofile.write()``,
+  use ``bit_depth`` instead
+
+
+Version 0.3.4 (2020-10-29)
+--------------------------
+
+* Fixed: several typos in the documentation
+
+
+Version 0.3.3 (2020-10-29)
+--------------------------
+
+* Added: more tests to increase code coverage to 100%
+* Added: link to benchmark page in README
+* Changed: tests now require 100% code coverage
+
+
+Version 0.3.2 (2020-10-29)
+--------------------------
+
+* Added: benchmark results page in docs
+* Fixed: multi-line release changelogs on Github
+* Fixed: copy-button for bash examples
+
+
+Version 0.3.1 (2020-10-27)
+--------------------------
+
+* Fixed: missing dependencies for publishing documentation
+
+
+Version 0.3.0 (2020-10-27)
+--------------------------
+
+* Changed: use ``audiofile.core`` structure under the hood
+* Changed: use Github Actions for tests
+* Changed: use Github Actions for automatic publishing
+* Changed: host documentation as Github pages
+* Removed: support for Python 2.7
+
+
+Version 0.2.4 (2020-08-31)
+--------------------------
+
+* Fixed: ``CHANGELOG`` format for PyPI server
+
+
+Version 0.2.3 (2020-08-31)
+--------------------------
+
+* Fixed: catch ``SoxiError`` in ``audiofile.read()``
+* Fixed: test for more advanced audio files like OPUS, AMR, ...
+
+
+Version 0.2.2 (2019-10-04)
+--------------------------
+
+* Changed: switch to keep a changelog format
+* Changed: define package in ``setup.cfg``
+
+
+Version 0.2.1 (2019-05-02)
+--------------------------
+
+* Fixed: module only package
+
+
+Version 0.2.0 (2019-05-02)
+--------------------------
+
+* Changed: improve documentation
+* Changed: switch to single ``audiofile.py`` module
+* Fixed: skip tests if download fails
+
+
+Version 0.1.3 (2019-03-27)
+--------------------------
+
+* Fixed: metadata samples and duration for MP3 files
+
+
+Version 0.1.2 (2019-03-25)
+--------------------------
+
+* Fixed: metadata for pypi.org
+
+
+Version 0.1.1 (2019-03-25)
+--------------------------
+
+* Fixed: license statement in PyPI package
+
+
+Version 0.1.0 (2019-03-25)
+--------------------------
+
+* Added: First public release
+
+
+.. _Keep a Changelog: https://keepachangelog.com/en/1.0.0/
+.. _Semantic Versioning: https://semver.org/spec/v2.0.0.html
+
+
