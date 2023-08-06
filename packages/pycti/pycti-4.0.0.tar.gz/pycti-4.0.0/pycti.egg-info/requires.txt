@@ -1,0 +1,25 @@
+requests==2.25.0
+PyYAML==5.3.1
+python-dateutil==2.8.1
+datefinder==0.7.1
+stix2==2.1.0
+pytz==2020.4
+pika==1.1.0
+sseclient==0.0.27
+
+[:sys_platform == "linux" or sys_platform == "darwin"]
+python-magic==0.4.18
+
+[:sys_platform == "win32"]
+python-magic-bin==0.4.14
+
+[dev]
+black
+wheel
+pytest
+pytest-cov
+
+[doc]
+autoapi
+sphinx_rtd_theme
+sphinx-autodoc-typehints
