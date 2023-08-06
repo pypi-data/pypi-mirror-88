@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: wahoo
+Version: 0.0.1
+Summary: Wahoo placeholder
+Home-page: https://github.com/nanoporetech/taiyaki
+Author: Allan Evans
+Author-email: allan.evans@nanoporetech.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# Wahoo
+
+What does it do
+
+## Installation
+
+# From source
+
+	git clone XXX
+	cd wahoo
+	make install
+
+# From pip
+
+	mkdir wahoo
+	cd wahoo
+	virtualenv --python=/usr/bin/python3.6 venv   #Set up virtual environment using python 3.6
+	source venv/bin/activate
+	#pip install wahoo #not implemented yet!
+
+
+## Running the tests
+
+	make test
+
+
+
+
