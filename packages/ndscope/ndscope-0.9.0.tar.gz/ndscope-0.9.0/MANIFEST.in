@@ -1,0 +1,7 @@
+include README.md CHANGELOG.md
+include COPYING COPYING-GPL-3
+global-exclude *.gitignore
+exclude .gitlab-ci.yml
+exclude release.py
+exclude ndscope.png
+prune devel
