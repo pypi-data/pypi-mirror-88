@@ -1,0 +1,7 @@
+include LICENSE
+include CHANGELOG.md
+include README.md
+include setup.cfg
+graft docs
+graft tests
+prune docs/_build
