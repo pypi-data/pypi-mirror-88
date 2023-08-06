@@ -1,0 +1,16 @@
+setuptools
+zope.schema
+zope.component
+zope.lifecycleevent
+iso8601
+
+[enforce]
+watchdog>=1.0.0
+
+[test]
+zope.testing
+coverage
+python-subunit
+junitxml
+mock
+pytz
