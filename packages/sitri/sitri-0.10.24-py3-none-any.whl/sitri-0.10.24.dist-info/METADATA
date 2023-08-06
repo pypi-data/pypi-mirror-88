@@ -1,0 +1,91 @@
+Metadata-Version: 2.1
+Name: sitri
+Version: 0.10.24
+Summary: Library for one endpoint config managment
+Home-page: https://github.com/Egnod/sitri
+License: MIT
+Keywords: packaging,poetry,config,configuration,managment,consul,vault,pydantic,json,yaml,environment
+Author: Alexander Lavrov
+Author-email: egnod@ya.ru
+Requires-Python: >=3.6,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Provides-Extra: consul
+Provides-Extra: hvac
+Provides-Extra: pyyaml
+Provides-Extra: redis
+Provides-Extra: vedis
+Requires-Dist: hvac (>=0.10.5,<0.11.0); extra == "hvac"
+Requires-Dist: loguru (>=0.5.1,<0.6.0)
+Requires-Dist: pydantic (>=1.7.3,<2.0.0)
+Requires-Dist: python-consul (>=1.1.0,<2.0.0); extra == "consul"
+Requires-Dist: pyyaml (>=5.3.1,<6.0.0); extra == "pyyaml"
+Requires-Dist: redis (>=3.5.3,<4.0.0); extra == "redis"
+Requires-Dist: vedis (>=0.7.1,<0.8.0); extra == "vedis"
+Project-URL: Documentation, https://sitri.readthedocs.io
+Project-URL: Repository, https://github.com/Egnod/sitri
+Description-Content-Type: text/markdown
+
+
+<p align="center">
+  <a href="https://github.com/elastoo-team/sitri">
+    <img src="docs/_static/logo.gif">
+  </a>
+  <h1 align="center">
+    Sitri Configuration Library
+  </h1>
+</p>
+
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FElastoo-Team%2Fsitri%2Fbadge&style=popout)](https://actions-badge.atrox.dev/Elastoo-Team/sitri/goto)
+[![codecov](https://codecov.io/gh/Elastoo-Team/sitri/branch/master/graph/badge.svg)](https://codecov.io/gh/elastoo-team/sitri)
+![PyPI](https://img.shields.io/pypi/v/sitri)
+![Read the Docs](https://img.shields.io/readthedocs/sitri)
+[![CodeFactor](https://www.codefactor.io/repository/github/elastoo-team/sitri/badge)](https://www.codefactor.io/repository/github/elastoo-team/sitri)
+[![Maintainability](https://api.codeclimate.com/v1/badges/625f1d869adbf4128f75/maintainability)](https://codeclimate.com/github/Elastoo-Team/sitri/maintainability)
+
+Sitri - library for managing authorization and configuration data from a single object with possibly different or identical providers
+
+#  Installation
+
+```bash
+poetry add sitri
+```
+
+or
+```bash
+pip3 install sitri
+```
+
+# Basics with SystemProvider
+
+```python
+from sitri.providers.contrib import SystemConfigProvider
+from sitri import Sitri
+
+conf = Sitri(
+    config_provider=SystemConfigProvider(prefix="basics"),
+)
+```
+System provider use system environment for get config data. For unique - sitri lookup to "namespace" by prefix.
+
+Example:
+
+*In console:*
+```bash
+export BASICS_NAME=Huey
+```
+
+*In code:*
+```python
+name = conf.get_config("name")
+
+print(name)  # output: Huey
+```
+
+#  Docs
+Read base API references and other part documentation on https://sitri.readthedocs.io/
+
