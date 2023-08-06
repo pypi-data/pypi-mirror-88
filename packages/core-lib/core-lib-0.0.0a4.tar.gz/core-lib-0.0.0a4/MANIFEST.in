@@ -1,0 +1,13 @@
+include requirements.txt
+include LICENSE
+include README.md
+
+
+recursive-include core_lib/* *.yaml
+
+global-exclude *.pyc
+global-exclude __pycache__
+recursive-include hydra_plugins/* *.yaml
+
+
+
