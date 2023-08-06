@@ -1,0 +1,3 @@
+include *.txt *.md *.toml
+include LICENSE
+prune examples/sample?/build
