@@ -1,0 +1,6 @@
+# ciomax
+prune tests
+include ciomax/Conductor.ms
+global-exclude __pycache__
+global-exclude *.py[co]
+
