@@ -1,0 +1,10 @@
+# Remove CFFI files
+global-exclude __pycache__/*
+
+# Include Cython code
+global-include *.pyx
+global-include *.pxd
+include anonlink/solving/_multiparty_solving_inner.h
+include anonlink/similarities/libpopcount.h
+include anonlink/_entitymatcher*
+include anonlink/similarities/dice.cpp
