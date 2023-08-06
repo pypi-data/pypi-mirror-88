@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: akamaichinaCDN
+Version: 0.1
+Summary: A Pip Package for Akamai China CDN
+Home-page: https://github.com/Achuthananda/AkamaiChinaCDN
+Author: Achuthananda M P
+Author-email: achuthadivine@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+# A Python Class for Akamai China CDN Manager
+An Object oriented implementation of Akamai China CDN Portal.
+
+
+### Credentials
+In order to use this configuration, you need to:
+* Set up your credential files as described in the [authorization](https://developer.akamai.com/introduction/Prov_Creds.html) and [credentials](https://developer.akamai.com/introduction/Conf_Client.html) sections of the getting started guide on developer.akamai.com.  
+* When working through this process you need to give grants for the property manager API and the User Admin API (if you will want to move properties).  The section in your configuration file should be called 'default'.
+
+## Overview
+An Object oriented implementation of Akamai China CDN Manager
+
+### Install pip package available
+```
+$ pip install akamaichinaCDN
+```
+
+## Instantiate the object.
+```
+>>> from akamaichinaCDN import ChinaCDNManager
+>>> china_manager = ChinaCDNManager('/Users/apadmana/.edgerc')
+```
+
+## Whitelist Hostname
+```
+>>> china_manager.whiteList(newhostname)
+```
+
+## Class Definition
+```
+class ChinaCDNManager():
+    def __init__(self,edgercLocation,accountSwitchKey=None):
+      self.icp_info = ''
+        self._edgerc = ''
+        self._prdHttpCaller = ''
+        self._session = ''
+        self._baseurl_prd = ''
+        self._host = ''
+        self._icp_info = ''
+        self._icp_entities_info = ''
+        self.accountSwitchKey = ''
+        self._edgehostnames = ''
+        self._groups = ''
+        self._appmapping = ''
+        self._legalmapping = ''
+
+    def getICPEntities(self)
+    def getICPNumbers(self)
+    def getEdgeHostNames(self)
+    def getGroups(self)
+    def getProperties(self)
+    def getPropertyInfo(self,hostname)
+    def getDeProvisionPolicy(self,edgeHostname)
+    def specifyDeProvisionPolicy(self,edgeHostname)
+    def getProvisionStateChange(self,hostname,changeId)
+    def getcurrentProvisionStateChange(self,hostname)
+    def getProvisionStatus(self,status_filter=None)
+    def createPropertyHostname(self,hostname,icpNumberId,serviceCategoryName,groupId)
+    def whiteList(self,hostname)
+```
+
+
