@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+
+# Commands class
+class Commands:
+
+    # Members
+    __arguments = None
+
+    # Constructor
+    def __init__(self, arguments):
+
+        # Prepare arguments
+        if isinstance(arguments, list):
+            self.__arguments = arguments
+        elif isinstance(arguments, str):
+            self.__arguments = [arguments]
+        else:
+            self.__arguments = []
+
+    # String
+    def __str__(self):
+
+        # Variables
+        command = []
+
+        # Prepare command
+        for argument in self.__arguments:
+
+            # Quoted argument
+            if ' ' in argument:
+                command += ['\'%s\'' % (argument)]
+
+            # Standard argument
+            else:
+                command += [argument]
+
+        # Result
+        return ' '.join(command)
