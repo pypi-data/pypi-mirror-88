@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: Deep-Motility
+Version: 1.0.5rc1
+Summary: Deep Learning methods for the classification and segmentation of motility images
+Home-page: https://github.com/joheras/Deep-Motility
+Author: Jónathan Heras
+Author-email: joheras@gmail.com
+Maintainer: Jónathan Heras
+Maintainer-email: joheras@gmail.com
+License: GNU General Public License v3 (GPLv3)
+Description: # Deep-Motilidad
+        
+        This package contains several commands and utilities to easily use the classification and semantic segmentation models in motility images. 
+        
+        ## 🚀 Getting Started
+        
+        To start using this package, install it using `pip`:
+        
+        For example, for installing it in Ubuntu use:
+        ```bash
+        pip3 install Deep-Motilidad
+        ```
+        
+        It is recommended to install it globally and not inside virtual environments.
+        Have been tested in Windows, Linux and MacOS.
+        
+        ## 👩‍💻 Usage
+        This package makes easier the use of the best trained model. For that purpose you have available 2 commands:
+        * `deep-motilidad classification <inputFolder> <outputFolder>` This method predict in all the images of a folder.
+        * `deep-motilidad segmentation <inputFolder> <outputFolder>` This method predict in all the images of a folder.
+        
+        
+        
+Keywords: deep learning semantic segmentation pytorch motility classification
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/markdown

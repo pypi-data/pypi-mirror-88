@@ -1,0 +1,18 @@
+# Image Preprocessing
+pims_nd2>=1.1,<2.0
+nd2reader>=3.2.3,<4.0.0
+read-roi>=1.6.0,<2.0.0
+
+scikit-image>=0.17.2,<1.0.0
+opencv-python<=4.2.0.30
+
+numpy>=1.18.5,<2.0.0
+
+# ML libraries
+torch>=1.6.0,<2.0.0 
+torchvision>=0.7.0,<1.0.0
+Pillow==7.2.0
+scikit-learn>=0.23.2
+
+# Utils
+tqdm
