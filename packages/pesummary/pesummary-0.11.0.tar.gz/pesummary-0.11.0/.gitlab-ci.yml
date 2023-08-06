@@ -1,0 +1,433 @@
+stages:
+  - build
+  - basic
+  - test
+  - end-to-end
+  - consequences
+  - deploy
+
+
+variables:
+  PIP_CACHE_DIR: "${CI_PROJECT_DIR}/.cache/pip"
+cache:
+  key: "${CI_JOB_NAME}"
+  paths:
+    - .cache/pip
+
+
+before_script:
+  - pip install -r requirements.txt
+  - pip install -r optional_requirements.txt
+  - pip install -r testing_requirements.txt
+  - 'apt-get update -y && bash && apt-get -y install pandoc'
+  - pip install bilby
+  - export USER=albert.einstein
+
+
+.core_workflow: &core_workflow
+  stage: end-to-end
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  script:
+    - pip install pesummary-*.tar.*
+    - BASE=`pwd`
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type workflow -k "Core or core" --pytest_config ${BASE}/setup.cfg
+
+
+.gw_workflow: &gw_workflow
+  stage: end-to-end
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  script:
+    - pip install pesummary-*.tar.*
+    - BASE=`pwd`
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type workflow -k "GW or gw" --pytest_config ${BASE}/setup.cfg
+
+
+tarball:
+  stage: build
+  image: python:3.6
+  script:
+    - python setup.py sdist --dist-dir .
+    - export PESUMMARY_TESTING_DIR=`python -c "import pkg_resources; print(pkg_resources.resource_filename('pesummary', 'tests'))"`
+  artifacts:
+    paths:
+      - "pesummary-*.tar.*"
+
+
+wheel:
+  stage: build
+  image: python:3.6
+  script:
+    - python setup.py bdist_wheel
+
+
+conda:
+  stage: build
+  image: igwn/base:conda
+  before_script: []
+  script:
+    - . /opt/conda/etc/profile.d/conda.sh
+    - conda create --name py37 python=3.7
+    - conda activate py37
+    - conda install --file conda_requirements.txt -c conda-forge
+    - python setup.py install
+    - conda deactivate
+
+
+docker:
+  stage: build
+  image: docker:19.03.10
+  before_script:
+    - apk update
+    - apk add py3-pip
+    - apk add python3
+  script:
+    - python3 containers/write_dockerfile.py
+    - docker build -f containers/Dockerfile-pesummary-python36 -t pesummary-dev/latest . --build-arg installation=./
+    - docker run pesummary-dev/latest summarytest --type imports
+  artifacts:
+    paths:
+      - "containers/Dockerfile-pesummary-python*"
+
+
+executables:
+  stage: basic
+  image: python:3.6
+  needs:
+    - tarball
+  script:
+    - pip install pesummary-*.tar.*
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type executables
+
+
+imports:
+  stage: basic
+  image: python:3.6
+  needs:
+    - tarball
+  script:
+    - pip install pesummary-*.tar.*
+    - pip install pycbc
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type imports
+
+
+style:
+  stage: basic
+  image: python:3.6
+  needs:
+    - tarball
+  before_script:
+    - ""
+  script:
+    - pip install flake8
+    - flake8 .
+
+
+documentation:
+  stage: basic
+  image: python:3.6
+  needs:
+    - tarball
+  script:
+    - pip install pesummary-*.tar.*
+    - 'git lfs version || ( apt-get update -y && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && apt-get install git-lfs && git lfs install)'
+    - ipython kernel install --user --name=python3
+    - cd docs
+    - make clean
+    - bash build_docs.sh
+  artifacts:
+    paths:
+      - docs/_build/html/
+
+
+examples:
+  stage: basic
+  image: python:3.6
+  needs:
+    - tarball
+  script:
+    - pip install pesummary-*.tar.*
+    - BASE=`pwd`
+    - export PESUMMARY_REPO_DIR=${BASE}
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type examples --repository ${PESUMMARY_REPO_DIR}
+    - cd ${BASE}
+  allow_failure: true
+
+
+authors:
+  stage: basic
+  image: python:3.6
+  needs:
+    - tarball
+  script:
+    - curl --request POST --form "token=$CI_EXAMPLES_TRIGGER_TOKEN" --form "variables[TYPE]=authors" --form ref=master https://git.ligo.org/api/v4/projects/3386/trigger/pipeline
+  only:
+    refs:
+      - master@lscsoft/pesummary
+
+
+python-3.6:
+  stage: test
+  image: python:3.6
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  script:
+    - pip install pesummary-*.tar.*
+    - pip install pycbc
+    - BASE=`pwd`
+    - mkdir _testing
+    - cd _testing
+    - export PESUMMARY_TESTING_DIR=`python -c "import pkg_resources; print(pkg_resources.resource_filename('pesummary', 'tests'))"`
+    - summarytest --type tests --ignore ${PESUMMARY_TESTING_DIR}/workflow_test.py ${PESUMMARY_TESTING_DIR}/ligo_skymap_test.py --pytest_config ${BASE}/setup.cfg
+    - cd ${BASE}
+  allow_failure: true
+
+python-3.7:
+  stage: test
+  image: python:3.7
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  script:
+    - pip install pesummary-*.tar.*
+    - pip install pycbc
+    - BASE=`pwd`
+    - mkdir _testing
+    - cd _testing
+    - export PESUMMARY_TESTING_DIR=`python -c "import pkg_resources; print(pkg_resources.resource_filename('pesummary', 'tests'))"`
+    - summarytest --type tests --output ${BASE} --ignore ${PESUMMARY_TESTING_DIR}/workflow_test.py ${PESUMMARY_TESTING_DIR}/ligo_skymap_test.py --coverage --pytest_config ${BASE}/setup.cfg
+    - cd ${BASE}
+  artifacts:
+    paths:
+      - htmlcov/
+      - coverage_badge.svg
+  allow_failure: true
+
+
+
+python-3.8:
+  stage: test
+  image: python:3.8
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  script:
+    - pip install pesummary-*.tar.*
+    - BASE=`pwd`
+    - mkdir _testing
+    - cd _testing
+    - export PESUMMARY_TESTING_DIR=`python -c "import pkg_resources; print(pkg_resources.resource_filename('pesummary', 'tests'))"`
+    - summarytest --pytest_config ${BASE}/setup.cfg --type tests --ignore ${PESUMMARY_TESTING_DIR}/workflow_test.py ${PESUMMARY_TESTING_DIR}/ligo_skymap_test.py ${PESUMMARY_TESTING_DIR}/conversion_test.py
+
+
+python-3.6-core:
+  <<: *core_workflow
+  image: python:3.6
+
+
+python-3.7-core:
+  <<: *core_workflow
+  image: python:3.7
+
+
+python-3.8-core:
+  <<: *core_workflow
+  image: python:3.8
+
+
+python-3.6-gw:
+  <<: *gw_workflow
+  image: python:3.6
+
+
+python-3.7-gw:
+  <<: *gw_workflow
+  image: python:3.7
+
+
+python-3.8-gw:
+  <<: *gw_workflow
+  image: python:3.8
+
+
+ligo_skymap:
+  stage: consequences
+  image: python:3.6
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  script:
+    - pip install pesummary-*.tar.*
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type skymap
+  only:
+    - schedule
+    - pushes
+
+
+lalinference:
+  stage: consequences
+  image: python:3.6
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  before_script:
+    - 'git lfs version || ( apt-get update -y && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && apt-get install git-lfs && git lfs install)'
+  script:
+    - pip install pesummary-*.tar.*
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type lalinference
+  only:
+    - schedule
+    - pushes
+
+##bilby:
+##  stage: consequences
+##  image: python:3.6
+##  needs:
+##    - tarball
+##    - executables
+##    - imports
+##    - style
+##  script:
+##    - pip install pesummary-*.tar.*
+##    - summarytest --type bilby
+##  only:
+##    - schedule
+##    - pushes
+
+
+GW190412:
+  stage: consequences
+  image: python:3.6
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  script:
+    - pip install pesummary-*.tar.*
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type GW190412
+  only:
+    - schedule
+    - pushes
+
+
+GW190425:
+  stage: consequences
+  image: python:3.6
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  script:
+    - pip install pesummary-*.tar.*
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type GW190425
+  only:
+    - schedule
+    - pushes
+
+
+GWTC1:
+  stage: consequences
+  image: python:3.6
+  needs:
+    - tarball
+    - executables
+    - imports
+    - style
+  script:
+    - pip install pesummary-*.tar.*
+    - mkdir _testing
+    - cd _testing
+    - summarytest --type GWTC1
+
+
+build_examples:
+  stage: deploy
+  image: python:3.6
+  script:
+    - curl --request POST --form "token=$CI_EXAMPLES_TRIGGER_TOKEN" --form ref=master https://git.ligo.org/api/v4/projects/3386/trigger/pipeline
+  only:
+    - master@lscsoft/pesummary
+
+
+release:
+  stage: deploy
+  image: python:3.6
+  script:
+    - curl --request POST --form "variables[REPO]=pesummary" --form ref=master --form "token=$CI_RELEASE_TRIGGER_TOKEN" https://git.ligo.org/api/v4/projects/4737/trigger/pipeline
+  only:
+    refs:
+      - master@lscsoft/pesummary
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /Releasing version/
+
+
+pages:
+  stage: deploy
+  image: python:3.6
+  dependencies:
+    - tarball
+    - executables
+    - imports
+    - style
+    - documentation
+    - examples
+    - python-3.6
+    - python-3.7
+    - python-3.8
+    - python-3.6-core
+    - python-3.7-core
+    - python-3.8-core
+    - python-3.6-gw
+    - python-3.7-gw
+    - python-3.8-gw
+    ##- bilby
+    - lalinference
+    - GW190412
+    - GW190425
+  script:
+    - mkdir public/
+    - mv docs/_build/html/* public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  only:
+    - master@lscsoft/pesummary
