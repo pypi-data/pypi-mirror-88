@@ -1,0 +1,10 @@
+repobee>=3.5.0
+
+[:python_version < "3.7"]
+dataclasses>='0.7'
+
+[TEST]
+pytest
+pytest-cov
+pytest-mock
+tox
