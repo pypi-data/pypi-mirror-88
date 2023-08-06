@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: gtfsr-kit
+Version: 7.0.0
+Summary: A Python 3.8+ library to process General Transit Feed Specification Realtime (GTFSR) data
+License: MIT
+Author: Alex Raichev
+Author-email: araichev@mrcagney.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: gtfs-kit (>=5.0.2,<6.0.0)
+Requires-Dist: gtfs-realtime-bindings (>=0.0.6,<0.0.7)
