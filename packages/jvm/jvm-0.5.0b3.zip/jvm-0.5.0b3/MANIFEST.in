@@ -1,0 +1,29 @@
+# Copyright (c) 2004-2020 Adam Karpierz
+# Licensed under CC BY-NC-ND 4.0
+# Licensed under proprietary License
+# Please refer to the accompanying LICENSE file.
+
+include README.rst
+include CHANGES.rst
+include LICENSE
+include .readthedocs.yml
+
+graft docs
+
+graft src
+recursive-exclude src/jvm *.java *.java_
+exclude src/jvm/java/class2py.py
+exclude src/jvm/java/org/python/embed.[co]*
+exclude src/jvm/java/org/jt/util/classlist_update.py
+exclude src/jvm/java/org/python/util/*.c
+exclude src/jvm/java/org/python/util/*.h
+exclude src/jvm/lib/hid.py
+exclude src/jvm/lib/rwproperty.py
+
+graft tests
+prune tests/c
+prune tests/java
+
+global-exclude \#* \#*/**
+global-exclude .build .build/** .build.* .build.*/**
+global-exclude *.py[cod] __pycache__
