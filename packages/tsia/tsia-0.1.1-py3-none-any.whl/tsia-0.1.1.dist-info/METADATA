@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: tsia
+Version: 0.1.1
+Summary: A Python package for time series analysis through images
+Home-page: https://github.com/michaelhoarau/tsia
+Maintainer: Michael Hoarau
+Maintainer-email: michael.hoarau@gmail.com
+License: MIT
+Download-URL: https://github.com/michaelhoarau/tsia
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development
+Classifier: Topic :: Scientific/Engineering
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
+
+# tsia: a Python package for time series analysis through images
+---
+tsia (time series images analysis) is a package to perform time series
+analysis and diagnostics thanks to imaging techniques.
+
+## Installation
+### Dependencies
+tsia requires ...
+
+### User installation
+If you already have a working installation of the aforementioned modules,
+you can easily install tsia using tsia:
+
+```
+pip install tsia
+```
+
+## Implemented features
+tsia consists of the following modules:
+
+* `markov`:
+* `network_graph`:
+* `plot`:
+
