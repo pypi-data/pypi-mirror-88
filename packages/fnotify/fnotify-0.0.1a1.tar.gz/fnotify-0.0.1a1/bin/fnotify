@@ -1,0 +1,76 @@
+#!/env/python
+"""
+A simple directory watching script that will compute the checksum for all files
+within a path and execute a change when the sum changes.
+This will not work well with large files as it reads the entire file into
+memory.
+"""
+import argparse
+import hashlib
+import os
+import signal
+import subprocess
+import time
+from os import sys
+
+
+def checksum(file_dir):
+    sums = []
+    for dir, dirs, files in os.walk(file_dir):
+
+        if '__pycache__' not in dirs:
+            for subdir in dirs:
+                sums += checksum(os.path.join(file_dir, subdir))
+            for file in files:
+                if '__pycache__' not in file_dir:
+                    sums.append(filesum(os.path.join(file_dir, file)))
+    return sums
+
+
+def filesum(path_to_file):
+    file_data = open(path_to_file, 'r',
+                     encoding='utf-8').read()
+    return hashlib.md5(str(file_data).encode('utf-8')).hexdigest()
+
+
+def inotify(file_dir, action):
+
+    sums = checksum(file_dir)
+    sum_hash = None
+    pid = 0
+    while True:
+        try:
+
+            sums = checksum(file_dir)
+
+            new_sum = hashlib.md5(
+                str(''.join(sums)).encode('utf-8')).hexdigest()
+
+            if (new_sum != sum_hash):
+                if pid > 0:
+                    os.kill(pid, signal.SIGUSR1)
+                process = subprocess.Popen(action.split(" "))
+                pid = process.pid
+            sum_hash = new_sum
+            time.sleep(1)
+        except OSError as ex:
+            print(ex)
+        except Exception as ex:
+            print(ex)
+
+
+def main():
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--dir', nargs='?', help='Directory to watch')
+        parser.add_argument('--action', nargs='?',
+                            help='Action to perform on change')
+        args = parser.parse_args()
+        inotify(args.dir, args.action)
+    except Exception as ex:
+        print(ex)
+
+
+if __name__ == '__main__':
+
+    sys.exit(main())
