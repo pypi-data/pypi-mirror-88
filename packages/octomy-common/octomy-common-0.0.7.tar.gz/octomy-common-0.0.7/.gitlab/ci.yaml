@@ -1,0 +1,56 @@
+image: python:3.7.4-alpine
+
+variables:
+  GIT_DEPTH: 1
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  RESTORE_CACHE_ATTEMPTS: 10
+  ARTIFACT_DOWNLOAD_ATTEMPTS: 10
+  GET_SOURCES_ATTEMPTS: 10
+
+cache:
+  key: one-cache-to-rule-them-all
+  paths:
+  - .cache/pip
+
+before_script:
+  - apk --no-cache --update add make bash 
+  #libffi-dev openssl-dev build-base
+  - make apk-prep
+#  - apk add --no-cache --virtual .build-deps gcc musl-dev
+#  - pip install cython
+#  - apk del .build-deps gcc musl-dev
+  
+stages:
+  - build-and-test
+  - deploy
+
+Build:
+  stage: build-and-test
+  script:
+  - make req
+  - make setup
+  - make pack
+  artifacts:
+   paths:
+   - dist
+   expire_in: 2 hours
+
+Test:
+  stage: build-and-test
+  script:
+  - make code-quality
+  - make test
+  - make --version
+  - make env
+  - make ver
+  - make info
+
+
+Deploy:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+      when: on_success
+  script:
+  - make req
+  - make push
