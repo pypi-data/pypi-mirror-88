@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: beancount-ce
+Version: 1.0.3
+Summary: Beancount statements (pdf and csv) importer for Caisse d'Epargne bank
+Home-page: https://github.com/ArthurFDLR/beancount-ce
+License: MIT
+Keywords: banking,beancount,cli-accounting,finance
+Author: Arthur Findelair
+Author-email: arthfind@gmail.com
+Requires-Python: >=3.6,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Plugins
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: beancount (>=2.2,<3.0)
+Requires-Dist: pdfminer.six (>=20200726,<20200727)
+Requires-Dist: regex (>=2020.7.14,<2021.0.0)
+Project-URL: Repository, https://github.com/ArthurFDLR/beancount-ce
+Description-Content-Type: text/markdown
+
+# Beancount Caisse d'Epargne Importer
+
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ArthurFDLR/beancount-ce/beancount-ce)](https://github.com/ArthurFDLR/beancount-ce/actions)
+[![PyPI](https://img.shields.io/pypi/v/beancount-ce)](https://pypi.org/project/beancount-ce/)
+[![PyPI - Version](https://img.shields.io/pypi/pyversions/beancount-ce.svg)](https://pypi.org/project/beancount-ce/)
+[![GitHub](https://img.shields.io/github/license/ArthurFDLR/beancount-ce)](https://github.com/ArthurFDLR/beancount-ce/blob/master/LICENSE.txt)
+[![Linting](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+`beancount-ce` provides a PDF statements importer for the bank [Caisse d'Epargne](http://www.caisse-epargne.fr) to the [Beancount](http://furius.ca/beancount/) format.
+
+## Installation
+
+```console
+    $ pip install beancount-ce
+```
+
+## Usage
+
+```python
+    IBAN_NUMBER_CE = 'FR00 1111 2222 3333 4444 5555 666'
+
+    CONFIG = [
+        CEImporter(
+            iban=IBAN_NUMBER_CE,
+            account='Assets:FR:CdE:CompteCourant',
+            expenseCat='Expenses:FIXME',    #Optional
+            creditCat='Income:FIXME',       #Optional
+            showOperationTypes=False        #Optional
+        ),
+    ]
+```
+
+## Contribution
+
+Feel free to contribute!
+
+Please make sure you have Python 3.6+ and [`Poetry`](https://poetry.eustace.io/) installed.
+
+1. Git clone the repository - `git clone https://github.com/ArthurFDLR/beancount-ce`
+
+2. Install the packages required for development - `poetry install`
+
+3. That's basically it. You should now be able to run lint checks and the test suite - `make lint test`.
+
