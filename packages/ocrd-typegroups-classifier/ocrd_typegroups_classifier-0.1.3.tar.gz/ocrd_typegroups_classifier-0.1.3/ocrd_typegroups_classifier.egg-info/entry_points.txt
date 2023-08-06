@@ -1,0 +1,4 @@
+[console_scripts]
+ocrd-typegroups-classifier = ocrd_typegroups_classifier.cli.ocrd_cli:cli
+typegroups-classifier = ocrd_typegroups_classifier.cli.simple:cli
+
