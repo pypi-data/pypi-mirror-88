@@ -1,0 +1,85 @@
+Metadata-Version: 1.1
+Name: skipchunk
+Version: 1.1.0
+Summary: Instant Knowledge Graphs from text documents.
+Home-page: https://github.com/o19s/skipchunk
+Author: Max Irwin
+Author-email: mirwin@opensourceconnections.com
+License: MIT license
+Description: # Skipchunk
+        
+        [![Pypi](https://img.shields.io/pypi/v/skipchunk.svg)](https://pypi.python.org/pypi/skipchunk)
+        
+        [![Travis build status](https://img.shields.io/travis/binarymax/skipchunk.svg)](https://travis-ci.org/binarymax/skipchunk)
+        
+        [![Documentation Status](https://readthedocs.org/projects/skipchunk/badge/?version=latest)](https://skipchunk.readthedocs.io/en/latest/?badge=latest)
+        
+        Easy search autosuggest with NLP magic.
+        
+        Out of the box it provides a hassle-free autosuggest for any corpus from scratch, and latent knowledge graph extraction and exploration.
+        
+        * Free software: MIT License
+        * Documentation: https://skipchunk.readthedocs.io.
+        
+        ## Install
+        
+        ```bash
+        pip install skipchunk
+        python -m spacy download 'en_core_web_lg'
+        python -m nltk.downloader wordnet
+        ```
+        
+        You also need to have Solr or Elasticsearch installed and running somewhere!  The current supported version is 8.4.1, but it might work on other versions.
+        
+        ## Use It!
+        
+        See the ```./example/``` folder for an end-to-end OSC blog load and query
+        
+        
+        ## Library API
+        
+        
+        ## Features
+        
+        * Identifies all the noun phrases and verb phrases in a corpus
+        * Indexes these phrases in Solr for a really good out-of-the-box autosuggest
+        * Structures the phrases as a graph so that concept-relationship-concept can be easily found
+        * Keeps enriched content ready for reindexing
+        
+        ## Credits
+        
+        Developed by Max Irwin, OpenSourceConnections https://opensourceconnections.com
+        
+        All the blog posts contained in the example directory are copyright OpenSource Connections, and may not be redistributed without permission
+        
+        =======
+        History
+        =======
+        
+        0.1.0 (2019-06-18)
+        ------------------
+        
+        * Cookie-cutted
+        
+        0.9.0 (2020-09-25)
+        ------------------
+        
+        * First release on PyPI.
+        
+        1.0.0 (2020-12-10)
+        ------------------
+        
+        * Stable API.
+        
+        1.1.0 (2020-12-10)
+        ------------------
+        
+        * Beta Release.
+        * Removal of unused alpha code.
+Keywords: skipchunk
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.8
