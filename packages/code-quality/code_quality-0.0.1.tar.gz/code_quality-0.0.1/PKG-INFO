@@ -1,0 +1,80 @@
+Metadata-Version: 1.1
+Name: code_quality
+Version: 0.0.1
+Summary: A light-weight library for testing code quality.
+Home-page: https://github.com/ArthDubey/code_quality
+Author: Arth Dubey
+Author-email: arthdubey07@gmail.com
+License: MIT
+Download-URL: https://github.com/ArthDubey/code_quality/archive/v_01.gz
+Description: ## About
+        
+        Code quality is a light weight quality check library for Python project or a Python file. It is heavily inspired by the
+        books of Robert C. Martin. It can be used as a consistent measure for readability and maintainability.
+        
+        How many times have you seen bulky functions, inconsistent casing for variables, long if-else chains and thought to
+        yourself if there was a way to weed out such things before they make it to the Production environment...
+        Well here's my answer to that. Feel free to use this as a check for your projects.
+        
+        Code quality will rate your projects on different parameters and also provide possible resolutions if any parameter
+        score is low. The vision behind this tool is to not have readability and maintainability as best practices, but an
+        industry standard.
+        
+        ## Installation and getting started
+        
+        # Install
+        
+        pip install code-quality
+        
+        # Using
+        
+        python -m code_quality -d {{your project to test}}
+        
+        ## Features
+        
+        - Checks for readability by the principles defined by Robert C. Martin et al. Gives out a report with different scores.\
+        - Very lightweight and blazing fast tests. Optimized for heavy repositories.\
+        - Gives out Possible resolution in case any paramter is lower than it should be. (As this is the first version, this feature
+          is very limited)
+        
+        ## Technologies
+        
+        The following tools were used in this project:
+        
+        - [Python](https://python.org/)
+        
+        ## Requirements
+        
+        Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Python](https://python.org/) installed.
+        
+        ## Starting For Developers
+        
+        bash
+        
+        # Clone this project
+        
+        $ git clone https://github.com/ArthDubey/code_quality
+        
+        # Access
+        
+        $ cd code_quality
+        
+        # Install dependencies
+        
+        $ pip install -r requirements.txt
+        
+        # Run the project
+        
+        $ python -m code_quality -d {{project_filepath}}
+        
+        # Report will be generated in terminal
+        
+        ##License
+        
+        This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
+        
+Keywords: test,quality,principles,linter,testing
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
