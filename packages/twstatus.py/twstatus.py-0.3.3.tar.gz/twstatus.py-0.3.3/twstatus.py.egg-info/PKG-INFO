@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: twstatus.py
+Version: 0.3.3
+Summary: Get information about teeworlds/ddnet servers.
+Home-page: https://github.com/edg-l/twstatus.py
+Author: Edgar
+Author-email: git@edgarluque.com
+License: MIT
+Description: # twstatus.py
+        > Get the server information of teeworlds servers.
+        
+        Tested on vanilla and ddnet based servers.
+        
+        `pip install twstatus.py`
+        
+        ```python
+        from twstatus import ServerHandler
+        import asyncio
+        
+        server = ServerHandler("1.1.1.1", 8303)
+        
+        async def main():
+            print(vars(await server.get_info()))
+        
+        # Note: asyncio.run is only available on 3.7+
+        # https://docs.python.org/3/library/asyncio-task.html#id3
+        asyncio.run(main())
+        ```
+        
+Keywords: teeworlds,servers,info,asyncio
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Utilities
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
