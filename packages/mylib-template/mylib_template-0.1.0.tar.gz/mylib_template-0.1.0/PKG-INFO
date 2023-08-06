@@ -1,0 +1,108 @@
+Metadata-Version: 2.1
+Name: mylib_template
+Version: 0.1.0
+Summary: A template for Python projects
+Home-page: https://github.com/ccampguilhem/python-project-template
+Author: Cédric Campguilhem
+Author-email: cedric.campguilhem@gmail.com
+License: UNKNOWN
+Description: # A template for Python projects
+        
+        The purpose of this project is just to suggest a layout for Python projects including:
+        
+        - source code
+        - tests
+        - deployment
+        
+        ## Distribution
+        
+        I have followed the tutorial provided [here](https://packaging.python.org/tutorials/packaging-projects/) to 
+        configure the package deployment and installation. This is using the 
+        [setuptools](https://setuptools.readthedocs.io/en/latest/) library.
+        
+        Make sure to have the latest version of setuptools:
+        
+        ```bash
+        conda install setuptools wheel
+        pip install --upgrade setuptools wheel
+        ```
+        
+        The version, build and commit identifier are automatically collected when running the `setup.py` module. It is 
+        assumed that the project is using git as revision control system.
+        
+        To install the package from the source tree, you can simply use pip:
+        
+        ```bash
+        pip install .
+        ```
+        
+        Or you can install the package such as Python looks into your source tree for the latest version:
+        
+        ```bash
+        pip install --editable .
+        ```
+        
+        To generate distributions:
+        
+        ```bash
+        python setup.py sdist bdist_wheel
+        ```
+        
+        The full list of classifiers can be found [here](https://pypi.org/pypi?%3Aaction=list_classifiers).
+        
+        ## Upload to Python Package Index
+        
+        This package is uploaded into Test PyPi, the procedure is the following one:
+        
+        Make sure to create an account by going [there](https://test.pypi.org/account/register/).
+        Then generate an API token from the account settings of Test PyPi.
+        Store the Token API into the `$HOME/.pypirc` configuration file:
+        
+        ```ini
+        [testpypi]
+        username = __token__
+        password = pypi-...
+        ```
+        
+        Then make sure you have `twine` installed:
+        
+        ```bash
+        conda install twine
+        pip install --upgrade twine
+        ```
+        
+        Build the distribution packages you want to upload:
+        
+        ```bash
+        python setup.py sdist bdist_wheel
+        ```
+        
+        ## Tests
+        
+        I use [pytest](https://docs.pytest.org/en/stable/) for testing, the test cases are collected into the `tests` folder. 
+        To run the tests from the source tree
+        
+        ```bash
+        PYTHONPATH=./src:${PYTHONPATH} pytests ./tests
+        ```
+        
+        If instead you want to run tests for the installed version:
+        
+        ```bash
+        pytests ./tests
+        ```
+        
+        
+        
+        
+        
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
