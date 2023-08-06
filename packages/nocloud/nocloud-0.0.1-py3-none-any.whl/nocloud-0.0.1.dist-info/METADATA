@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: nocloud
+Version: 0.0.1
+Summary: Tools for creating a NoCloud image.
+Home-page: https://github.com/lungj/nocloud
+Author: jonathan lung
+Author-email: lungj@heresjono.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.4
+Description-Content-Type: text/markdown
+Requires-Dist: pycdlib
+Requires-Dist: pyvhd
+
+NoCloud image creator
+=====================
+A library and CLI tool for creating NoCloud images.
+
+
