@@ -1,0 +1,89 @@
+Metadata-Version: 2.1
+Name: django-walrus
+Version: 0.0.3
+Summary: Add assignment expressions (walrus operator) to Django templates
+Home-page: https://github.com/bmispelon/django-walrus
+Author: Baptiste Mispelon
+Author-email: bmispelon@gmail.com
+License: UNKNOWN
+Project-URL: Bug Reports, https://github.com/bmispelon/django-walrus/issues
+Project-URL: Source, https://github.com/bmispelon/django-walrus/
+Project-URL: Funding, https://www.djangoproject.com/fundraising/
+Description: # django-walrus
+        
+        
+        
+        
+        
+        ## Installation
+        
+        
+        
+        1) `pip install django-walrus`
+        
+        2) Add `walrus` to your settings's `INSTALLED_APPS`
+        
+        3) That's it. Now you can go for a swim in ice-cold water, or maybe hunt a penguin.
+        
+        
+        
+        ## Usage
+        
+        
+        
+        Once `django-walrus` is installed, you can use the power of the
+        
+        [walrus operator](https://docs.python.org/3/reference/expressions.html?highlight=walrus#assignment-expressions)
+        
+        in your template's `{% if %}` statements:
+        
+        
+        
+        ```django
+        
+        {% if result := my_mode.some_expensive_method %}
+        
+            Wow, check out this result: {{ result }}.
+        
+        {% else %}
+        
+            Nothing to see here.
+        
+        {% endif %}
+        
+        ```
+        
+        
+        
+        ## Is this real?
+        
+        
+        
+        As real as a two ton polar mammal.
+        
+        
+        
+        ## Optimized
+        
+        
+        
+        You can activate some optimizations by setting `WALRUS_OPTIMIZED=1` in your shell
+        
+        environment.
+        
+Keywords: django,walrus,assignment expression
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Framework :: Django
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.5, <4
+Description-Content-Type: text/markdown
+Provides-Extra: dev
