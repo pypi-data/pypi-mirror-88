@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: fuse-grader
+Version: 0.1.2
+Summary: Student side assignment grader engine.
+Home-page: https://github.com/Anyesh/fusegrader
+Author: Anish Shrestha
+Author-email: anishshrestha@fusemachines.com
+Requires-Python: >=3.7,<4.0
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: dynaconf
+Requires-Dist: fire
+Requires-Dist: loguru
+Requires-Dist: numpy (>=1.19.4,<2.0.0)
+Requires-Dist: requests (>=2.25.0,<3.0.0)
+Project-URL: Bug Tracker, https://github.com/Anyesh/fusegrader/issues
+Project-URL: Documentation, https://github.com/Anyesh/fusegrader/blob/master/docs/readme.rst
+Project-URL: Repository, https://github.com/Anyesh/fusegrader
+Description-Content-Type: text/x-rst
+
+==========
+fusegrader
+==========
+
+
+
+Student side assignment grader engine.
+
+
+
+Features
+--------
+
+* TODO
+
