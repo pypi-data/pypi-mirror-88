@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: seasonal-behavior-deviation
+Version: 0.1.4
+Summary: An Anomaly Detection Technique for Seasonal Time Series.
+Home-page: https://github.com/jannikfr/seasonal_behavior_deviation
+Author: Jannik Frauendorf
+Author-email: jannik.frauendorf@uni-konstanz.de
+License: mit
+Project-URL: Documentation, https://github.com/jannikfr/seasonal_behavior_deviation
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Requires-Python: >=3.7
+Description-Content-Type: text/x-rst; charset=UTF-8
+Provides-Extra: testing
+Requires-Dist: pytest ; extra == 'testing'
+Requires-Dist: pytest-cov ; extra == 'testing'
+
+===========================
+seasonal-behavior-deviation
+===========================
+
+
+A technique to detect anomalies in seasonal time series data. Find an example notebook `here <https://github.com/jannikfr/seasonal_behavior_deviation/blob/master/examples/01_basic_example.ipynb>`_.
+
