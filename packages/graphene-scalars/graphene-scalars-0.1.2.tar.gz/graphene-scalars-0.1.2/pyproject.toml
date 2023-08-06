@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "graphene-scalars"
+version = "0.1.2"
+description = ""
+authors = ["Alfredo Poveda <alfpovsistemas@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+graphene = "^2.1.8"
+pydantic = {extras = ["email", "typing_extensions"], version = "^1.7.3"}
+phonenumbers = "^8.12.14"
+
+[tool.poetry.dev-dependencies]
+pytest = "^4.6"
+black = {version = "^20.8b1", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

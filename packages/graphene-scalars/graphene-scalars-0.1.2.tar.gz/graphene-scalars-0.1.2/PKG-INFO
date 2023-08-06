@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: graphene-scalars
+Version: 0.1.2
+Summary: 
+Author: Alfredo Poveda
+Author-email: alfpovsistemas@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: graphene (>=2.1.8,<3.0.0)
+Requires-Dist: phonenumbers (>=8.12.14,<9.0.0)
+Requires-Dist: pydantic[typing_extensions,email] (>=1.7.3,<2.0.0)
