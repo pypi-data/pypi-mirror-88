@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: backend.ai-monitor-datadog
+Version: 0.2.1
+Summary: Backend.AI Statistics Monitoring Plugin with Datadog
+Home-page: https://backend.ai
+Author: Lablup Inc.
+Author-email: joongi@lablup.com
+License: LGPLv3
+Project-URL: Documentation, https://docs.backend.ai
+Description: # Backend.AI Statistics Monitoring Plugin with Datadog
+        
+        ## Installation
+        
+        Just `pip install backend.ai-monitor-datadog` inside the virtualenv of the Backend.AI Manager and Agent.
+        
+        ## Configuration
+        
+        Set the following etcd configurations via the manager cli:
+        ```
+        backend.ai mgr etcd put config/plugins/stats_monitor/datadog/datadog_api_key "..."
+        backend.ai mgr etcd put config/plugins/stats_monitor/datadog/datadog_app_key "..."
+        ```
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Environment :: No Input/Output (Daemon)
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: build
+Provides-Extra: test
+Provides-Extra: dev
+Provides-Extra: ci
