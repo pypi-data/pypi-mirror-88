@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: mpilot
+Version: 1.0.0b1
+Summary: MPilot is a plugin-based, environmental modeling framework
+Home-page: https://github.com/consbio/mpilot
+License: MIT
+Author: Conservation Biology Institute
+Requires-Python: >=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: click (>=7.1.2,<8.0.0)
+Requires-Dist: netCDF4 (>=1.5.4,<2.0.0)
+Requires-Dist: numpy (>=1.16.6,<2.0.0); python_version >= "2.7" and python_version < "2.8"
+Requires-Dist: numpy (>=1.19.4,<2.0.0); python_version >= "3.6"
+Requires-Dist: ply (>=3.11,<4.0)
+Requires-Dist: six (>=1.15.0,<2.0.0)
+Project-URL: Repository, https://github.com/consbio/mpilot
+Description-Content-Type: text/markdown
+
+# mpilot
+MPilot is a plugin-based, environmental modeling framework
+
