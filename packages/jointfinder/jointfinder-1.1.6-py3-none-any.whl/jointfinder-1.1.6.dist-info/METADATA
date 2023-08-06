@@ -1,0 +1,153 @@
+Metadata-Version: 2.1
+Name: jointfinder
+Version: 1.1.6
+Summary: Find edge-to-edge and edge-to-surface joints of planar polygons
+Home-page: https://github.com/SiDODOL/jointfinder
+Author: Dr Z. Y. Tay & J. Hadi
+Author-email: januwar.hadi@singaporetech.edu.sg
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8.5
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: numba
+Requires-Dist: tqdm
+Requires-Dist: matplotlib
+
+# jointfinder
+
+This package finds edge-to-edge and edge-to-surface joints of planar polygons. 
+
+
+## Quickstart
+
+This package accepts list of dictionaries as input. Each dictionary should have these elements: 
+- [x] `name` part name
+- [x] `points` sequential points that make up a polygon in 3D cartesian coordinates, all points must be on a same plane (minimum 3 unique points per polygon)
+- [ ] `plane` (optional) plane unit vector (left hand thumb direction, sequential points being the fingers)
+- [ ] `depth` (optional, default: 0) polygon's thickness
+All scalars must be integer or float
+
+```
+polygons = []
+
+# polygon name is #42
+polygons += [{'name': 42, 
+              'points': [[0, 0, 0], [0, 20, 0], [20, 20, 0], [20, 0, 0]]}]
+
+# polygon name is #43
+polygons += [{'name': 43, 
+              'points': [[20, 0, 0], [20, 20, 0], [40, 20, 0], [40, 0, 0]]}]
+
+polygons
+
+```
+![two squares list of dictionaries](img/01_dicts_list_2_squares.png)
+
+Create `JointFinder` object. `polygons` input is tabulated as pandas dataframe. Accessible as object property `df`. Refer to [pandas](https://pypi.org/project/pandas/) for more information on pandas. 
+
+```
+from jointfinder import jf
+
+JF = jf.JointFinder(polygons)
+JF.df
+
+```
+![two squares df](img/02_df_2_squares.png)
+
+Use plotting tool from `util` to view input polygons. 
+
+```
+from jointfinder import util
+
+util.plot(JF.df)
+
+```
+![two squares plot](img/03_plot_2_squares.png)
+
+Use `find_joint()` object function to run for solution. 
+
+```
+joints = JF.find_joint()
+joints
+
+```
+![two squares output](img/04_out_2_squares.png)
+
+Output is pandas dataframe. Suffices A and B in columns indicate indices, which polygon makes joint with which other polygon. Polygon A's edge makes a joint with polygon B's edge or surface. Each dataframe row indicates where a joint exists (x0, y0, z0 to x1, y1, z1). Column type indicates if it is a butt joint (1: edge to edge) or t-joint (0: edge to surface). 
+
+
+## Dataframe as Input
+
+Alternatively, users can create their dataframe themselves (or parse to from other sources) to input directly to `JointFinder` as it also accepts pandas dataframe as input (in addition to list of dictionaries). Do take note that the format must follow convention of object property `df`. 
+
+To simulate, use `util.create_dummy_block()` for test dataframe. 
+
+```
+df = util.create_dummy_parts()
+util.plot(df)
+
+```
+![one block plot](img/05_plot_1_block.png)
+
+Similarly, create `JointFinder` object with test dataframe then run `find_joint()` object function. 
+
+```
+JF = jf.JointFinder(df)
+joints = JF.find_joint()
+joints
+
+```
+![one block output](img/06_out_1_block.png)
+
+Default test dataframe has three squares that make up a block with t-joints. To create more, pass number of rows and columns as `x` and `y` arguments to tile them. 
+
+E.g. `util.create_dummy_block(x=2, y=1)` creates blocks tiled in 2 x 1. 
+
+![2x1 block plot](img/07_plot_2x1_block.png)
+
+```
+from jointfinder import jf, util
+
+df = util.create_dummy_block(x=50, y=50)
+JF = jf.JointFinder(df)
+joints = JF.find_joint()
+joints
+
+```
+![50x50 block output](img/08_out_50x50_block.png)
+
+
+## Handling Large Dataframe
+
+It is advised to run the module's `jf` directly from shell or console to better benefit from computing concurrency. Prior to running, the dataframe location must be first pickled (made persistent). Alternatively, it may also be accessed from memory location which user must find out manually. Input system argument `dpath` to indicate where the pickled dataframe is or from memory. Output will be saved in path stated in `tpath`.
+
+```
+util.save_df(df, 'test.pkl')
+!python -m jointfinder.jf dpath=test.pkl tpath=test_result.pkl
+
+```
+![50x50 block output shell](img/09_out_50x50_block.png)
+
+As output is also pickled, use `util.load_df()` to load dataframe back to a variable. User may also export the result to other formats such as csv. 
+
+```
+result = util.load_df('test_result.pkl')
+result.to_csv('test_result.csv')
+
+```
+
+
+## About
+
+Beta version, v1.x.x, has limited features. Full release is from v1.2.0 onwards. 
+Please visit https://github.com/SiDODOL/jointfinder after full release. 
+
+Singapore Institute of Technology. 
+Email: zhiyung.tay@singaporetech.edu.sg; januwar.hadi@singaporetech.edu.sg
+
+
