@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: ilkbyte
+Version: 1.0.1
+Summary: Ilkbyte python client
+Home-page: https://github.com/bkayranci/ilkbyte-python-client
+Author: Türkalp Burak Kayrancıoğlu
+Author-email: bkayranci@gmail.com
+License: UNKNOWN
+Description: # Ilkbyte Python Client
+        
+        ## Installation
+        ```terminal
+        pip install ilkbyte
+        ```
+        
+        ## Usage
+        ```python
+        from ilkbyte.client import Ilkbyte
+        ilkbyte = Ilkbyte(
+            host='https://api.ilkbyte.com/',
+            secret_key='SECRET',
+            access_key='ACCESS'
+        )
+        
+        print(ilkbyte.get_all_servers())
+        ```
+        
+        ## Development
+        ```terminal
+        pip install -r requirements.txt
+        ```
+        
+        ## Test
+        ```terminal
+        python -m unittest
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
