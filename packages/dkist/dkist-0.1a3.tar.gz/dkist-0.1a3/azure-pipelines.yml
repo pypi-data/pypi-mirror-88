@@ -1,0 +1,65 @@
+name: $(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.rr)
+variables:
+  CI_NAME: Azure Pipelines
+  CI_BUILD_ID: $(Build.BuildId)
+  # These will need to be changed for your project.
+  CI_BUILD_URL: "https://dev.azure.com/DKISTDC/dkist/_build/results?buildId=$(Build.BuildId)"
+  PIP_EXTRA_INDEX_URL: "https://pkgs.dev.azure.com/sunpy/ndcube/_packaging/ndcube/pypi/simple/"
+
+# These resources need to be setup on the Azure Pipeline website
+# as a service connection (if it has not been already).
+resources:
+  repositories:
+  - repository: OpenAstronomy
+    type: github
+    endpoint: DKISTDC
+    name: OpenAstronomy/azure-pipelines-templates
+    ref: master
+
+trigger:
+  branches:
+    include:
+    - '*'
+    exclude:
+    - '*backport*'
+  tags:
+    include:
+    - 'v*'
+
+jobs:
+- template: run-tox-env.yml@OpenAstronomy
+  parameters:
+    coverage: codecov
+    envs:
+      - macos: py38
+        name: macos_38
+
+      - linux: py37
+        name: linux_37
+
+      - linux: py38
+        name: linux_38
+
+      - linux: codestyle
+
+
+- ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+  - template: publish.yml@OpenAstronomy
+    parameters:
+      # Only Upload to PyPI on tags
+      ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
+        pypi_connection_name : 'PyPI'
+      # Upload to artifacts on master only
+      ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+        artifact_project : 'dkist'
+        artifact_feed : 'dkistpypi'
+        remove_local_scheme: true
+      # We can't run sdist tests here until we have pypi deps to rely on
+      #test_command: 'pytest -p no:warnings --pyargs dkist'
+      targets:
+        - sdist
+        - wheels_universal
+      dependsOn:
+        - linux_37
+        - linux_38
+        - macos_38
