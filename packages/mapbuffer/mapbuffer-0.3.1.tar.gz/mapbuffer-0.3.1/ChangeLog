@@ -1,0 +1,75 @@
+CHANGES
+=======
+
+0.3.1
+-----
+
+* chore: fix appveyor artifact collection
+
+0.3.0
+-----
+
+* chore: update changelog
+* feat: support for mmapped files
+* fix: try to make this compile under windows
+* chore: update build system
+* compile: dont bother with 32 bit windows
+* fix: windows uses cl for compilation
+* fix: no python dir in this appveyor deployment
+
+0.2.0
+-----
+
+* chore: update unit in perf tests from sec to msec
+* test: ensure "not in" is tested as well as "in"
+* chore: add .DS\_Store to gitignore
+* chore: add changelog authors
+* chore: add requirements\_dev.txt
+* chore: add appveyor
+* chore: introduce tox, drop py27
+* chore: add build system
+* test: check for missing keys
+* fix: ensure missing keys return -1
+* docs: update perf chart for c-ext
+* perf: use C ext to improve index lookup
+* test: ensure that empty buffer key access errors
+* feat: add \_\_contains\_\_ and get
+* docs: add version badge
+
+0.1.1
+-----
+
+* fix: explainatory text was in the wrong place
+* docs: add benchmark pic
+* chore: added benchmarks
+* perf: slightly faster mapbuf construction
+* docs: discuss design
+* docs: link to flexbuffers
+* docs: versus flexbuffers
+* docs: add installation instructions
+
+0.1.0
+-----
+
+* docs: document compress parameter
+* docs: show how to use compression and frombytesfn
+* docs: fix header example
+* docs: example of header
+* docs: comment on design
+* Eytzinger Ordering (#4)
+* perf: reduce memory usage of MapBuffer
+* perf: faster compress test
+* fix: compute datasize correctly
+* fix: .items() and compression
+* fix: issues in validation
+* redesign: only support uint64 keys for now
+* perf: tweaks to speed things up more
+* fix: various crashing issues
+* feat: add lzma to compression methods
+* feat: add magic numbers, format version, and compression support
+* chore: restructure, introduce compression, change license to BSD
+* feat: add validate function
+* docs: update tagline
+* docs: add descriptions to functions
+* Initial upload of MapBuffer prototype
+* Initial commit
