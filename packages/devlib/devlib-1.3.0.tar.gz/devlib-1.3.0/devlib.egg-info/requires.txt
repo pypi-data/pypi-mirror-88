@@ -1,0 +1,43 @@
+future
+paramiko
+pexpect>=3.3
+pyserial
+python-dateutil
+scp
+wrapt
+
+[:python_version < "3"]
+numpy<=1.16.4
+pandas<=0.24.2
+
+[:python_version < "3.0"]
+contextlib2
+
+[:python_version < "3.4"]
+enum34
+
+[:python_version > "3"]
+pandas
+
+[:python_version >= "3"]
+numpy
+
+[acme]
+numpy
+pandas
+
+[daq]
+daqpower>=2
+
+[doc]
+sphinx
+
+[full]
+daqpower>=2
+numpy
+pandas
+python-gflags
+sphinx
+
+[monsoon]
+python-gflags
