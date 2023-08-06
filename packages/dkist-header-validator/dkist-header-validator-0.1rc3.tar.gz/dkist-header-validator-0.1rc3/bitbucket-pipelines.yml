@@ -1,0 +1,44 @@
+# Build Configuration for python package deployment to pypi
+image: python:3.8
+
+definitions:
+  steps:
+    - step: &lint
+        caches:
+          - pip
+        name: Lint
+        script:
+          - pip install pre-commit
+          - pre-commit install
+          - pre-commit run --all-files
+    - step: &test
+        name: Test
+        script:
+          - pip install .[test]
+          - pytest --cov dkist_header_validator
+    - step: &scan
+        caches:
+          - pip
+        name: Scan
+        script:
+          - pip install .
+          - pip install safety
+          - safety check --full-report
+    - step: &publish
+        name: Publish
+        script:
+          - python setup.py sdist
+          - pip install twine
+          - twine upload dist/*
+
+pipelines:
+  default:
+    - step: *lint
+    - step: *test
+    - step: *scan
+  tags:
+    'v*':
+      - step: *lint
+      - step: *test
+      - step: *scan
+      - step: *publish
