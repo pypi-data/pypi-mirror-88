@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: ssh-proxy-server
+Version: 0.3.0
+Summary: ssh mitm proxy server
+Home-page: https://ssh-mitm.logfile.at/
+Author: Manfred Kaiser
+Author-email: ssh-mitm@logfile.at
+License: UNKNOWN
+Project-URL: Source, https://github.com/ssh-mitm/ssh-proxy-server
+Project-URL: Tracker, https://github.com/ssh-mitm/ssh-mitm/issues
+Description: # ssh-proxy-server - SSH MITM Proxy Server
+        
+        ## This package was renamed to ssh-mitm!
+        
+        You can install this package, which will install ssh-mitm.
+        
+        `ssh-proxy-server` is an intercepting ssh mitm proxy server
+        
+Keywords: ssh mitm proxy audit network security
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Topic :: System :: Networking
+Classifier: Development Status :: 4 - Beta
+Requires-Python: >= 3.6
+Description-Content-Type: text/markdown
