@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: atccondition
+Version: 0.5
+Summary: A Pip Package for Akamai Test Center Condition
+Home-page: https://github.com/Achuthananda/AkamaiTestCondition
+Author: Achuthananda M P
+Author-email: achuthadivine@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+# A Python Class for Akamai Test Center Conditions
+An Object oriented implementation of ATC Condition.
+Akamai Condition class helps application developers in not knowing about the API calls and their usage.
+
+
+### Credentials
+In order to use this configuration, you need to:
+* Set up your credential files as described in the [authorization](https://developer.akamai.com/introduction/Prov_Creds.html) and [credentials](https://developer.akamai.com/introduction/Conf_Client.html) sections of the getting started guide on developer.akamai.com.  
+* When working through this process you need to give grants for the property manager API and the User Admin API (if you will want to move properties).  The section in your configuration file should be called 'default'.
+
+## Overview
+An Object oriented implementation of ATC Condition.
+Akamai Condition class helps application developers in not knowing about the API calls and their usage.
+
+
+## Install Dependencies If you are using source code.
+```
+$ pip install -r requirements.txt
+```
+
+### Install pip package available
+```
+$ pip install atccondition
+```
+
+## Instantiate the object.
+```
+>>> from atccondition import ATCCondition
+>>> atcCondition = ATCCondition("/Users/apadmana.edgerc","<accountSwitchKey>")
+```
+
+## Create Response Code condition
+```
+>>> atcCondition.responseCode([200,401])
+12345
+```
+## Create a new version
+```
+>>> atcCondition.redirect([301,302],'redirect.akamai.com')
+12355
+```
+
+## Class Definition
+```
+class ATCCondition():
+    def __init__(self,edgercLocation,accountSwitchKey=None):
+
+    def listConditions(self)
+    def deleteCondition(self,conditionId)
+    def deleteAllConditions(self)
+    def responseCode(self,responsecodelist)
+    def redirect(self,redirect_code_list,location)
+    def tieredDistribution(self,isenabled)
+    def logHeader(self,headerName,isenabled)
+    def cookiesLogged(self,isenabled,cookieName=None)
+    def lastMileAcceleration(self,isgzipped)
+    def cache(self,option,ttl=None)
+    def responseHeaderExists(self,headerName)
+    def responseHeaderDoesNotExist(self,headerName)
+    def responseHeaderHasNoValue(self,headerName)
+    def getHasValueCondition(self,isHeader,varname,operator,varvalue)
+    def responseHeaderBeginsWith(self,headerName,headerValue)
+    def responseHeaderDoesntNotBeginWith(self,headerName,headerValue)
+```
+
+
