@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: bpmscan
+Version: 0.1.2
+Summary: Measures heart rate of multiple person realtime from Webcamera, IPCamera and also from from Uploaded video
+Home-page: https://github.com/coderganesh/heartpi
+Author: Ganesh Kumar T K
+Author-email: ganeshkumartk@outlook.com
+License: MIT
+Description: # BPMScan
+        
+        Ever imagined that from a video footage can you measure heart rate of a person? Well, Yeah! It is possible and the technology behind that is Remote-photoplethysmography (rPPG) and Face tracking. Try Out :)
+        
+        # Installation
+        
+        ```bash
+        $ pip3 install bpmscan
+        ```
+        
+        # Usage
+        
+        ```bash
+        $ bpmscan #Defaults to webcam(camera_id=0)
+        $ bpmscan [camera_id, ipcamera_address, video_file_path] #Optional to use
+        ```
+        
+        # Disclaimer
+        
+        This project is made for a coursework and represents only educational usage. This should not be used as a means of medical instrument, software or as a reference to measure any health vitals as this is under development and may give errenous result. The author is not responsible for any incidents occuring after violating this Disclaimer. 
+        
+Keywords: rPPG heartbeat webcam
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3 :: Only
+Description-Content-Type: text/markdown
