@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: veins-gym
+Version: 0.1.0
+Summary: Reinforcement Learning-based VANET simulations
+Home-page: https://www2.tkn.tu-berlin.de/software/veins-gym/
+Author: Dominik S. Buse
+Author-email: buse@ccs-labs.org
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+Veins-Gym
+=========
+
+Veins-Gym exports Veins simulations as Open AI Gyms.
+This enables the application of Reinforcement Learning algorithms to solve problems in the VANET domain, in particular popular frameworks such as Tensorflow or PyTorch. 
+
+License
+-------
+This project is licensed under the terms of the GNU General Public License 2.0.
+
+
