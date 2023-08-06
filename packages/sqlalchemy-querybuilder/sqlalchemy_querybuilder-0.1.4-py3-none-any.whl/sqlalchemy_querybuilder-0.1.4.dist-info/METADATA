@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: sqlalchemy-querybuilder
+Version: 0.1.4
+Summary: Build sqlalchemy queries from jQuery-Query json
+Home-page: https://sr.ht/~ocurero/sqlalchemy-querybuilder/
+License: Apache-2.0
+Keywords: sqlalchemy,jquery,json,querybuilder
+Author: Oscar Curero
+Author-email: oscar@curero.es
+Requires-Python: >=3.6,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Libraries
+Requires-Dist: sqlalchemy
+Project-URL: Documentation, https://sqlalchemy-querybuilder.readthedocs.io/
+Project-URL: Repository, https://hg.sr.ht/~ocurero/sqlalchemy-querybuilder
+Description-Content-Type: text/markdown
+
+SQLAlchemy query builder for jQuery QueryBuilder
+================================================
+
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![builds.sr.ht status](https://builds.sr.ht/~ocurero/sqlalchemy-querybuilder/.build.yml.svg)](https://builds.sr.ht/~ocurero/sqlalchemy-querybuilder/.build.yml?) [![codecov](https://codecov.io/gh/ocurero/sqlalchemy-querybuilder/branch/master/graph/badge.svg)](https://codecov.io/gh/ocurero/sqlalchemy-querybuilder) [![readthedocs](https://readthedocs.org/projects/sqlalchemy-querybuilder/badge/?version=latest&style=flat)](https://sqlalchemy-querybuilder.readthedocs.io/)
+
+This package implements a sqlalchemy query builder for json data
+generated with (but not limited to) [`jQuery QueryBuilder`](http://querybuilder.js.org/).
+
+* Open Source: Apache 2.0 license.
+* Website: <https://sr.ht/~ocurero/sqlalchemy-querybuilder/>
+* Documentation: <https://sqlalchemy-querybuilder.readthedocs.io/>
+
+Quickstart
+----------
+
+Using **sqlalchemy-querybuilder** is very simple:
+
+```python
+
+from sqlalchemy_querybuilder import Filter
+from myapp import models, query
+
+    rules = {
+            "condition": "OR",
+            "rules": [{
+                       "field": "mytable.myfield",
+                       "operator": "equal",
+                       "value": "foo"
+                       },
+                      ],
+             }
+
+    myfilter = Filter(models, query)
+    print(myfilter.querybuilder(rules))
+```
+
