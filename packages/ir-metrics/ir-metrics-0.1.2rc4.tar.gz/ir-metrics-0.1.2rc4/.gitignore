@@ -1,0 +1,11 @@
+# python related
+*.pyc
+*.egg-*
+.eggs
+.python-version
+.coverage
+.idea
+
+# CI-builds
+coverage.xml
+dist/
