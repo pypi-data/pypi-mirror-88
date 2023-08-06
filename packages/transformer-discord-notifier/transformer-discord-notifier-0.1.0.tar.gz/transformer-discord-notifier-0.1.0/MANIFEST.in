@@ -1,0 +1,15 @@
+graft docs
+graft src
+
+include .bumpversion.cfg
+include .editorconfig
+
+include AUTHORS.rst
+include CHANGELOG.rst
+include CONTRIBUTING.rst
+include LICENSE
+include README.rst
+
+include .readthedocs.yml .pre-commit-config.yaml
+
+global-exclude *.py[cod] __pycache__/* *.so *.dylib
