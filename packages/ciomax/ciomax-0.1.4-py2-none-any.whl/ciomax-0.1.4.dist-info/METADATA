@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: ciomax
+Version: 0.1.4
+Summary: Max plugin for Conductor Cloud Rendering Platform.
+Home-page: https://github.com/AtomicConductor/conductor-max
+Author: conductor
+Author-email: info@conductortech.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python
+Classifier: Topic :: Multimedia :: Graphics :: 3D Rendering
+Requires-Python: ~=2.7
+Description-Content-Type: text/markdown
+Requires-Dist: ciocore (<1.0.0,>=0.2.15)
+
+# Conductor for 3DS Max
+
+Max plugin submitter for the Conductor Cloud rendering service.
+
+## Install
+
+**To install the latest version.**
+```bash
+pip install --upgrade ciomax --target=$HOME/Conductor
+```
+
+**To install a specific version, for example 0.1.0.**
+```bash
+pip install --upgrade --force-reinstall ciomax==0.1.0 --target=$HOME/Conductor
+```
+
+**Then setup the Plugin startup file from a windows machine.** 
+
+```bash
+python ~/Conductor/ciomax/post_install.py
+```
+
+## Usage
+
+To set up a render, go to **Rendering** menu in 3ds Max and choose **Render with Conductor**.
+
+For detailed help, checkout the [tutorial](https://docs.conductortech.com/tutorials/max) and [reference](https://docs.conductortech.com/reference/max) documentation.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit)
+
+## Changelog
+
+### Version:0.1.4 -- 17 Dec 2020
+
+* Frames info calculation working. Remove fixtures directory option (assume ~/Connductor/fixtures). [09236b6]
+
+### Version:0.1.3 -- 14 Dec 2020
+
+* Post_install to use ~ because env-vars are invalid in companion. [28d02b4]
+
+### Version:0.1.2 -- 14 Dec 2020
+
+### Version:0.1.1 -- 14 Dec 2020
+
+* Fix path variable bug in post_install. [9bc1984]
+* Fix readme. [43a20e8]
+
+### Version:0.1.0 -- 14 Dec 2020
+
+* Post_install and prep for pypi. [fbc9529]
+* Implement software section and provide dialog object to sections. [59ac89f]
+* Populate from store. [e4662c6]
+* Projects and inst types sourced from coredata. [a6197c0]
+* Wip implementing resolve. [18595ce]
+* Consolidate single sections into advanced section. [cd874de]
+* Adds destination path - plus aesthetic improvements. [bcaf90d]
+* Ct 1530 general (#3)
+
