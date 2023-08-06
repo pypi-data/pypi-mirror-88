@@ -1,0 +1,23 @@
+[build-system]
+requires = [ "poetry>=0.12",]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry]
+name = "varname"
+version = "0.5.5"
+description = "Dark magics about variable names in python."
+authors = [ "pwwang <pwwang@pwwang.com>",]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/pwwang/python-varname"
+repository = "https://github.com/pwwang/python-varname"
+[[tool.poetry.packages]]
+include = "varname.py"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+executing = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-cov = "*"
