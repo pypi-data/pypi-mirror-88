@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: requests-rest
+Version: 0.2.0
+Summary: An elegant RESTful client based on requests.
+Home-page: https://github.com/xiyusullos/requests-rest
+Author: aponder
+Author-email: i@aponder.top
+License: MIT
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6.0
+Requires-Dist: requests
+
+
+Requests-REST: A RESTful client based on requests
+=================================================
+
+This library intends to provide an elegant RESTful client.
+
+
+Installation
+============
+
+.. code-block:: shell
+
+    pip install requests-rest
+
+
+
+
