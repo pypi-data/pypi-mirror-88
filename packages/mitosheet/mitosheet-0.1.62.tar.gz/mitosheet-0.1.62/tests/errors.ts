@@ -1,0 +1,85 @@
+// Copyright (c) Mito
+// Distributed under the terms of the Modified BSD License.
+
+/*
+    Contains tests for basic, single sheet mito rendering, column additions,
+    and column editing.
+*/
+
+
+import { 
+    getTabSelector,
+    getCellSelector,
+    modalSelector,
+    modalHeaderSelector,
+    modalAdvanceButtonSelector,
+    addColumnButton,
+    getColumnHeaderNameSelector,
+    columnHeaderChangeInputSelector,
+    columnHeaderChangeErrorSelector,
+    getColumnHeaderContainerSelector,
+    errorMessageSelector,
+    modalCloseButtonSelector,
+} from './utils/selectors';
+
+import { 
+    createNotebookRunCell,
+    deleteAllNotebooks,
+    setFormula,
+} from './utils/helpers';
+
+
+fixture `Test Errors`
+    .page `http://staging.trymito.io`
+    .beforeEach( async t => {
+        await createNotebookRunCell(t, 'import pandas as pd\nimport mitosheet\ndf1 = pd.DataFrame(data={\'A\': [1, 2, 3]})\nmitosheet.sheet(df1)');
+    })
+    .afterEach(async t => {
+        // Delete notebook, at the end of the test
+        await deleteAllNotebooks(t)
+    })
+
+test('Reports errors to user', async t => {
+
+    /*
+        Tests the following errors:
+        1. Write LEFT(A), and get an error telling you to use an equals sign
+        2. Reference cell A1 instead of A, get an error correcting this
+        3. Reference column B, get a circular reference error
+        4. Write =FUNC(A), get a function does not exist error
+        5. Write =SUM(C), get a column does not exist error
+        6. Write =VLOOKUP(A) and get a invalid formula error, pointing you to merge
+    */
+
+    const formulaErrorPairs = [
+        {
+            formula: '=B',
+            error: "Sorry, circular references are not supported currently."
+        },
+        {
+            formula: '=FUNC(A)',
+            error: "Sorry, mito does not currently support the function FUNC."
+        },
+        {
+            formula: '=SUM(C)',
+            error: "Sorry, there is no column with the name C."
+        },
+        {
+            formula: '=VLOOKUP(A)',
+            error: "Instead of VLOOKUP, try using the merge button"
+        },
+    ]
+
+    await t.click(addColumnButton)
+
+    for (let i = 0; i < formulaErrorPairs.length; i++) {
+        const formula = formulaErrorPairs[i].formula;
+        const error = formulaErrorPairs[i].error;
+        await setFormula(t, formula, 'B', '0');
+        await t
+            .expect(errorMessageSelector.innerText).contains(error)
+            .click(modalCloseButtonSelector)
+    }
+    
+});
+   
