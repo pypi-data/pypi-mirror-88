@@ -1,0 +1,68 @@
+{% load static %}
+{% load i18n %}
+{% load navactive %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        {% include 'allianceauth/icons.html' %}
+
+        <title>{% block title %}{% block page_title %}{% endblock page_title %} - Alliance Auth{% endblock title %}</title>
+
+        <link rel="stylesheet" href="{% static 'tnnt_templates/css/theme/terra-nanotech/v3/css/bootstrap.min.css' %}" type="text/css">
+        {% include 'bundles/fontawesome.html' %}
+
+        <link rel="stylesheet" href="{% static 'tnnt_templates/css/terra-nanotech.min.css' %}" type="text/css">
+
+        {% block extra_css %}{% endblock extra_css %}
+        <link rel="stylesheet" href="{% static 'tnnt_templates/css/community-app-fixes.min.css' %}" type="text/css">
+
+        {% if NIGHT_MODE %}
+            <link rel="stylesheet" href="{% static 'tnnt_templates/css/terra-nanotech-dark-mode.min.css' %}" type="text/css">
+        {% endif %}
+    </head>
+
+    <body class="{% if NIGHT_MODE %}template-dark-mode{% else %}template-light-mode{% endif %}">
+        {% if user.is_authenticated %}
+            <div class="alliance-auth-background"></div>
+            <div class="alliance-auth-content">
+                <!-- Navigation -->
+                {% include 'allianceauth/top-menu.html' %}
+
+                <div class="site-body-wrapper">
+                    {% include 'allianceauth/side-menu.html' %}
+                    <div class="col-sm-10">
+                        {% if messages %}
+                            <br>
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.level_tag }}">{{ message }}</div>
+                                {% if not forloop.last %}
+                                    <br>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        {% block content %}
+                        {% endblock content %}
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% include 'bundles/bootstrap-js.html' %}
+
+        {% block extra_javascript %}
+        {% endblock extra_javascript %}
+
+        <script>
+            {% block extra_script %}
+            {% endblock extra_script %}
+        </script>
+    </body>
+</html>
