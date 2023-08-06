@@ -1,0 +1,11 @@
+include VERSION
+include unimake/package.json
+include requirements.txt
+include README.md
+include VERSION
+recursive-include unimake VERSION
+recursive-include unimake **.html
+recursive-include unimake **.j2
+recursive-include unimake **.json
+recursive-include unimake **.yaml
+recursive-include unimake **.xml

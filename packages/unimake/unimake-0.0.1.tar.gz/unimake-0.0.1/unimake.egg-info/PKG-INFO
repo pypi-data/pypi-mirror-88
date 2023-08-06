@@ -1,0 +1,82 @@
+Metadata-Version: 2.1
+Name: unimake
+Version: 0.0.1
+Summary: Command-line tool for the Unimatrix TDE
+Home-page: https://gitlab.com/unimatrixone
+Author: Cochise Ruhulessin
+Author-email: cochise.ruhulessin@unimatrixone.io
+License: UNKNOWN
+Description: # Unimake
+        
+        The `unimake` package supports the Unimake Terminal Development
+        Environment (TDE), part of the Unimatrix Framework.
+        
+        Install `unimake`:
+        
+        ```
+        $ pip install unimake
+        ```
+        
+        ## Example - bootstrap a new Python project
+        
+        All projects start by bootstrapping them using the `unimake` command-line
+        utility.
+        
+        ```console
+        # Bootstrap a project for a Python package.
+        $ python3 -m unimake bootstrap package python --name foo
+        
+        # Bootstap a project for a namespaced Python package.
+        $ python3 -m unimake bootstrap package python --name bar --namespace foo
+        
+        # Bootstrap a project for a Python application.
+        $ python3 -m unimake bootstrap application python --name foo
+        ```
+        ## Example - apply configuration to project
+        
+        If the project configuration is changed, it must be applied to the source tree.
+        
+        ```console
+        $ python3 -m unimake apply
+        ```
+        
+        ## Developing
+        
+        - Run `make env` to set up the local development environment.
+        - Run `make console` to start a Python interpreter.
+        - If new requirements are added to the project (see `git log requirements.txt`),
+          run `make depsrebuild`.
+        - Export the environment variables to a file with `make .env`. Use this command
+          when integrating with third-party IDEs such as Eclipse or VSCode. Do not check
+          in this file to the version control system - it is local to your environment
+          only.
+        - Build the technical documentation with `make documentation`.
+        - Additional targets may be specified in [`config.mk`](./config.mk).
+        
+        ## License
+        
+        Proprietary
+        
+        ## Author information
+        
+        This Python package was created by **Cochise Ruhulessin** for the
+        [Unimatrix One](https://cloud.unimatrixone.io) project.
+        
+        - [Send me an email](mailto:cochise.ruhulessin@unimatrixone.io)
+        - [GitLab](https://gitlab.com/unimatrixone)
+        - [GitHub](https://github.com/cochiseruhulessin)
+        - [LinkedIn](https://www.linkedin.com/in/cochise-ruhulessin-0b48358a/)
+        - [Twitter](https://twitter.com/magicalcochise)
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3 :: Only
+Description-Content-Type: text/markdown

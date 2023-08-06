@@ -1,0 +1,54 @@
+# {{ settings.project.title }}
+
+{{ settings.project.description }}
+
+{% if settings.project.kind == 'library' %}
+Install `{{ env.PYTHON_QUALNAME }}`:
+
+```
+$ pip install {{ env.PYTHON_QUALNAME }}
+```
+{% endif %}
+
+{% if settings.readme.examples %}
+{% for example in settings.readme.examples %}
+## Example - {{ example.name }}
+
+{% if example.description %}{{ example.description }}
+
+{% endif %}
+```{{ example.language }}
+{{ example.content }}
+```
+{% endfor %}
+{% endif %}
+
+{% block developing %}
+## Developing
+
+- Run `make env` to set up the local development environment.
+- Run `make console` to start a Python interpreter.
+- If new requirements are added to the project (see `git log requirements.txt`),
+  run `make depsrebuild`.
+- Export the environment variables to a file with `make .env`. Use this command
+  when integrating with third-party IDEs such as Eclipse or VSCode. Do not check
+  in this file to the version control system - it is local to your environment
+  only.
+- Build the technical documentation with `make documentation`.
+- Additional targets may be specified in [`config.mk`](./config.mk).
+{% endblock %}
+
+## License
+
+Proprietary
+
+## Author information
+
+This Python package was created by **Cochise Ruhulessin** for the
+[Unimatrix One](https://cloud.unimatrixone.io) project.
+
+- [Send me an email](mailto:cochise.ruhulessin@unimatrixone.io)
+- [GitLab](https://gitlab.com/unimatrixone)
+- [GitHub](https://github.com/cochiseruhulessin)
+- [LinkedIn](https://www.linkedin.com/in/cochise-ruhulessin-0b48358a/)
+- [Twitter](https://twitter.com/magicalcochise)
