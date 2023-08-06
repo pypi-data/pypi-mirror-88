@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: vpp-papi.stable
+Version: 20.9.1
+Summary: VPP Python binding
+Home-page: https://wiki.fd.io/view/VPP/Python_API
+Author: Ole Troan
+Author-email: ot@cisco.com
+License: Apache-2.0
+Platform: UNKNOWN
+Requires-Dist: cffi (>=1.6)
+
+
+Stable Versioned Python Wrapper for the VPP API
+===============================================
+
+vpp_papi has not been updated on pypi since 2018.  Incompatible changes have been introduced and the version number was not properly maintained.
+
+packages built from stable releases are available here.
+
+
+Installing
+==========
+
+.. code-block:: shell-session
+
+    python3 -m pip install vpp-papi.stable
+
+    python3
+    >>> import vpp_papi
+
+
+
+
