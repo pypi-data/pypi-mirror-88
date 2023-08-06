@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: functional-list
+Version: 0.1.0
+Summary: package for map a list
+Home-page: https://github.com/pypa/sampleproject
+Author: Andrianarivo Tantelitiana RAKOTOARIJAONA
+Author-email: tantelitiana22@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# Description
+This litle package is create to allow use to use functional style in a list object.
+It is more easier to use when we have for example to deal with a several transforrmation
+in our data. 
+
+In this little package, we can find most of function used in a list object but with map
+or reduce or flatten,... method. If you are familiar with spark rdd,
+the behavior of all of the method in this object that il create 
+with the ListMapper object is mostly the same as the method in rdd
+spark. The difference is that it includes some properties of a python list.
+
+## News
+Now a doc-string is add to this package, so you can use it 
+and have some example of how to use a method in the object
+created with ListMapper
+
+## Issues:
+you can use this package only work with __python version >=3.6__
+If you attempt to use it with anterior version, there will be
+an error.
+
+
+
+
+
