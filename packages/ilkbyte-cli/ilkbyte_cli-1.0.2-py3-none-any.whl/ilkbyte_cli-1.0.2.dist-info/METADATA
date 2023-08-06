@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: ilkbyte-cli
+Version: 1.0.2
+Summary: Ilkbyte python CLI
+Home-page: https://github.com/bkayranci/ilkbyte-cli
+Author: Türkalp Burak Kayrancıoğlu
+Author-email: bkayranci@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: typer (==0.3.2)
+Requires-Dist: ilkbyte (==1.0.2)
+Requires-Dist: tabulate (==0.8.7)
+Requires-Dist: dotty-dict (==1.3.0)
+
+# Ilkbyte CLI
+
+## Installation
+```terminal
+pip install ilkbyte-cli
+```
+
+## Usage
+```terminal
+ilkbyte config
+ilkbyte account users
+ilkbyte account --raw users
+ilkbyte server plans
+ilkbyte server plans --help
+ilkbyte server plans --package
+```
+
+## Development
+```terminal
+pip install -r requirements.txt
+```
+
+
