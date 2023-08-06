@@ -1,0 +1,94 @@
+Metadata-Version: 2.1
+Name: pyedbglib
+Version: 2.17.7.70
+Summary: Low-level protocol library for communicating with Microchip CMSIS-DAP based debuggers
+Home-page: http://www.microchip.com
+Author: Microchip Technology
+Author-email: support@microchip.com
+License: Microchip Technology Inc. Proprietary License
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Embedded Systems
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Description-Content-Type: text/markdown
+Requires-Dist: hidapi
+Requires-Dist: pyserial
+Requires-Dist: cython (<0.29.8) ; python_version <= "2.7"
+Requires-Dist: cython ; python_version >= "3"
+Provides-Extra: dev
+Requires-Dist: pylint ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: mock ; extra == 'dev'
+
+# pyedbglib
+pyedbglib is a low-level protocol library for communicating with Microchip CMSIS-DAP based debuggers
+
+## Usage
+pyedbglib does not provide any end-user functionality on its own.
+It is implemented according to the "Atmel EDBG-based Tools Protocols" document although the code and the documentation may not always be in sync.
+pyedbglib is intended to be used by Python applications communicating with Microchip target devices via Microchip CMSIS-DAP based debuggers.
+
+The following Atmel/Microchip debuggers are supported:
+* JTAGICE3 (only firmware version 3.x)
+* Atmel-ICE
+* Power Debugger
+* EDBG
+* mEDBG
+* PKOB nano (nEDBG)
+* MPLAB PICkit 4 In-Circuit Debugger (only when in 'AVR mode')
+* MPLAB Snap In-Circuit Debugger (only when in 'AVR mode')
+
+Not all debuggers support all protocols or functions within them.
+
+### Linux systems
+HIDAPI needs to build using packages: libusb-1.0.0-dev, libudev-dev
+
+Create udev rules for the debuggers:
+
+Example udev rules file
+Store in /etc/udev/rules.d
+
+```
+#HIDAPI/libusb:
+
+# JTAGICE3
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2140", MODE="0666"
+# Atmel-ICE
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2141", MODE="0666"
+# Power Debugger
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2144", MODE="0666"
+# EDBG - debugger on Xplained Pro
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2111", MODE="0666"
+# mEDBG - debugger on Xplained Mini
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2145", MODE="0666"
+# PKOB nano (nEDBG) - debugger on Curiosity Nano
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2175", MODE="0666"
+# MPLAB PICkit 4 In-Circuit Debugger
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2177", MODE="0666"
+# MPLAB Snap In-Circuit Debugger
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2180", MODE="0666"
+```
+
+pyedbglib also provides helper functions for accessing serial ports.  The user has to be part of the 'dialout' group to allow this.  This can be done by executing:
+
+```
+sudo adduser $USER dialout
+```
+
+It may also be necessary to grant read+write permission to the port, for example:
+
+```
+sudo chmod a+rw /dev/ttyACM0
+```
+
+
