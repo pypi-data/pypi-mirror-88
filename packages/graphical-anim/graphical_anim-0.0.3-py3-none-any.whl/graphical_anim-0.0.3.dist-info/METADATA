@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: graphical-anim
+Version: 0.0.3
+Summary: Python module to create graphical animations.
+Home-page: https://github.com/HuangPatrick16777216/graphical_anim
+Author: Patrick Huang and Arjun Sahlot
+Author-email: huangpatrick16777216@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: pygame
+Requires-Dist: numpy
+Requires-Dist: open-cv
+Requires-Dist: pillow
+
+# Graphical Animation
+### A command line graphical animation creator.
+
+## Features
+* Linear interpolation in shape size, location, and color
+* MP4 export
+
+## How to use
+1. Import the module:
+    * `import graphical_anim as ganim`
+2. Define a video:
+    * `video = ganim.Video(resolution, fps)`
+3. Add a layer (a rectangle in this example):
+    * `rect = ganim.shapes.Rect(location, size, color)`
+4. Insert keyframes:
+    * `rect.keyframe(frame, datapath, value)`
+    * Example: `rect.keyframe(10, "loc_x", 2.3)`
+
+## Changelog
+Version 0.0.3
+* Circle and polygon
+* Fixed minor bugs.
+
+Version 0.0.2
+* First working version
+* Rectangle and export video.
+
