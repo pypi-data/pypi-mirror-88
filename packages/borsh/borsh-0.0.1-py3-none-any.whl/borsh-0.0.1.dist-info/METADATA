@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: borsh
+Version: 0.0.1
+Summary: Borsh is an implementation of the Borsh binary serialization format for Python projects.
+Home-page: https://github.com/khorolets/borsh-py
+Author: Bohdan Khorolets
+Author-email: bogdan@khorolets.com
+License: (MIT OR Apache-2.0)
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8.5
+Description-Content-Type: text/markdown
+
+# Borsh Py
+
+Borsh Py is an implementation of the Borsh binary serialization format for Python projects.
+
+Borsh stands for Binary Object Representation Serializer for Hashing. It is meant to be used in security-critical projects as it prioritizes consistency, safety, speed, and comes with a strict specification.
+
+
