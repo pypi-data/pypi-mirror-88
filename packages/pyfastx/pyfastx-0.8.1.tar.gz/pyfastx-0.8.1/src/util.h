@@ -1,0 +1,64 @@
+#ifndef PYFASTX_UTIL_H
+#define PYFASTX_UTIL_H
+#include <Python.h>
+#include <stdint.h>
+#include "sqlite3.h"
+#include "zran.h"
+#include "zlib.h"
+#include "time.h"
+
+uint16_t file_exists(char *file_name);
+void upper_string(char *str, uint32_t len);
+uint32_t remove_space(char *str, uint32_t len);
+uint32_t remove_space_uppercase(char *str, uint32_t len);
+void reverse_seq(char *seq);
+void reverse_complement_seq(char *seq);
+
+int is_gzip_format(char *file_name);
+//void truncate_seq(char *seq, uint32_t start, uint32_t end);
+void complement_seq(char *seq);
+void reverse_seq(char *seq);
+uint32_t sum_array(uint32_t arr[], int num);
+//char *int_to_str(int c);
+int is_subset(char *seq1, char *seq2);
+//PyObject* make_large_sequence(char *seq);
+//int integer_check(PyObject* num);
+//int64_t integer_to_long(PyObject* num);
+
+//PyObject* clean_seq(PyObject *self, PyObject *args);
+//PyObject* sub_seq(PyObject *self, PyObject *args);
+char *str_n_str(char *haystack, char *needle, uint32_t len, uint32_t size);
+
+//int64_t zran_readline(zran_index_t *index, char *linebuf, uint32_t bufsize);
+void pyfastx_build_gzip_index(char* index_file, zran_index_t* gzip_index, sqlite3* index_db);
+void pyfastx_load_gzip_index(char* index_file, zran_index_t* gzip_index, sqlite3* index_db);
+
+//a simple fasta/q validator
+int fasta_validator(gzFile fd);
+int fastq_validator(gzFile fd);
+int fasta_or_fastq(gzFile fd);
+
+//read line
+/*ssize_t get_until_delim(char **buf, int delimiter, FILE *fp);
+ssize_t get_line(char **buf, FILE *fp);*/
+
+//sqlite3 compatable with python GIL
+//extracted from apsw project
+//https://github.com/rogerbinns/apsw/blob/07571365b6fbb25e2691071998526c351b04a04d/src/util.c
+/* call where no error is returned */
+#define PYFASTX_SQLITE_CALL(x) \
+	do { Py_BEGIN_ALLOW_THREADS { x; } Py_END_ALLOW_THREADS ; } while(0)
+
+#define test_time(x) \
+	do { clock_t s, e; s=clock(); x; e=clock(); fprintf(stderr, "time: %.12f\n", (double)(e-s)/CLOCKS_PER_SEC); } while(0)
+
+//support large fseek offset
+#ifdef _WIN32
+	#define FSEEK _fseeki64
+	#define FTELL _ftelli64
+#else
+	#define FSEEK fseeko
+	#define FTELL ftello
+#endif
+
+#endif
