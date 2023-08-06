@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: kolombo
+Version: 0.2.0
+Summary: Kolombo - easy to manage mail server 💌
+Home-page: https://github/HarrySky/kolombo
+Author: Igor Nehoroshev
+Author-email: hi@neigor.me
+Maintainer: Igor Nehoroshev
+Maintainer-email: hi@neigor.me
+License: Apache License 2.0
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Communications :: Email
+Classifier: Typing :: Typed
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: uvloop (==0.14.0)
+Requires-Dist: typer (==0.3.2)
+Requires-Dist: rich (==9.3.0)
+Requires-Dist: ormar (==0.7.1)
+Requires-Dist: databases (==0.4.1)
+Requires-Dist: aiosqlite (==0.16.0)
+Requires-Dist: cryptography (==3.2.1)
+Requires-Dist: fastapi (==0.62.0)
+Requires-Dist: uvicorn (==0.12.3)
+Requires-Dist: httptools (==0.1.*)
+
+# Kolombo
+
+![Kolombo Logo](https://raw.githubusercontent.com/HarrySky/kolombo/master/logo.png "Kolombo Logo")
+
+Easy to manage mail server 💌
+
+**NB! Work in progress, not ready!**
+
+## Introduction
+
+TODO
+
+
