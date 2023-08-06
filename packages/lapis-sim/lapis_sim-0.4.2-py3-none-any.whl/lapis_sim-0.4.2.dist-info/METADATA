@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: lapis-sim
+Version: 0.4.2
+Summary: Lapis is an adaptable, performant, and interactive scheduling (Lapis) simulator
+Home-page: https://matterminers.github.io
+License: MIT
+Keywords: htcondor,simulation,tardis,opportunistic,scheduling
+Author: Eileen Kuehn, Max Fischer
+Author-email: mainekuehn@gmail.com
+Maintainer: MatterMiners
+Maintainer-email: matterminers@lists.kit.edu
+Requires-Python: >=3.6.1,<4.0.0
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Adaptive Technologies
+Classifier: Topic :: Office/Business :: Scheduling
+Classifier: Topic :: System :: Distributed Computing
+Provides-Extra: doc
+Provides-Extra: test
+Requires-Dist: Sphinx (>=3.3.1,<4.0.0); extra == "doc"
+Requires-Dist: black (>=20.8b1,<21.0); (implementation_name == "cpython") and (extra == "test")
+Requires-Dist: change-log (>=0.2.0,<0.3.0); extra == "doc"
+Requires-Dist: click (>=7.1,<8.0)
+Requires-Dist: cobald (>=0.12,<0.13)
+Requires-Dist: flake8 (>=3.8.4,<4.0.0); extra == "test"
+Requires-Dist: flake8-bugbear (>=20.11.1,<21.0.0); extra == "test"
+Requires-Dist: pytest (>=4.3.0); extra == "test"
+Requires-Dist: sphinx-click (>=2.5.0,<3.0.0); extra == "doc"
+Requires-Dist: sphinx-rtd-theme (>=0.5.0,<0.6.0); extra == "doc"
+Requires-Dist: sphinxcontrib-contentui (>=0.2.5,<0.3.0); extra == "doc"
+Requires-Dist: usim (>=0.4,<0.5)
+Project-URL: Documentation, https://lapis-sim.readthedocs.io/en/latest/
+Project-URL: Repository, https://github.com/MatterMiners/lapis
+Description-Content-Type: text/x-rst
+
+===============================================================================
+Lapis is an adaptable, performant, and interactive scheduling (Lapis) simulator
+===============================================================================
+
+The ``lapis`` library provides a framework and runtime for simulating the scheduling and usage of opportunistic
+and static resources.
+
+Command Line Interface
+----------------------
+
+Currently the library provides a simple command line interface that allows three modes of operation:
+
+* static provisioning of resources,
+* dynamic provisioning of resources, and
+* hybrid provisioning of resources.
+
+In the most simple case you can apply a given workload, e.g. downloaded from the parallel workload archive to a
+static resource configuration:
+
+
+.. code:: bash
+
+    python3 simulate.py --log-file - static --job-file <path-to-workload> swf --pool-file <path-to-pool-definition> htcondor
+
+The output of simulation is given to stdout. You have further options you can explore via
+
+.. code:: bash
+
+    python3 simulate.py --help
+
+and more specifically for the different operation modes with
+
+.. code:: bash
+
+    python3 simulate.py static --help
+
