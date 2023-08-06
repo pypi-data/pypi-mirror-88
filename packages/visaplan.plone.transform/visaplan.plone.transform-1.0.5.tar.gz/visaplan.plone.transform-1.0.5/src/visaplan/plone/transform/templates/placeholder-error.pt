@@ -1,0 +1,15 @@
+<tal:vim replace="nothing"><!-- vim: set ts=2 sts=2 sw=2 si et hls :--></tal:vim>
+<div class="error error-render"
+     i18n:domain="plone"
+     tal:define="uid options/uid | string:<unknown>;
+     ">
+  <p i18n:translate="">
+  Error rendering object
+  <a href="/@@resolveuid/abc123/view"
+     tal:attributes="href string:/@@resolveuid/$uid/view"
+     tal:content="uid"
+     i18n:name="uid"
+     >abc123</a>;
+  please contact the site administration.
+  </p>
+</div>

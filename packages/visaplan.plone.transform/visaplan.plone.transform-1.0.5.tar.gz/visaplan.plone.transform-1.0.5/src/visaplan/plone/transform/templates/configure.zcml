@@ -1,0 +1,47 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+             for="*"
+             name="code-audit"
+             template="code-audit.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="kss-file-view"
+             template="kss-file-view.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="kss-image-view"
+             template="kss-image-view.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="kss-table-view"
+             template="kss-table-view.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="placeholder-error"
+             template="placeholder-error.pt"
+             permission="zope2.View"
+             />
+
+    <browser:page
+             for="*"
+             name="placeholder-unauthorized"
+             template="placeholder-unauthorized.pt"
+             permission="zope2.View"
+             />
+
+</configure>

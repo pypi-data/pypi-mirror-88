@@ -1,0 +1,405 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<tal:comment replace="nothing"><!--
+TODO (bei Restrukturierung):
+CSS- und JS-Code auslagern, z. B. ++resource++unitracc-transform/code-audit.{js,css}
+--></tal:comment>
+<metal:slot fill-slot="head_slot">
+<style type="text/css">
+table {
+    border-collapse: separate;
+    border-spacing: 3px;
+}
+form table td,
+table td {
+    vertical-align: top;
+    text-align: left;
+}
+.border-gray {
+    border: 1px dotted gray;
+}
+.border-blue {
+    border: 1px dotted blue;
+}
+.border-red {
+    border: 1px dotted red;
+}
+.code-audit form {
+    border: 1px solid gray;
+    padding: 2px;
+}
+img.not-found {
+    font-weight: bold;
+    color: red;
+    padding: 2px;
+    border: 1px solid red;
+}
+div.web {
+    display: block;
+}
+input[type=reset] {
+    float: right;
+}
+textarea {
+    display: block;
+    width: 100%;
+
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('select').change(function () {
+        var cursel = this.value;
+        $(this).closest('tr').find('input').val(cursel);
+        $(this).closest('tr').find('img'
+            ).attr('src', '/@@resolveuid/'+cursel+'/image'
+            ).attr('title', cursel);
+        });
+    $('button.test').click(function () {
+        var myrow = $(this).closest('tr'),
+            myval = myrow.find('input').val(),
+            mytail = $(this).data('tail'),
+            imgurl = '/@@resolveuid/'+myval+'/'+mytail,
+            myids = $(this).data('ids').split(' ');
+            ;
+        myrow.find('img'
+            ).attr('src', imgurl
+            ).attr('title', myval
+            );
+        for (i=0; i < len(myids); i++) {
+            $('#'+myids[i]).attr('src', imgurl);
+        }
+        return false;
+        });
+    $('#toggle-options-help').click(function () {
+            var on = $(this).is(':checked');
+            if (on) {
+                $(this).closest('form').find('.options-help').show();
+            } else {
+                $(this).closest('form').find('.options-help').hide();
+            }
+        })
+        $('input.toggle-rows').click(function () {
+                var on = $(this).is(':checked');
+                if (on) {
+                    $(this).closest('tr').next().show().next().show();
+                } else {
+                    $(this).closest('tr').next().hide().next().hide();
+                }
+                })
+    });
+</script>
+</metal:slot>
+    <metal:no-ads fill-slot="column_two_slot"/>
+    <metal:no-ads fill-slot="column_one_slot"/>
+    <metal:main fill-slot="main">
+    <tal:debug condition="python:0">
+    </tal:debug>
+<tal:ns define="
+DEBUG python:int(request.get('debug', '0'));
+act_lang python:context.getAdapter('langcode')();
+brain here/getHereAsBrain;
+transform python:context.getBrowser('transform');
+audit_info python:transform.audit();
+pformat python:context.getAdapter('pformat');
+">
+
+<pre tal:content="python:pformat(audit_info)"
+     tal:condition="DEBUG">
+ bla
+</pre>
+
+<tal:ns-inner define="
+audit_list python:audit_info.get('fields');
+audit_actions python:audit_info.get('actions') or ['parse'];
+"
+on-error="string:Oops! (inner)"
+>
+
+    <h1 tal:content="brain/Title"></h1>
+    <div tal:condition="audit_list"
+         class="code-audit">
+        <tal:row repeat="row audit_list"
+        >
+        <form method="post"
+              tal:attributes="action string:${context/absolute_url}/${templateId}"
+              tal:define="display_form row/show-form;
+                          field row/name;
+                          "
+              tal:omit-tag="not:display_form">
+        <input type="hidden" name="from_encoding" readonly="readonly"
+               tal:define="value audit_info/from_encoding | nothing"
+               tal:condition="value"
+               tal:attributes="value value">
+        <table id="field-text"
+               tal:define="parsers row/parsers;
+                           keys1 python:parsers[1:];
+                           "
+               tal:attributes="id string:${row/name}">
+           <tbody tal:define="show_source python:request.get('show-source') and True or False;
+                              style python:not show_source and 'display:none' or None">
+               <tr>
+           <th colspan="3">
+           <label>
+               <input type="checkbox" name="show-source" class="toggle-rows"
+                      tal:attributes="checked show_source">
+               <span i18n:translate="">
+                   Show source
+               </span>
+           </label>
+           </th>
+               </tr>
+           <tr metal:define-macro="legend"
+               tal:attributes="style style | nothing">
+               <th i18n:translate="">
+                   unchanged
+               </th>
+               <th tal:repeat="key keys1"
+                   tal:content="key">
+                   lxml
+               </th>
+           </tr>
+           <tr tal:attributes="style style | nothing">
+               <td tal:repeat="key parsers"
+                   tal:attributes="class python:row['klass'][key]">
+                   <pre tal:content="python:row['parsed'][key]">
+                       Der Inhalt ohne Transformation
+                   </pre>
+
+               </td>
+           </tr>
+           </tbody>
+           <tbody>
+           <tr metal:use-macro="template/macros/legend">
+
+           </tr>
+           <tr class="demo">
+               <td tal:repeat="key parsers"
+                   tal:attributes="class python:row['klass'][key]"
+                   tal:content="structure python:row['transformed'][key]">
+                       Der Inhalt, nach Transformation
+               </td>
+           </tr>
+           </tbody>
+           <tbody tal:condition="display_form">
+           <tr>
+               <td style="text-align:left">
+                    <input type="hidden" name="md5"
+                           tal:attributes="value row/md5_hash;
+                                           ">
+                    <button type="submit" name="doit"
+                            class="btn btn-primary"
+                            i18n:translate="">
+                        Change <tt i18n:name="field"
+                                   tal:content="row/name">
+                                   text
+                               </tt>,
+                    </button>
+                    <span i18n:translate=""
+                          style="float:none">using:</span>
+                    <input type="hidden"
+                           name="field"
+                           value="text"
+                           tal:attributes="value row/name">
+               </td>
+               <td tal:repeat="key keys1">
+                   <label>
+                   <input type="radio" name="choice" value="python"
+                          tal:attributes="value key;
+                                          checked python:len(keys1) == 1">
+                   <span i18n:translate=""
+                         tal:content="key">
+                       lxml
+                   </span>
+                   </label>
+               </td>
+           </tr>
+           <tr>
+               <td colspan="3"
+                   tal:attributes="colspan python:len(parsers)"
+                   style="text-align: right">
+                   <tal:loop define="mi_info audit_info/missing_images;
+                                     mi_list mi_info/dicts"
+                             repeat="mi mi_list">
+                        <tal:ns-tr define="default mi/replace-by;
+                                           ">
+                        <tal:if-default condition="default">
+                        <input type="hidden" size="32"
+                               name="replace.abc123:record"
+                               tal:attributes="name string:replace.${mi/uid}:record;
+                                               value default;
+                                               ">
+                        </tal:if-default>
+                        </tal:ns-tr>
+                   </tal:loop>
+
+
+
+                   <tal:loop tal:repeat="action audit_actions">
+                   <input type="hidden" name="action:list" value="parse"
+                          tal:condition="action/active"
+                          tal:attributes="value string:${action/name}"/>
+                   </tal:loop>
+
+
+
+                   <div class="form-inline">
+                       <label class="control-label" i18n:translate="">
+                       And then &hellip;
+                       </label>
+                       <label class="radio">
+                           <input type="radio" name="next" value="code-audit"
+                                  checked="checked">
+                           <span i18n:translate="">
+                               Repeat
+                           </span>
+                       </label>
+                       <label class="radio">
+                           <input type="radio" name="next" value="view">
+                           <span i18n:translate="">
+                               View
+                           </span>
+                       </label>
+                       <label class="radio">
+                           <input type="radio" name="next" value="edit">
+                           <span i18n:translate="">
+                               Edit
+                           </span>
+                       </label>
+                   </div>
+                    <input type="reset" class="btn btn-default">
+               </td>
+           </tr>
+           </tbody>
+
+        </table>
+        </form>
+        </tal:row>
+        <form action="code-audit" method="get" id="reload-form"
+              tal:attributes="action string:${context/absolute_url}/${templateId}"
+              tal:define="show_help python:request.get('options-help') and True or False;
+                          help_style python:show_help and 'display:block' or 'display:none'">
+            <fieldset>
+            <legend i18n:translate="">
+                Audit options
+            </legend>
+            <label style="float:right">
+                <input type="checkbox" name="options-help" id="toggle-options-help"
+                       tal:attributes="checked python:show_help and 'checked' or None"
+                       >
+                <span i18n:translate="">
+                    Show help
+                </span>
+            </label>
+            <div style="float:right;margin-right:2em;">
+                    <label style="float: left; margin-right: 0.5em">
+                    <span i18n:translate="">Encoding:</span>
+                    <input type="text" size="8" name="from_encoding"
+                           class="input-mini"
+                           value="utf-8" id="from_encoding"
+                           tal:attributes="value audit_info/from_encoding | string:auto">
+                   </label>
+                   <input class="btn btn-default" type="button" value="Autodetect"
+                          tal:condition="python:0"
+                          i18n:attributes="value">
+           </div>
+
+            <div tal:repeat="action audit_actions">
+                <tal:ns2 tal:define="name action/name">
+                <label>
+                    <input type="checkbox" name="action:list" value="parse"
+                           tal:attributes="value string:${action/name};
+                                           checked action/active;
+                                           disabled python:name in ('parse',)
+                                           "/>
+                    <span tal:content="string:audit_action_${action/name}"
+                          i18n:translate="">parse</span>
+                </label>
+                <p tal:content="structure string:audit_action_${action/name}_explanation"
+                   style="display:none"
+                   class="options-help"
+                   tal:attributes="style help_style"
+                   i18n:translate="">
+                    Erklärung für die aktuelle Aktion
+                </p>
+                <tal:if2 condition="python:(name == 'missing_images'
+                                            and action['active']
+                                            )">
+                <fieldset tal:define="mi_info audit_info/missing_images;
+                                      mi_substmap mi_info/substmap;
+                                      mi_list mi_info/dicts"
+                          tal:condition="mi_list">
+                    <table tal:define="image_uids mi_info/choices">
+                    <tr tal:repeat="mi mi_list">
+                        <tal:ns-tr define="fid string:replace-${repeat/mi/number};
+                                           tail mi/tail;
+                                           default mi/replace-by;
+                                           ">
+                        <td>
+                            <tt tal:content="mi/uid">
+                                abc123
+                            </tt>
+                        </td>
+                        <td>
+                        <input type="text" size="32"
+                               name="replace.abc123:record"
+                               tal:attributes="name string:replace.${mi/uid}:record;
+                                               id fid;
+                                               value default;
+                                               ">
+                        <button i18n:translate=""
+                            class="test btn btn-default"
+                            data-ids="broken-1 ok-1"
+                            tal:attributes="data-ids mi/ids;
+                                            data-tail tail;
+                            ">
+                            test
+                        </button>
+                        </td>
+                        <td tal:condition="python:image_uids">
+                            <select tal:attributes="data-for fid">
+                                <option value=""
+                                        i18n:translate="">
+                                    Please select
+                                </option>
+                                <option value="abc123"
+                                        tal:repeat="uid image_uids"
+                                        tal:content="uid"
+                                        tal:attributes="value uid;
+                                                        selected python:uid == default">
+                                         abc123
+                                </option>
+                            </select>
+                        </td>
+                        <td style="max-height:20px;max-width:50px;overflow:clip">
+                            <img tal:define="val python:default or path('mi/uid')"
+                                 tal:attributes="src string:/@@resolveuid/$val/$tail"
+                                 src="/@@resolveuid/abc123/image"
+                                 i18n:attributes="alt"
+                                 alt="Not found">
+                        </td>
+                        </tal:ns-tr>
+                    </tr>
+                    </table>
+                </fieldset>
+
+                </tal:if2>
+                </tal:ns2>
+            </div>
+            <input type="submit" value="Reload"
+                   class="btn btn-primary"
+                   i18n:attributes="value">
+                   <input type="reset" class="btn btn-default"/>
+            </fieldset>
+        </form>
+    </div>
+</tal:ns-inner>
+</tal:ns>
+    </metal:main>
+</html>
+

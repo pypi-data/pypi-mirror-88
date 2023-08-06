@@ -1,0 +1,47 @@
+<tal:nota-bene replace="nothing"><!--
+
+Bei Änderungen die Erkennbarkeit durch @@transform.sniff.is_cooked_table erhalten!
+
+Hier noch keine Verwendung des Makros main aus js-unitraccvideo-view
+(wg. Klasse area-table statt media)
+
+Option force_caption (Vorgabe: True):
+- die Beschriftung auch ausgeben, wenn nur das Präfix übergeben wurde,
+  aber keine Beschriftung am Objekt gespeichert ist
+--></tal:nota-bene><div class="area-table"
+tal:define="
+uid here/getUID;
+caption here/getCaption;
+prefix options/captionPrefix | nothing;
+force_caption options/force_caption | python:True;
+show_caption python:caption or (prefix and force_caption);
+"
+     id="abc123"
+     tal:attributes="id uid"
+     i18n:domain="plone">
+
+    <div class="caption"
+         tal:condition="show_caption">
+        <span class="caption-title"
+            tal:condition="prefix"
+            tal:content="structure prefix">
+            Tabelle 1 - 1:
+        </span>
+        <tal:if
+            tal:condition="caption">
+        <span class="caption-content"
+              tal:define="
+transform python:context.getBrowser('transform');
+"
+            tal:content="structure python:transform.get(caption)">
+        Beschreibungstext
+        </span>
+        </tal:if>
+    </div>
+    <div class="visualClear"><!-- --></div>
+
+    <tal:block tal:content="structure here/getText"
+               tal:on-error="structure string:<span class='error'>Error while getting the text!</span>">
+        Text der Tabelle
+    </tal:block>
+</div>

@@ -1,0 +1,61 @@
+<div class="media"
+     tal:define="classCaption string:image-caption;
+                 classLegend string:image-legend;
+                 uid nocall:options/uid;
+                 classes nocall:options/classes;
+                 caption options/caption;
+                 legend options/legend;
+                 onclick options/onclick | nothing;
+                 toText python:here.getAdapter('totext');
+                 has_lightbox python:'no-lightbox' not in classes;
+                 lightbox_value options/lightbox_value | python:has_lightbox and 'lightbox[image]' or 'no-lightbox';
+                 has_caption python:caption and (classCaption in classes);
+                 has_legend python:legend and (classLegend in classes);
+                 img_elem options/img_elem;
+i_a options/imageAlignment;
+" tal:attributes="
+class string:media ${i_a};
+style options/outer_width_style | nothing;
+"><tal:comment replace="nothing"><!--
+erfordert neues transform.kitchen.get_imgtag_info:
+- height und width werden nicht mehr übergeben;
+- stattdessen wird bei bekannter Bildbreite das div-Element mit einer Zugabe von 4px gestylet
+--></tal:comment>
+    <a tal:attributes="name uid"></a>
+    <a tal:condition="not:onclick"
+       tal:omit-tag="not:has_lightbox"
+       class="contains-preview-img"
+       tal:attributes="href options/href | string:/resolveuid/${uid}/image;
+                       title python:toText(caption)+' '+toText(legend);
+                       rel lightbox_value;
+                       class string:$lightbox_value contains-preview-img">
+        <img tal:replace="structure img_elem"/>
+    </a>
+    <a rel="no-lightbox"
+       tal:condition="onclick"
+       class="contains-preview-img"
+       tal:attributes="href onclick;
+                       rel lightbox_value;
+                       "
+       onclick="window.open(this.href,'','resizable=yes,location=no,menubar=no,scrollbars=yes,status==no,toolbar=no,fullscreen=no,dependent=no,status,width=600,height=800');return false;">
+        <img tal:replace="structure img_elem"/>
+    </a>
+    <div class="caption"
+         tal:condition="has_caption">
+        <span tal:define="number options/number | nothing"
+           tal:condition="python:number"
+           tal:content="structure number"
+           class="caption-title">
+           Bild:
+        </span>
+        <span class="caption-content"
+              tal:content="structure caption">
+            Bildunterschrift
+        </span>
+    </div>
+    <div class="legend"
+         tal:condition="has_legend"
+         tal:content="structure legend">
+        Legende
+    </div>
+</div>
