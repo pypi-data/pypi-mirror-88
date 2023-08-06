@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: BYOSED
+Version: 0.0.3
+Summary: UNKNOWN
+Home-page: UNKNOWN
+Author: Justin Pierel
+Author-email: jr23@email.sc.edu
+License: BSD
+Platform: UNKNOWN
+Requires-Dist: numpy (>=1.5.0)
+Requires-Dist: scipy (>=0.9.0)
+Requires-Dist: astropy
+Requires-Dist: pytest-astropy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: sncosmo
+
+# BYOSED
+
+[![Documentation Status](https://readthedocs.org/projects/byosed/badge/?version=latest)](http://byosed.readthedocs.org/en/latest/?badge=latest)
+[![PyPI](https://img.shields.io/pypi/v/byosed.svg?style=flat-square)](https://pypi.python.org/pypi/byosed)
+
+BYOSED is an open-source Python framework built to help understand biases on Type Ia supernova distance biases by simulating spectral variations. This package can create and visualize the perturbers that are part of the BYOSED framework, but light curve simulations with BYOSED are intended to be created within [SNANA](https://github.com/jpierel14/SNANA).
+
+
+
+
