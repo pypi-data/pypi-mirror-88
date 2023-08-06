@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: biomappings
+Version: 0.0.1
+Summary: Curated and predicted mappings between biomedical identifiers in different namespaces
+Home-page: https://github.com/biomappings/biomappings
+License: MIT
+Download-URL: https://github.com/biomappings/biomappings/releases
+Project-URL: Bug Tracker, https://github.com/biomappings/biomappings/issues
+Keywords: biology
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Provides-Extra: tests
+Requires-Dist: nose ; extra == 'tests'
+
+# biomappings ![GitHub](https://img.shields.io/github/license/biomappings/biomappings)
+
+Community curated and predicted equivalences and related mappings between named biological entities
+that are not available from primary sources.
+
+Human-curated mappings are in `src/biomappings/resources/mappings.tsv`, and
+automatically predicated mappings are in `src/biomappings/resources/predictions.tsv`
+
+Equivalences and related mappings that are available from the OBO Foundry and other
+primary sources can be accessed through [Inspector Javert's Xref Database](https://zenodo.org/record/3757266)
+on Zenodo which was described in [this blog post](https://cthoyt.com/2020/04/19/inspector-javerts-xref-database.html).
+
+## ⬇️ Installation
+
+This code has yet to be released on PyPI. In the meantime, it can be installed with 
+the following from the main branch on GitHub:
+
+```bash
+$ pip install git+https://github.com/biomappings/biomappings.git
+```
+
+To install in development mode, use the following:
+
+```bash
+$ git clone git+https://github.com/biomappings/biomappings.git
+$ cd biomappings
+$ pip install -e .
+```
+
+## License
+
+Code is licensed under the MIT License. Data is licensed under the CC0 1.0 Universal License.
+
+
