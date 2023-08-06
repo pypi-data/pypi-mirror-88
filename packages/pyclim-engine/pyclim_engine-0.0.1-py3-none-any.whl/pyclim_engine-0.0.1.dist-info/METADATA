@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: pyclim-engine
+Version: 0.0.1
+Summary: Create CLI-based games.
+Home-page: https://github.com/StarlkYT/Pyclim-Engine
+Author: StarlkYT
+Author-email: starlkytminecraft@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: keyboard
+Requires-Dist: termcolor
+
+# Pyclim Engine
+Easy to use library for creating CLI-based games in Python.\
+This project is for fun/learn purposes.
+
+## Example
+Note: Pyclim Engine is very experimental and there are millions of bugs floating there.
+Help me fixing them by contributing.
+```py
+import threading
+import time
+import os
+
+import pyclim
+
+screen = pyclim.Screen()
+
+# A prefab of a controller that moves in 4  directions
+player = pyclim.Player(parent=screen)
+thread = threading.Thread(target=player.move).start()
+
+# Main game loop
+while True:
+    print(screen.update(player)) # Printing the latest update of the screen
+    time.sleep(0.25)
+    os.system("cls") # Clears the command line. For linux use "clear"
+```
+Read more [here](https://github.com/StarlkYT/Pyclim-Engine/wiki)...
+
+
