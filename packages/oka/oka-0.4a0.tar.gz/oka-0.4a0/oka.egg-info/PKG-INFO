@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: oka
+Version: 0.4a0
+Summary: Client for OKA repository
+Home-page: https://github.com/rabizao/oka
+Author: Rafael A. Bizao, Davi P. dos Santos
+Author-email: rabizao@gmail.com
+License: UNKNOWN
+Project-URL: Bug Reports, https://github.com/rabizao/oka/issues
+Project-URL: Source, https://github.com/rabizao/oka
+Description: # Client for OKA repository
+        
+        Install
+        -------
+        
+            sudo apt install python3.8-venv python3.8-dev python3.8-distutils # For Debian-like systems.
+            git clone https://github.com/rabizao/oka.git
+            cd oka
+            python3.8 -m venv venv
+            source venv/bin/activate
+            pip install -e .
+        
+        Try examples:
+        ---
+            cd examples/    
+            python toy.py
+Keywords: data,repository,archive,data science,machine learning
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: GNU General Public License (GPL)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.7, <4
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Provides-Extra: test
