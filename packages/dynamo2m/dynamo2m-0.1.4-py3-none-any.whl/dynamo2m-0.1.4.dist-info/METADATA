@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: dynamo2m
+Version: 0.1.4
+Summary: Interface the cryo-EM packages warp, dynamo and M
+Home-page: https://github.com/alisterburt/dynamo2m
+Author: aburt
+Author-email: alisterburt@gmail.com
+License: BSD
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Requires-Dist: click
+Requires-Dist: starfile
+Requires-Dist: dynamotable
+Requires-Dist: eulerangles
+
+UNKNOWN
+
+
