@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: pyjsondb
+Version: 0.0.1
+Summary: A small satabase package
+Home-page: https://github.com/pranavbaburaj/pyjdondb
+Author: Pranav Baburaj
+License: UNKNOWN
+Description: ## PyJsonDB
+        
+        
+        ### **How to use it?**
+        ```python
+        import pyjsondb as db
+        
+        db.init("database")
+        ```
+        *Create a table*
+        
+        ```python
+        table = db.Table("table_name")
+        
+        # set the different fields
+        table.set_fields(["name", "age", "etc"])
+        ```
+        *adding item*
+        
+        ```python
+        
+        table.add(["pyjsondb", 13, "python"])
+        ```
+        
+        *Remove item*
+        
+        ```python
+        table.remove_by_id(1)
+        
+        # filtering
+        delete_item = table.filter_by({"age" : 13})
+        table.delete(delete_item)
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
