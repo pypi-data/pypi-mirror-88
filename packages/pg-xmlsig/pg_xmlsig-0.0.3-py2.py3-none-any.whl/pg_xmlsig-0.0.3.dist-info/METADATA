@@ -1,0 +1,26 @@
+Metadata-Version: 2.0
+Name: pg-xmlsig
+Version: 0.0.3
+Summary: Python based XML signature. Based on xmlsig.
+Home-page: http://github.com/Silverdoses/python-pgxmlsig
+Author: Jaime Bermeo
+Author-email: jaime.bermeo@pragmatic.com.co
+License: BSD
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Dist: asn1crypto
+Requires-Dist: cryptography
+Requires-Dist: lxml (>=3.0.0)
+
+XML Signature created with cryptography and lxml
+
+
