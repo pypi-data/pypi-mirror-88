@@ -1,0 +1,10 @@
+numpy<=1.19.3
+click>=6.0
+pandas
+tqdm
+python-dateutil
+scikit-learn
+lizard
+
+[:python_version == "3.6"]
+dataclasses
