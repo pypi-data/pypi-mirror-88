@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: noos-tf
+Version: 0.0.1
+Summary: HashiCorp Terraform Cloud API client
+Home-page: https://github.com/noosenergy/noos-terraform
+License: MIT
+Author: Noos Energy
+Author-email: contact@noos.energy
+Requires-Python: >=3.7,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: requests
+Description-Content-Type: text/markdown
+
+[![CircleCI](https://circleci.com/gh/noosenergy/noos-terraform.svg?style=svg&circle-token=5d70bf41e76bbad2a187da8db5c0c39f691db452)](https://circleci.com/gh/noosenergy/noos-terraform)
+
+# Noos Energy Terraform Client
+
+A Python client wrapping up HashiCorp's Terraform Cloud API.
+
+## Quickstart
+
+### Installation
+
+On Mac OSX, make sure [poetry](https://python-poetry.org/) has been installed and pre-configured,
+
+    $ brew install poetry
+
+### Development
+
+Tests run via `py.test`:
+
+    $ make test
+
+Linting taking care by `flake8` and `mypy`:
+
+    $ make lint
+
+And formatting overviewed by `black` and `isort`:
+
+    $ make format
+
