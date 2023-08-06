@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: depthai-gui
+Version: 1.0.1
+Summary: DepthAI Pipeline Builder GUI
+Home-page: https://github.com/luxonis/depthai-gui
+Author: Luxonis
+Author-email: support@luxonis.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/luxonis/depthai-gui/issues
+Project-URL: Documentation, https://pyflow.readthedocs.io
+Project-URL: Source Code, https://github.com/luxonis/depthai-gui
+Description: # DepthAI-GUI
+        
+        **This repository is a fork of PyFlow tool, to learn more about it, please [click here to go to the original repository](https://github.com/wonderworks-software/PyFlow)**
+        
+        ## Install 
+        
+        ```
+        pip install depthai-gui
+        ```
+        
+        ## Usage
+        
+        To start the GUI, run
+        
+        ```
+        depthai-gui
+        ```
+        
+        To run a specific example (`example.pygraph`) run
+        
+        ```
+        depthai-gui -f /path/to/example.pygraph
+        ```
+        
+Keywords: depthai gui ide pipeline builder node
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
