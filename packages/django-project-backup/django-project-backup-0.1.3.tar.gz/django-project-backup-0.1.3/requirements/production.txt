@@ -1,0 +1,8 @@
+-r base.txt
+# Additional dependencies for Heroku, AWS, and Google Cloud deployment
+dj-database-url==0.4.1
+uwsgi>=2.0.17,<2.1
+psycopg2>=2.7,<3.0
+whitenoise>=5.0,<5.1
+django-redis==4.11.0
+django_cache_url==2.0.0
