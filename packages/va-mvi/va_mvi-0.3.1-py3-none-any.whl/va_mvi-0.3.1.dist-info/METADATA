@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: va-mvi
+Version: 0.3.1
+Summary: Multiviz Integrator command-line interface
+Home-page: https://github.com/vikinganalytics/mvi
+Author: Viking Analytics
+Author-email: info@vikinganalytics.se
+License: LICENSE
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: typer
+Requires-Dist: tabulate
+Requires-Dist: cookiecutter
+Requires-Dist: uvicorn
+Requires-Dist: requests
+Requires-Dist: fastapi
+Requires-Dist: pydantic
+Requires-Dist: numpy
+Requires-Dist: setuptools
+Requires-Dist: sqlalchemy
+Requires-Dist: aiofiles
+
+# MultiViz Integrator
+
+Multiviz Integrator (MVI) is a software deployment tool that is perfect for smaller applications where Time-to-Market and ease of use is more important than scalability to tens of thousands of users and requests.
+
+MVI strives to make writing and deploying services (small applications) as quick and easy as possible without requiring much, or any, prior knowledge and experience. We want Data Scientists and Algorithm Engineers to spend their time doing what they love and less time writing Flask API:s and dockerfiles.
+
+You can find the documentation here: https://vikinganalytics.github.io/mvi-docs/
+
+For more information, visit https://vikinganalytics.se or contact us on info@vikinganalytics.se
+
