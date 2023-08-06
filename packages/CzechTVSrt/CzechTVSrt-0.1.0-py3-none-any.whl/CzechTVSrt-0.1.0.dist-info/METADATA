@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: CzechTVSrt
+Version: 0.1.0
+Summary: Scraper for Czech TV subtitles.
+Home-page: https://github.com/martinbenes1996/CzechTVSrt
+Author: Martin Beneš
+Author-email: martinbenes1996@gmail.com
+License: MIT
+Download-URL: https://github.com/martinbenes1996/CzechTVSrt/archive/0.1.0.tar.gz
+Keywords: subtitles,titulky,srt,czechia,scraping,webscraping,ivysilani
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Other Audience
+Classifier: Natural Language :: Czech
+Classifier: Topic :: Internet
+Classifier: Topic :: Multimedia
+Classifier: Topic :: Multimedia :: Sound/Audio
+Classifier: Topic :: Multimedia :: Video
+Classifier: Topic :: Text Processing :: Markup :: HTML
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Description-Content-Type: text/markdown
+Requires-Dist: bs4
+Requires-Dist: requests
+
+# CzechTVSrtScraper
+Scraper of hidden subtitles from Czech TV pages into SRT format.
+
+## Usage
+
+To create SRT file with subtitles scraped from the webpage type following
+
+```python
+# first episode of Most! series
+url = 'https://www.ceskatelevize.cz/ivysilani/10995220806-most/216512120010001/titulky'
+
+# scrape and save
+import CzechTVSrt as CTsrt
+CTsrt.scrape_srt(url, 'output.srt')
+```
+
+By default `requests` library is used for fetching. In order to use `Selenium`, it needs to be installed separately (manually) as well as the browser driver. By default, Chrome is used.
+
+To use `Selenium`, type
+
+```python
+import CzechTVSrt as CTsrt
+CTsrt.scrape_srt(url, 'output.srt', use_selenium = True)
+```
+
+To use `Selenium` and `Firefox` as the browser type
+
+```python
+import CzechTVSrt as CTsrt
+CTsrt.scrape_srt(url, 'output.srt', use_selenium = True, browser = 'firefox')
+```
+
+The subtitles have specified only the start point, so the threshold for length can be set so it is well timed, by default it is `10 s`. Set the threshold in seconds with
+
+```python
+import CzechTVSrt as CTsrt
+CTsrt.scrape_srt(url, 'output.srt', max_duration = 7)
+```
+
+## Contribution
+
+Author: **Martin Benes**
+
+
+
