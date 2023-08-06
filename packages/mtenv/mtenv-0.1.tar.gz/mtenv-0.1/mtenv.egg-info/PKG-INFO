@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: mtenv
+Version: 0.1
+Summary: MTEnv: Environment interface for mulit-task reinforcement learning
+Home-page: https://github.com/facbookresearch/mtenv
+Author: Shagun Sodhani, Ludovic Denoyer, Olivier Delalleau
+Author-email: sshagunsodhani@gmail.com, denoyer@fb.com, odelalleau@fb.com
+License: UNKNOWN
+Description: # MTEnv
+        
+        ## Documentation
+        
+        ### How to add new environments
+        
+        There are two workflows:
+        
+        * The user have a standard gym environment, which they want to convert into a multitask environment. E.g.: `examples/bandit.py` has a `BanditEnv` which is a standard multi-arm bandit, without any explicit notion of task. The user has the following options:
+        
+            * Write a new subclass, say MTBanditEnv (which subclasses MTEnv) as shown in `examples/mtenv_bandit.py`.
+        
+            * Use the `MTEnvWrapper` and wrap the existing standard model class. An example is shown in `examples/wrapped_bandit.py`. 
+        
+        * If the user does not have a standard gym environment to start with, it is recommended that they directly extend the MTEnv class.
+        
+        ### Running examples
+        
+        * `pip install -r requirements.txt`
+        * Alternatively, feel free to use my conda env: `source activate source /private/home/sodhani/.conda/envs/mtenv/bin/activate /private/home/sodhani/.conda/envs/mtenv` 
+        * In the root folder, run `PYTHONPATH=. python examples/<filename>.py`.
+        
+        ## Pending items
+        
+        1. [Google Doc](https://docs.google.com/document/d/1H98fJ-gI53kF1x99pt-7Gy_HPAE6q9DeLPeT3kBIThQ/edit) to track some ongoing work.
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: dev
