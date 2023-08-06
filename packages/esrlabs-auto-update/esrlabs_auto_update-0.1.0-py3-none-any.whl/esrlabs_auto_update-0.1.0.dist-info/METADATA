@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: esrlabs-auto-update
+Version: 0.1.0
+Summary: ESR Labs AutoUpdate automatically updates tools to latest version
+Home-page: https://github.com/mdanilov/esrlabs-auto-update
+Maintainer: Maksim
+Maintainer-email: maksim.danilov@esrlabs.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/mdanilov/esrlabs-auto-update/issues
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: python-crontab
+
+esrlabs-auto-update is a service which tracks ESR Labs tools and install updates.
+
+
