@@ -1,0 +1,2 @@
+(this.webpackJsonpstreamlit_wenscrap_tool=this.webpackJsonpstreamlit_wenscrap_tool||[]).push([[307],{379:function(e,s){Prism.languages.insertBefore("php","variable",{this:/\$this\b/,global:/\$(?:_(?:SERVER|GET|POST|FILES|REQUEST|SESSION|ENV|COOKIE)|GLOBALS|HTTP_RAW_POST_DATA|argc|argv|php_errormsg|http_response_header)\b/,scope:{pattern:/\b[\w\\]+::/,inside:{keyword:/static|self|parent/,punctuation:/::|\\/}}})}}]);
+//# sourceMappingURL=307.1e71d6cf.chunk.js.map
