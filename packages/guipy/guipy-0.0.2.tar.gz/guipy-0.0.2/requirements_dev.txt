@@ -1,0 +1,11 @@
+-e .
+check-manifest
+pytest>=4.6.0
+pytest-cov
+pytest-mpl
+pytest-flake8
+pytest-qt>=2.0
+readme_renderer[md]
+setuptools>=38.6.0
+twine>=1.13.0
+wheel>=0.31.0
