@@ -1,0 +1,57 @@
+# Introduction 
+Data visualization tool based in Dash framework. Allows to easly visualize 3D data sets from a data matrix in the source file. Currently supported graphics are:
+- 3D Scatter 
+
+# Getting Started
+1. Installation process
+```
+pip install --upgrade data-visualizer-JavierRodriguezPosada
+```
+
+1. Run the app
+```
+python -m data_visualizer
+```
+Access the url [http://127.0.0.1:8050/](http://127.0.0.1:8050/)
+
+3. Software dependencies
+- Python 3
+- numpy==1.19.3
+- xlrd==1.2.0
+- pandas==1.1.4
+- dash==1.17.0
+
+1. Latest releases
+
+# Build and Test
+Its recommended to install all dev depdendencies in a virtual environment.
+```
+python -m venv .\.env
+.\.env\Scripts\activate
+pip install -r .\requirements.dev.txt
+```
+
+To run the app:
+```
+python .\data_visualizer\__main__.py
+```
+
+# Generate package
+
+## Dependencies
+```
+python -m pip install --user --upgrade setuptools wheel twine
+```
+
+## Compile
+``` 
+python setup.py sdist bdist_wheel
+```
+
+## Upload
+```
+python -m twine upload --repository pypi dist\*
+```
+
+# Contribute
+TODO
