@@ -1,0 +1,22 @@
+en:
+  description: "Updates the BrainFrame server to a new version"
+  usage: "brainframe update [<args>]"
+  version-help: "The version of the BrainFrame server to update to. Note that
+  downgrading to a previous version using data from a future version is not
+  supported, and may result in instability or data loss."
+  restart-help: "If provided, the server will restart after the update is
+  complete"
+  force-help: "If provided, the BrainFrame server will download the
+  specified version, even if it is not newer than the current version."
+  ask-restart: "Would you like to restart the BrainFrame server to apply the
+  update?"
+  complete: "BrainFrame has been updated!"
+  upgrade-version: "BrainFrame:%{existing_version} detected under your installation
+  location, we will replace it with BrainFrame:%{requested_version}"
+  version-already-installed: "BrainFrame:%{existing_version} is already
+  installed. This request will be ignored. You can force this release to be
+  re-downloaded using the --force flag."
+  downgrade-not-allowed: "BrainFrame:%{requested_version} is an earlier release
+  than the currently installed version, BrainFrame:%{existing_version}. We
+  don't recommend downgrading BrainFrame for data integrity reasons. This
+  request will be ignored. You can force a downgrade using the --force flag."
