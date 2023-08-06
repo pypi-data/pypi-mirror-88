@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Testcase 01",
+    "issueLinks": [
+      "TESTING-4"
+    ],
+    "objective": "Test 01 Objective",
+    "precondition": "Test 01 Precondition",
+    "testScript": {
+      "type": "PLAIN_TEXT",
+      "text": "- init x and y <br/> - call func add(x, y)\n"
+    },
+    "testrun_status": "Pass",
+    "testrun_environment": "Dev",
+    "testrun_comment": "The test has failed on some automation tool procedure",
+    "testrun_duration": 300000,
+    "testrun_date": "2020-12-12T14:54:00Z"
+  },
+  {
+    "name": "Testcase 02",
+    "issueLinks": [
+      "TESTING-4",
+      "TESTING-5"
+    ],
+    "objective": "Test 02 Objective",
+    "precondition": "Test 02 Precondition",
+    "priority": "Normal",
+    "status": "Draft",
+    "testScript": {
+      "type": "STEP_BY_STEP",
+      "steps": [
+        {
+          "description": "Step 1",
+          "testData": "<code>(x,y) = (1,3)</code>",
+          "expectedResult": "<strong>4</strong>"
+        },
+        {
+          "description": "Step 2",
+          "testData": "<code>(x,y) = (4,5)</code>",
+          "expectedResult": "<strong>9</strong>"
+        }
+      ]
+    },
+    "testrun_status": "Fail",
+    "testrun_environment": "Test1",
+    "testrun_comment": "The test has failed on some automation tool procedure",
+    "testrun_duration": 30000,
+    "testrun_date": "2020-12-12T14:54:00Z"
+  }
+]

@@ -1,0 +1,12 @@
+- name: Testcase 01
+  testrun_status: Pass
+  testrun_environment: Dev
+  testrun_comment: The test has failed on some automation tool procedure
+  testrun_duration: 300000 #ms
+  testrun_date: "2020-12-12T14:54:00Z" # put this inside double quotes to avoid auto datetime parsing
+- name: Testcase 02
+  testrun_status: Fail
+  testrun_environment: Test1
+  testrun_comment: The test has failed on some automation tool procedure
+  testrun_duration: 30000 #ms
+  testrun_date: "2020-12-12T14:54:00Z"
