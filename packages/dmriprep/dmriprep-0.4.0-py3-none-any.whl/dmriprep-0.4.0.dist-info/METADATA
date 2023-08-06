@@ -1,0 +1,165 @@
+Metadata-Version: 2.1
+Name: dmriprep
+Version: 0.4.0
+Summary: dMRIPrep is a robust and easy-to-use pipeline for preprocessing of diverse dMRI data.
+Home-page: UNKNOWN
+Author: The NiPreps developers
+Author-email: nipreps@gmail.com
+License: Apache License, Version 2.0
+Project-URL: Home, https://github.com/nipreps/dmriprep
+Project-URL: Documentation, https://www.nipreps.org/dmriprep
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst; charset=UTF-8
+Requires-Dist: dipy (>=1.0.0)
+Requires-Dist: indexed-gzip (>=0.8.8)
+Requires-Dist: nibabel (~=3.0)
+Requires-Dist: nipype (~=1.5.1)
+Requires-Dist: niworkflows (<1.5,>=1.4.0rc0)
+Requires-Dist: numpy
+Requires-Dist: pybids (>=0.11.1)
+Requires-Dist: pyyaml
+Requires-Dist: sdcflows (>=2.0.0rc2)
+Requires-Dist: smriprep (>=0.8.0rc0)
+Requires-Dist: templateflow (~=0.6)
+Requires-Dist: toml
+Provides-Extra: all
+Requires-Dist: datalad ; extra == 'all'
+Requires-Dist: nbsphinx ; extra == 'all'
+Requires-Dist: packaging ; extra == 'all'
+Requires-Dist: pydot (>=1.2.3) ; extra == 'all'
+Requires-Dist: pydotplus ; extra == 'all'
+Requires-Dist: sphinx (<3.0,>=2.1.2) ; extra == 'all'
+Requires-Dist: sphinx-argparse ; extra == 'all'
+Requires-Dist: sphinx-rtd-theme ; extra == 'all'
+Requires-Dist: sphinxcontrib-apidoc (~=0.3.0) ; extra == 'all'
+Requires-Dist: sphinxcontrib-napoleon ; extra == 'all'
+Requires-Dist: sphinxcontrib-versioning ; extra == 'all'
+Requires-Dist: duecredit ; extra == 'all'
+Requires-Dist: psutil (>=5.4) ; extra == 'all'
+Requires-Dist: popylar (>=0.2) ; extra == 'all'
+Requires-Dist: pytest (>=4.4) ; extra == 'all'
+Requires-Dist: pytest-xdist (>=2.0) ; extra == 'all'
+Requires-Dist: pytest-cov (>=2.10.1) ; extra == 'all'
+Requires-Dist: pytest-env ; extra == 'all'
+Requires-Dist: coverage ; extra == 'all'
+Provides-Extra: datalad
+Requires-Dist: datalad ; extra == 'datalad'
+Provides-Extra: doc
+Requires-Dist: nbsphinx ; extra == 'doc'
+Requires-Dist: packaging ; extra == 'doc'
+Requires-Dist: pydot (>=1.2.3) ; extra == 'doc'
+Requires-Dist: pydotplus ; extra == 'doc'
+Requires-Dist: sphinx (<3.0,>=2.1.2) ; extra == 'doc'
+Requires-Dist: sphinx-argparse ; extra == 'doc'
+Requires-Dist: sphinx-rtd-theme ; extra == 'doc'
+Requires-Dist: sphinxcontrib-apidoc (~=0.3.0) ; extra == 'doc'
+Requires-Dist: sphinxcontrib-napoleon ; extra == 'doc'
+Requires-Dist: sphinxcontrib-versioning ; extra == 'doc'
+Provides-Extra: docs
+Requires-Dist: nbsphinx ; extra == 'docs'
+Requires-Dist: packaging ; extra == 'docs'
+Requires-Dist: pydot (>=1.2.3) ; extra == 'docs'
+Requires-Dist: pydotplus ; extra == 'docs'
+Requires-Dist: sphinx (<3.0,>=2.1.2) ; extra == 'docs'
+Requires-Dist: sphinx-argparse ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme ; extra == 'docs'
+Requires-Dist: sphinxcontrib-apidoc (~=0.3.0) ; extra == 'docs'
+Requires-Dist: sphinxcontrib-napoleon ; extra == 'docs'
+Requires-Dist: sphinxcontrib-versioning ; extra == 'docs'
+Provides-Extra: duecredit
+Requires-Dist: duecredit ; extra == 'duecredit'
+Provides-Extra: popylar
+Requires-Dist: popylar (>=0.2) ; extra == 'popylar'
+Provides-Extra: resmon
+Requires-Dist: psutil (>=5.4) ; extra == 'resmon'
+Provides-Extra: style
+Requires-Dist: flake8 (>=3.7.0) ; extra == 'style'
+Provides-Extra: test
+Requires-Dist: pytest (>=4.4) ; extra == 'test'
+Requires-Dist: pytest-xdist (>=2.0) ; extra == 'test'
+Requires-Dist: pytest-cov (>=2.10.1) ; extra == 'test'
+Requires-Dist: pytest-env ; extra == 'test'
+Requires-Dist: coverage ; extra == 'test'
+Provides-Extra: tests
+Requires-Dist: pytest (>=4.4) ; extra == 'tests'
+Requires-Dist: pytest-xdist (>=2.0) ; extra == 'tests'
+Requires-Dist: pytest-cov (>=2.10.1) ; extra == 'tests'
+Requires-Dist: pytest-env ; extra == 'tests'
+Requires-Dist: coverage ; extra == 'tests'
+
+========
+dMRIPrep
+========
+
+.. image:: https://img.shields.io/badge/chat-mattermost-blue
+    :target: https://mattermost.brainhack.org/brainhack/channels/dmriprep
+
+.. image:: https://img.shields.io/badge/docker-nipreps/dmriprep-brightgreen.svg?logo=docker&style=flat
+  :target: https://hub.docker.com/r/nipreps/dmriprep/tags/
+
+.. image:: https://img.shields.io/pypi/v/dmriprep.svg
+    :target: https://pypi.python.org/pypi/dmriprep
+
+.. image:: https://circleci.com/gh/nipreps/dmriprep.svg?style=svg
+    :target: https://circleci.com/gh/nipreps/dmriprep
+
+.. image:: https://github.com/nipreps/dmriprep/workflows/Python%20package/badge.svg
+    :target: https://github.com/nipreps/dmriprep/actions
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3392201.svg
+    :target: https://doi.org/10.5281/zenodo.3392201
+
+[`Documentation <https://www.nipreps.org/dmriprep/>`__]
+[`Support at neurostars.org <https://neurostars.org/tags/dmriprep>`__]
+
+About
+-----
+The preprocessing of diffusion MRI (dMRI) involves numerous steps to clean and standardize
+the data before fitting a particular model.
+Generally, researchers create ad-hoc preprocessing workflows for each dataset,
+building upon a large inventory of available tools.
+The complexity of these workflows has snowballed with rapid advances in
+acquisition and processing.
+dMRIPrep is an analysis-agnostic tool that addresses the challenge of robust and
+reproducible preprocessing for whole-brain dMRI data.
+dMRIPrep automatically adapts a best-in-breed workflow to the idiosyncrasies of
+virtually any dataset, ensuring high-quality preprocessing without manual intervention.
+dMRIPrep equips neuroscientists with an easy-to-use and transparent preprocessing
+workflow, which can help ensure the validity of inference and the interpretability
+of results.
+
+The workflow is based on `Nipype <https://nipype.readthedocs.io>`__ and
+encompasses a large set of tools from other neuroimaging packages.
+This pipeline was designed to provide the best software implementation for each state of
+preprocessing, and will be updated as newer and better neuroimaging software
+becomes available.
+
+dMRIPrep performs basic preprocessing steps such as head-motion correction,
+susceptibility-derived distortion correction, eddy current correction, etc.
+providing outputs that can be easily submitted to a variety of diffusion models.
+
+Getting involved
+----------------
+We welcome all contributions!
+We'd like to ask you to familiarize yourself with our `contributing guidelines <https:/www.nipreps.org/community/CONTRIBUTING>`__.
+For ideas for contributing to *dMRIPrep*, please see the current list of `issues <https://github.com/nipreps/dmriprep/issues>`__.
+For making your contribution, we use the GitHub flow, which is
+nicely explained in the chapter `Contributing to a Project <http://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project>`__ in Pro Git
+by Scott Chacon and also in the `Making a change section <https://www.nipreps.org/community/CONTRIBUTING/#making-a-change>`__ of our guidelines.
+If you're still not sure where to begin, feel free to pop into `Mattermost <https://mattermost.brainhack.org/brainhack/channels/dmriprep>`__ and introduce yourself!
+Our project maintainers will do their best to answer any question or concerns and will be happy to help you find somewhere to get started.
+
+Want to learn more about our future plans for developing `dMRIPrep`?
+Please take a look at our `milestones board <https://github.com/nipreps/dmriprep/milestones>`__ and `project roadmap <https://www.nipreps.org/dmriprep/roadmap.html>`__.
+
+We ask that all contributors to `dMRIPrep` across all project-related spaces (including but not limited to: GitHub, Mattermost, and project emails), adhere to our `code of conduct <https://www.nipreps.org/community/CODE_OF_CONDUCT>`__.
+
+
