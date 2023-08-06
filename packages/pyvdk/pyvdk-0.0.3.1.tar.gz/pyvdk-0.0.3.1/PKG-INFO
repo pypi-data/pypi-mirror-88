@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: pyvdk
+Version: 0.0.3.1
+Summary: VK toolkit
+License: MIT
+Keywords: vk,vk-api,bot
+Author: lightmanLP
+Author-email: liteman1000@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: jinja2 (>=2.11.2,<3.0.0)
+Requires-Dist: pydantic (>=1.7.2,<2.0.0)
+Requires-Dist: pyyaml (>=5.3.1,<6.0.0)
+Requires-Dist: requests (>=2.24.0,<3.0.0)
+Requires-Dist: vbml (>=1.1,<2.0)
+Project-URL: Documentation, https://pyvdk.readthedocs.io/
+Project-URL: Github, https://github.com/UT1C/pyvdk
+Description-Content-Type: text/markdown
+
+# pyVDK
+[![PyPI version](https://badge.fury.io/py/pyvdk.svg)](https://badge.fury.io/py/pyvdk)
+![PyPI downloads per mounth](https://img.shields.io/pypi/dm/pyvdk)
+[![Documentation Status](https://readthedocs.org/projects/pyvdk/badge/?version=latest)](https://pyvdk.readthedocs.io/ru/latest/?badge=latest)
+[![VK chat](https://img.shields.io/badge/VK%20chat-support-blueviolet)](https://vk.me/join/AJQ1d/RAzBm4QcrxZ5hJTFSJ)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/UT1C/pyvdk)
+
+## Установка
+Установить pyvdk можно напрямую с PyPI:
+```
+pip install pyvdk
+```
+
+## Фичи
+- void; // (for now)
+
+## TODO list
+
+- [x] Категории в апи
+- [ ] Покрытие типами
+- [ ] Обработка всех событий
+- [ ] ? Юзер
+
