@@ -1,0 +1,54 @@
+0.7.0:
+- general:
+  - compilation with MSVC on Windows is now possible
+
+- wgridder:
+  - performance (especially scaling) improvements
+  - oversampling factors up to 2.5 supported
+  - new, more flexible interface in submodule `wgridder.experimental`
+    (subject to further changes!)
+
+- totalconvolver:
+  - now performs non-equidistant FFT interpolation also in psi direction,
+    making it much faster for large kmax.
+  - new low-level interface which allows flexible re-distribution of work
+    over MPI tasks (responsibility of the caller)
+
+
+0.6.0:
+- general:
+  - multi-threading improvements contributed by Peter Bell
+
+- wgridder:
+  - new, smaller internal data structure
+
+
+0.5.0:
+- wgridder:
+  - internally used grid size is now chosen automatically, and the parameters
+    "nu" and "nv" are ignored; they will be removed in ducc1.
+
+
+0.3.0:
+- general:
+  - The package should now be installable from PyPI via pip even on MacOS.
+    However, MacOS >= 10.14 is required.
+
+- wgridder:
+  - very substantial performance and scaling improvements
+
+
+0.2.0:
+- wgridder:
+  - kernels are now evaluated via polynomial approximation, allowing much
+    more freedom in the choice of kernel function
+  - switch to 2-parameter ES kernels for better accuracy
+  - unnecessary FFT calculations are skipped
+
+- totalconvolve:
+  - improved accuracy by making use of the new wgridder kernels
+  - *INTERFACE CHANGE* removed method "epsilon_guess()"
+
+- pointingprovider:
+  new, experimental module for computing detector pointings from a time stream
+  of satellite pointings. To be used by litebird_sim initially.
