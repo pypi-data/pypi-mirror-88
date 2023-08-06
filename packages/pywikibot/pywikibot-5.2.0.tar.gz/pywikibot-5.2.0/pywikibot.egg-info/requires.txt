@@ -1,0 +1,115 @@
+requests>=2.20.1
+
+[Google]
+google>=1.7
+
+[Graphviz]
+pydot>=1.2
+
+[Tkinter]
+
+[Tkinter:python_version < "3.6"]
+Pillow<8.0.0,>=6.2.2
+
+[Tkinter:python_version >= "3.6" and python_version < "3.9"]
+Pillow>=6.2.2
+
+[Tkinter:python_version >= "3.9"]
+Pillow>=8.0.0
+
+[eventstreams]
+sseclient!=0.0.23,!=0.0.24,>=0.0.18
+
+[flake8]
+flake8>=3.7.5
+pydocstyle>=4.0.0
+hacking
+flake8-coding
+flake8-colors
+flake8-comprehensions>=2.2.0
+flake8-docstrings>=1.3.1
+flake8-future-import
+flake8-mock>=0.3
+flake8-print>=2.0.1
+flake8-quotes>=2.0.1
+flake8-string-format
+flake8-tuple>=0.2.8
+flake8-no-u-prefixed-strings>=0.2
+pep8-naming>=0.7
+pyflakes>=2.1.0
+
+[flake8:python_version >= "3.8"]
+flake8-comprehensions>=3.1.4
+
+[flickrripper.py]
+flickrapi>=2.2
+
+[flickrripper.py:python_version < "3.6"]
+Pillow<8.0.0,>=6.2.2
+
+[flickrripper.py:python_version >= "3.6" and python_version < "3.9"]
+Pillow>=6.2.2
+
+[flickrripper.py:python_version >= "3.9"]
+Pillow>=8.0.0
+
+[html]
+BeautifulSoup4
+
+[http]
+fake_useragent
+
+[imageharvest.py]
+BeautifulSoup4
+
+[isbn]
+python-stdnum>=1.14
+
+[isbn.py]
+python-stdnum>=1.14
+
+[match_images.py]
+
+[match_images.py:python_version < "3.6"]
+Pillow<8.0.0,>=6.2.2
+
+[match_images.py:python_version >= "3.6" and python_version < "3.9"]
+Pillow>=6.2.2
+
+[match_images.py:python_version >= "3.9"]
+Pillow>=8.0.0
+
+[mwoauth]
+mwoauth!=0.3.1,>=0.2.4
+
+[mwparserfromhell]
+mwparserfromhell>=0.3.3
+
+[patrol.py]
+mwparserfromhell>=0.3.3
+
+[scripts]
+flickrapi>=2.2
+BeautifulSoup4
+python-stdnum>=1.14
+mwparserfromhell>=0.3.3
+pycountry
+memento_client!=0.6.0,>=0.5.1
+
+[scripts:python_version < "3.6"]
+Pillow<8.0.0,>=6.2.2
+Pillow<8.0.0,>=6.2.2
+
+[scripts:python_version >= "3.6" and python_version < "3.9"]
+Pillow>=6.2.2
+Pillow>=6.2.2
+
+[scripts:python_version >= "3.9"]
+Pillow>=8.0.0
+Pillow>=8.0.0
+
+[states_redirect.py]
+pycountry
+
+[weblinkchecker.py]
+memento_client!=0.6.0,>=0.5.1
