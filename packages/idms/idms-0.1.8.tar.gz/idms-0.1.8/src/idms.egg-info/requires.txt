@@ -1,0 +1,10 @@
+requests>=2.25.0
+
+[dev]
+check-manifest
+python-dotenv>=0.15.0
+pandas>=1.1.4
+openpyxl
+
+[test]
+coverage
