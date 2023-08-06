@@ -1,0 +1,10 @@
+__title__ = 'flow-network'
+__description__ = 'Flow Network Python Library'
+__url__ = 'https://github.com/LucienShui/flow-network'
+__version_info__ = (0, 1, 12)
+__version__ = '.'.join(map(str, __version_info__))
+__build__ = eval(f"0x{''.join(map(lambda x: f'{int(x):02d}', __version_info__))}")
+__author__ = 'Lucien Shui'
+__author_email__ = 'lucien@lucien.ink'
+__license__ = 'Apache 2.0'
+__copyright__ = 'Copyright 2020 Lucien Shui'
