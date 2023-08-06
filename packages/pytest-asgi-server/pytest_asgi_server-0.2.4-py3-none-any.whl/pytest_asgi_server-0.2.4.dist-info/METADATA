@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: pytest-asgi-server
+Version: 0.2.4
+Summary: Convenient ASGI client/server fixtures for Pytest
+Home-page: https://github.com/garytyler/pytest-asgi-server
+License: MIT
+Author: Gary Tyler
+Author-email: mail@garytyler.com
+Requires-Python: >=3.8,<4.0
+Classifier: Environment :: Plugins
+Classifier: Environment :: Web Environment
+Classifier: Framework :: AsyncIO
+Classifier: Framework :: Pytest
+Classifier: Framework :: tox
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: System :: Networking
+Requires-Dist: asgi-lifespan (>=1.0.0)
+Requires-Dist: httpx (>=0.12.1)
+Requires-Dist: importlib_metadata (>=1.6.0,<2.0.0); python_version >= "3.8"
+Requires-Dist: pytest (>=5.4.1)
+Requires-Dist: pytest-asyncio (>=0.10.0)
+Requires-Dist: pytest-xprocess (>=0.13.1)
+Requires-Dist: uvicorn (>=0.11.3)
+Requires-Dist: websockets (>=8,<9); python_version >= "3.8"
+Project-URL: Repository, https://github.com/garytyler/pytest-asgi-server
+Description-Content-Type: text/markdown
+
+<h1 align="center">pytest-asgi-server</h1>
+<h3 align="center">Convenient ASGI client/server fixtures for Pytest</h3>
+<p align="center">
+<a href="https://github.com/garytyler/pytest-asgi-server/actions">
+  <img alt="Actions Status" src="https://github.com/garytyler/pytest-asgi-server/workflows/tests/badge.svg">
+</a>
+<a href="https://codecov.io/gh/garytyler/pytest-asgi-server">
+  <img src="https://codecov.io/gh/garytyler/pytest-asgi-server/branch/master/graph/badge.svg?token=q7mUlqR3jF" />
+</a>
+<a href="https://pypi.org/project/pytest-asgi-server/">
+  <img alt="PyPI" src="https://img.shields.io/pypi/v/pytest-asgi-server">
+</a>
+<a href="https://pypi.org/project/pytest-asgi-server/">
+  <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/pytest-asgi-server">
+</a>
+<img alt="GitHub" src="https://img.shields.io/github/license/garytyler/pytest-asgi-server">
+<a href="https://github.com/psf/black">
+  <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
+</a>
+</p>
+
+### NOTE: This is a beta product
+
