@@ -1,0 +1,883 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Translators:
+# Ramon Bartl <rb@ridingbytes.com>, 2018
+# trendspotter <j.podhorecky@volny.cz>, 2020
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2020-08-02 11:38+0000\n"
+"PO-Revision-Date: 2018-06-01 18:46+0000\n"
+"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2020\n"
+"Language-Team: Czech (https://www.transifex.com/senaite/teams/87045/cs/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: plone\n"
+"Language: cs\n"
+
+#: bika/lims/profiles/default/types/ARTemplate.xml
+msgid "AR Template"
+msgstr "AR Šablona"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/ARTemplates.xml
+msgid "AR Templates"
+msgstr "AR šablony"
+
+#: bika/lims/profiles/default/types/ARReport.xml
+msgid "ARReport"
+msgstr "AR Zpráva"
+
+# Manual Workflow State and Transition MsgIds
+# Despite the fact, that these are defined in the "bika" domain, they are not
+# translated
+# in the action menu of Plone.
+# Please don't remove
+msgid "Activate"
+msgstr "Aktivovat"
+
+msgid "Active"
+msgstr "Aktivní"
+
+#: bika/lims/profiles/default/types/Worksheet.xml
+msgid "Add Analyses"
+msgstr "Přidat analýzy"
+
+#: bika/lims/profiles/default/types/Worksheet.xml
+msgid "Add Blank Reference"
+msgstr "Přidat prázdný odkaz"
+
+#: bika/lims/profiles/default/types/Worksheet.xml
+msgid "Add Control Reference"
+msgstr "Přidat kontrolní referenci"
+
+#: bika/lims/profiles/default/types/Worksheet.xml
+msgid "Add Duplicate"
+msgstr "Přidat duplikát"
+
+#: bika/lims/profiles/default/types/ReportFolder.xml
+msgid "Administration"
+msgstr "Správa"
+
+#: bika/lims/profiles/default/types/ReferenceSample.xml
+msgid "Analyses"
+msgstr "Analýzy"
+
+#: bika/lims/profiles/default/types/Analysis.xml
+msgid "Analysis"
+msgstr "Analýza"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/AnalysisCategories.xml
+msgid "Analysis Categories"
+msgstr "Kategorie analýzy"
+
+#: bika/lims/profiles/default/types/AnalysisCategory.xml
+msgid "Analysis Category"
+msgstr "Kategorie analýzy"
+
+#: bika/lims/profiles/default/types/AnalysisProfile.xml
+msgid "Analysis Profile"
+msgstr "Profil analýzy"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/AnalysisProfiles.xml
+#: bika/lims/profiles/default/types/Client.xml
+msgid "Analysis Profiles"
+msgstr "Profily analýz"
+
+#: bika/lims/profiles/default/types/AnalysisService.xml
+msgid "Analysis Service"
+msgstr "Analytická služba"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/AnalysisServices.xml
+msgid "Analysis Services"
+msgstr "Analytické služby"
+
+#: bika/lims/profiles/default/types/AnalysisSpec.xml
+msgid "Analysis Specification"
+msgstr "Specifikace analýzy"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/AnalysisSpecs.xml
+#: bika/lims/profiles/default/types/Client.xml
+msgid "Analysis Specifications"
+msgstr "Specifikace analýzy"
+
+msgid "Assign"
+msgstr "Přiřadit"
+
+msgid "Assigned"
+msgstr "Přiřazeno"
+
+msgid "Attach"
+msgstr "Připojit"
+
+#: bika/lims/profiles/default/types/Attachment.xml
+msgid "Attachment"
+msgstr "Příloha"
+
+#: bika/lims/profiles/default/types/AttachmentType.xml
+msgid "Attachment Type"
+msgstr "Typ přílohy"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/AttachmentTypes.xml
+msgid "Attachment Types"
+msgstr "Typy příloh"
+
+msgid "Attachment due"
+msgstr "Vypršení přílohy"
+
+#: bika/lims/profiles/default/types/Client.xml
+msgid "Attachments"
+msgstr "Přílohy"
+
+#: bika/lims/profiles/default/actions.xml
+msgid "Audit Log"
+msgstr "Protokol auditu"
+
+#: bika/lims/profiles/default/types/Instrument.xml
+msgid "Auto-Import Logs"
+msgstr "Protokoly automatického importu"
+
+#: bika/lims/profiles/default/types/Batch.xml
+msgid "Batch"
+msgstr "Dávka"
+
+#: bika/lims/profiles/default/types/Batch.xml
+msgid "Batch Book"
+msgstr "Kniha dávek"
+
+#: bika/lims/profiles/default/types/BatchLabel.xml
+msgid "Batch Label"
+msgstr "Štítek dávky"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/BatchLabels.xml
+msgid "Batch Labels"
+msgstr "Dávkové štítky"
+
+#: bika/lims/profiles/default/types/BatchFolder.xml
+#: bika/lims/profiles/default/types/Client.xml
+msgid "Batches"
+msgstr "Dávky"
+
+#: bika/lims/profiles/default/types/Calculation.xml
+msgid "Calculation"
+msgstr "Výpočet"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/Calculations.xml
+msgid "Calculations"
+msgstr "Výpočty"
+
+#: bika/lims/profiles/default/types/Instrument.xml
+msgid "Calibration Certificates"
+msgstr "Kalibrační certifikáty"
+
+#: bika/lims/profiles/default/types/Instrument.xml
+msgid "Calibrations"
+msgstr "Kalibrace"
+
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: bika/lims/profiles/default/types/Client.xml
+msgid "Client"
+msgstr "Klient"
+
+#: bika/lims/profiles/default/types/ClientFolder.xml
+msgid "Clients"
+msgstr "Klienti"
+
+msgid "Close"
+msgstr "Zavřít"
+
+msgid "Complete"
+msgstr "Kompletní"
+
+#: bika/lims/profiles/default/types/Contact.xml
+#: bika/lims/profiles/default/types/SupplierContact.xml
+msgid "Contact"
+msgstr "Kontakt"
+
+#: bika/lims/profiles/default/types/Client.xml
+#: bika/lims/profiles/default/types/Supplier.xml
+msgid "Contacts"
+msgstr "Kontakty"
+
+#: bika/lims/profiles/default/types/Container.xml
+msgid "Container"
+msgstr "Kontejner"
+
+#: bika/lims/profiles/default/types/ContainerType.xml
+msgid "Container Type"
+msgstr "Typ kontejneru"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/ContainerTypes.xml
+msgid "Container Types"
+msgstr "Typy kontejnerů"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/Containers.xml
+msgid "Containers"
+msgstr "Kontejnery"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+msgid "Create Invoice PDF"
+msgstr "Vytvořit PDF fakturu "
+
+msgid "Current"
+msgstr "Stávající"
+
+#: bika/lims/profiles/default/actions.xml
+msgid "Dashboard"
+msgstr "Ovládací panel"
+
+msgid "Deactivate"
+msgstr "Deaktivovat"
+
+#: bika/lims/profiles/default/types/Department.xml
+msgid "Department"
+msgstr "Oddělení"
+
+#: bika/lims/profiles/default/types/Departments.xml
+msgid "Departments"
+msgstr "Oddělení"
+
+msgid "Dispatch"
+msgstr "Odeslání"
+
+msgid "Dispatched"
+msgstr "Odeslán"
+
+msgid "Dispose"
+msgstr "Zlikvidovat"
+
+msgid "Disposed"
+msgstr "Zlikvidován"
+
+#: bika/lims/profiles/default/types/Instrument.xml
+msgid "Documents"
+msgstr "Dokumenty"
+
+msgid "Dormant"
+msgstr "Nevyužitý"
+
+#: bika/lims/profiles/default/types/DuplicateAnalysis.xml
+msgid "Duplicate Analysis"
+msgstr "Duplikát analýzy"
+
+#: bika/lims/profiles/default/controlpanel.xml
+msgid "Dynamic Analysis Specifications"
+msgstr "Specifikace dynamické analýzy"
+
+#: bika/lims/profiles/default/types/ARTemplate.xml
+#: bika/lims/profiles/default/types/AnalysisCategory.xml
+#: bika/lims/profiles/default/types/AnalysisProfile.xml
+msgid "Edit"
+msgstr "Upravit"
+
+msgid "Expire"
+msgstr "Platnost vyprší"
+
+msgid "Expired"
+msgstr "Vypršela platnost"
+
+#: bika/lims/profiles/default/types/Worksheet.xml
+msgid "Export"
+msgstr "Exportovat"
+
+#: bika/lims/profiles/default/types/ReportFolder.xml
+msgid "History"
+msgstr "Historie"
+
+#: bika/lims/profiles/default/actions.xml
+msgid "Import"
+msgstr "Import"
+
+msgid "Imported"
+msgstr "Importováno"
+
+msgid "Inactive"
+msgstr "Neaktivní"
+
+#: bika/lims/profiles/default/types/Instrument.xml
+msgid "Instrument"
+msgstr "Přístroj"
+
+#: bika/lims/profiles/default/controlpanel.xml
+msgid "Instrument Locations"
+msgstr "Místo přístroje"
+
+#: bika/lims/profiles/default/types/InstrumentType.xml
+msgid "Instrument Type"
+msgstr "Typ přístroje"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/InstrumentTypes.xml
+msgid "Instrument Types"
+msgstr "Typy přístrojů"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/InstrumentType.xml
+#: bika/lims/profiles/default/types/Instruments.xml
+msgid "Instruments"
+msgstr "Přístroje"
+
+msgid "Invalid"
+msgstr "Neplatný"
+
+msgid "Invalidate"
+msgstr "Zneplatnit"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+#: bika/lims/profiles/default/types/Invoice.xml
+msgid "Invoice"
+msgstr "Faktura"
+
+#: bika/lims/profiles/default/types/LabContact.xml
+msgid "Lab Contact"
+msgstr "Laboratorní kontakt"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/Department.xml
+#: bika/lims/profiles/default/types/LabContacts.xml
+msgid "Lab Contacts"
+msgstr "Laboratorní kontakty"
+
+#: bika/lims/profiles/default/controlpanel.xml
+msgid "Lab Departments"
+msgstr "Oddělení laboratoře"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/LabProducts.xml
+msgid "Lab Products"
+msgstr "Laboratorní produkty"
+
+#: bika/lims/profiles/default/types/Laboratory.xml
+msgid "Laboratory"
+msgstr "Laboratoř"
+
+#: bika/lims/profiles/default/controlpanel.xml
+msgid "Laboratory Information"
+msgstr "Laboratorní informace"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+msgid "Large Sticker"
+msgstr "Velký štítek"
+
+#: bika/lims/profiles/default/types/Contact.xml
+#: bika/lims/profiles/default/types/LabContact.xml
+msgid "Login details"
+msgstr "Přihlašovací detaily"
+
+#: bika/lims/profiles/default/types/Instrument.xml
+msgid "Maintenance"
+msgstr "Údržba"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+msgid "Manage Analyses"
+msgstr "Správa analýz"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+#: bika/lims/profiles/default/types/Worksheet.xml
+msgid "Manage Results"
+msgstr "Správa výsledků"
+
+#: bika/lims/profiles/default/types/Manufacturer.xml
+msgid "Manufacturer"
+msgstr "Výrobce"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/Manufacturers.xml
+msgid "Manufacturers"
+msgstr "Výrobci"
+
+#: bika/lims/profiles/default/types/Method.xml
+msgid "Method"
+msgstr "Metoda"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/Methods.xml
+msgid "Methods"
+msgstr "Metody"
+
+#: bika/lims/profiles/default/actions.xml
+msgid "My organization"
+msgstr "Moje organizace"
+
+msgid "No preservation required"
+msgstr "Nevyžadováno uchování"
+
+msgid "No sampling workflow"
+msgstr "Žádný pracovní postup odběru vzorků"
+
+msgid "Not requested"
+msgstr "Není požadováno"
+
+msgid "Open"
+msgstr "Otevřít"
+
+#: bika/lims/profiles/default/types/Client.xml
+msgid "Orders"
+msgstr "Objednávky"
+
+msgid "Pending"
+msgstr "čekající"
+
+msgid "Prepublish"
+msgstr "Předpublikovat"
+
+#: bika/lims/profiles/default/types/Preservation.xml
+msgid "Preservation"
+msgstr "Uchování"
+
+msgid "Preservation required"
+msgstr "Vyžadováno Uchování"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/Preservations.xml
+msgid "Preservations"
+msgstr "Uchování"
+
+msgid "Preserve"
+msgstr "Zachovat"
+
+#: bika/lims/profiles/default/types/Pricelist.xml
+msgid "Pricelist"
+msgstr "Ceník"
+
+#: bika/lims/profiles/default/types/PricelistFolder.xml
+msgid "Pricelists"
+msgstr "Ceníky"
+
+#: bika/lims/profiles/default/types/Invoice.xml
+#: bika/lims/profiles/default/types/SupplyOrder.xml
+msgid "Print"
+msgstr "Tisk"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+msgid "Print Invoice"
+msgstr "Tisk faktury"
+
+#: bika/lims/profiles/default/types/Pricelist.xml
+msgid "Print pricelist"
+msgstr "Tisk ceníku"
+
+#: bika/lims/profiles/default/types/ReportFolder.xml
+msgid "Productivity"
+msgstr "Produktivita"
+
+msgid "Publish"
+msgstr "Publikovat"
+
+msgid "Published"
+msgstr "Publikováno"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+msgid "Published results"
+msgstr "Publikované výsledky"
+
+#: bika/lims/profiles/default/types/Instrument.xml
+msgid "QC Results"
+msgstr "Výsledky QC"
+
+msgid "Receive"
+msgstr "Přijmout"
+
+msgid "Receive sample"
+msgstr "Přijmout vzorek"
+
+msgid "Received"
+msgstr "Přijato"
+
+#: bika/lims/profiles/default/types/ReferenceAnalysis.xml
+msgid "Reference Analysis"
+msgstr "Referenční analýza"
+
+#: bika/lims/profiles/default/types/ReferenceDefinition.xml
+msgid "Reference Definition"
+msgstr "Definice reference"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/ReferenceDefinitions.xml
+msgid "Reference Definitions"
+msgstr "Definice referencí"
+
+#: bika/lims/profiles/default/types/ReferenceSample.xml
+msgid "Reference Sample"
+msgstr "Referenční vzorek"
+
+#: bika/lims/profiles/default/types/ReferenceSamplesFolder.xml
+#: bika/lims/profiles/default/types/Supplier.xml
+msgid "Reference Samples"
+msgstr "Referenční vzorky"
+
+#: bika/lims/profiles/default/types/ReferenceSample.xml
+msgid "Reference Values"
+msgstr "Referenční hodnoty"
+
+#: bika/lims/profiles/default/controlpanel.xml
+msgid "Reflex Rules"
+msgstr "Pravidla zrcadlení"
+
+#: bika/lims/profiles/default/types/ReflexRuleFolder.xml
+msgid "Reflex Rules Folder"
+msgstr "Složka pro pravidla zrcadlení"
+
+#: bika/lims/profiles/default/types/ReflexRule.xml
+msgid "ReflexRule"
+msgstr "Pravidlo zrcadlení"
+
+msgid "Registered"
+msgstr "Registrován"
+
+msgid "Reinstate"
+msgstr "Obnovit"
+
+msgid "Reject"
+msgstr "Odmítnout"
+
+#: bika/lims/profiles/default/types/RejectAnalysis.xml
+msgid "Reject Analysis"
+msgstr "Odmítnout Analýzu"
+
+msgid "Rejected"
+msgstr "Odmítnuto"
+
+msgid "Remove"
+msgstr "Odstranit"
+
+#: bika/lims/profiles/default/actions.xml
+#: bika/lims/profiles/default/types/Report.xml
+msgid "Report"
+msgstr "Zpráva"
+
+#: bika/lims/profiles/default/types/ReportFolder.xml
+msgid "Reports"
+msgstr "Zprávy"
+
+msgid "Republish"
+msgstr "Znovu publikovat"
+
+msgid "Retract"
+msgstr "Zavřít"
+
+msgid "Retracted"
+msgstr "Zasunutý"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+msgid "Sample"
+msgstr "Vzorek"
+
+#: bika/lims/profiles/default/types/SampleCondition.xml
+msgid "Sample Condition"
+msgstr "Stav vzorku"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/SampleConditions.xml
+msgid "Sample Conditions"
+msgstr "Podmínky vzorku"
+
+msgid "Sample Imports"
+msgstr "Importy Vzorku"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/SampleMatrices.xml
+msgid "Sample Matrices"
+msgstr "Matice vzorků"
+
+#: bika/lims/profiles/default/types/SampleMatrix.xml
+msgid "Sample Matrix"
+msgstr "Matice vzorků"
+
+#: bika/lims/profiles/default/types/SamplePoint.xml
+msgid "Sample Point"
+msgstr "Bod odběru vzorku"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/Client.xml
+#: bika/lims/profiles/default/types/SamplePoints.xml
+msgid "Sample Points"
+msgstr "Body odběru vzorků"
+
+#: bika/lims/profiles/default/types/Client.xml
+msgid "Sample Templates"
+msgstr "Šablony Vzorku"
+
+#: bika/lims/profiles/default/types/SampleType.xml
+msgid "Sample Type"
+msgstr "Typ vzorku"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/SampleTypes.xml
+msgid "Sample Types"
+msgstr "Typy vzorků"
+
+msgid "Sample due"
+msgstr "Vypršení vzorku"
+
+msgid "Sample received"
+msgstr "Vzorek přijat"
+
+msgid "Sample registered"
+msgstr "Vzorek zaregistrován"
+
+msgid "Sampled"
+msgstr "Vzorhovaný"
+
+#: bika/lims/profiles/default/types/AnalysisRequestsFolder.xml
+#: bika/lims/profiles/default/types/Batch.xml
+#: bika/lims/profiles/default/types/Client.xml
+msgid "Samples"
+msgstr "Vzorky"
+
+#: bika/lims/profiles/default/types/SamplingDeviation.xml
+msgid "Sampling Deviation"
+msgstr "Vzorkovací odchylka"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/SamplingDeviations.xml
+msgid "Sampling Deviations"
+msgstr "Odchylky odebrání vzorků"
+
+msgid "Sampling Round Templates"
+msgstr "Šablony vzorkovacího cyklu"
+
+msgid "Sampling workflow"
+msgstr "Pracovní postup odběru vzorků"
+
+#: bika/lims/profiles/default/types/Instrument.xml
+msgid "Schedule"
+msgstr "Plán"
+
+msgid "Schedule sampling"
+msgstr "Plánování odběru vzorků"
+
+msgid "Scheduled sampling"
+msgstr "Plánovaný odběr vzorků"
+
+#: bika/lims/profiles/default/actions.xml
+msgid "Search"
+msgstr "Hledat"
+
+#: bika/lims/profiles/default/types/BikaSetup.xml
+msgid "Setup"
+msgstr "Nastavení"
+
+#: bika/lims/profiles/default/actions.xml
+msgid "Sharing"
+msgstr "Sdílení"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+msgid "Small Sticker"
+msgstr "Malý štítek"
+
+#: bika/lims/profiles/default/types/Batch.xml
+#: bika/lims/profiles/default/types/ReferenceSample.xml
+#: bika/lims/profiles/default/types/Worksheet.xml
+msgid "Sticker"
+msgstr "Štítek"
+
+#: bika/lims/profiles/default/types/AnalysisRequest.xml
+#: bika/lims/profiles/default/types/Batch.xml
+#: bika/lims/profiles/default/types/ReferenceSample.xml
+msgid "Stickers preview"
+msgstr "Náhled štítků"
+
+#: bika/lims/profiles/default/types/StorageLocation.xml
+msgid "Storage Location"
+msgstr "Umístění úložiště"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/StorageLocations.xml
+msgid "Storage Locations"
+msgstr "Umístění úložiště"
+
+#: bika/lims/profiles/default/types/SubGroup.xml
+msgid "Sub-group"
+msgstr "Podskupina"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/SubGroups.xml
+msgid "Sub-groups"
+msgstr "Podskupiny"
+
+msgid "Submit"
+msgstr "Odeslat"
+
+msgid "Submit for verification"
+msgstr "Odeslat k ověření"
+
+#: bika/lims/profiles/default/types/Supplier.xml
+msgid "Supplier"
+msgstr "Dodavatel"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/Suppliers.xml
+msgid "Suppliers"
+msgstr "Dodavatelé"
+
+#: bika/lims/profiles/default/types/SupplyOrder.xml
+msgid "Supply Order"
+msgstr "Objednávka dodání"
+
+#: bika/lims/profiles/default/types/SupplyOrderFolder.xml
+msgid "Supply Orders"
+msgstr "Objednávky dodávek"
+
+msgid "To be preserved"
+msgstr "Bude zachováno"
+
+msgid "To be sampled"
+msgstr "K odebrání vzorku"
+
+msgid "To be verified"
+msgstr "Bude ověřeno"
+
+msgid "Unpublished"
+msgstr "Nepublikováno"
+
+msgid "Unsassign"
+msgstr "Nepřiřadit"
+
+msgid "Valid"
+msgstr "Platný"
+
+msgid "Validate"
+msgstr "Ověřit"
+
+#: bika/lims/profiles/default/types/Instrument.xml
+msgid "Validations"
+msgstr "Ověřování"
+
+msgid "Verified"
+msgstr "Ověřeno"
+
+msgid "Verify"
+msgstr "Ověřit"
+
+#: bika/lims/profiles/default/types/ARReport.xml
+#: bika/lims/profiles/default/types/ARTemplate.xml
+#: bika/lims/profiles/default/types/AnalysisCategory.xml
+msgid "View"
+msgstr "Zobrazit"
+
+#: bika/lims/profiles/default/types/Worksheet.xml
+msgid "Worksheet"
+msgstr "Pracovní list"
+
+#: bika/lims/profiles/default/types/WorksheetTemplate.xml
+msgid "Worksheet Template"
+msgstr "Šablona pracovního listu"
+
+#: bika/lims/profiles/default/controlpanel.xml
+#: bika/lims/profiles/default/types/WorksheetTemplates.xml
+msgid "Worksheet Templates"
+msgstr "Šablony pracovního listu"
+
+#: bika/lims/profiles/default/types/WorksheetFolder.xml
+msgid "Worksheets"
+msgstr "Pracovní listy"
+
+msgid "label_schema_Accounting"
+msgstr "Accounting"
+
+msgid "label_schema_Address"
+msgstr "Address"
+
+msgid "label_schema_Analyses"
+msgstr "Analyses"
+
+msgid "label_schema_Analysis Templates"
+msgstr "Šablony label_schema_Analysis "
+
+msgid "label_schema_Appearance"
+msgstr "label_schema_Appearance"
+
+msgid "label_schema_Bank details"
+msgstr "Bank details"
+
+msgid "label_schema_Calculation"
+msgstr "Calculation"
+
+msgid "label_schema_Container and Preservation"
+msgstr "label_schema_Container a Uchování"
+
+msgid "label_schema_Dates"
+msgstr "Dates"
+
+msgid "label_schema_Description"
+msgstr "Description"
+
+msgid "label_schema_Email Telephone Fax"
+msgstr "Email Telephone Fax"
+
+msgid "label_schema_ID Server"
+msgstr "ID Server"
+
+msgid "label_schema_Labels"
+msgstr "Labels"
+
+msgid "label_schema_Layout"
+msgstr "Layout"
+
+msgid "label_schema_Location"
+msgstr "Location"
+
+msgid "label_schema_Method"
+msgstr "Method"
+
+msgid "label_schema_Notifications"
+msgstr "label_schema_Notifications"
+
+msgid "label_schema_Preferences"
+msgstr "Preferences"
+
+msgid "label_schema_Publication preference"
+msgstr "Publication preference"
+
+msgid "label_schema_Reference Values"
+msgstr "Reference Values"
+
+msgid "label_schema_Reflex Rule Folder"
+msgstr "Složka pravidla label_schema_Reflex"
+
+msgid "label_schema_Result Options"
+msgstr "Result Options"
+
+msgid "label_schema_Results Reports"
+msgstr "Results Reports"
+
+msgid "label_schema_SR Templates"
+msgstr "SR Templates"
+
+msgid "label_schema_Sample Partitions"
+msgstr "label_schema_Sample oddělky"
+
+msgid "label_schema_Sample Templates"
+msgstr "Šablony label_schema_Sample "
+
+msgid "label_schema_Sampling"
+msgstr "label_schema_Sampling"
+
+# Setup Schemata
+msgid "label_schema_Security"
+msgstr "Security"
+
+msgid "label_schema_Sticker"
+msgstr "label_schema_Sticker"
+
+msgid "label_schema_Uncertainties"
+msgstr "Uncertainties"
