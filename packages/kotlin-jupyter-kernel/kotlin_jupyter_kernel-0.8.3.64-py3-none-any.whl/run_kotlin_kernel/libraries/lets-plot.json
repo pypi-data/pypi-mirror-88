@@ -1,0 +1,43 @@
+{
+  "description": "ggplot-like interactive visualization for Kotlin",
+  "properties": {
+    "api": "1.1.0",
+    "lib": "1.5.4",
+    "js": "1.5.4",
+    "isolatedFrame": ""
+  },
+  "link": "https://github.com/JetBrains/lets-plot-kotlin",
+  "repositories": [
+    "https://jetbrains.bintray.com/lets-plot-maven/"
+  ],
+  "dependencies": [
+    "org.jetbrains.lets-plot-kotlin:lets-plot-kotlin-api-kernel:$api",
+    "org.jetbrains.lets-plot:lets-plot-common:$lib",
+    "org.jetbrains.lets-plot:lets-plot-image-export:$lib"
+  ],
+  "imports": [
+    "jetbrains.letsPlot.*",
+    "jetbrains.letsPlot.geom.*",
+    "jetbrains.letsPlot.stat.*",
+    "jetbrains.letsPlot.label.*",
+    "jetbrains.letsPlot.scale.*",
+    "jetbrains.letsPlot.facet.*",
+    "jetbrains.letsPlot.sampling.*",
+    "jetbrains.letsPlot.export.*",
+    "jetbrains.letsPlot.tooltips.layer_tooltips",
+    "jetbrains.letsPlot.tooltips.tooltips_none"
+  ],
+  "init": [
+    "import jetbrains.letsPlot.LetsPlot",
+    "import jetbrains.letsPlot.frontend.NotebookFrontendContext",
+    "val isolatedFrameParam = if(\"$isolatedFrame\".isNotEmpty()) \"$isolatedFrame\".toBoolean() else null",
+    "val frontendContext = LetsPlot.setupNotebook(\"$js\", isolatedFrameParam) {DISPLAY(HTML(it))}",
+    "LetsPlot.apiVersion = \"$api\"",
+    "// Load library JS",
+    "DISPLAY(HTML(frontendContext.getConfigureHtml()))"
+  ],
+  "renderers": {
+    "jetbrains.letsPlot.intern.Plot": "HTML(frontendContext.getHtml($it))",
+    "jetbrains.letsPlot.GGBunch": "HTML(frontendContext.getHtml($it))"
+  }
+}
