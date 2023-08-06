@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: plex_default_settings
+Version: 0.1.1
+Summary: Plex default settings
+Home-page: https://github.com/antonlabs/plex_default_settings
+Author: Anton Kuzmenko
+Author-email: hotk@hey.com
+License: UNKNOWN
+Project-URL: Bug Reports, https://github.com/antonlabs/plex_default_settings/issues
+Project-URL: Source, https://github.com/antonlabs/plex_default_settings
+Description: # Usage
+        
+        ## Set jpn dubs for every episode in the show "Hokuto No Ken Fan-Kai"
+        
+        ```sh
+        ❯ plex_default_settings dub \
+          --username "${USERNAME}" \
+          --password "${PASSWORD}" \
+          --servername 'Linux Media Server' \
+          'Hokuto No Ken Fan-Kai' jpn
+        Updating episodes  [####################################]  100%
+        Success!
+        ```
+        
+        ## Set eng subs for every episode in the show "Hokuto No Ken Fan-Kai"
+        
+        ```sh
+        ❯ plex_default_settings sub \
+          --username "${USERNAME}" \
+          --password "${PASSWORD}" \
+          --servername 'Linux Media Server' \
+          'Hokuto No Ken Fan-Kai' eng
+        Updating episodes  [####################################]  100%
+        Success!
+        ```
+        
+Keywords: plex,subtitles,dubbing,subs,dubs
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Topic :: Multimedia
+Classifier: Topic :: Multimedia :: Video
+Classifier: Topic :: Multimedia :: Video :: Display
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.8, <4
+Description-Content-Type: text/markdown
