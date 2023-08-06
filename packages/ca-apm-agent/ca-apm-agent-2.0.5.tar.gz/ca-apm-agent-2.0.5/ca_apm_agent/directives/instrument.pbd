@@ -1,0 +1,61 @@
+# This file is to contain information of Probes and Functions to be instrumented
+# Probe declaration section
+# Declare in the following format
+# Variable = (Probe Module Name, Probe Class Name)
+#Django probes
+http_probe=(ca_apm_agent.probes.django.http,HTTPProbe)
+timing_probe=(ca_apm_agent.probes.timing_probe,TProbe)
+sql_probe=(ca_apm_agent.probes.django.dbapi,DBAPIProbe)
+error_probe=(ca_apm_agent.probes.error,ErrorProbe)
+http_error_probe=(ca_apm_agent.probes.django.http_error,HTTPErrorProbe)
+
+#requests probes
+http_requests_probe=(ca_apm_agent.probes.requests.http,HTTPReqProbe)
+
+#flask probes
+http_flask_probe=(ca_apm_agent.probes.flask.http,HTTPFlaskProbe)
+
+#urllib probes
+http_urllib_probe=(ca_apm_agent.probes.urllib.http,HTTPUrllibProbe)
+
+#rasa probes
+rasa_probe=(ca_apm_agent.probes.rasa.rasa,RasaProbe)
+
+#rasa sdk Action probes
+rasa_action_probe=(ca_apm_agent.probes.rasa.rasaaction,RasaActionProbe)
+
+#aiohttp Clinet probes
+aiohttp_probe=(ca_apm_agent.probes.aiohttp.aiohttp,AiohttpProbe)
+
+#aiohttp Server probes
+aiohttp_server_probe=(ca_apm_agent.probes.aiohttp.aiohttpserver,AiohttpServerProbe)
+aiohttp_server_error_probe=(ca_apm_agent.probes.aiohttp.aiohttp_server_http_error,AiohttpServerHTTPErrorProbe)
+
+# Function Instrumentation Section
+# A tuple consists of 4 or more items in the following format (At least 1 probe variable)
+# (Module Name, Class Name (can be None), Method Name, Probe Variable, Probe variable, ..)
+(django.core.handlers.base,BaseHandler,get_response,http_probe,http_error_probe,error_probe)
+(django.db.backends.utils,CursorWrapper,execute,sql_probe,error_probe)
+(django.core.handlers.wsgi,WSGIHandler,get_wsgi_application,http_probe,http_error_probe,error_probe)
+
+#requests module instrumentation
+(requests.models,PreparedRequest,prepare,http_requests_probe)
+
+#flask moudle instrumentation
+(flask.app,Flask,wsgi_app,http_flask_probe)
+
+#urllib module instrumentation
+(urllib.request,AbstractHTTPHandler,do_open,http_urllib_probe)
+
+#rasa module instrumentation
+(rasa.nlu.model,Interpreter,parse,rasa_probe,error_probe)
+(rasa_sdk.executor,ActionExecutor,run,rasa_action_probe,error_probe)
+
+#aiohttp client module instrumentation
+(aiohttp.client,ClientSession,get,aiohttp_probe,error_probe)
+(aiohttp.client,ClientSession,post,aiohttp_probe,error_probe)
+(aiohttp.client,ClientSession,put,aiohttp_probe,error_probe)
+(aiohttp.client,ClientSession,delete,aiohttp_probe,error_probe)
+
+#aiohttp server module instrumentation
+(aiohttp.web_request,Request,_prepare_hook,aiohttp_server_probe,error_probe,aiohttp_server_error_probe)
