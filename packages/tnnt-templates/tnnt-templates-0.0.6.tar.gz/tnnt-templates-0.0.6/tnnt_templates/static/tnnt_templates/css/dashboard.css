@@ -1,0 +1,28 @@
+@media all {
+    .label-tnnt-default {
+        display: inline-block;
+        background-color: rgb(192, 192, 192);
+        color: rgb(54,54,54);
+        padding: 1rem 1rem 1rem 0.7rem;
+        font-size: 100%;
+        font-weight: normal;
+        border-left: 5px solid rgb(70, 69, 69);
+    }
+
+    .template-dark-mode .label-tnnt-default {
+        color: rgb(255, 255, 255);
+        background-color: rgb(100, 100, 100);
+    }
+
+    .auth-member-groups .label-dashboard-group-name:first-child {
+        margin-left: 0;
+    }
+
+    .auth-member-groups .label-dashboard-group-name:last-child {
+        margin-right: 0;
+    }
+
+    .auth-member-groups .label-dashboard-group-name {
+        margin: 0 0.5rem 1rem 0.5rem;
+    }
+}
