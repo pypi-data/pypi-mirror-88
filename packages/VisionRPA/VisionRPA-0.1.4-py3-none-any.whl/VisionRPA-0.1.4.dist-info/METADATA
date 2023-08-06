@@ -1,0 +1,68 @@
+Metadata-Version: 2.1
+Name: VisionRPA
+Version: 0.1.4
+Summary: VisionUI is a RPA product, which can be used for differen automation processes
+Home-page: UNKNOWN
+Author: ExpertVision
+Author-email: ayazpk6630@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/markdown
+Requires-Dist: MouseInfo (==0.1.3)
+Requires-Dist: numpy (==1.19.4)
+Requires-Dist: opencv-python (==4.4.0.46)
+Requires-Dist: pandas (==1.1.5)
+Requires-Dist: Pillow (==8.0.1)
+Requires-Dist: PyAutoGUI (==0.9.52)
+Requires-Dist: PyGetWindow (==0.0.9)
+Requires-Dist: PyMsgBox (==1.0.9)
+Requires-Dist: pyperclip (==1.8.1)
+Requires-Dist: PyRect (==0.1.4)
+Requires-Dist: PyScreeze (==0.1.26)
+Requires-Dist: python-dateutil (==2.8.1)
+Requires-Dist: PyTweening (==1.0.3)
+Requires-Dist: pytz (==2020.4)
+Requires-Dist: pywin32 (==300)
+Requires-Dist: six (==1.15.0)
+
+# VisionRPA 
+This package is use for auto clicking and auto writing
+
+
+## requirements
+* Operating System
+  * Windows
+* Programming Language
+  * python 3.7
+
+## Usage
+* First open this link [link ]( https://www3.ntu.edu.sg/home/ehchua/programming/webprogramming/jsdemo/JSFormValidation.html) make sure it remain open
+* then
+
+```python
+from VisionRPA import VisionUI 
+
+app='HTML Form Input Validation Using JavaScript - Google Chrome'
+dictionary_data=VisionUI.Get_RT_app_elements('Vision-416',app) 
+
+action='write'
+VisionUI.add_action('click',dictionary_data,app,index_no=6,enter_text='0000@gmail.com')
+VisionUI.add_action(action,dictionary_data,app,label_='Name',enter_text='test1')
+VisionUI.add_action(action,dictionary_data,app,label_='Address',enter_text='1234')
+VisionUI.add_action(action,dictionary_data,app,label_='Zip Code*',enter_text='12345')
+
+VisionUI.add_action('click',dictionary_data,app,label_='Country*')
+VisionUI.add_action(action,dictionary_data,app,label_='Country*',enter_text='BB')
+VisionUI.add_action('click',dictionary_data,app,label_='Male')
+VisionUI.add_action('click',dictionary_data,app,label_='Blue')
+VisionUI.add_action(action,dictionary_data,app,label_='Phone',enter_text='0000')
+VisionUI.add_action(action,dictionary_data,app,label_='Email*',enter_text='0000@gmail.com')
+VisionUI.add_action(action,dictionary_data,app,label_='Password (6-8 characters)*',enter_text='0000000')
+VisionUI.add_action(action,dictionary_data,app,label_='Verify Password*',enter_text='0000000')
+VisionUI.add_action('click',dictionary_data,app,index_no=7) 
+```
+
+
