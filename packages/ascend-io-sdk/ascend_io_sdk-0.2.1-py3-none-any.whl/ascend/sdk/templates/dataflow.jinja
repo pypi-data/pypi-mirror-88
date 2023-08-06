@@ -1,0 +1,21 @@
+{% from 'common.jinja' import dataflow_from_definition -%}
+import os
+import pathlib
+
+from ascend.sdk import definitions
+from ascend.sdk.applier import DataflowApplier
+from ascend.sdk.client import Client
+
+{% for mod in proto_mods %}
+import ascend.protos.{{mod}}.{{mod}}_pb2 as {{mod}}
+{% endfor %}
+
+{% for gmod, cls in gmod_classes %}
+from {{gmod}} import {{cls}}
+{% endfor %}
+
+{% set dataflow_alias = "dataflow_{}".format(dataflow.id) -%}
+{{ dataflow_from_definition(dataflow, dataflow_alias, renderer, ordered_components, inline_code_map, classname_map) }}
+
+client = Client("{{hostname}}")
+DataflowApplier(client).apply("{{data_service_id}}", {{dataflow_alias}})
