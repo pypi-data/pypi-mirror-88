@@ -1,0 +1,137 @@
+{{ name | capitalize }}
+===========
+
+Description
+-----------
+
+{{ meta.description }}
+
+Dependencies
+-----------
+
+{%- if dependencies|length %}
+
+Name | Source | Version |
+--- | --- | --- |
+{%- for item in dependencies.keys() %}
+```{{ item }}``` | {{ dependencies[item]['src'] }} | {{ dependencies[item]['version'] }} |
+{%- endfor %}
+
+{%- else %}
+This role has no dependencies.
+{%- endif %}
+
+Requirements
+-------------
+
+### Ansible version
+
+Minimum Ansible version : {{ meta.min_ansible_version }}
+
+### Platforms
+
+This role will work on the following platforms :
+
+Distribution | Version |
+--- | --- |
+{%- for distribution in meta.platforms %}
+{%- for version in distribution.versions %}
+{{ distribution.name }} | {{ version }} |
+{%- endfor %}
+{%- endfor %}
+
+Tasks tags
+--------------
+
+These tasks tags are available : 
+
+{%- for item in tasks %}
+
+* ``{{ item }}``
+{%- endfor %}
+
+Role Variables
+--------------
+
+Variable | Type | Mandatory |  Example | File | Description
+--- | --- | --- | --- | --- | --- |
+{%- for item in default_tag %}
+`{{ item.name }}`  | {{ item.type }} | {{ item.mandatory }} | {{ item.example }} | {{ item.file}} |  {{ item.description }} |
+{%- endfor %}
+
+
+Default Variables
+------------------
+
+Variable | Value | Description | Type | File
+--- | --- | --- | --- | --- |
+
+{%- for item in default_value.keys() %}
+``{{ item }}`` | {% if (default_value[ item ]['value'] | length) <= 100 %}{{ default_value[ item ]['value'] }} {% else %} [value](defaults/{{ default_value[item]['file'] }}) {% endif %} | {{ default_value[ item ]['description'] | default('n/a')}} | {{ default_value[ item ]['type'] | default('n/a')}} | {{ default_value[item]['file']}}
+{%- endfor %}
+
+Molecule scenario
+------------------
+{%- for item in molecule.keys() %}
+{%- if  molecule[item]['driver'] == 'docker' %}
+### {{ molecule[item]['driver'] | capitalize }}
+
+Scenario | Platform name | Image |
+--- | --- | --- |
+
+{%- for platform in  molecule[item]['platforms'] %} 
+``{{ item }}`` | {{ platform['name'] }} | {{ platform['image'] }} |
+{%- endfor %}
+
+{%- endif -%}
+
+{%- if  molecule[item]['driver'] == 'vagrant' %}
+
+### {{ molecule[item]['driver'] | capitalize }}
+
+Scenario | Platform name | Box |
+--- | --- | --- |
+{%- for platform in  molecule[item]['platforms'] %} 
+``{{ item }}`` | {{ platform['name'] }} | {{ platform['box'] }} |
+{%- endfor%}`
+
+{% endif %}
+
+{%- if molecule[item]['driver'] == 'ec2' %}
+
+### {{ molecule[item]['driver'] | capitalize }}
+Scenario | Platform name | Image name | Instance type |
+--- | --- | --- | --- |
+{%- for platform in  molecule[item]['platforms'] %} 
+``{{ item }}`` | {{ platform['name'] }} | {{ platform['image_name'] }} | {{ platform['instance_type'] }}
+{%- endfor %}
+
+
+{% endif -%}
+
+{%- if molecule[item]['driver'] == 'delegated' %}
+
+### {{ molecule[item]['driver'] | capitalize }}
+
+{% for keys in molecule[item]['keys']['keys']  -%}
+| {{ (keys|capitalize) + " " }}
+{%- endfor %}
+{% for separation in range (0,molecule[item]['keys']['keys']| length) -%}
+| --- 
+{%- endfor %}
+{%- for platform in molecule[item]['platforms']%}
+{% for key in molecule[item]['keys']['keys'] -%}
+| {%- if key == "name" -%}```{%- endif -%} {{ platform[key] }}{%- if key == "name" -%}```{%- endif -%}
+{%- endfor %}
+{%- endfor %}
+
+
+
+{% endif %}
+
+{%- endfor %}
+
+Author
+-------
+
+{{ meta.author }}
