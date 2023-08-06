@@ -1,0 +1,33 @@
+six
+
+[:python_version < "3"]
+antlr4-python2-runtime~=4.8.0
+
+[:python_version < "3.4"]
+enum34
+
+[:python_version < "3.5" and python_version >= "3"]
+typing
+
+[:python_version >= "3"]
+antlr4-python3-runtime~=4.8.0
+
+[dev]
+sphinx
+sphinx-prompt
+coverage
+pytest
+pytest-cov
+bumpversion
+check-manifest
+pre-commit
+tox
+
+[docs]
+sphinx
+sphinx-prompt
+
+[test]
+coverage
+pytest
+pytest-cov
