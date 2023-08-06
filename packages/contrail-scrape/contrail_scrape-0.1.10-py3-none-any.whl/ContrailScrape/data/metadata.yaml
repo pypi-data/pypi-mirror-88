@@ -1,0 +1,69 @@
+---
+argparser:
+  vrouter:
+    option_name: --vrouter
+    short_name: -vr
+    help: contrail-vrouter
+    port: "8085"
+  config:
+    option_name: --config
+    short_name: -cfg
+    help: contrail-config
+    port: "8084"
+  control:
+    option_name: --control
+    short_name: -cnt
+    help: contrail-control
+    port: "8083"
+  analytics:
+    option_name: --analytics
+    short_name: -can
+    help: contrail-analytics-api introspect
+    port: "8090"
+  alarmgen:
+    option_name: --alarmgen
+    short_name: -alg
+    help: contrail-analytics-alarmgen
+    port: "5995"
+  discovery:
+    option_name: --discovery
+    short_name: -dis
+    help: contrail-discovery
+    port: "5997"
+  schema:
+    option_name: --schema
+    short_name: -sch
+    help: contrail-schema
+    port: "8087"
+  svc_monitor:
+    option_name: --svc-monitor
+    short_name: -svc
+    help: contrail-svc-monitor
+    port: "8088"
+  collector:
+    option_name: --collector
+    short_name: -col
+    help: contrail-analytics-collector
+    port: "8089"
+  dev_mgr:
+    option_name: --dev-mgr
+    short_name: -dm
+    help: contrail device manager
+    port: "8096"
+  dns:
+    option_name: --dns
+    short_name: -dns
+    help: contrail-dns
+    port: "8092"
+  query:
+    option_name: --query
+    short_name: -qe
+    help: contrail-query-engine
+    port: "8091"
+  analytics_api:
+    option_name: --analytics-api
+    short_name: -uves
+    help: contrail analytics uves and alarms
+    port: "8081"
+
+  
