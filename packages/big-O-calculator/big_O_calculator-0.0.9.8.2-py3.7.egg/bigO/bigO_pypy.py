@@ -1,0 +1,645 @@
+import math
+import os
+import string
+import sys
+from collections import Counter
+from ctypes import c_bool, cdll, Structure, c_int, c_char_p, c_double, c_uint
+from random import choice, getrandbits, randint, random
+from timeit import default_timer
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
+
+class bigO:
+    """
+    Big-O calculator
+
+    Methods
+    -------
+    test(function, array, limit=True, prtResult=True) -> Tuple[complexity, executionTime]:
+        Returns time complexity and the execution time to sort arrays with your function
+
+    test_all(function) -> Dict[str, int]:
+        Returns dictionary with all cases timecomplexity
+
+    runtime(function, array, size) -> Tuple[executionTime, sorted result]:
+        Returns executionTime and the result
+
+    compare(function1, function2, array, size) -> Dict{functionName: executionTime}
+        Returns dictionary with execution time on each function
+
+    Usage
+    -----
+        from bigO import bigO
+        from bigO import algorithm
+
+        lib = bigO.bigO()
+
+        lib.test(mySort, "random")
+        lib.test_all(mySort)
+        lib.runtime(algorithm.bubbleSort, "random", 5000)
+        lib.compare(algorithm.bubbleSort, algorithm.insertSort, "random", 5000)
+    """
+
+    # __slots__ = [
+    #     "is_window, coef, rms, cplx, O1, ON, OLogN, ONLogN, ON2, ON3, OLambda, fitCurves"
+    # ]
+
+    def __init__(self):
+        self.is_window = c_bool(os.name == "nt")
+        self.coef = c_double(0.0)
+        self.rms = c_double(0.0)
+        self.cplx = c_uint(0)
+        self.O1 = c_uint(1)
+        self.ON = c_uint(2)
+        self.OLogN = c_uint(3)
+        self.ONLogN = c_uint(4)
+        self.ON2 = c_uint(5)
+        self.ON3 = c_uint(6)
+
+        self.OLambda = c_uint(7)
+
+        self.fitCurves = (c_uint * 6)(
+            *(self.O1, self.ON, self.OLogN, self.ONLogN, self.ON2, self.ON3)
+        )
+
+    def __repr__(self):
+        return f"I'm using {'window' if self.is_window else 'posix'}"
+
+    def to_str(self):
+        return self.complexity2str(self.cplx)
+
+    def complexity2str(self, cplx):
+        return {
+            self.ON: "O(n)",
+            self.ON2: "O(n^2)",
+            self.ON3: "O(n^3)",
+            self.OLogN: "O(log(n)",
+            self.ONLogN: "O(nlog(n))",
+            self.O1: "O(1)",
+        }.get(cplx, "f(n)")
+
+    def complexity2int(self, cplx):
+        return {
+            "O(1)": self.O1,
+            "O(n)": self.ON,
+            "O(log(n)": self.OLogN,
+            "O(nlog(n))": self.ONLogN,
+            "O(n^2)": self.ON2,
+            "O(n^3)": self.ON3,
+        }.get(cplx, self.ON)
+
+    def fittingCurve(self, cplx):
+        def bigO_ON(n):
+            return c_int(n)
+
+        def bigO_ON2(n):
+            return c_int(n * n)
+
+        def bigO_ON3(n):
+            return c_int(n * n * n)
+
+        def bigO_OLogN(n):
+            return c_double(math.log2(n))
+
+        def bigO_ONLogN(n):
+            return c_double(n * math.log2(n))
+
+        def bigO_O1(_):
+            return c_double(1.0)
+
+        return {
+            self.O1: bigO_O1,
+            self.ON: bigO_ON,
+            self.ON2: bigO_ON2,
+            self.ON3: bigO_ON3,
+            self.OLogN: bigO_OLogN,
+            self.ONLogN: bigO_ONLogN,
+        }.get(cplx, bigO_O1)
+
+    def minimalLeastSq(self, arr, times, function):
+        sigmaGnSquared = c_double(0.0)
+        sigmaTime = c_double(0.0)
+        sigmaTimeGn = c_double(0.0)
+        floatN = c_double(len(arr))
+
+        for i in range(len(arr)):
+            gnI = function(arr[i])
+            sigmaGnSquared += gnI * gnI
+            sigmaTime += times[i]
+            sigmaTimeGn += times[i] * gnI
+
+        result = bigO()
+        result.cplx = self.OLambda
+
+        result.coef = c_double(sigmaTimeGn.value / sigmaGnSquared.value)
+
+        rms = c_double(0.0)
+        for i in range(len(arr)):
+            fit = c_double(result.coef * function(arr[i]))
+            rms.value += c_double(math.pow(times[i] - fit, 2)).value
+
+        mean = c_double(sigmaTime.value / floatN.value)
+        result.rms = c_double(math.sqrt(rms.value / floatN.value) / mean.value)
+
+        return result
+
+    def estimate(self, n, times):
+        assert len(n) == len(
+            times
+        ), f"ERROR: Length mismatch between N:{len(n)} and TIMES:{len(times)}."
+        assert len(n) >= 2, "ERROR: Need at least 2 runs."
+
+        bestFit = bigO()
+
+        # assume that O1 is the best case
+        bestFit = self.minimalLeastSq(n, times, self.fittingCurve(self.O1))
+        bestFit.cplx = self.O1
+
+        for fit in self.fitCurves:
+            currentFit = self.minimalLeastSq(n, times, self.fittingCurve(fit))
+            if currentFit.rms.value < bestFit.rms.value:
+                bestFit = currentFit
+                bestFit.cplx = fit
+
+        return bestFit
+
+    @staticmethod
+    def genRandomPositive(size=10):
+        return [randint(1, size) for _ in range(size)]
+
+    @staticmethod
+    def genRandomArray(size=10):
+        return [randint(-size, size) for _ in range(size)]
+
+    @staticmethod
+    def genRandomBigArray(size=10):
+        array = []
+        append = array.append
+        for _ in range(size):
+            isPositive = random() >= 0.5
+            nextValue = getrandbits(50)  # More than 100 trillion
+            if not isPositive:
+                nextValue = -nextValue
+            append(nextValue)
+        return array
+
+    @staticmethod
+    def genRandomString(stringLen=10, size=10):
+        if stringLen == None:
+            stringLen = size // 2
+
+        letters = string.ascii_lowercase + string.digits
+        array = [
+            "".join(choice(letters) for _ in range(randint(1, stringLen)))
+            for _ in range(size)
+        ]  # secrets.choice?
+        return array
+
+    @staticmethod
+    def genSortedArray(size=10):
+        return [i for i in range(size)]
+
+    @staticmethod
+    def genReversedArray(size=10):
+        return [i for i in reversed(range(size))]
+
+    def genPartialArray(self, size=10):
+        array = self.genRandomArray(size)
+        sorted_array = self.genSortedArray(size)
+
+        array[size // 4 : size // 2] = sorted_array[size // 4 : size // 2]
+        return array
+
+    def genKsortedArray(self, size=10, k=None):
+        def _reverseRange(array, a, b):
+            i = a
+            j = b - 1
+            while i < j:
+                array[i], array[j] = array[j], array[i]
+                i += 1
+                j -= 1
+
+            return array
+
+        if k is None:
+            k = size.bit_length()
+
+        assert size >= k, "K must be smaller than the size."
+        if k == 0:
+            return self.genSortedArray(size)
+        elif size == k:
+            return self.genReversedArray(size)
+
+        array = [value for value in range(-size // 2, size // 2)]
+
+        right = randint(0, k - 1)
+        while right >= size - k:
+            right -= 1
+
+        _reverseRange(array, 0, k + 1)
+        _reverseRange(array, size - right, size)
+
+        return array
+
+    @staticmethod
+    def genEqualArray(size=10):
+        n = randint(-size, size)
+        return [n for _ in range(size)]
+
+    @staticmethod
+    def genAlmostEqualArray(size=10):
+        return [randint(-1, 1) + size for _ in range(size)]
+
+    def genHoleArray(
+        self, size=10
+    ):  # returns equal array with only one different element
+        arr = self.genEqualArray(size)
+        arr[randint(-size, size)] = -sys.maxsize
+        return arr
+
+    @staticmethod
+    def isAscendingSorted(array):
+        """Is correctly ascending sorted? Time: O(n)
+
+        Args:
+            array [List]: Array to check if it is sorted correctly
+
+        Returns:
+            isSorted, index [bool, int]: returns True/False with unsorted index
+        """
+        # Ascending order
+        for i in range(len(array) - 1):
+            if array[i] > array[i + 1]:
+                return False, i + 1
+
+        return True, None
+
+    @staticmethod
+    def isDescendingSorted(array: List[Any]) -> Tuple[bool, Optional[int]]:
+        """Is correctly descending sorted? Time: O(n)
+
+        Args:
+            array [List]: Array to check if it is sorted correctly
+
+        Returns:
+            isSorted, index [bool, int]: returns True/False with unsorted index
+        """
+        # Descending order
+        for i in range(len(array) - 1, 0, -1):
+            if array[i] > array[i - 1]:
+                return False, i + 1
+
+        return True, None
+
+    def test(
+        self,
+        functionName: Callable,
+        array: str,
+        limit: bool = True,
+        prtResult: bool = True,
+    ) -> Tuple[str, float]:
+        """
+        ex) test(bubbleSort, "random")
+
+        Args:
+            functionName (Callable): a function to call |
+            array (str): "random", "big", "sorted", "reversed", "partial", "Ksorted", "string",
+            "hole", "equal", "almost_equal" |
+            limit (bool): To terminate before it takes forever to sort (usually 10,000) |
+            prtResult (bool): Whether to print the result by itself (default = True)
+
+        Returns:
+            complexity (str) : ex) O(n) |
+            time (float) : Time took to sort all 5 different arrays in second (max=100,000)
+
+        """
+        if self.is_window:
+            from win10toast import ToastNotifier
+        else:
+            toaster = None
+            ToastNotifier = None
+
+        sizes = (c_uint * 5)(*[10, 100, 1000, 10000, 100000])
+        maxIter = c_uint(5)
+        times: List[float] = []
+        isSlow = c_bool(False)  # To see if sorting algorithm takes forever
+
+        if prtResult:
+            print(f"Running {functionName.__name__}({array} array)...")
+        if self.is_window:
+            toaster = ToastNotifier()
+            toaster.show_toast(
+                "Big-O Caculator",
+                f"Running {functionName.__name__}({array} array)...",
+                duration=2,
+            )
+
+        for size in sizes:
+
+            if isSlow:
+                sizes = sizes[: len(times)]
+                break
+
+            timeTaken = c_double(0.0)
+            nums = []
+
+            array = array.lower()
+            if array == "random":
+                nums = self.genRandomArray(size)
+            elif array == "big":
+                nums = self.genRandomBigArray(size)
+            elif array == "sorted":
+                nums = self.genSortedArray(size)
+            elif array == "partial":
+                nums = self.genPartialArray(size)
+            elif array == "reversed":
+                nums = self.genReversedArray(size)
+            elif array == "ksorted":
+                nums = self.genKsortedArray(size, size.bit_length())
+            elif array == "string":
+                nums = self.genRandomString(stringLen=100, size=size)
+            elif array == "hole":
+                nums = self.genHoleArray(size)
+            elif array == "equal":
+                nums = self.genEqualArray(size)
+            elif array == "almost_equal":
+                nums = self.genAlmostEqualArray(size)
+            # elif array == "custom":
+            #    nums = custom
+            #    assert len(nums) != 0, "Please, pass the custom array you want.
+            else:  # default = random array
+                nums = self.genRandomArray(size)
+
+            currentIter = c_uint(0)
+
+            while currentIter.value < maxIter.value:
+                start = default_timer()
+                result = functionName(nums)
+                end = default_timer()
+                timeTaken += end - start
+                currentIter += 1
+
+                if result != None:
+                    isSorted, index = self.isAscendingSorted(result)
+                    if index == 1:
+                        msg = f"{result[index - 1]}, {result[index]}..."
+                    elif index == len(result) - 1:
+                        msg = f"...{result[index - 1]}, {result[index]}"
+                    elif isinstance(index, int):
+                        msg = f"...{result[index - 1]}, {result[index]}, {result[index + 1]}..."
+                    else:
+                        msg = ""
+                    assert (
+                        isSorted
+                    ), f"{functionName.__name__} doesn't sort correctly.\nAt {index} index: [{msg}]"
+
+            if (
+                timeTaken.value >= 4 and limit
+            ):  # if it takes more than 4 seconds to sort an array, then break it
+                isSlow = c_bool(True)
+
+            timeTaken /= maxIter
+            times.append(timeTaken.value)
+
+        complexity = self.estimate(sizes, times)
+        cplx = complexity.to_str()
+        estimatedTime = c_double(sum(times))
+
+        if prtResult:
+            print(f"Completed {functionName.__name__}({array} array): {cplx}")
+            print(f"Time took: {estimatedTime.value:.5f}s")
+
+        if self.is_window:
+            toaster.show_toast(
+                "Big-O Caculator",
+                f"Completed {functionName.__name__}({array} array): {cplx}",
+                duration=3,
+            )
+
+        return cplx, estimatedTime.value
+
+    def test_all(self, function: Callable) -> Dict[str, str]:
+        """
+        ex) test_all(bubbleSort)
+
+        Args:
+            function [Callable]: a function to call
+
+        Returns:
+            Dict[str, str]: ex) {"random": "O(n)" ...}
+        """
+        result = {
+            "random": "0",
+            "sorted": "0",
+            "reversed": "0",
+            "partial": "0",
+            "Ksorted": "0",
+            "almost_equal": "0",
+        }
+
+        bestCase = self.complexity2int("O(n^3)")
+        worstCase = self.complexity2int("O(1)")
+
+        print(f"Running {function.__name__}(tests)")
+        for test in result:
+            cplx, _ = self.test(function, test, prtResult=False)
+            result[test] = cplx
+            cplxInt = self.complexity2int(cplx)
+
+            if cplxInt.value < bestCase.value:
+                bestCase = cplxInt
+            if cplxInt.value > worstCase.value:
+                worstCase = cplxInt
+
+        averageCase, _ = Counter(result.values()).most_common(1)[0]
+
+        print(f"Best : {self.complexity2str(bestCase)} Time")
+        print(f"Average : {averageCase} Time")
+        print(f"Worst : {self.complexity2str(worstCase)} Time")
+
+        return result
+
+    def runtime(
+        self,
+        function: Callable,
+        array: Union[str, List[Any]],
+        size: int = 0,
+        epoch: int = 1,
+        prtResult: bool = True,
+    ) -> Tuple[float, List[Any]]:
+        """
+        ex) runtime(bubbleSort, "random", 5000)
+
+        Args:
+            function [Callable]: a function to call |
+            array: "random", "big", "sorted", "partial", "reversed", "Ksorted" ,
+            "hole", "equal", "almost_equal" or your custom array |
+            size [int]: How big test array should be |
+            epoch [int]: How many tests to run and calculte average |
+            prtResult (bool): Whether to print the result by itself (default = True) |
+
+        Returns:
+            Tuple[float, List[Any]]: An execution time and sorted result
+        """
+        if epoch < 1:
+            epoch = 1
+
+        if isinstance(array, list):
+            nums = array
+            array = "custom"
+            size = len(nums)
+            assert size != 0, "Length of array must greater than 0."
+        else:
+            assert size != 0, "Length of array must greater than 0."
+            array = array.lower()
+            if array == "random":
+                nums = self.genRandomArray(size)
+            elif array == "big":
+                nums = self.genRandomBigArray(size)
+            elif array == "sorted":
+                nums = self.genSortedArray(size)
+            elif array == "partial":
+                nums = self.genPartialArray(size)
+            elif array == "reversed":
+                nums = self.genReversedArray(size)
+            elif array == "ksorted":
+                nums = self.genKsortedArray(size, size.bit_length())
+            elif array == "string":
+                nums = self.genRandomString(size)
+            elif array == "hole":
+                nums = self.genHoleArray(size)
+            elif array == "equal":
+                nums = self.genEqualArray(size)
+            elif array == "almost_equal":
+                nums = self.genAlmostEqualArray(size)
+            else:  # default = random array
+                nums = self.genRandomArray(size)
+
+        if prtResult:
+            print(f"Running {function.__name__}(len {size} {array} array)")
+
+        timeTaken = c_double(0.0)
+
+        for _ in range(epoch):
+            timeStart = c_double(default_timer())
+            result = function(nums)
+            timeEnd = c_double(default_timer())
+
+            timeTaken += timeEnd.value - timeStart.value
+
+            if result != None:
+                isSorted, index = self.isAscendingSorted(result)
+                if index == 1:
+                    msg = f"{result[index - 1]}, {result[index]}..."
+                elif index == len(result) - 1:
+                    msg = f"...{result[index - 1]}, {result[index]}"
+                elif isinstance(index, int):
+                    msg = f"...{result[index - 1]}, {result[index]}, {result[index + 1]}..."
+
+                if not isSorted:
+                    # Just see the result if it doesn't sort correctly
+                    print(
+                        f"{function.__name__} doesn't sort correctly.\nAt {index} index: [{msg}]"
+                    )
+
+        finalTime = c_double(timeTaken.value / epoch)
+
+        if prtResult:
+            print(f"Took {finalTime:.5f}s to sort {function.__name__}({array})")
+
+        return finalTime.value, result
+
+    def compare(
+        self,
+        function1: Callable,
+        function2: Callable,
+        array: Union[str, List[Any]],
+        size: int = 50,
+    ) -> Dict:
+        """
+        ex) compare(bubbleSort, insertSort, "random", 5000)
+
+        Args:
+            function1 [Callable]: a function to compare |
+            function2 [Callable]: a function to compare |
+            array [str]|[List]: "random", "big", "sorted", "partial", "reversed", "Ksorted", 
+            "hole", "equal", "almost_equal", "all" or your custom array |
+            size [int]: How big test array should be |
+
+        Returns:
+            Dict: function1 execution time and function2 execution time
+        """
+        s: str = ""
+
+        if array == "all":
+            test = [
+                "random",
+                "big",
+                "sorted",
+                "reversed",
+                "partial",
+                "Ksorted",
+                "hole",
+                "equal",
+                "almost_equal",
+            ]
+            func1_sum = c_double(0.0)
+            func2_sum = c_double(0.0)
+            wins = c_uint(0)
+
+            print(f"Running {function1.__name__}(tests) vs {function2.__name__}(tests)")
+            for arr in test:
+                function1_time, _ = self.runtime(
+                    function1, arr, size, epoch=3, prtResult=False
+                )
+                func1_sum += function1_time
+
+                function2_time, _ = self.runtime(
+                    function2, arr, size, epoch=3, prtResult=False
+                )
+                func2_sum += function2_time
+
+                if function1_time > function2_time:
+                    wins += 1
+
+            func1_sum /= len(test)
+            func2_sum /= len(test)
+            function1_time = func1_sum
+            function2_time = func2_sum
+
+            wins = (
+                wins
+                if function1_time.value > function2_time.value
+                else len(test) - wins.value
+            )
+            array = f"{wins} of {len(test)}"
+            s = "s"
+        else:
+            if isinstance(array, list):
+                nums = array
+                array = "custom"
+                size = len(nums)
+
+            function1_time, _ = self.runtime(
+                function1, array, size, epoch=3, prtResult=False
+            )
+            function2_time, _ = self.runtime(
+                function2, array, size, epoch=3, prtResult=False
+            )
+
+        timeDiff = c_double(abs(function1_time - function2_time))
+
+        if function1_time < function2_time:
+            percentage = function2_time / function1_time * 100.0 - 100.0
+            print(
+                f"{function1.__name__} is {percentage:.1f}% faster than {function2.__name__} on {array} case{s}"
+            )
+            print(f"Time Difference: {timeDiff:.5f}s")
+        else:
+            percentage = function1_time / function2_time * 100.0 - 100.0
+            print(
+                f"{function2.__name__} is {percentage:.1f}% faster than {function1.__name__} on {array} case{s}"
+            )
+            print(f"Time Difference: {timeDiff:.5f}s")
+
+        return {function1.__name__: function1_time, function2.__name__: function2_time}
