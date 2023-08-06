@@ -1,0 +1,6 @@
+[console_scripts]
+format=poetry_deps_formatter:formatter
+
+[pytest11]
+plugin=pytest_pointers.plugin
+
