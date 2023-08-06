@@ -1,0 +1,32 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:five="http://namespaces.zope.org/five"
+    i18n_domain="collective.fhirpath">
+
+  <i18n:registerTranslations directory="locales" />
+
+  <!--
+    Be careful if you use general includeDependencies, it can have sideffects!
+    Better import explicite packages or configurations ;)
+  -->
+  <five:registerPackage package="." initialize=".initialize" />
+
+  <include package=".browser" />
+
+  <include file="upgrades.zcml" />
+
+  <include file="profiles.zcml" />
+
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="collective.fhirpath-hiddenprofiles"
+      />
+
+  <!-- -*- extra stuff goes here -*- -->
+  <include file="adapters.zcml" />
+
+</configure>

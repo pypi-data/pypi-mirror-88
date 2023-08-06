@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="portal_workflow" meta_type="Plone Workflow Tool">
+ <property
+    name="title">Contains workflow definitions for your portal</property>
+ <object name="fhir_items_workflow" meta_type="Workflow"/>
+ <object name="fhir_organization_workflow" meta_type="Workflow"/>
+ <object name="fhir_patient_workflow" meta_type="Workflow"/>
+ <object name="simple_publication_workflow" meta_type="Workflow"/>
+ <bindings>
+  <default>
+   <bound-workflow workflow_id="simple_publication_workflow"/>
+  </default>
+  <type type_id="ChargeItem">
+   <bound-workflow workflow_id="fhir_items_workflow"/>
+  </type>
+  <type type_id="DeviceRequest">
+   <bound-workflow workflow_id="fhir_items_workflow"/>
+  </type>
+  <type type_id="MedicationRequest">
+   <bound-workflow workflow_id="fhir_items_workflow"/>
+  </type>
+  <type type_id="Observation">
+   <bound-workflow workflow_id="fhir_items_workflow"/>
+  </type>
+  <type type_id="Organization">
+   <bound-workflow workflow_id="fhir_organization_workflow"/>
+  </type>
+  <type type_id="Patient">
+   <bound-workflow workflow_id="fhir_patient_workflow"/>
+  </type>
+  <type type_id="ProcedureRequest">
+   <bound-workflow workflow_id="fhir_items_workflow"/>
+  </type>
+  <type type_id="QuestionnaireResponse">
+   <bound-workflow workflow_id="fhir_items_workflow"/>
+  </type>
+  <type type_id="Task">
+   <bound-workflow workflow_id="fhir_items_workflow"/>
+  </type>
+ </bindings>
+</object>
