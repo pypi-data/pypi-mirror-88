@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: ka-drf-utils
+Version: 0.3.1
+Summary: KitchenArt utility package
+Home-page: UNKNOWN
+Author: MSJ Development Team
+Author-email: engineering@muliasuksesjaya.com
+License: MIT
+Description: # KitchenArt DRF Utilities
+        
+        This package contains helpers and utilities used at 
+        KitchenArt for django-based projects.
+        
+        Features:
+        - Base Class Model for timestamped and soft delete.
+        - Serializer classes for timestamped.
+        - View classes for soft delete.
+        - Log Activity module
+        - Basic publisher classes
+        - Translation serializer classes
+        - Helper parse identity from href
+        - Custom drf exception handler
+        
+        ## Installation
+        
+        ```shell
+        pip install ka-drf-utils
+        
+        # or, if you'd like to use broker and translation
+        pip install ka-drf-utils[broker,translation]
+        ```
+        
+        # Changelog
+        All notable changes to this project will be documented in this file.
+        
+        The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+        and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+        
+        ## [0.3.1] - 2020 - 12 - 14
+        ### Fixed
+        - fix signaling in LogViewSetMixin if user anonymous
+        
+        ## [0.3.0] - 2020 - 12 - 13
+        ### Changed
+        - Simplify log module
+        
+        ### Removed
+        - Remove LogSerializerMixin
+        
+        ## [0.2.0] - 2020 - 12 - 13
+        ### Removed
+        - Remove translation module
+        
+        ### Fixed
+        - Fix exchange on publisher 
+        
+        ## [0.1.1] - 2020 - 12 - 09
+        ### Fixed
+        - Fix history.md in a setup.py 
+        
+        ## [0.1.0] - 2020 - 12 - 09
+        ### Added
+        - TimestampedSerializerMixin for Timestamped Model
+        - SoftDeleteViewSetMixin for handling soft delete data 
+        - BaseModel for SoftDelete and Timestamped Model
+        - Helper for parse identity from href
+        - LinkHeaderPagination
+        - Custom receiver django signal
+        - Custom exception handler
+        - BasicPublisher class
+        - Translation module
+        - Activity Log module
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/markdown
+Provides-Extra: broker
