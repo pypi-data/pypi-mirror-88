@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: dynamic-form
+Version: 0.3.2
+Summary: A package to dynamically load webforms from a data store (i.e. database) during runtime
+Home-page: https://github.com/bedapub/dynamic-form
+Author: Rafael S. Müller
+Author-email: rafa.molitoris@gmail.com
+License: UNKNOWN
+Project-URL: Documentation, https://dynamic-form.readthedocs.io/en/stable/
+Project-URL: Code, https://github.com/bedapub/dynamic-form
+Description: Dynamic Form
+        ============
+        
+        A package to create forms dynamically from a data store during runtime.
+        
+        Documentation
+        -------------
+        Please find the documentation on `Read the Docs`_.
+        
+        .. _Read the docs: https://dynamic-form.readthedocs.io/en/stable
+        
+        Installation
+        ------------
+        
+        .. code-block:: console
+        
+            pip install dynamic-form
+        
+        
+        Purpose
+        -------
+        This package was written during a six month internship and was developed as part of the Study Registration Tool
+        prototype.
+        
+        
+        Authors
+        -------
+        * **Rafael Müller** <mailto:rafa.molitoris@gmail.com> - Initial work
+        * **Laura Badi** - Supervisor
+        
+Keywords: form webform database datastore
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/x-rst
