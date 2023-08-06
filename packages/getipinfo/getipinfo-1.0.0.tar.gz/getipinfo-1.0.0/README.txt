@@ -1,0 +1,1 @@
+This package helps you get your public ip address as well as your city, region, country, location coordinates, postal code and time zone
