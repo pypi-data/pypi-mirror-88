@@ -1,0 +1,307 @@
+"""multitax pipeline
+
+Author: Thomas Cokelaer
+Affiliation: Institut Pasteur @ 2019
+
+This pipeline is part of Sequana software (sequana.readthedocs.io)
+
+snakemake -s multitax.rules --forceall --stats stats.txt --cores 4
+
+
+"""
+import sequana
+from sequana import snaketools as sm
+from sequana import sequana_data
+
+# This must be defined before the include
+configfile: "config.yaml"
+
+# A convenient manager
+manager = sm.PipelineManager("multitax", config)
+manager.setup(globals(), mode="warning")
+
+
+__taxonomy__input_fastq = manager.getrawdata()
+__taxonomy__output_summary = '{sample}/kraken/kraken.out.summary'
+__taxonomy__output_summary_json = '{sample}/kraken/summary.json'
+__taxonomy__output_html = '{sample}/summary.html'
+__taxonomy__output_csv = '{sample}/kraken/kraken.csv'
+
+
+expected_output = ["outputs/dendogram.png", "multiqc/multiqc_report.html",
+                   ".sequana/rulegraph.svg", "outputs/proportion_kraken.png"]
+expected_output += expand("{sample}/kraken/kraken.csv", sample=sorted(manager.samples))
+if len(config['sequana_taxonomy']["databases"])>1:
+    expected_output += ["outputs/proportion_dbs.png"]
+
+
+rule all:
+    input: expected_output
+
+
+rule sequana_taxonomy:
+    input: __taxonomy__input_fastq
+    output:
+        html         = __taxonomy__output_html,
+        csv          = __taxonomy__output_csv,
+        summary      = __taxonomy__output_summary,
+        summary_json = __taxonomy__output_summary_json
+    threads: 4
+    run:
+        outdir = output.html.split("/",1)[0]
+        if len(input) == 2:
+            cmd = "sequana_taxonomy --file1 {} --file2 {} ".format(input[0], input[1])
+        elif len(input) == 1:
+            cmd = "sequana_taxonomy --file1 {} ".format(input[0])
+
+        if config["sequana_taxonomy"]["confidence"] != 0:
+            cmd += " --confidence {} ".format(config["sequana_taxonomy"]["confidence"])
+
+        cmd += " --thread {} --databases".format(threads)
+        for this in config["sequana_taxonomy"]['databases']:
+            if this != "toydb":
+                assert os.path.exists(this), "databases {} does not exits".format(this)
+            cmd += " {} ".format(this)
+        cmd += " --output-directory {} --level {}".format(wildcards.sample, config['sequana_taxonomy']['level'])
+
+        shell(cmd)
+
+
+__summary_plot__output_summary = "outputs/sequana_kraken_summary.json"
+__summary_plot__output_image = "outputs/proportion_kraken.png"
+
+rule summary_plot:
+    input: expand("{sample}/kraken/kraken.csv", sample=sorted(manager.samples))
+    output:
+        image=__summary_plot__output_image,
+        data = __summary_plot__output_summary
+    run:
+        from sequana.kraken import MultiKrakenResults
+        k = MultiKrakenResults(input, sample_names=sorted(manager.samples))
+        k.plot_stacked_hist(output.image, dpi=200, 
+            kind=config["summary_plot"]["kind"],
+            width=config["summary_plot"]["width"],
+            ytick_fontsize=config['summary_plot']["yticks_fontsize"],
+            lw=config['summary_plot']["linewidth"],
+            max_labels=config['summary_plot']["max_labels"],
+            edgecolor=config['summary_plot']["edgecolor"],
+            )
+        import json
+        with open(output.data, "w") as fout:
+             json.dump(k.get_df().to_dict(), fout, indent=True, sort_keys=True)
+
+if len(config["sequana_taxonomy"]["databases"]) > 1:
+    __summary_plot_db__output_image = "outputs/proportion_dbs.png"
+    __summary_plot_db__output_summary = "outputs/sequana_kraken_dbs_summary.json"
+    rule summary_plot_db:
+        input: expand(__taxonomy__output_summary_json, sample=manager.samples)
+        output:
+            image=__summary_plot_db__output_image,
+            data = __summary_plot_db__output_summary
+        run:
+            from sequana.kraken import MultiKrakenResults2
+            k = MultiKrakenResults2(input, manager.samples)
+            if len(config['summary_plot_db']["colors"]) == 0:
+                colors = None
+            else:
+                colors = config['summary_plot_db']["colors"]
+            k.plot_stacked_hist(output.image, dpi=200, 
+                ytick_fontsize=config['summary_plot_db']["yticks_fontsize"],
+                lw=config['summary_plot_db']["linewidth"],
+                max_labels=config['summary_plot_db']["max_labels"],
+                edgecolor=config['summary_plot_db']["edgecolor"],
+                alpha=config['summary_plot_db']["alpha"],
+                colors=colors,
+                cmap=config['summary_plot_db']["colormap"])
+            import json
+            with open(output.data, "w") as fout:
+                 json.dump(k.get_df().to_dict(), fout, indent=True, sort_keys=True)
+
+
+
+__multiqc__input = expand("{sample}/kraken/kraken.csv", sample=sorted(manager.samples))
+__multiqc__output = "multiqc/multiqc_report.html"
+include: sm.modules["multiqc/2.0"]
+
+
+rule dendogram:
+    input: __summary_plot__output_summary
+    output: "outputs/dendogram.png"
+    params:
+        sample_file=config["dendogram"]["sample_file"]
+    run:
+        data = json.loads(open(input[0], "r").read())
+        import pandas as pd
+        import pylab
+        df = pd.DataFrame(data)
+        if len(manager.samples.keys()) == 1:
+            from sequana import sequana_data
+            data = sequana_data("no_data.png")
+            import shutil
+            shutil.copy(data, output[0])
+            return
+
+        from sequana.viz.heatmap import Heatmap
+        h = Heatmap(df.fillna(0))
+
+        if params.sample_file:
+            df = pd.read_csv(params.sample_file)
+            codes =  pd.Categorical(df.category).codes
+            df['codes'] = codes
+            #for sample, category in zip(df['sample'], df['category']):
+            for sample, category in zip(df['sample'], df['codes']):
+                h.category_column[sample] = category
+        try:
+            h.plot(colorbar_position="top left")
+            pylab.savefig(output[0], dpi=200)
+            with open("outputs/dendogram.info", "w") as fout:
+                fout.write("ok")
+        except:
+            from sequana import sequana_data
+            data = sequana_data("no_data.png")
+            import shutil
+            shutil.copy(data, output[0])
+            with open("outputs/dendogram.info", "w") as fout:
+                fout.write("failed")
+
+
+
+__conda__output = "inputs/requirements.txt"
+include: sm.modules['conda']   # Create requirements.txt(dependencies)
+__rulegraph__input = manager.snakefile
+__rulegraph__output = ".sequana/rulegraph.svg"
+__rulegraph__mapper = {"multiqc": "../multiqc/multiqc_report.html"}
+include: sm.modules['rulegraph']
+
+
+# Those rules takes a couple of seconds so no need for a cluster
+localrules: multiqc, rulegraph, summary_plot, dendogram, summary_plot_db
+
+
+onsuccess:
+
+    from sequana import logger
+    logger.level = "INFO"
+
+    # This should create the stats plot and the Makefile
+    manager.teardown()
+    manager.clean_multiqc(__multiqc__output)
+
+
+    # HTML report:
+    from sequana.modules_report.summary import SummaryModule2
+    from sequana.modules_report.kraken import KrakenModule
+    intro = """<h2>General Information</h2>{}""".format(manager.get_html_summary())
+    intro += """<div style="width:80%">This pipeline summarizes the taxonomic analysis 
+                made on {} samples. Here below you can find a summary 
+                of the analysis. The first plot (left) shows the proportion of 
+                reads classified by the databases in each found kingdom (Eukaryota,
+                Bacteria, Viruses, Archea). If several databases were used, 
+                you should also see a plot (right panel) with proportion of reads 
+                classified in each database (rather than by kingdom).
+                The per-sample analysis are made with kraken. A multi-sample 
+                report is also available as 
+                <a href="multiqc/multiqc_report.html">sequana multiqc</a> report.
+                Individual report are also browsable (Go to the <a href="#kraken">
+                Individual taxonomic 
+                reports</a> section here below).</div>""".format(len(manager.samples))
+
+
+    intro += """<div style="clear:both"></div>"""
+    intro += """<h2>Analysis overview</h2>
+        <div style="width:48%; float:left"><p>Proportion of reads in virus, bacteria, human and unclassified categories is shown here below. The underlying data can be downloaded from <a href="outputs/sequana_kraken_summary.json">sequana_kraken_summary.json</a> file or here below as a CSV file.<br></p>
+    """
+    img = SummaryModule2.png_to_embedded_png("dummy_self", "outputs/proportion_kraken.png", 
+        style="max-height:60%; max-width:80%", title="Kingdom proportion (and unclassified) for each sample")
+    intro += img + "</div>"
+    if len(config['sequana_taxonomy']['databases'])>1:
+        intro += """
+            <div style="width:48%; float:right"><p>Proportion of reads found in each databases is shown here below. The underlying data can be found 
+in <a href="outputs/sequana_kraken_dbs_summary.json">sequana_kraken_dbs_summary.json</a> file or as a CSV file herebelow.<br></p>
+        """
+        img = SummaryModule2.png_to_embedded_png("dummy_self", "outputs/proportion_dbs.png",
+                    style="max-height:60%; max-width:80%", title="DB proportion (and unclassified) per sample")
+        intro += img + "</div>"
+
+        from sequana.kraken import MultiKrakenResults2
+        k = MultiKrakenResults2(["{}/kraken/summary.json".format(x) for x in manager.samples],
+            manager.samples)
+        from sequana.utils.datatables_js import DataTable
+        df = k.get_df()
+        links = ["""{}/summary.html""".format(sample) for sample in df.columns]
+        df = df.T
+        df.reset_index(inplace=True)
+        df['link'] = links
+        df = df.rename({"index": "sample"}, axis=1)
+        datatable = DataTable(df, 'kraken', index=False)
+        datatable.datatable.datatable_options = {'paging': 'false',
+                                               'buttons': ['copy', 'csv'],
+                                              'bSort': 'true',
+                                             'dom':"BRSPfrti"
+                                             }
+        datatable.datatable.set_links_to_column('link', 'sample')
+        js = datatable.create_javascript_function()
+        htmltable = datatable.create_datatable()
+        intro += """<div style="clear:both"><hr>"""+js + htmltable + "</div>"
+
+    from sequana.kraken import MultiKrakenResults
+    k = MultiKrakenResults(["{}/kraken/kraken.csv".format(x) for x in manager.samples],
+        manager.samples)
+    from sequana.utils.datatables_js import DataTable
+    df = k.get_df()
+    links = ["""{}/summary.html""".format(sample) for sample in df.columns]
+    df = df.T
+    df.reset_index(inplace=True)
+    df['link'] = links
+    df = df.rename({"index": "sample"}, axis=1)
+    datatable = DataTable(df, 'kraken_kingdom', index=False)
+    datatable.datatable.datatable_options = {'paging': 'false',
+                                               'buttons': ['copy', 'csv'],
+                                              'bSort': 'true',
+                                             'dom':"BRSPfrti"
+                                             }
+    datatable.datatable.set_links_to_column('link', 'sample')
+    js = datatable.create_javascript_function()
+    htmltable = datatable.create_datatable()
+    intro += """<div style="clear:both"><hr>"""+js + htmltable + "</div>"
+
+    if os.path.exists("outputs/dendogram.info"):
+        data = open("outputs/dendogram.info").readline()
+        if data == "ok":
+            image = SummaryModule2.png_to_embedded_png("self_dummy", "outputs/dendogram.png",
+                style="align:center; width:45%; height:45%", title="Clustering of kingdom proportion (and unclassified")
+            intro += "<h2>Results clustering (kingdom-based)</h2>"
+            intro += """<div style="width:80%">From the results of the classification of reads, we extract the proportion of reads in each kingdom and clusterise the data. Here below is the results of the clusterisation. The x-axis shows the sample names, the y-axis includes the kingdom. Unclassified reads are also taken into account as part of the kingdoms. </div>"""
+            intro += image
+
+    intro +="""
+    <h2>Individual taxonomic reports <a id="kraken"></a></h2>
+    <div style="width:80%">Each of the sample ({} in total) was analysed independently using {} databases. Here below you can find the links towards each analysis. You can either click on the link or the image to open a new report. The report includes a table with all taxon found as well as their full lineage as provided by Kraken analysis tool. A dynamic plot based on Kroan allows you to explore the results interactively. </div>
+    """.format(len(manager.samples), len(config["sequana_taxonomy"]["databases"]))
+
+    intro += "<ul>"
+    for sample in sorted(manager.samples):
+        intro += """<li><a href="{}/summary.html">{} individual report</a></li>""".format(sample, sample)
+    intro += "</ul>"
+
+    data = {"name": "multitax",
+            "rulegraph": __rulegraph__output,
+            "stats": "stats.txt",
+            #"requirements": "inputs/requirements.txt"
+            }
+
+    # now include the pie images
+    for sample in sorted(manager.samples):
+        image = SummaryModule2.png_to_embedded_png("self_dummy", 
+                    "{}/kraken/kraken.png".format(sample),
+                    style="align:center; width:30%; height:30%", alt=sample, title=sample)
+        intro += '<a href="{}/summary.html">'.format(sample) + image + '</a>'
+
+    s = SummaryModule2(data, intro=intro)
+
+
+    shell("chmod -R g+w .")
+    shell("rm -rf rulegraph")
+
+onerror:
+    print("An error occurred. See message above.")
