@@ -1,0 +1,86 @@
+Metadata-Version: 2.1
+Name: aspaceai
+Version: 1.0.12
+Summary: Python SDK for the ASpace AI cognitive services
+Home-page: https://www.ey.com/en_in/consulting/accelerating-digital-transformation-with-ai
+Author: Salil Shekharan
+Author-email: salilshekharan@gmail.com
+License: UNKNOWN
+Description: # ASpace AI API: Python SDK & Sample
+        
+        
+        This repo contains the Python SDK for the ASpace AI cognitive services, an offering within [ASpace AI Cognitive Services](https://www.ey.com/en_in/consulting/accelerating-digital-transformation-with-ai)
+        
+        * [Learn about EY ASpace AI Platform](https://www.ey.com/en_in/consulting/accelerating-digital-transformation-with-ai)
+        
+        
+        ## Getting started
+        
+        Install the module using [pip](https://pypi.python.org/pypi/pip/):
+        
+        ```bash
+        pip install aspaceai
+        ```
+        
+        Use it:
+        
+        ```python
+        import aspaceai
+        import json
+        
+        # SET ASPACE AI Platform endpoint url
+        aspaceai.ASPACE_URL = 'https://<ASPACE-INSTANCE-URL>/'  # Replace with your aspace endpoint URL
+        
+        # SET ASPACE AI Cognitive Service API Key
+        aspaceai.ASPACE_API_KEY = 'ASpace subscription key'  # Replace with a valid Subscription Key here.
+        
+        image_url = '<Image URL>' # Path or Location of image
+            
+        """
+        image: Image information on which to perform OCR.
+        image_format: url, file ,base64string
+        language: default = eng
+        Supported Languages : ["afr","amh","ara","asm","aze","aze-cyrl","bel","ben","bod","bos","bul","cat","ceb","ces","chi-sim","chi-tra","chr","cym","dan",
+            "dan-frak","deu","deu-frak","dev","dzo","ell","eng","enm","epo","est","eus","fas","fin","fra","frk","frm","gle","gle-uncial","glg","grc",
+             "guj","hat","heb","hin","hrv","hun","iku","ind","isl","ita","ita-old","jav","jpn","kan","kat","kat-old","kaz","khm","kir","kor","kur",
+             "lao","lat","lav","lit","mal","mar","mkd","mlt","msa","mya","nep","nld","nor","ori","pan","pol","por","pus","ron","rus","san","sin",
+             "slk","slk-frak","slv","spa","spa-old","sqi"]
+        """
+        result = aspaceai.vision.ocr(image=image_url,image_format='url',language='eng')
+        
+        # Result from ASpace AI
+        print (json.loads(result)['status'])
+        print (json.loads(result)['message'])
+        
+        ```
+        
+        ### Installing from the source code
+        
+        ```bash
+        python setup.py install
+        ```
+        ![ASpace AI Themes](https://assets.ey.com/content/dam/ey-sites/ey-com/en_in/topics/consulting/2020/07/aspace/vison-sense.png.rendition.3840.2560.png)
+        ## Contributing
+        
+        We welcome contributions. Feel free to file issues and pull requests on the repo and we'll address them as we can. Learn more about how you can help on our [Contribution Rules & Guidelines](/CONTRIBUTING.md).
+        
+        You can reach out to us anytime with questions and suggestions using our communities below:
+         - **Support questions:** [StackOverflow](https://stackoverflow.com/questions/tagged/aspaceai)
+         
+        ## Updates
+        * [ASpace.ai Platform Release Notes](https://www.ey.com/en_in/consulting/accelerating-digital-transformation-with-ai)
+        
+        ## License
+        All ASpace Cognitive Services SDKs and samples are licensed with the MIT License. For more details, see
+        [LICENSE](/LICENSE.txt).
+        
+        
+        
+        ## Developer Code of Conduct
+        Developers using Cognitive Services, including this sample, are expected to follow the “Developer Code of Conduct for ASpace AI”, found at [https://www.ey.com/en_in/consulting/accelerating-digital-transformation-with-ai](https://www.ey.com/en_in/consulting/accelerating-digital-transformation-with-ai).
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7.9
+Description-Content-Type: text/markdown
