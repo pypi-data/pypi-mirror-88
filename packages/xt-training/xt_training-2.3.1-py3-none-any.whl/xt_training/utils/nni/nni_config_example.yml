@@ -1,0 +1,32 @@
+authorName: default
+experimentName: default
+#logDir needs to be full path. Default is <usr home dir>/nni/experiments
+#logDir: /path/to/my/dir/nni/experiments
+trialConcurrency: 1
+maxExecDuration: 40m
+maxTrialNum: 100
+#choice: local, remote, pai
+trainingServicePlatform: local
+searchSpacePath: search_space_example.json
+#choice: true, false
+useAnnotation: false
+tuner:
+  #choice: TPE, Random, Anneal, Evolution, BatchTuner, MetisTuner
+  #SMAC (SMAC should be installed through nnictl)
+  builtinTunerName: TPE
+  classArgs:
+    #choice: maximize, minimize
+    optimize_mode: minimize
+assessor:
+  #choice: Medianstop
+  builtinAssessorName: Medianstop
+  classArgs:
+    #choice: maximize, minimize
+    optimize_mode: minimize
+trial:
+  command: python -m xt_training train <rel_config_path> nni
+  codeDir: .
+  gpuNum: 1
+localConfig:
+  useActiveGpu: True
+  maxTrialNumPerGpu:  2
