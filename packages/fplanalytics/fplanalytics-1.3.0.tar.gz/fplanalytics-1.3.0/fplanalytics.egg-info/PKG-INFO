@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: fplanalytics
+Version: 1.3.0
+Summary: Util to perform FPL Analytics
+Home-page: https://github.com/rahulspsec/fpl_analytics/
+Author: Rahul Jain
+Author-email: rahulspsec@gmail.com
+License: UNKNOWN
+Description: =====
+        FPL Analytics
+        =====
+        
+        fpl analytics is a python utility to perform fantasy premier league analytics.
+        
+        Detailed documentation is in the "docs" directory.
+        
+        Creating Packages
+        -----------------
+        refer - https://packaging.python.org/tutorials/packaging-projects/
+        python3 setup.py sdist bdist_wheel
+        python3 -m twine upload dist/*
+        
+        Quick start
+        -----------
+        1. pip install --upgrade git+git://github.com/rahulspsec/fpl_analytics.git
+        
+        Pip Package
+        -----------
+        pip3 install --upgrade fplanalytics
+        
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
