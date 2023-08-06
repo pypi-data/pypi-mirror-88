@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: figurepage
+Version: 0.1.0
+Summary: Extensions to OpenSeesPy.
+Home-page: https://github.com/otaithleigh/figurepage
+Author: Peter Talley
+Author-email: ptalley2@vols.utk.edu
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+
+figurepage
+++++++++++
+
+Create an HTML page to inspect a large number of figures at once.
+
+Requires Python 3.6+.
+
+
+Installation
+============
+
+Pip::
+
+    pip install figurepage
+
+Conda::
+
+    conda install -c otaithleigh figurepage
+
+
+Usage
+=====
+
+Given a directory structure like::
+
+    .
+    └── images
+        ├── figure1.png
+        └── figure2.png
+
+Create a figure page for the files in ``images``::
+
+    figurepage images
+
+This creates a file ``figures.html`` in the current directory::
+
+    .
+    ├── figures.html
+    └── images
+        ├── figure1.png
+        └── figure2.png
+
+
