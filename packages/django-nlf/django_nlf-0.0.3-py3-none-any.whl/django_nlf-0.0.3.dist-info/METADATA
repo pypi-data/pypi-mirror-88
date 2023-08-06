@@ -1,0 +1,87 @@
+Metadata-Version: 2.1
+Name: django-nlf
+Version: 0.0.3
+Summary: Django Natural Language Filter package
+Home-page: https://github.com/hodossy/django-nlf
+Author: Hodossy, Szabolcs
+Author-email: hodossy.szabolcs@gmail.com
+Maintainer: Hodossy, Szabolcs
+Maintainer-email: hodossy.szabolcs@gmail.com
+License: MIT
+Keywords: django,natural-Language,filtering
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django :: 2.2
+Classifier: Framework :: Django :: 3.0
+Classifier: Framework :: Django :: 3.1
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Typing :: Typed
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: antlr4-python3-runtime (==4.8)
+Requires-Dist: django (>=2.2)
+
+[![PyPi Version](https://img.shields.io/pypi/v/django-nlf)](https://pypi.org/project/django-nlf/)
+[![PyPi Downloads](https://img.shields.io/pypi/dw/django-nlf)](https://pypi.org/project/django-nlf/)
+![Tests](https://github.com/hodossy/django-nlf/workflows/Unit%20tests/badge.svg?branch=main)
+![Weekly](https://github.com/hodossy/django-nlf/workflows/Weekly/badge.svg?branch=main)
+[![Documentation](https://img.shields.io/readthedocs/django-nlf)](https://django-nlf.readthedocs.io/en/latest/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+# django-nlf
+
+Django Natural Language Filter
+
+## Installation
+
+Install using `pip`,
+
+```
+pip install django-nlf
+```
+
+Then you can use the `DjangoNLFilter` with a queryset and a string, containing the filter expression. Please see the [Language Reference]() for more details.
+
+```python
+from django_nlf import DjangoNLFilter
+from .models import Article
+
+nl_filter = DjangoNLFilter()
+qs = Article.objects.all()
+q = 'author.username is john or title contains news'
+# equivalent to Article.objects.filter(Q(author__username="user") | Q(title__icontains="news"))
+articles = nl_filter.filter(qs, q)
+
+# Nested logical operators are also supported:
+q = 'author.username is john and (title contains news or created_at <= 2020-06-05)'
+# equivalent to
+# Article.objects.filter(
+#   Q(author__username="user") & (Q(title__icontains="news") | Q(created_at__lte="2020-06-05"))
+# )
+articles = nl_filter.filter(qs, q)
+```
+
+## Rest framework integration
+
+You just need to simply add the natural language filter backend to your filter backends list.
+
+```
+REST_FRAMEWORK = {
+  ...
+  'DEFAULT_FILTER_BACKENDS': (
+    'django_nlf.rest_framework.DjangoNLFilterBackend',
+  ),
+  ...
+}
+```
+
+
