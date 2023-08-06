@@ -1,0 +1,1532 @@
+{
+  "sprites": {
+    "logo": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        0,
+        81,
+        215,
+        44
+      ]
+    },
+    "check_icon": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        246,
+        135,
+        4,
+        4
+      ]
+    },
+    "locked_icon": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        194,
+        160,
+        32,
+        32
+      ]
+    },
+    "desert_crate": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 3,
+      "uv_rect": [
+        175,
+        125,
+        10,
+        10
+      ]
+    },
+    "desert_crate_placed": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 3,
+      "uv_rect": [
+        185,
+        125,
+        10,
+        10
+      ]
+    },
+    "mint_crate": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 3,
+      "uv_rect": [
+        195,
+        125,
+        10,
+        10
+      ]
+    },
+    "mint_crate_placed": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 3,
+      "uv_rect": [
+        205,
+        125,
+        10,
+        10
+      ]
+    },
+    "ice_crate": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 3,
+      "uv_rect": [
+        215,
+        125,
+        10,
+        10
+      ]
+    },
+    "ice_crate_placed": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 3,
+      "uv_rect": [
+        225,
+        125,
+        10,
+        10
+      ]
+    },
+    "moon_crate": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 3,
+      "uv_rect": [
+        235,
+        125,
+        10,
+        10
+      ]
+    },
+    "moon_crate_placed": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 3,
+      "uv_rect": [
+        245,
+        125,
+        10,
+        10
+      ]
+    },
+    "robot_standing": {
+      "image_bank": 1,
+      "directional": true,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 3,
+      "uv_rect": [
+        215,
+        103,
+        40,
+        10
+      ]
+    },
+    "robot_moving": {
+      "image_bank": 1,
+      "directional": true,
+      "transparency_color": 0,
+      "num_frames": 2,
+      "num_layers": 3,
+      "uv_rect": [
+        124,
+        135,
+        40,
+        20
+      ]
+    },
+    "robot_pushing": {
+      "image_bank": 1,
+      "directional": true,
+      "transparency_color": 0,
+      "num_frames": 2,
+      "num_layers": 3,
+      "uv_rect": [
+        164,
+        135,
+        40,
+        20
+      ]
+    },
+    "cockpit_top": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 15,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        0,
+        0,
+        256,
+        31
+      ]
+    },
+    "cockpit_right1": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 15,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        8,
+        160,
+        15,
+        92
+      ]
+    },
+    "cockpit_right2": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 15,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        52,
+        160,
+        15,
+        83
+      ]
+    },
+    "cockpit_bottom": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 15,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        0,
+        31,
+        256,
+        50
+      ]
+    },
+    "cockpit_left1": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 15,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        23,
+        160,
+        15,
+        92
+      ]
+    },
+    "cockpit_left2": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 15,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        67,
+        160,
+        15,
+        83
+      ]
+    },
+    "printing_receipt": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 15,
+      "num_frames": 5,
+      "num_layers": 1,
+      "uv_rect": [
+        82,
+        160,
+        29,
+        80
+      ]
+    },
+    "joystick_neutral": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 15,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        165,
+        160,
+        29,
+        35
+      ]
+    },
+    "joystick_move": {
+      "image_bank": 1,
+      "directional": true,
+      "transparency_color": 15,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        8,
+        125,
+        116,
+        35
+      ]
+    },
+    "rewind_button": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 15,
+      "num_frames": 2,
+      "num_layers": 1,
+      "uv_rect": [
+        226,
+        160,
+        14,
+        20
+      ]
+    },
+    "left_hand": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 11,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        111,
+        160,
+        54,
+        54
+      ]
+    },
+    "left_hand_pressing_button": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 11,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        215,
+        81,
+        41,
+        22
+      ]
+    },
+    "rewind_icon": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        215,
+        113,
+        38,
+        10
+      ]
+    },
+    "pause_icon": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        124,
+        125,
+        51,
+        10
+      ]
+    },
+    "digits_blue": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 10,
+      "num_layers": 1,
+      "uv_rect": [
+        38,
+        160,
+        7,
+        90
+      ]
+    },
+    "digits_yellow": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 10,
+      "num_layers": 1,
+      "uv_rect": [
+        45,
+        160,
+        7,
+        90
+      ]
+    },
+    "digits_fat_red": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 10,
+      "num_layers": 1,
+      "uv_rect": [
+        0,
+        125,
+        8,
+        130
+      ]
+    },
+    "monitor_top_left_corner": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": -1,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        240,
+        160,
+        16,
+        16
+      ]
+    },
+    "monitor_top_right_corner": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": -1,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        111,
+        214,
+        16,
+        16
+      ]
+    },
+    "monitor_bottom_left_corner": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": -1,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        127,
+        214,
+        16,
+        16
+      ]
+    },
+    "monitor_bottom_right_corner": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": -1,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        143,
+        214,
+        16,
+        16
+      ]
+    },
+    "key_undo": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        235,
+        135,
+        11,
+        11
+      ]
+    },
+    "key_up": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        226,
+        180,
+        11,
+        11
+      ]
+    },
+    "key_down": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        237,
+        180,
+        11,
+        11
+      ]
+    },
+    "key_left": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        196,
+        195,
+        11,
+        11
+      ]
+    },
+    "key_right": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": 0,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        207,
+        195,
+        11,
+        11
+      ]
+    },
+    "placing_crate1": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": -1,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        204,
+        135,
+        31,
+        15
+      ]
+    },
+    "placing_crate2": {
+      "image_bank": 1,
+      "directional": false,
+      "transparency_color": -1,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        165,
+        195,
+        31,
+        15
+      ]
+    },
+    "the_end": {
+      "image_bank": 0,
+      "directional": false,
+      "transparency_color": -1,
+      "num_frames": 1,
+      "num_layers": 1,
+      "uv_rect": [
+        0,
+        128,
+        192,
+        112
+      ]
+    }
+  },
+  "sprite_packs": {
+    "robot": [
+      "robot_standing",
+      "robot_moving",
+      "robot_pushing"
+    ],
+    "desert_crate": [
+      "desert_crate",
+      "desert_crate_placed"
+    ],
+    "mint_crate": [
+      "mint_crate",
+      "mint_crate_placed"
+    ],
+    "ice_crate": [
+      "ice_crate",
+      "ice_crate_placed"
+    ],
+    "moon_crate": [
+      "moon_crate",
+      "moon_crate_placed"
+    ]
+  },
+  "screens": {
+    "main_menu": {
+      "background": {
+        "background_color": 0,
+        "background_tilemap": {
+          "tilemap_id": 7,
+          "tilemap_uv": [
+            0,
+            0,
+            32,
+            32
+          ]
+        }
+      },
+      "elements": [
+        {
+          "position": [
+            20,
+            20
+          ],
+          "sprite_ref": "logo"
+        }
+      ]
+    },
+    "playfield": {
+      "elements": [
+        {
+          "position": [
+            0,
+            0
+          ],
+          "sprite_ref": "cockpit_top"
+        },
+        {
+          "position": [
+            241,
+            31
+          ],
+          "sprite_ref": "cockpit_right1"
+        },
+        {
+          "position": [
+            241,
+            123
+          ],
+          "sprite_ref": "cockpit_right2"
+        },
+        {
+          "position": [
+            0,
+            206
+          ],
+          "sprite_ref": "cockpit_bottom"
+        },
+        {
+          "position": [
+            0,
+            31
+          ],
+          "sprite_ref": "cockpit_left1"
+        },
+        {
+          "position": [
+            0,
+            123
+          ],
+          "sprite_ref": "cockpit_left2"
+        },
+        {
+          "position": [
+            202,
+            202
+          ],
+          "sprite_ref": "printing_receipt"
+        }
+      ]
+    },
+    "choose_level": {
+      "background": {
+        "background_color": 0,
+        "background_tilemap": {
+          "tilemap_id": 7,
+          "tilemap_uv": [
+            32,
+            0,
+            32,
+            32
+          ]
+        }
+      },
+      "elements": [
+        {
+          "position": [
+            0,
+            0
+          ],
+          "sprite_ref": "monitor_top_left_corner"
+        },
+        {
+          "position": [
+            240,
+            0
+          ],
+          "sprite_ref": "monitor_top_right_corner"
+        },
+        {
+          "position": [
+            0,
+            240
+          ],
+          "sprite_ref": "monitor_bottom_left_corner"
+        },
+        {
+          "position": [
+            240,
+            240
+          ],
+          "sprite_ref": "monitor_bottom_right_corner"
+        },
+        {
+          "position": [
+            14,
+            14
+          ],
+          "text": "#ACHOOSE LEVEL"
+        }
+      ],
+      "menu": {
+        "position": [
+          14,
+          26
+        ],
+        "scrollbar_rect": [
+          235,
+          27,
+          6,
+          196
+        ]
+      }
+    },
+    "game_paused": {
+      "elements": [
+        {
+          "position": [
+            21,
+            35
+          ],
+          "sprite_ref": "pause_icon"
+        }
+      ],
+      "menu": {
+        "position": [
+          -1,
+          90
+        ]
+      }
+    },
+    "level_completed": {
+      "background": {
+        "background_tilemap": {
+          "tilemap_id": 7,
+          "tilemap_uv": [
+            64,
+            0,
+            32,
+            32
+          ]
+        }
+      },
+      "elements": [
+        {
+          "position": [
+            98,
+            57
+          ],
+          "text": "#3LEVEL COMPLETED"
+        },
+        {
+          "position": [
+            72,
+            75
+          ],
+          "text": "#DTIME:"
+        },
+        {
+          "position": [
+            72,
+            84
+          ],
+          "text": "#DPUSHES:"
+        },
+        {
+          "position": [
+            72,
+            93
+          ],
+          "text": "#DSTEPS:"
+        }
+      ],
+      "menu": {
+        "position": [
+          -1,
+          130
+        ]
+      }
+    },
+    "how_to_play": {
+      "background": {
+        "background_tilemap": {
+          "tilemap_id": 7,
+          "tilemap_uv": [
+            96,
+            0,
+            32,
+            32
+          ]
+        }
+      },
+      "elements": [
+        {
+          "position": [
+            32,
+            91
+          ],
+          "sprite_ref": "key_up"
+        },
+        {
+          "position": [
+            48,
+            91
+          ],
+          "sprite_ref": "key_down"
+        },
+        {
+          "position": [
+            64,
+            91
+          ],
+          "sprite_ref": "key_left"
+        },
+        {
+          "position": [
+            80,
+            91
+          ],
+          "sprite_ref": "key_right"
+        },
+        {
+          "position": [
+            32,
+            116
+          ],
+          "sprite_ref": "placing_crate1"
+        },
+        {
+          "position": [
+            70,
+            116
+          ],
+          "sprite_ref": "placing_crate2"
+        },
+        {
+          "position": [
+            32,
+            151
+          ],
+          "sprite_ref": "key_undo"
+        },
+        {
+          "position": [
+            32,
+            48
+          ],
+          "text": "#7WELCOME TO BANSOKO!\n\nWE ARE SCAVENGERS, WE COLLECT CARGOS THAT PEOPLE\nHAVE LEFT IN ABANDONED SHIPS IN DEEP SPACE.\nIT'S A DANGEROUS JOB. THAT'S WHY WE USE ROBOTS."
+        },
+        {
+          "position": [
+            32,
+            82
+          ],
+          "text": "#7YOU CONTROL YOUR ROBOT BY USING ARROW KEYS:"
+        },
+        {
+          "position": [
+            32,
+            106
+          ],
+          "text": "#7YOUR GOAL IS TO PUSH ALL CRATES TO CARGO BAYS:"
+        },
+        {
+          "position": [
+            108,
+            118
+          ],
+          "text": "#7REMEMBER, YOU CAN ONLY #BPUSH\n#7CRATES (YOU CANNOT PULL THEM)"
+        },
+        {
+          "position": [
+            32,
+            136
+          ],
+          "text": "#7IF YOU MAKE A MISTAKE YOU CAN #BUNDO #7YOUR MOVE\nBY PRESSING:"
+        },
+        {
+          "position": [
+            32,
+            167
+          ],
+          "text": "#7NOTE, YOU CAN #BUNDO #7AS MANY MOVES AS YOU NEED."
+        }
+      ],
+      "menu": {
+        "position": [
+          -1,
+          179
+        ]
+      }
+    },
+    "victory": {
+      "background": {
+        "background_color": 0,
+        "background_tilemap": {
+          "tilemap_id": 7,
+          "tilemap_uv": [
+            128,
+            0,
+            32,
+            32
+          ]
+        }
+      },
+      "elements": [
+        {
+          "position": [
+            32,
+            32
+          ],
+          "sprite_ref": "the_end"
+        },
+        {
+          "position": [
+            32,
+            160
+          ],
+          "text": "#7ENOUGH IS ENOUGH! I HAVE HAD IT WITH THESE GOD\nDAMN CRATES ON THIS DAMN SPACE SHIP!\n\nMAYBE IT'S TIME FOR A CHANGE. MAYBE I WILL OPEN\nA RESTAURANT AT THE END OF UNIVERSE?\n\nBUT FIRST, I THINK I'VE EARNED DECENT VACATIONS."
+        }
+      ],
+      "menu": {
+        "position": [
+          -1,
+          220
+        ]
+      }
+    },
+    "exit": {
+      "background": {
+        "background_tilemap": {
+          "tilemap_id": 7,
+          "tilemap_uv": [
+            160,
+            0,
+            32,
+            32
+          ]
+        }
+      },
+      "elements": [
+        {
+          "position": [
+            60,
+            118
+          ],
+          "text": "#7ARE YOU SURE DO YOU WANT TO EXIT?"
+        }
+      ],
+      "menu": {
+        "position": [
+          -1,
+          132
+        ]
+      }
+    }
+  },
+  "levels": {
+    "sha1": "d067c98e615e298349021118637f5b115979fc15",
+    "level_templates": [
+      {
+        "tileset": 0,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      },
+      {
+        "tileset": 2,
+        "draw_offset": [
+          1,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "ice_crate"
+      },
+      {
+        "tileset": 3,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 4,
+        "draw_offset": [
+          5,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "moon_crate"
+      },
+      {
+        "tileset": 0,
+        "draw_offset": [
+          1,
+          -13
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "desert_crate"
+      },
+      {
+        "tileset": 1,
+        "draw_offset": [
+          5,
+          -9
+        ],
+        "robot_sprite_pack_ref": "robot",
+        "crate_sprite_pack_ref": "mint_crate"
+      }
+    ]
+  }
+}
