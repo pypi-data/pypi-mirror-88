@@ -1,0 +1,35 @@
+from ........Internal.Core import Core
+from ........Internal.CommandsGroup import CommandsGroup
+from ........Internal import Conversions
+from ........ import repcap
+
+
+# noinspection PyPep8Naming,PyAttributeOutsideInit,SpellCheckingInspection
+class State:
+	"""State commands group definition. 1 total commands, 0 Sub-groups, 1 group commands"""
+
+	def __init__(self, core: Core, parent):
+		self._core = core
+		self._base = CommandsGroup("state", core, parent)
+
+	def set(self, state: bool, stream=repcap.Stream.Default) -> None:
+		"""[SOURce<HW>]:BB:EVDO:TERMinal<ST>:DRCChannel:GATing:[STATe] \n
+		(enabled for an access terminal working in traffic mode) Activates or deactivates the Data Rate Control (DRC) Channel
+		gating. If gating is active, each value of the DRC channel is transmitted for one slot followed by DRCLenght-1 empty
+		slots. With deactivated gating, each DRC value is repeated for DRC length slots. \n
+			:param state: 0| 1| OFF| ON
+			:param stream: optional repeated capability selector. Default value: Nr1 (settable in the interface 'Terminal')"""
+		param = Conversions.bool_to_str(state)
+		stream_cmd_val = self._base.get_repcap_cmd_value(stream, repcap.Stream)
+		self._core.io.write(f'SOURce<HwInstance>:BB:EVDO:TERMinal{stream_cmd_val}:DRCChannel:GATing:STATe {param}')
+
+	def get(self, stream=repcap.Stream.Default) -> bool:
+		"""[SOURce<HW>]:BB:EVDO:TERMinal<ST>:DRCChannel:GATing:[STATe] \n
+		(enabled for an access terminal working in traffic mode) Activates or deactivates the Data Rate Control (DRC) Channel
+		gating. If gating is active, each value of the DRC channel is transmitted for one slot followed by DRCLenght-1 empty
+		slots. With deactivated gating, each DRC value is repeated for DRC length slots. \n
+			:param stream: optional repeated capability selector. Default value: Nr1 (settable in the interface 'Terminal')
+			:return: state: 0| 1| OFF| ON"""
+		stream_cmd_val = self._base.get_repcap_cmd_value(stream, repcap.Stream)
+		response = self._core.io.query_str(f'SOURce<HwInstance>:BB:EVDO:TERMinal{stream_cmd_val}:DRCChannel:GATing:STATe?')
+		return Conversions.str_to_bool(response)
