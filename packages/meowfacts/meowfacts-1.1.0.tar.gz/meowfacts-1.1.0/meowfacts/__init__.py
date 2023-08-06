@@ -1,0 +1,1 @@
+from meowfacts.cli import Cfcli
