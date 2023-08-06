@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: zkdatabuilder
+Version: 0.1.3
+Summary: Builds E.coli model with DNA, free and bound transcription factors data file for lammps mimicing real bp density of E.coli
+Home-page: UNKNOWN
+Author: Zafer Kosar
+Author-email: zafer.kosar.physics@gmail.com
+License: MIT
+Keywords: data file,lammps,lammps data file,E. coli model
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Requires-Dist: numpy
+
+Builds E.coli model with DNA, free and bound transcription factors data file for lammps mimicing real bp density of E.coli. Considers 1 bead is equal 10 basepairs. Requires previously obtained data file from lammps (see, circularDNA module) atom type = angle
+
+6 types of atoms represents:
+
+    1 = DNA monomer 
+
+    2 = DNA monomer specific sites 
+
+    3 = free transcription factors binding sites 
+
+    4 = bound transcription factor binding sites 
+
+    5 = stem point for transcription factors no affinity to "2" 
+
+    6 = cell membrane molecules
+
+"zkdatabuilder" module "buildNwrite" function: uses functions "membrane,freeTF,angler,bonder,radius position" to read previously collapsed DNA data file via position function and creates a membrane around it using membrane function it also creates free transcription factors in given microMolarite via freeTF funtion within the parameters which are found by using radius thus preserving the bp density of E.coli angler and bonder are there to create necessary bonds and angles it doesn't return anything just creates a data file it takes 3 parameters 
+
+    1 = um of free transcription factors 
+
+    2 = data file to read 
+
+    3 = name of the data file to create then write everything
+
+    4 = for how many beads there is a promoter.
+
+In buildNwrite functions Type 2 atoms come with type 4 atoms with "Visne" or "Cherry" model. Visne/Cherry model can be applied as a coarse grain model for many transcription factors. It reduces the impact of the bridging effect on the simulation while making model structurally more similar to the DNA binding proteins to provide more realistic simulations.
+can be called using zkdatabuilder.buildNwrite(um,filetoread,filetowrite,tfd)
+
+"circularDNA" module: has two functions
+
+    1 = Creating lammps data file (data.init) for given DNA length as a perfect circular polymer (generate function) 
+
+    2 = Creating lammps input file (in.init) to collapse given DNA data file (inputfile function)
+
+P.S in.init is only to be used to collapse circular DNA onto itself, for your own simulations use different input file after collapsing DNA and making an E.coli model around it using buildNwrite. 
+
