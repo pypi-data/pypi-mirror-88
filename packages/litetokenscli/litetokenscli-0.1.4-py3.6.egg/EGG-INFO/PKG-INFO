@@ -1,0 +1,289 @@
+Metadata-Version: 2.1
+Name: litetokenscli
+Version: 0.1.4
+Summary: A command line tool to monitor and manage litetokens nodes.
+Home-page: https://github.com/litetokensprotocol/litetokens-cli
+Author: Weiyu X
+Author-email: weiyu@litetokens.network
+License: UNKNOWN
+Description: # LITETOKENS-CLI
+        ```
+        #
+        #
+        #   ██▓     ██▓▄▄▄█████▓▓█████▄▄▄█████▓ ▒█████   ██ ▄█▀▓█████  ███▄    █   ██████ 
+        #  ▓██▒    ▓██▒▓  ██▒ ▓▒▓█   ▀▓  ██▒ ▓▒▒██▒  ██▒ ██▄█▒ ▓█   ▀  ██ ▀█   █ ▒██    ▒ 
+        #  ▒██░    ▒██▒▒ ▓██░ ▒░▒███  ▒ ▓██░ ▒░▒██░  ██▒▓███▄░ ▒███   ▓██  ▀█ ██▒░ ▓██▄   
+        #  ▒██░    ░██░░ ▓██▓ ░ ▒▓█  ▄░ ▓██▓ ░ ▒██   ██░▓██ █▄ ▒▓█  ▄ ▓██▒  ▐▌██▒  ▒   ██▒
+        #  ░██████▒░██░  ▒██▒ ░ ░▒████▒ ▒██▒ ░ ░ ████▓▒░▒██▒ █▄░▒████▒▒██░   ▓██░▒██████▒▒
+        #  ░ ▒░▓  ░░▓    ▒ ░░   ░░ ▒░ ░ ▒ ░░   ░ ▒░▒░▒░ ▒ ▒▒ ▓▒░░ ▒░ ░░ ▒░   ▒ ▒ ▒ ▒▓▒ ▒ ░
+        #  ░ ░ ▒  ░ ▒ ░    ░     ░ ░  ░   ░      ░ ▒ ▒░ ░ ░▒ ▒░ ░ ░  ░░ ░░   ░ ▒░░ ░▒  ░ ░
+        #    ░ ░    ▒ ░  ░         ░    ░      ░ ░ ░ ▒  ░ ░░ ░    ░      ░   ░ ░ ░  ░  ░  
+        #      ░  ░ ░              ░  ░            ░ ░  ░  ░      ░  ░         ░       ░  
+        #                                                                                 
+        #
+        ```
+        
+        A command line tool, to quick set up, turn on/off (multiple) litetokens nodes(full/solidity), and monitor running status.
+        
+        | Python | JDK |
+        |--------|-----|
+        | 3.7+   | 1.8 |
+        
+        * Learn more about litetokens on [LITETOKENS Developer Hub](https://developers.litetokens.org/docs/full-node)
+        
+        * Join the community on [LITETOKENS Discord](https://discord.gg/GsRgsTD)
+        
+        * Source code on [Github](https://github.com/litetokens/litetokens-cli)
+        
+        * Project on [Pypi](https://pypi.org/project/litetokenscli/)
+        
+        ## Install
+        
+        ### pip
+        
+        > pip install --upgrade pip
+        
+        ```
+        pip install litetokenscli
+        ```
+        
+        #### FAQs on installation
+        
+        1. How to fix "fail to build a wheel for psutil" error?
+        
+            a. please check if you installed clang correctly, or install it using homebrew:
+        
+            ```
+            brew install --with-toolchain llvm
+            ```
+        
+            b. please check if you are using python 3.x
+        
+        2. How to test in virtual environment?
+            
+            a. create virtual environment
+        
+            ```
+            python3 -m venv venv
+            ```
+        
+            b. activate venv
+        
+            ```
+            . ./venv/bin/activate
+            ```
+        
+            c. install litetokenscli in venv
+        
+            ```
+            pip install litetokenscli
+            ```
+        
+            d. when done testing, or using the venv - to deactivate venv
+        
+            ```
+            deactivate
+            ```
+        
+        ## Usage
+        
+        | Command                                                                              | Functions                          | Example1        | Example2                                                                                                      |
+        |--------------------------------------------------------------------------------------|------------------------------------|-----------------|---------------------------------------------------------------------------------------------------------------|
+        | litetokens-cli init --version                                                              | Init dirs and fetch code.          | litetokens-cli init   | litetokens-cli init --version 3.1.3                                                                                 |
+        | litetokens-cli config --nettype --fullhttpport --solhttpport --fullgrpcport --solgrpcport  | Create and customize config files. | litetokens-cli config | litetokens-cli config --nettype main --fullhttpport 8500 --solhttpport 8600 --fullgrpcport 50051 --solgrpcport 5001 |
+        | litetokens-cli run --nodetype                                                              | Run node.                          | litetokens-cli run    | litetokens-cli run --nodetype sol                                                                                   |
+        | litetokens-cli stop --pid                                                                  | Stop node.                         | litetokens-cli stop   | litetokens-cli stop --pid 7777                                                                                      |
+        | litetokens-cli status --node                                                               | Monitor nodes status.              | litetokens-cli status | litetokens-cli status --node 777                                                                                    |
+        | litetokens-cli quick                                                                       | Quick start.                       | litetokens-cli quick  | litetokens-cli quick                                                                                                |
+        | litetokens-cli -h, --help                                                                  | Check help manual.                 | litetokens-cli -h     | litetokens-cli --help                                                                                               |
+        #### overall
+        
+        ```
+        litetokens-cli -h
+        ```
+        ```
+        usage: litetokens-cli [-h] {init,config,run,stop,status,quick} ...
+        
+        which subcommand do you want?
+        
+        optional arguments:
+          -h, --help            show this help message and exit
+        
+        subcommands:
+          {init,config,run,stop,status,quick}
+            init                Init dirs and fetch code.
+            config              Create customize config files.
+            run                 Run node.
+            stop                Stop node.
+            status              Monitor nodes status.
+            quick               Quick start. (run a full private node by one command)
+        ```
+        
+        ##### subcommand: init
+        
+        ```
+        litetokens-cli init -h
+        ```
+        ```
+        usage: litetokens-cli init [-h] [--version VERSION]
+        
+        optional arguments:
+          -h, --help         show this help message and exit
+          --version VERSION  specify java-litetokens version
+        ```
+        
+        ##### subcommand: config
+        
+        ```
+        litetokens-cli config -h
+        ```
+        ```
+        usage: litetokens-cli config [-h] [--nettype NETTYPE] [--fullhttpport FULLHTTPPORT]
+                               [--solhttpport SOLHTTPPORT] [--fullrpcport FULLRPCPORT]
+                               [--solrpcport SOLRPCPORT] [--enablememdb ENABLEMEMDB]
+        
+        optional arguments:
+          -h, --help            show this help message and exit
+          --nettype NETTYPE     specify net type [main, private]
+          --fullhttpport FULLHTTPPORT
+                                specify full http port
+          --solhttpport SOLHTTPPORT
+                                specify solidity http port
+          --fullrpcport FULLRPCPORT
+                                specify full rpc port
+          --solrpcport SOLRPCPORT
+                                specify solidity rpc port
+          --enablememdb ENABLEMEMDB
+        ```
+        
+        ##### subcommand: run
+        
+        ```
+        litetokens-cli run -h
+        ```
+        ```
+        usage: litetokens-cli run [-h] [--nodetype NODETYPE]
+        
+        optional arguments:
+          -h, --help           show this help message and exit
+          --nodetype NODETYPE  specify node type [full, sol]
+        ```
+        
+        ##### subcommand: stop
+        
+        ```
+        litetokens-cli stop -h
+        ```
+        ```
+        usage: litetokens-cli stop [-h] --pid PID
+        
+        optional arguments:
+          -h, --help  show this help message and exit
+          --pid PID   stop node by given pid
+        ```
+        
+        ##### subcommand: status
+        
+        ```
+        litetokens-cli status -h
+        ```
+        ```
+        usage: litetokens-cli status [-h] [--node NODE]
+        
+        optional arguments:
+          -h, --help   show this help message and exit
+          --node NODE  check specific node detail by pid
+        ```
+        
+        
+        # Changelog
+        
+        ### In doing
+        
+        [ ] run - filter nodes
+        
+        [ ] dump - fetch a dump
+        
+        [ ] init - add option to build from source code
+        
+        [ ] run - multiple (full) nodes
+        
+        [ ] robust - catch more errors and provide better error msg
+        
+        [ ] config -- add option to config to sync with newly deployed shasta testnet
+        
+        [ ] status -- add config setting in status json
+        
+        #### Version 0.1.4
+        
+        [X] update to support version 3.2 fetch release, check version
+        
+        [X] compatible check with version 3.2 release, and update config handler
+        
+        [X] add more info message;
+        
+        [X] provide a more neat yet detail help info and command
+        
+        #### Version 0.1.3
+        
+        [X] run - check single ps status
+        
+        [X] keep track of all running nodes
+        
+        [X] run - monitor overall system status
+        
+        [X] set default value for all subcommand options
+        
+        #### Version 0.1.2
+        
+        [X] catch download errors
+        
+        [X] add progress bar for download
+        
+        [X] colorful logo and msg
+        
+        [X] add more progress msg on ports config
+        
+        [X] add more progress msg on net_type config
+        
+        [X] add info msg type for instructions
+        
+        [X] move changelog to file
+        
+        [X] optimize progress bar
+        
+        #### Version 0.1.0
+        
+        [X] init - set up file folders, and get builds based on given version number
+        
+        [X] config - init basic config file in json format, and convert to java properties format and export
+        
+        [X] run - run a single main net full node
+        
+        [X] quick start
+        
+        [X] run - move 'run' to its handler, and async the call 
+        
+        [X] stop - add sub cmd and its handler to stop all nodes (kill -15)
+        
+        [X] run - change log and data store location
+        
+        [X] config - add custom method to fire up private/shasta testnet
+        
+        [X] config - add custom method to change port number
+        
+        [X] config - add custom method to fire up solidity node
+        
+        [X] run - add option to run solidity node
+        
+        [X] pack to pip
+        
+        [X] Doc - add more instruction in readme file
+Platform: UNKNOWN
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Description-Content-Type: text/markdown
