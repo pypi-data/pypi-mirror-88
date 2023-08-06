@@ -1,0 +1,17 @@
+
+[dev]
+flake8
+ipdb
+ipython
+pytest
+pytest-cov
+versioneer
+
+[mssql]
+pyodbc
+
+[oracle]
+cx-oracle
+
+[postgres]
+psycopg2-binary
