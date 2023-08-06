@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: lambdasdk
+Version: 0.1.2
+Summary: for invoking aws lambda functions
+Home-page: https://github.com/thanakijwanavit/lambdasdk
+Author: Nic
+Author-email: nwanavit@hatari.cc
+License: Apache Software License 2.0
+Description: # lambdaSdk
+        > easy invoking lambda functions
+        
+        
+        written on top of boto3, for the shortest way to invoke aws lambda functions
+        
+        ## Install
+        
+        `pip install lambdasdk` 
+        
+        ## How to use
+        
+        ## prepare
+        ### Create user and set up creds
+        If not on aws, you need to create iam account and map the following keys
+        #### user and pw
+        ##### if not on aws
+        ```
+        user = aws_access_key_id
+        pw = aws_secret_access_key
+        ```
+        ##### if run on aws
+        ```
+        user = None
+        pw = None
+        sessionToken = None
+        ```
+        
+        ```
+        from lambdasdk.lambdasdk import Lambda
+        ```
+        
+        ```
+        lambda_ = Lambda(
+            user = None,
+            pw = None,
+            sessionToken = None,
+            region = 'ap-southeast-1'
+        )
+        ```
+        
+        ```
+        lambda_.invoke(
+            functionName= 'lambda-pip' ,
+            input = {'test':'test'}, 
+            invocationType= 'RequestResponse' 
+        )
+        ```
+        
+        
+        
+        
+            {'statusCode': 200, 'body': '"Hello from Lambda!"'}
+        
+        
+        
+Keywords: lambdasdk
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
