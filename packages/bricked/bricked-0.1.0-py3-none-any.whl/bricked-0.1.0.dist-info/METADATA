@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: bricked
+Version: 0.1.0
+Summary: Asyncio MVC web framework
+Home-page: UNKNOWN
+Author: Andrew O'Brien
+Author-email: andrew@obrien.io
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Dist: aiohttp (==3.7.3)
+Requires-Dist: jinja2 (==2.11.2)
+Requires-Dist: bcrypt (==3.2.0)
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-aiohttp ; extra == 'test'
+Requires-Dist: tox ; extra == 'test'
+
+UNKNOWN
+
+
