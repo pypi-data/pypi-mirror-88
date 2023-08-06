@@ -1,0 +1,63 @@
+=====================
+translitcodec Changes
+=====================
+
+0.6.0
+---
+Released on December 13, 2020
+
+- Add support for Python 3.9
+
+0.5.2
+---
+Released on January 19, 2020
+
+- Install package with setuptools
+
+0.5.1
+---
+Released on January 19, 2020
+
+- Add python_requires to prevent installation with Python 2 packages
+
+0.5
+---
+Released on January 18, 2020
+
+- Complete coverage of the Vietnamese alphabet
+
+- Removed Python 2 support
+
+0.4
+---
+Released on May 11, 2015
+
+- Added Python 3 compatibility
+
+0.3
+---
+
+Released on February 14, 2011
+
+- Fixes to the transtab table rebuilding tool.
+
+- Added translitcodec.__version__
+
+0.2
+---
+
+Released on January 27, 2011
+
+- Resolves issue of "TypeError: character mapping must return integer,
+  None or unicode" when a blank value (eg: \N{ZERO WIDTH SPACE} \u200B)
+  was encoded.  Unicode blanks are now returned.
+
+- Characters in the ASCII range are no longer included in the translation
+  tables.
+
+0.1
+---
+
+Released on December 28, 2008
+
+- Initial packaged release.
