@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: Py2Crawl
+Version: 1.0.2
+Summary: A python framework to scrape/crawl the web in an async way
+Home-page: https://github.com/iiestIT/Py2Crawl
+Author: iiestIT
+Author-email: it.iiest.de@gmail.com
+License: UNKNOWN
+Keywords: pyside2 framework web spider async
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: aiohttp (~=3.7.3)
+Requires-Dist: setuptools (~=51.0.0)
+Requires-Dist: lxml (~=4.6.2)
+Requires-Dist: Py2Web
+
+# Py2Crawl
+An async mini framework to scrape the web. This project is based on [Py2Web](https://github.com/iiestIT/Py2Web) and heavily inspired by [Scrapy](https://github.com/scrapy/scrapy).
+**DO NOT USE THIS IN PRODUCTIVE. IT IS STILL IN DEVELOPING.**
+
+
