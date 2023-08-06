@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: pycarla
+Version: 0.1.2
+Summary: Use VST/LV2/etc. plugins with realtime abilities in Python
+Home-page: https://pycarla.readthedocs.org
+License: GPL-3.0-only
+Author: Federico Simonetta
+Author-email: federico.simonetta@unimi.it
+Requires-Python: >=3.6,<4.0
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Other Audience
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Multimedia :: Sound/Audio
+Classifier: Topic :: Multimedia :: Sound/Audio :: Capture/Recording
+Classifier: Topic :: Multimedia :: Sound/Audio :: MIDI
+Classifier: Topic :: Multimedia :: Sound/Audio :: Mixers
+Classifier: Topic :: Multimedia :: Sound/Audio :: Players
+Classifier: Topic :: Multimedia :: Sound/Audio :: Sound Synthesis
+Requires-Dist: PyQt5 (>=5.15.2,<6.0.0)
+Requires-Dist: jack-client (>=0.5.2,<0.6.0)
+Requires-Dist: mido (>=1.2.9,<2.0.0)
+Requires-Dist: numpy (>=1.19.0,<2.0.0)
+Requires-Dist: pysoundfile (>=0.9.0,<0.10.0)
+Requires-Dist: python-rtmidi (>=1.4.6,<2.0.0)
+Requires-Dist: sounddevice (>=0.4.1,<0.5.0)
+Project-URL: Documentation, https://pycarla.readthedocs.org
+Project-URL: Repository, https://gitlab.di.unimi.it/federicosimonetta/pycarla/
+Description-Content-Type: text/x-rst
+
+pyCarla
+==========
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4332847.svg
+   :target: https://doi.org/10.5281/zenodo.4332847
+
+A python module based on Linux commands for synthesizing MIDI events and files
+from python code with ultra time precision using any kind of audio plugin!
+
+See `docs <https://pycarla.readthedocs.org>`_ for more installation and more info.
+
+Credits
+=======
+
+#. `Federico Simonetta <https://federicosimonetta.eu.org>`_
+    ``federico.simonetta`` ``at`` ``unimi.it``
+
