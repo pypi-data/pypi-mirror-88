@@ -1,0 +1,108 @@
+Metadata-Version: 1.1
+Name: shotman
+Version: 0.1.3
+Summary: Simple, light, modern tool for screenshooting.
+Home-page: https://gitlab.com/whynothugo/shotman
+Author: Hugo Osvaldo Barrera
+Author-email: hugo@barrera.io
+License: ISC
+Description: shotman
+        =======
+        
+        A simple UI for handling screenshots.
+        
+        Installation
+        ------------
+        
+        - ArchLinux: ``yay install shotman``.
+        - Others: ``pip install shotman``.
+        
+        Setup
+        -----
+        
+        You'll generally want to bind shotman to some hotkeys. I keep this in my sway
+        settings::
+        
+            # Screenshots:
+            # Super+P: Current window
+            # Super+Shift+p: Select area
+            # Super+Alt+p Current output
+            # Super+Ctrl+p Select a window
+        
+            bindsym Mod4+p       exec shotman active
+            bindsym Mod4+Shift+p exec shotman area
+            bindsym Mod4+Mod1+p  exec shotman output
+            bindsym Mod4+Ctrl+p  exec shotman window
+        
+        Note: the above supercedes the recommendation given by `grimshot`. Make sure you don't
+        have both on your config file.
+        
+        I also recommend adding settings to position it on-screen. If you skip this, the window
+        will show up centred, since Wayland clients cannot control their position::
+        
+            for_window [title="shotman"] move position 30 30
+        
+        It is currently not clear if this application should be exceptional and use a
+        privileged API for better positioning or not.
+        
+        Usage
+        -----
+        
+        ``shotman`` saves a screenshot to disk, and then shows a thumbnail and a simple
+        interface.
+        
+        Actions
+        ~~~~~~~
+        
+        You can execute the same actions with a mouse _or_ keyboard:
+        
+        - **Done**: Exits. The screenshot images remains on disk.
+           
+          - Primary Keybinding: ``Esc``.
+          - Secundary Keybindings: ``Ctrl+q``, ``Ctrl+w``, ``q``, ``Ctrl+s``.
+             
+        - **Delete**: Deletes the image file and exists immediately.
+        
+          - Keybinding: ``d``.
+          - Secundary Keybindings: ``Delete``, ``Ctrl+d``.
+        
+        - **Copy**: Copies the screenshot image to the clipboard. See caveats below.
+        
+          - Keybinding: ``Ctrl+C``.
+        
+        If there's a good, lightweight image editor that runs well on Wayland, I'd be happy to
+        add an ``Edit`` button that opens the screenshot image in it.
+        
+        Caveats
+        -------
+        
+        If you're not using a clipboard manager, any copied image will be lost after closing
+        the window.
+        
+        There are plants to keep the application running in the background until it loses the
+        clipboard handle to work around this.
+        
+        Requirements
+        ------------
+        
+        This tool relies on ``grimshot``. It's designed for sway, but should work on other
+        wlroot compositors.
+        
+        Packaging
+        ---------
+        
+        Dependencies for this package are Python3, PySide6 and grimshot. The ``wayland`` Qt
+        plugin should also be installed (e.g.: ``qt6-wayland``).
+        
+        Licence
+        -------
+        
+        ``shotman`` is licensed under the ISC licence. See LICENCE for details.
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: ISC License (ISCL)
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Desktop Environment
+Classifier: Topic :: Utilities
