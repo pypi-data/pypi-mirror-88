@@ -1,0 +1,16 @@
+aioredis<2.0.0,>=1.1.0
+attrs>=18.2.0
+async-timeout
+hiredis
+
+[devel]
+flake8
+mypy
+coverage
+pytest
+pytest-cov
+isort<6.0.0,>=5.0.0
+pytest-aiohttp
+pytest-mock
+asynctest
+black==20.8b1
