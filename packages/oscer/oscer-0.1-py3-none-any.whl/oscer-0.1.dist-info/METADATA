@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: oscer
+Version: 0.1
+Summary: A very simple command line OpenSoundControl sender
+Home-page: https://github.com/bgola/oscer
+Author: Bruno Gola
+Author-email: me@bgo.la
+License: UNKNOWN
+Keywords: udp osc opensoundcontrol
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: python-osc (==1.7.4)
+
+# oscer
+
+A **very** simple command line OSC message sender.
+
+## Installation
+
+You will need Python>=3.7 and pythonosc.
+
+The simplest way to install is using pip:
+
+`$ pip install oscer`
+
+## Example
+
+```
+$ oscer
+usage: oscer [-h] [--ip IP] [--port PORT] OSC_ADDR [OSC_VALUE ...]
+
+positional arguments:
+  OSC_ADDR     OSC address to send
+  OSC_VALUE    OSC values
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --ip IP      The ip of the OSC server
+  --port PORT  The port the OSC server is listening on
+```
+
+So:
+
+`$ oscer --ip localhost --port 57120 /hello argument1 "another argument" 3`
+
+It will try to guess the data type correctly, otherwise send as a string argument.
+
+You can use the environment variables `OSCER_HOST` and `OSCER_PORT` also, so you don't need to specify the hostname and port every time.
+
+
