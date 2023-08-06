@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: meowfacts
+Version: 1.1.0
+Summary: Simple and Compound interest calculator
+Home-page: https://github.com/yadhu621/meowfacts
+Author: yadhu
+Author-email: yadhu621@gmail.com
+License: MIT
+Keywords: catfacts
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: PyYAML
+Requires-Dist: pandas (==0.23.3)
+Requires-Dist: numpy (>=1.14.5)
+
+Package that provides a CLI to interact with catfacts API
+
+
