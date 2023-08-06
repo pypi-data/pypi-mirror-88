@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: depthai-gui
+Version: 1.0.0
+Summary: DepthAI Pipeline Builder GUI
+Home-page: https://github.com/luxonis/depthai-gui
+Author: Luxonis
+Author-email: support@luxonis.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/luxonis/depthai-gui/issues
+Project-URL: Documentation, https://pyflow.readthedocs.io
+Project-URL: Source Code, https://github.com/luxonis/depthai-gui
+Keywords: depthai gui ide pipeline builder node
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Dist: PySide2
+Requires-Dist: Qt.py
+Requires-Dist: blinker
+Requires-Dist: nine
+Requires-Dist: docutils
+Requires-Dist: depthai (==0.0.2.1+22ad34c8264fc3a9a919dbc5c01e3ed3eb41f5aa)
+Requires-Dist: opencv-python
+
+UNKNOWN
+
+
