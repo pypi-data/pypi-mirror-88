@@ -1,0 +1,28 @@
+Metadata-Version: 1.2
+Name: xalglib
+Version: 0.0.1
+Summary: ALGLIB is a cross-platform numerical analysis and data processing library
+Home-page: UNKNOWN
+Author: ALGLIB
+License: GNU General Public License v3 (GPLv3)
+Description: # ALGLIB
+        
+        ALGLIB is a cross-platform numerical analysis and data processing library.  
+        
+        * Homepage: https://www.alglib.net
+        
+        ## Install with pip
+        ```bash
+        pip install xalglib
+        ```
+        
+        ## Quickstart
+        ```python3
+        from xalglib import xalglib
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
