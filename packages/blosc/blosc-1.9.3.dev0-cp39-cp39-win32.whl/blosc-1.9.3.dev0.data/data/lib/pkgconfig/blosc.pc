@@ -1,0 +1,14 @@
+prefix=C:/Users/runneradmin/AppData/Local/Temp/pip-req-build-cx7v1n1h/_skbuild/win32-3.9/cmake-install
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: blosc
+Description: A blocking, shuffling and lossless compression library
+URL: http://blosc.org/
+Version: 1.20.1
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lblosc
+Cflags: -I${includedir}
