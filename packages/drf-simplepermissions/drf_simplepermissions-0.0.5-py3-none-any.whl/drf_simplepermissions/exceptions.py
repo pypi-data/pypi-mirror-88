@@ -1,0 +1,2 @@
+class SimpleModeException(Exception):
+    pass
