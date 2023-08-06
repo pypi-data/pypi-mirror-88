@@ -1,0 +1,17 @@
+{% load wagtailcore_tags %}
+
+{% with theme=page.theme %}
+    <div id="block-social-share-{{ block_num }}"
+         class="{% if block_num == 1 %}header-padding {% endif %}social-share theme-bg-{{ theme }}">
+        <div class="container content theme-{{ theme }}">
+            <div class="rich-text-container align-text-center">
+                {% block social_head_text %}
+                {% endblock %}
+            </div>
+            <div class="socials">
+                {% block social_action %}
+                {% endblock social_action %}
+            </div>
+        </div>
+    </div>
+{% endwith %}

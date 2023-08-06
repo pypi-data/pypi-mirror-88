@@ -1,0 +1,66 @@
+{% extends "modeladmin/index.html" %}
+{% load i18n modeladmin_tags wagtailadmin_tags %}
+
+{% block result_list %}
+    {% if not all_count %}
+        <div class="nice-padding" style="margin-top:30px;">
+            {% if no_valid_parents %}
+                <p>{% blocktrans with view.verbose_name_plural as name %}No {{ name }} have been
+                    created yet. One of the following must be created before you can add any
+                    {{ name }}:{% endblocktrans %}</p>
+                <ul>
+                    {% for type in required_parent_types %}
+                        <li><b>{{ type|title }}</b></li>{% endfor %}
+                </ul>
+            {% else %}
+                <p>{% blocktrans with view.verbose_name_plural as name %}No {{ name }} have been
+                    created yet.{% endblocktrans %}
+                    {% if user_can_create %}
+                        {% blocktrans with view.create_url as url %}
+                            Why not <a href="{{ url }}">add one</a>?
+                        {% endblocktrans %}
+                    {% endif %}</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="result-list">
+            <table class="listing full-width">
+                <thead>
+                <tr>
+                    <th scope="col" class="sortable column-task_id">
+                        <a href="?o=0" class="icon icon-arrow-down-after">
+                            Task ID
+                        </a>
+                    </th>
+                    <th scope="col" class="sortable column-status">
+                        <a href="?o=1" class="icon icon-arrow-down-after">
+                            Task State
+                        </a>
+                    </th>
+                    <th scope="col" class="sortable column-result">
+                        <a href="?o=2" class="icon icon-arrow-down-after">
+                            Result Data
+                        </a>
+                    </th>
+                    <th scope="col" class="sortable column-date_created">
+                        <a href="?o=3" class="icon icon-arrow-down-after">
+                            Created DateTime
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for task in object_list %}
+
+                    <tr class="odd" data-object-pk="4">
+                        <td class="field-task_id">{{ task.task_id }}</td>
+                        <td class="field-status">{{ task.status }}</td>
+                        <td class="field-result">{{ task.result }}</td>
+                        <td class="field-date_created nowrap">{{ task.date_created }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

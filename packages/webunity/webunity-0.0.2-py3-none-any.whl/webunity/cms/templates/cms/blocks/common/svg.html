@@ -1,0 +1,17 @@
+{% extends 'cms/blocks/_sizer.html' %}
+{% load my  wagtailimages_tags %}
+
+{% block sizer_content %}
+    <img data-layout="responsive"
+         {% if value.file.width %}data-width="{{ value.file.width }}"{% endif %}
+         {% if value.file.height %}data-height="{{ value.file.height }}"{% endif %}
+         class="svg-img"
+         {% if block_num >= 2 %}loading="lazy" data-src{% else %}src{% endif %}="{{ value.file.url }}"
+         alt="{% if alt %}{{ alt }}{% else %}{{ value.file.title }}{% endif %}"
+    />
+    {% if block_num >= 2 %}
+        <noscript>
+            <img src="{{ value.file.url }}" alt="{% if alt %}{{ alt }}{% else %}{{ value.file.title }}{% endif %}"/>
+        </noscript>
+    {% endif %}
+{% endblock %}

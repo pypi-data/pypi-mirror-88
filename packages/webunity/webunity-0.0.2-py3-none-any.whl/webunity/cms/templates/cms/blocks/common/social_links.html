@@ -1,0 +1,43 @@
+{% load my %}
+
+{% if settings.cms.WebspaceSettings.linkedin %}
+    <a rel="noreferrer" target="_blank" href="{{ settings.cms.WebspaceSettings.linkedin }}">
+        <img loading="lazy" class="s-icon x{{ size }}" data-src="{{ icons.linkedin|ico:page.theme }}"
+             alt="Linkedin"/>
+    </a>
+{% endif %}
+
+{% if settings.cms.WebspaceSettings.facebook %}
+    <a rel="noreferrer" target="_blank" href="{{ settings.cms.WebspaceSettings.facebook }}">
+        <img loading="lazy" class="s-icon x{{ size }}" data-src="{{ icons.facebook|ico:page.theme }}"
+             alt="Facebook"/>
+    </a>
+{% endif %}
+
+{% if settings.cms.WebspaceSettings.instagram %}
+    <a rel="noreferrer" target="_blank" href="{{ settings.cms.WebspaceSettings.instagram }}">
+        <img loading="lazy" class="s-icon x{{ size }}" data-src="{{ icons.instagram|ico:page.theme }}"
+             alt="Instagram"/>
+    </a>
+{% endif %}
+
+{% if settings.cms.WebspaceSettings.twitter %}
+    <a rel="noreferrer" target="_blank" href="{{ settings.cms.WebspaceSettings.twitter }}">
+        <img loading="lazy" class="s-icon x{{ size }}" data-src="{{ icons.twitter|ico:page.theme }}"
+             alt="Twitter"/>
+    </a>
+{% endif %}
+
+{% if settings.cms.WebspaceSettings.youtube %}
+    <a rel="noreferrer" target="_blank" href="{{ settings.cms.WebspaceSettings.youtube }}">
+        <img loading="lazy" class="s-icon x{{ size }}" data-src="{{ icons.youtube|ico:page.theme }}"
+             alt="Youtube"/>
+    </a>
+{% endif %}
+
+{% if settings.cms.WebspaceSettings.pinterest %}
+    <a rel="noreferrer" target="_blank" href="{{ settings.cms.WebspaceSettings.pinterest }}">
+        <img loading="lazy" class="s-icon x{{ size }}" data-src="{{ icons.pinterest|ico:page.theme }}"
+             alt="Pinterest"/>
+    </a>
+{% endif %}

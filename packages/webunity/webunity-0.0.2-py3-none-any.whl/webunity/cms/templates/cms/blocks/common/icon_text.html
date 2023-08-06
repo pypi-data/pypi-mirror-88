@@ -1,0 +1,11 @@
+{% load wagtailcore_tags my %}
+<div class="icon-text s-flex-align {% if not footer %}s-flex-jc{% endif %}">
+    {% if value.icon %}
+        <img loading="lazy" class="s-icon x1"
+             data-src="{{ value.icon|ico_snippet:page.theme }}"
+             alt="Icon {{ item.value.icon.key }}"/>
+    {% endif %}
+    {% if value.text %}
+        {% include_block value.text %}
+    {% endif %}
+</div>

@@ -1,0 +1,18 @@
+{% extends 'cms/blocks/common/nav/menu.html' %}
+{% load static i18n wagtailcore_tags my %}
+
+{% block menu_head %}
+    {% get_language_info for page.locale.language_code as lang %}
+    <p>{{ lang.name_local|title }}</p>
+{% endblock %}
+
+{% block menu_for %}
+    {% for translation in page.get_translations.live %}
+        {% get_language_info for translation.locale.language_code as lang %}
+        <li class="{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+            <a href="{% pageurl translation %}">
+                <p>{{ lang.name_local|title }}</p>
+            </a>
+        </li>
+    {% endfor %}
+{% endblock %}

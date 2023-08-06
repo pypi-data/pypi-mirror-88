@@ -1,0 +1,21 @@
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+th {
+  @include theme($themes) {
+    border: 1px solid t('colorP');
+  }
+  text-align: left;
+  padding: 12px;
+  vertical-align: top;
+}
+
+@include xs() {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+}
