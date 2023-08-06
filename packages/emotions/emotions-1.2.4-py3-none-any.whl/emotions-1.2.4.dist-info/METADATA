@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: emotions
+Version: 1.2.4
+Summary: This is a Program which can simulate EMOTIONS and MOOD.
+Home-page: UNKNOWN
+Author: Anurag Dutta
+Author-email: mlmajumder4@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+# **Introduction**
+
+This is a Program which can simulate **EMOTIONS** and **MOOD**. It can also generate emotions based on its initial data in its database. The accuracy of generating Emotions get better everytime it learns about a new word or topic. It works by converting the data about a topic to a specific number-sequence according to the other contents and information in its database. Then it extracts the numbers and finds their average, which is the final impression about the word or topic, which will further be stored in its database. The number-sequence is actually code numbers for different emotions. **Here is the sequence:**
+
+    scared : 0
+    sad : 2
+    angry : 4
+    nothing : 5
+    happy : 6
+    h-cited : 7
+    excited : 8
+The MOOD however is calculated using the no. of Good emotions and Bad emotions. Here, Good : 10 and Bad : 0 (See code to understand better).
+![A Snap of my database](https://drive.google.com/file/d/1Z4rrdnrl93kZ9dGhPjye4VY_yY1Cd0ta/view?usp=sharing)
+
+In this case the system is in a good MOOD because majority of the values are 10.
+**_____________________________________________________________**
+**__________________________________**
+### **Installation**
+To use `emotions`, you need to have the package installed. Note that if you don't have some packages installed then  `emotions` will not work, so before installing `emotions`, please install the following packages:
+
+
+    !pip install python-firebase
+    !pip install youtube-transcript-api
+	!pip install Wikipedia
+	!pip install google
+
+To install **`emotions`**:
+
+    !pip install emotions
+
+### **Usage**
+
+
+**Here are some set of functions to help you use it in your Projects.** This module can be very effective for Projects like Personal assistants.
+> - ```import emotions as aE```: For Importing the module as ```aE```.
+> -  `aE.learn_info(word,url)`: This function is used to teach the **AI** about meaning of words. It collects the information from Wikipedia, and if it can't find any it extracts subtitles from YouTube videos, and if the video has no subs, it automatically opens the video and demands for an explanation. Note that if you use this function you don't need to use `aE.learn(input, emotion, url)` as emotion is already created by it in the process. If the system doesn't know about any words in the data about the `word`, it will `print("I am afraid I don't know any of the words in the data about "+ word)` . If you want to use the information about a word you can use it from `aE.learn_info.ans` or `aElearn_info.ans2`(It stores the answer with the sentence: "Did you get your answer?") as per your needs.
+> - ```aE.emotion(ask, url)```:  Here ```ask=``` The word you want the **AI** to react to, and `url=` the url of your Firebase Database(This will be used as the storage). Note that the **Mood** of AI is independent.
+> - ```aE.learn(input, emotion, url)```:  It is used to teach the **AI** about different **words** and our **feeling** about them. Here input refers to the **words**, emotion refers to the  **feeling** and `url` reffers to the *url* of the **Firebase Database**.  Once the **information** is stored it prints `'Got it!'`. 'Note that if your firebase database has no bucket `'/count'` it will **not work**. So first go ahead and create a `'/count'`  and store value `0` with tag `/1`
+> - To `print()` the out put, `print(aE.emotion.mood)`: to print the **Mood** and `print(aE.emotion.feelings)`: to print the **Emotion.**
+
+
+**Here is an example, with the link of a public database:**
+
+    word = 'cake'
+    url = 'https://knowledge-public.firebaseio.com/'
+    learn_info(word,url)
+    print(learn_info.ans)
+**output:**
+
+    Cake is a form of sweet food made from flour, sugar, and other ingredients, that is usually baked. In their oldest forms, cakes were modifications of bread, but cakes now cover a wide range of preparations that can be simple or elaborate, and that share features with other desserts such as pastries, meringues, custards, and pies.
+    The most commonly used cake ingredients include flour, sugar, eggs, butter or oil or margarine, a liquid, and leavening agents, such as baking soda or baking powder. Common additional ingredients and flavourings include dried, candied, or fresh fruit, nuts, cocoa, and extracts such as vanilla, with numerous substitutions for the primary ingredients. Cakes can also be filled with fruit preserves, nuts or dessert sauces (like pastry cream), iced with buttercream or other icings, and decorated with marzipan, piped borders, or candied fruit.Cake is often served as a celebratory dish on ceremonial occasions, such as weddings, anniversaries, and birthdays. There are countless cake recipes; some are bread-like, some are rich and elaborate, and many are centuries old. Cake making is no longer a complicated procedure; while at one time considerable labor went into cake making (particularly the whisking of egg foams), baking equipment and directions have been simplified so that even the most amateur of cooks may bake a cake. (Did you get you answer?)
+
