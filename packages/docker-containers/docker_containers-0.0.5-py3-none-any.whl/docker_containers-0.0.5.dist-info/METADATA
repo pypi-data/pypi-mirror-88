@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: docker-containers
+Version: 0.0.5
+Summary: Util for start containers
+Home-page: https://github.com/PonomarevMaksim/docker-containers
+License: BSD
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: crayons (<1,>=0.3.0)
+Requires-Dist: blindspin (<3,>=2.0.1)
+Requires-Dist: docker (<5,>=4.2.0)
+
+# docker_containers
+
+## Usage:
+```python
+import time
+
+from x5_aio_pika_ext import RMQClient
+
+from docker_containers import RabbitContainer
+
+
+async def check_connect(url):
+    rabbit_client = RMQClient(url)
+    await rabbit_client.is_alive()
+    await rabbit_client.close()
+
+
+container = RabbitContainer(check_connect)
+
+container.start()
+time.sleep(180)
+container.stop()
+
+```
+
