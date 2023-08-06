@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: pyuvm
+Version: 1.0a2
+Summary: Python Implementation of Universal Verification Methodology
+Home-page: https://rayboston@bitbucket.org/rayboston/pyuvm.git
+Author: Ray Salemi
+Author-email: ray@raysalemi.com
+License: Copyright 2020 Siemens EDA
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+Description: # Package Description
+        `pyuvm` is a Python implementation of the Universal Verification Methodology 
+        
+        ## Installation
+        
+        You can install `pyuvm` with `pip`
+        
+        ```bash
+        % pip install pyuvm
+        ```
+        
+        # Usage
+        
+        Testbenches written in the SystemVerilog UVM usually import the package like this:
+        
+        ```SystemVerilog
+        import uvm_pkg::*;
+        ```
+        
+        This gives you access to the class names without needing a path.  To get 
+        similar behavior with `pyuvm` us the `from` import syntax.
+        
+        ```Python
+        from pyuvm import *
+        ```
+        
+        Then you can run a simple test:
+        
+        ```
+        % python
+        >>> from pyuvm import *
+        >>> ff = uvm_object("ff")
+        >>> type(ff)
+        <class 's05_base_classes.uvm_object'>
+        >>> print(ff.get_name())
+        ff
+        ```
+        
+        
+        
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
