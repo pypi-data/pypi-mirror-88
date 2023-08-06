@@ -1,0 +1,222 @@
+{% extends "default:table.html" %}
+
+{% block extra_head %}
+<script>
+
+var sidepanel = null;
+var table = "{{ table }}";
+var base_path = "/{{ database|quote_plus }}";
+var table_path = "/{{ database|quote_plus }}/{{ table|quote_plus }}";
+
+var label_columns = [];
+
+var info_svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" height="20" width="20" version="1.0">
+  <g fill="#4b4b4b">
+    <path d="M80 15a65 65 0 100 130 65 65 0 000-130zm0 10a55 55 0 110 110 55 55 0 010-110z"/>
+    <path d="M90 51a11 11 0 11-23 0 11 11 0 1123 0zM91 111c0 3 1 3 4 4h5v5H61v-5h5c4 0 5-2 5-4V80c0-5-7-4-11-4v-5l31-1"/>
+  </g>
+</svg>`;
+
+
+function parseQuery(qs) {
+    var query = {};
+    var pairs = qs.split('&');
+    pairs.forEach(pair => {
+        var bits = pair.split('=');
+        query[decodeURIComponent(bits[0])] = decodeURIComponent(bits[1] || '');
+    });
+    return query;
+}
+
+window.addEventListener("load", () => {
+    var table = document.getElementsByTagName("table")[0];
+    // Wrap table in <div><div>TABLE</div><div>SIDEBAR</div></div>
+    var wrapper = document.createElement('div');
+    wrapper.style.display = 'flex';
+    table.parentNode.insertBefore(wrapper, table);
+    var tableDiv = document.createElement('div');
+    tableDiv.style.flex = '3 0 0';
+    tableDiv.style.overflow = 'auto';
+    window.sidepanel = document.createElement('div');
+    window.sidepanel.style.maxWidth='300px';
+    window.sidepanel.style.flex = '1 0 0';
+    window.sidepanel.style.marginTop = '-1em';
+    window.sidepanel.style.boxShadow = '0 30px 40px rgba(0,0,0,.2)';
+    window.sidepanel.style.padding = '1em';
+    window.sidepanel.style.border = '2px solid #ccc';
+    wrapper.appendChild(tableDiv);
+    wrapper.appendChild(window.sidepanel);
+    tableDiv.appendChild(table);
+
+    // Make the ths clickable
+    Array.from(table.getElementsByTagName("th")).forEach(th => {
+        // th.style.backgroundColor = '#ccc';
+        // Figure out first two columns for display later
+        var a = th.getElementsByTagName("a")[0];
+        if (!a) {
+            // Link column
+            return true;
+        }
+        var parsed = parseQuery(a.href.split("?")[1]);
+        var column = parsed._sort || parsed._sort_desc;
+        if (column != "rowid" && label_columns.length < 1) {
+            label_columns.push(column);
+        }
+        th.style.whiteSpace = 'nowrap';
+        th.innerHTML += '&nbsp;' + info_svg;
+        var svg = th.getElementsByTagName("svg")[0];
+        svg.style.cursor = 'pointer';
+        svg.style.position = 'relative';
+        svg.style.top = '3px';
+        svg.addEventListener("click", () => {
+            inspectColumn(column);
+        });
+    });
+    if (window.innerWidth < 576) {
+        window.sidepanel.innerHTML = `<strong>Rotate your phone to landscape</strong> to use this tool`;
+    } else {
+        window.sidepanel.innerHTML = `<strong>&#11013;&nbsp; Select a column</strong>`;
+    }
+});
+
+function query(sql) {
+    var url = base_path + '.json?_shape=array&sql=' + encodeURIComponent(sql);
+    return fetch(url).then(r => r.json());
+}
+
+function inspectColumn(column) {
+    window.sidepanel.innerHTML = `<strong>${column}</strong>`;
+    var sql = `
+        select
+            max(cast([${column}] as float)) as max,
+            min(cast([${column}] as float)) as min,
+            avg(cast([${column}] as float)) as mean,
+            stdev(cast([${column}] as float)) as stdev,
+            count(distinct [${column}]) as uniques
+        from [${table}]
+    `;
+    query(sql).then(rows => {
+        var stats = rows[0];
+        if (stats.max == 0.0 && stats.min == 0.0 && stats.mean == 0.0 && stats.stdev == 0.0) {
+            // Only show uniques
+            window.sidepanel.innerHTML += `
+            <p><span style="display: block; font-size: 0.65em">Unique values:</span>${stats.uniques}</p>
+            `;
+        } else {
+            window.sidepanel.innerHTML += `
+            <p><span style="display: block; font-size: 0.65em">Min:</span>${stats.min.toFixed(3)}<br>
+            <span style="display: block; font-size: 0.65em">Max:</span>${stats.max.toFixed(3)}<br>
+            <span style="display: block; font-size: 0.65em">Mean:</span>${stats.mean.toFixed(3)}<br>
+            <span style="display: block; font-size: 0.65em">Stdev:</span>${stats.stdev.toFixed(3)}<br>
+            <span style="display: block; font-size: 0.65em">Unique values:</span>${stats.uniques}</p>
+            `;
+        }
+        // Outlier cutoff is 3xstdev
+        var cutoff = 3 * stats.stdev;
+        var lower = stats.mean - cutoff;
+        var upper = stats.mean + cutoff;
+        var lower_sql = `
+            select * from [${table}]
+            where cast([${column}] as float) < ${lower}
+        `;
+        var upper_sql = `
+            select * from [${table}]
+            where cast([${column}] as float) > ${upper}
+        `;
+        query(lower_sql).then(rows => {
+            if (rows.length) {
+                var html = `
+                    <p><span style="display: block; font-size: 0.65em">Outliers, low:</span>
+                `;
+                rows.forEach(row => {
+                    // For the moment display first two columns
+                    label_columns.forEach(label_column => {
+                        html += label_column + ": " + row[label_column] + '<br>'
+                    });
+                    html += '<strong style="display: block; border-bottom: 1px solid #ccc">' + column + ": " + row[column] + '</strong>';
+                });
+                var where = `cast([${column}] as float) < ${lower}`;
+                html += `<p><a href="${base_path}/${encodeURIComponent(table)}?_where=${encodeURIComponent(where)}">View these outliers</a></p>`;
+                window.sidepanel.innerHTML += html;
+            }
+        });
+        query(upper_sql).then(rows => {
+            if (rows.length) {
+                var html = `
+                    <p><span style="display: block; font-size: 0.65em">Outliers, high:</span>
+                `;
+                rows.forEach(row => {
+                    // For the moment display first two columns
+                    label_columns.forEach(label_column => {
+                        html += label_column + ": " + row[label_column] + '<br>'
+                    });
+                    html += '<strong style="display: block; border-bottom: 1px solid #ccc">' + column + ": " + row[column] + '</strong>';
+                });
+                var where = `cast([${column}] as float) > ${upper}`;
+                html += `<p><a href="${base_path}/${encodeURIComponent(table)}?_where=${encodeURIComponent(where)}">View these outliers</a></p>`;
+                window.sidepanel.innerHTML += html;
+            }
+        });
+        // Find most and least used columns
+        var most_least_sql = `
+            with top_values as (
+                select
+                    'top' as bunch,
+                    [${column}] as value,
+                    count(*) as num
+                from
+                    [${table}]
+                group by
+                    value
+                order by
+                    num desc
+                limit
+                    5
+                ),
+            bottom_values as (
+                select
+                    'bottom' as bunch,
+                    [${column}] as value,
+                    count(*) as num
+                from
+                    [${table}]
+                group by
+                    value
+                order by
+                    num
+                limit
+                    5
+                )
+            select * from top_values
+                union
+            select * from bottom_values
+            order by bunch desc, num desc;
+        `;
+        query(most_least_sql).then(rows => {
+            /* Don't show anything if all numbers are 1 */
+            if (!rows.filter(r => r['num'] > 1).length) {
+                return;
+            }
+            var top = rows.filter(r => r['bunch'] == 'top');
+            var bottom = rows.filter(r => r['bunch'] == 'bottom');
+            var html = `<p><span style="display: block; font-size: 0.65em">Most common:</span>`;
+            top.forEach(row => {
+                html += `<a href="${table_path}?${column}=${encodeURIComponent(row.value)}">${row.value}</a> - ${row.num}<br>`;
+            });
+            /* Only show least common if it's not the same as most common */
+            var top_values = top.map(r => r.value);
+            var bottom_values = bottom.map(r => r.value);
+            top_values.sort();
+            bottom_values.sort();
+            if (JSON.stringify(top_values) != JSON.stringify(bottom_values)) {
+                html += `<p><span style="display: block; font-size: 0.65em">Least common:</span>`;
+                bottom.forEach(row => {
+                    html += `<a href="${table_path}?${column}=${encodeURIComponent(row.value)}">${row.value}</a> - ${row.num}<br>`;
+                });
+            }
+            window.sidepanel.innerHTML += html;
+        });
+    });
+}
+</script>
+{% endblock %}
