@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: samspecialfuncs
+Version: 0.0.15
+Summary: Special functions that Sam needs
+Home-page: https://github.com/samueljmcameron/samspecialfuncs
+Author: Sam Cameron
+Author-email: samuel.j.m.cameron@gmail.com
+License: UNKNOWN
+Description: # samspecialfuncs
+        
+        An assortment of functions that are useful in my research, which are usually
+        defined via chebyshev polynomials.
+        
+        Here is a list of the defined functions...
+        
+        in the bristol integrals folder ``samspecialfunc.bristol.integrals``
+        
+        .. math::
+           
+           \gamma_{12} = \int_{0.5}^x I_1(u)/u^{12} du
+           \gamma_{6} = \int_{0.5}^x I_1(u)/u^{6} du
+           \kappa_{12} = \int_{0.5}^x K_1(u)/u^{12} du
+           \kappa_{6} = \int_{0.5}^x K_1(u)/u^{6} du
+        
+        
+        where :math:`I_1` and :math:`K_1` are first order modified bessel functions of the first
+        and second kinds, respectively.
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

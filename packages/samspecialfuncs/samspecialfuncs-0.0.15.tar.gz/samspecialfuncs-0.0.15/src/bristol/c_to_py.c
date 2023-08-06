@@ -1,0 +1,312 @@
+/* -*- mode: c; c-file-style: "python"; c-basic-offset: 4; -*- */
+
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+#include <math.h>
+#include <numpy/ndarraytypes.h>
+#include <numpy/ufuncobject.h>
+#include <numpy/npy_3kcompat.h>
+#include "integrals.h"
+
+static PyMethodDef IntegralMethods[] = {
+    {NULL, NULL, 0, NULL}
+};
+
+/* Define the kappa_12 with double values */
+static void double_kappa_12(char **args, npy_intp *dimensions,
+			    npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *r = args[0];
+    char *out = args[1];
+    npy_intp r_step = steps[0];
+    npy_intp out_step = steps[1];
+
+    for (i = 0; i < n; i++) {
+	
+	*((double *)out) = q1(*(double*)r);
+
+	r += r_step;
+	out += out_step;
+
+    }
+
+}
+
+/* Define the kappa_12 with long double values */
+static void long_double_kappa_12(char **args, npy_intp *dimensions,
+				 npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *r = args[0];
+    char *out = args[1];
+    npy_intp r_step = steps[0];
+    npy_intp out_step = steps[1];
+
+    for (i = 0; i < n; i++) {
+
+	*((long double *)out) = q1(*(long double*)r);
+
+	r += r_step;
+	out += out_step;
+
+    }
+
+}
+
+
+/* pointer to above function */
+PyUFuncGenericFunction func1s[2] = {&double_kappa_12,
+				    &long_double_kappa_12};
+
+/* input and return dtypes of above function */
+static char type1s[4] = {NPY_DOUBLE, NPY_DOUBLE,
+			 NPY_LONGDOUBLE, NPY_LONGDOUBLE};
+
+/* no extra args for above function */
+static void *data1[2] = {NULL,NULL};
+
+/* Define the kappa_6 with double values */
+static void double_kappa_6(char **args, npy_intp *dimensions,
+			   npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *r = args[0];
+    char *out = args[1];
+    npy_intp r_step = steps[0];
+    npy_intp out_step = steps[1];
+
+    for (i = 0; i < n; i++) {
+	
+	*((double *)out) = q2(*(double*)r);
+
+	r += r_step;
+	out += out_step;
+
+    }
+
+}
+
+/* Define the kappa_6 with long double values */
+static void long_double_kappa_6(char **args, npy_intp *dimensions,
+				npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *r = args[0];
+    char *out = args[1];
+    npy_intp r_step = steps[0];
+    npy_intp out_step = steps[1];
+
+    for (i = 0; i < n; i++) {
+
+	*((long double *)out) = q2(*(long double*)r);
+
+	r += r_step;
+	out += out_step;
+
+    }
+
+}
+
+
+/* pointer to above function */
+PyUFuncGenericFunction func2s[2] = {&double_kappa_6,
+				    &long_double_kappa_6};
+
+/* input and return dtypes of above function */
+static char type2s[4] = {NPY_DOUBLE, NPY_DOUBLE,
+			 NPY_LONGDOUBLE, NPY_LONGDOUBLE};
+
+/* no extra args for above function */
+static void *data2[2] = {NULL,NULL};
+
+/* Define the gamma_12 with double values */
+static void double_gamma_12(char **args, npy_intp *dimensions,
+			   npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *r = args[0];
+    char *out = args[1];
+    npy_intp r_step = steps[0];
+    npy_intp out_step = steps[1];
+
+    for (i = 0; i < n; i++) {
+	
+	*((double *)out) = s1(*(double*)r);
+
+	r += r_step;
+	out += out_step;
+
+    }
+
+}
+
+/* Define the gamma_12 with long double values */
+static void long_double_gamma_12(char **args, npy_intp *dimensions,
+				npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *r = args[0];
+    char *out = args[1];
+    npy_intp r_step = steps[0];
+    npy_intp out_step = steps[1];
+
+    for (i = 0; i < n; i++) {
+
+	*((long double *)out) = s1(*(long double*)r);
+
+	r += r_step;
+	out += out_step;
+
+    }
+
+}
+
+
+/* pointer to above function */
+PyUFuncGenericFunction func3s[2] = {&double_gamma_12,
+				    &long_double_gamma_12};
+
+/* input and return dtypes of above function */
+static char type3s[4] = {NPY_DOUBLE, NPY_DOUBLE,
+			 NPY_LONGDOUBLE, NPY_LONGDOUBLE};
+
+/* no extra args for above function */
+static void *data3[2] = {NULL,NULL};
+
+
+/* Define the gamma_6 with double values */
+static void double_gamma_6(char **args, npy_intp *dimensions,
+			   npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *r = args[0];
+    char *out = args[1];
+    npy_intp r_step = steps[0];
+    npy_intp out_step = steps[1];
+
+    for (i = 0; i < n; i++) {
+	
+	*((double *)out) = s2(*(double*)r);
+
+	r += r_step;
+	out += out_step;
+
+    }
+
+}
+
+/* Define the gamma_6 with long double values */
+static void long_double_gamma_6(char **args, npy_intp *dimensions,
+				npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *r = args[0];
+    char *out = args[1];
+    npy_intp r_step = steps[0];
+    npy_intp out_step = steps[1];
+
+    for (i = 0; i < n; i++) {
+
+	*((long double *)out) = s2(*(long double*)r);
+
+	r += r_step;
+	out += out_step;
+
+    }
+
+}
+
+
+/* pointer to above function */
+PyUFuncGenericFunction func4s[2] = {&double_gamma_6,
+				    &long_double_gamma_6};
+
+/* input and return dtypes of above function */
+static char type4s[4] = {NPY_DOUBLE, NPY_DOUBLE,
+			 NPY_LONGDOUBLE, NPY_LONGDOUBLE};
+
+/* no extra args for above function */
+static void *data4[2] = {NULL,NULL};
+
+
+
+static struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    "integrals",
+    NULL,
+    -1,
+    IntegralMethods,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+};
+
+PyMODINIT_FUNC PyInit_integrals(void)
+{
+    PyObject *m, *k12, *k6, *g12, *g6, *d;
+
+    m = PyModule_Create(&moduledef);
+    if (!m) {
+	return NULL;
+    }
+    import_array();
+    import_umath();
+
+    k12 = PyUFunc_FromFuncAndData(func1s, data1, type1s, 2,
+				  1, 1, PyUFunc_None,
+				  "kappa_12",
+				  "computing\n\n\t"
+				  "int_{0.5}^{x}du K_1(u)/u^12,\n\n where "
+				  "K_1 is modified bessel function of the "
+				  "second kind.",0);
+
+    k6 = PyUFunc_FromFuncAndData(func2s, data2, type2s, 2,
+				 1, 1, PyUFunc_None,
+				 "kappa_6",
+				 "computing\n\n\t"
+				 "int_{0.5}^{x}du K_1(u)/u^6,\n\n where "
+				 "K_1 is modified bessel function of the "
+				 "second kind.",0);
+    
+    g12 = PyUFunc_FromFuncAndData(func3s, data3, type3s, 2,
+				  1, 1, PyUFunc_None,
+				  "gamma_12",
+				  "computing\n\n\t"
+				  "int_{0.5}^{x}du I_1(u)/u^12,\n\n where "
+				  "I_1 is modified bessel function of the "
+				  "first kind.",0);
+    
+    g6 = PyUFunc_FromFuncAndData(func4s, data4, type4s, 2,
+				 1, 1, PyUFunc_None,
+				 "kappa_12",
+				 "computing\n\n\t"
+				 "int_{0.5}^{x}du K_1(u)/u^6,\n\n where "
+				 "I_1 is modified bessel function of the "
+				 "first kind.",0);
+    
+
+    d = PyModule_GetDict(m);
+
+    PyDict_SetItemString(d, "kappa_12", k12);
+    PyDict_SetItemString(d, "kappa_6", k6);
+    PyDict_SetItemString(d, "gamma_12", g12);
+    PyDict_SetItemString(d, "gamma_6", g6);
+    Py_DECREF(k12);
+    Py_DECREF(k6);
+    Py_DECREF(g12);
+    Py_DECREF(g6);
+
+    return m;
+
+}
+    
