@@ -1,0 +1,193 @@
+# csv-etl
+
+A rules based approach to performing ETL operations on csv files.
+
+## Installation
+
+Requires Python 3
+
+### Using pip
+
+```bash
+pip install csv-etl
+```
+
+### Building from source
+
+```bash
+git clone https://github.com/winslowdibona/csv_etl.git
+cd csv_etl
+pip install -r requirements.txt
+python setup.py bdist_wheel
+pip install dist/csv_etl-0.0.2-py3-none-any.whl
+```
+
+## Quick Overview
+
+The goal of this project is to provide a re-usable way to perform ETL operations on csv files. This implementation takes a given row of data from a csv file and applies a set of rules to generate a new format of the data.
+
+### Rule Overview
+
+The `Rule` in this project has the following properties
+
+ - target
+ - source
+ - type
+ - input_type
+ - output_type
+ - operations
+
+Using different combinations of values for these properties can give us a flexible toolset for extracting data.
+
+##### Target - str
+
+Once we have the extracted the value from the csv and applied our rule to it, the resulting value will appear under this value as the key in the result
+
+##### source - str/list
+
+This is where we want to pull the data from in the csv. If the source is a string, it will fetch that single column. If the source is a list, it will fetch all of the values.
+
+##### type - RuleType
+
+This can be one of two options
+
+ - Static
+ - Calculation
+
+If RuleType.Static, the rule will simply return the value stored in Rule.source under Rule.target
+
+If RuleType.Calculation, the rule will fetch the value(s) defined in Rule.source, and perform the operations on them
+
+##### input_type - InputType
+
+The data type you would like to read the value in from the csv as.
+
+This can be one of three options
+
+ - String
+ - Integer
+ - Decimal
+
+##### output_type - OutputType
+
+The data type you would like the resulting value to be.
+
+This can be one of four options
+
+ - String
+ - Integer
+ - Decimal
+ - Date
+
+##### operations - list
+
+A list of strings that will be run through python `eval` statement. The value(s) extracted from the csv will be available for use in these operations. If there is only a single source, the value will be assigned to the variable `s`. If there are multiple sources, the values will be passed in as a list under the variable `s`.
+
+### Defining Rules
+
+These rules can be defined programmatically, or via a YAML configuration. The configuraiton follows the below structure
+
+```yaml
+rules:
+  -
+    target: target_name
+    type: Static || Calculation
+    input_type: String || Integer || Decimal
+    output_type: String || Integer || Decimal || Date
+    source: source_name || [source, names]
+    operations: ["operation", "to", "run"]
+```
+
+### Converting CSV Data
+
+Once we have a set of rules, we can use the `CSVConverter` class to execute our rules on a data set.
+
+```python
+from csv_etl import CSVConverter
+
+csv_converter = CSVConverter(rules)
+
+result = csv_converter.convert("path/to/csv_file")
+```
+
+This will give us back a list of dictionaries, with each item in the list representing the modified data for each row in the initial csv file.
+
+We can also get the result fed back to us in csv format as a string
+
+```python
+result = csv_converter.convert("path/to/csv/file", to='csv')
+```
+
+## Usage
+
+### CLI
+
+```bash
+csv-etl --config=./examples/order_data/config.yaml --csv=./examples/order_data/test_data.csv
+
+$ csv-etl --help
+Usage: csv-etl [OPTIONS]
+
+Options:
+  --config   File path to the yaml configuration
+  --csv      File path to the csv to convert
+  --outfile  File path to write the result to
+  --format   File path to the csv to convert
+  --help     Show this message and exit.
+```
+
+### Examples
+
+More detailed usage and programmatic examples are provided
+
+ - [Intro Example](https://github.com/winslowdibona/csv_etl/tree/master/examples/intro)
+ - [Order Data Example](https://github.com/winslowdibona/csv_etl/tree/master/examples/order_data)
+
+## Helpful Make Commands
+
+### Generating Documentation
+
+```bash
+make docs
+open html/csv_etl/index.html
+```
+
+### Running Tests
+
+```bash
+make pytest
+```
+
+### Getting Test Coverage
+
+```bash
+make test-cov
+open cov_html/index.html
+```
+
+### Docker Playground
+
+If you have [Docker](https://www.docker.com/) installed you can run
+
+```bash
+make play
+```
+
+to get a python 3 terminal running in a docker container with the contents of the directory copied over. This can be useful for doing some quick testing.
+
+## What Next?
+
+### Better error handling
+
+Currently the errors are just printed to the console. Might be nice to have an option to gather them and have them represented in the resulting data set somehow.
+
+### Better Rule -> YAML -> Rule Compatibility
+
+Currently if you were to do
+
+```python
+rules = load_rules_from_yaml("path/to/yaml")
+yaml = export_rules_as_yaml(rules)
+```
+
+the generated yaml wouldn't be the same as the original file
