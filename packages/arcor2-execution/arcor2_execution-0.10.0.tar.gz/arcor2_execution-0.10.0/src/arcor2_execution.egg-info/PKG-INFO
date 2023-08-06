@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: arcor2-execution
+Version: 0.10.0
+Summary: ARCOR2 - Augmented Reality Collaborative Robot.
+Home-page: UNKNOWN
+Author: Robo@FIT
+Author-email: imaterna@fit.vut.cz
+License: LGPL
+Description: # arcor2_execution
+        # Changelog
+        
+        The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+        
+        ## [0.10.0] - WIP
+        
+        ### Changed
+        - ARCOR2 dependency updated.
+        
+        ## [0.9.0] - 2020-10-22
+        
+        ### Changed
+        - Sets `project_meta` property of `PackageSummary` if the execution package contains `project.json` file.
+        
+        
+        ## [0.8.1] - 2020-10-19
+        
+        ### Changed
+        - ARCOR2 dependency updated
+        
+        ## [0.8.0] - 2020-09-24
+        ### Changed
+        - Initial release of the separated package.
+        - Execution service is now ok with packages that do not contain scene/project/package.json.
+        - Execution service now sends PackageChanged events (on: new, rename, delete).
+        - New environment variable: ARCOR2_EXECUTION_URL (defaults to 'ws://0.0.0.0:6790').
+        - Main script now don't have to be executable and contain shebang.
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Natural Language :: English
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: ==3.8.*
+Description-Content-Type: text/markdown
