@@ -1,0 +1,17 @@
+bluesky-live>=0.0.6
+numpy
+
+[examples]
+bluesky
+databroker
+ophyd>=1.5.3
+pyzmq
+suitcase-msgpack
+
+[pyqt5]
+PyQt5
+qtpy
+
+[pyside2]
+PySide2
+qtpy
