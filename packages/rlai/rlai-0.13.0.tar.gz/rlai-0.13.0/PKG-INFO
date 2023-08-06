@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: rlai
+Version: 0.13.0
+Summary: Reinforcement Learning:  An Introduction
+Home-page: https://matthewgerber.github.io/rlai
+Author: Matthew Gerber
+Author-email: gerber.matthew@gmail.com
+License: UNKNOWN
+Description: Welcome to RLAI. Please see the [project website](https://matthewgerber.github.io/rlai/) for more information.
+        
+        Status:
+        * PyPI distribution:  ![Python package](https://github.com/MatthewGerber/rlai/workflows/Python%20package/badge.svg)
+        * Tests:  [![Coverage Status](https://coveralls.io/repos/github/MatthewGerber/rlai/badge.svg?branch=master)](https://coveralls.io/github/MatthewGerber/rlai?branch=master)
+        
+Platform: UNKNOWN
+Requires-Python: ==3.8.5
+Description-Content-Type: text/markdown
+Provides-Extra: test
+Provides-Extra: dev
+Provides-Extra: mujoco
