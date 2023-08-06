@@ -1,0 +1,18 @@
+namespaces:
+- author:
+  - Luiz Tauffer
+  - Ben Dichter
+  contact:
+  - luiz@taufferconsulting.com
+  - ben.dichter@gmail.com
+  doc: type for storing time-varying FRET data
+  name: ndx-fret
+  schema:
+  - namespace: core
+    neurodata_types:
+    - NWBDataInterface
+    - ImageSeries
+    - OpticalChannel
+    - Device
+  - source: ndx-fret.extensions.yaml
+  version: 0.2.1
