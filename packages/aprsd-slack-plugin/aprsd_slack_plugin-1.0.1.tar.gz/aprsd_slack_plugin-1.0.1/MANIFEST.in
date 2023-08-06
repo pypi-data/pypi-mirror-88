@@ -1,0 +1,5 @@
+include README.rst
+include LICENSE.txt
+include requirements.txt
+include aprsd_slack_plugin/py.typed
+recursive-exclude tests *
