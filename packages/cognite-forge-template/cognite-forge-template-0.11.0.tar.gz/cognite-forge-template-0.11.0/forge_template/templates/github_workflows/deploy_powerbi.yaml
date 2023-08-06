@@ -1,0 +1,23 @@
+name: deploy-powerbi
+
+on:
+  push:
+    branches:
+      - "master"
+    paths:
+      - "powerbi/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - name: Setup Python environment
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 3.8
+      - name: Install Power BI SDK and run deployment
+        run: pip install pbiapi ruamel.yaml
+      - name: Run deployment
+        run: python pipeline_scripts/deploy_powerbi.py ${{ secrets.POWERBI_TOKEN }}

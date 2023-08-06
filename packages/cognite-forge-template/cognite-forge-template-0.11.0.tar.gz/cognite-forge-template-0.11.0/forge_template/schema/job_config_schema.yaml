@@ -1,0 +1,185 @@
+ts:
+  type: dict
+  schema:
+    config:
+      type: dict
+      required: True
+      schema:
+        tsHeaders:
+          type: string
+          empty: False
+          required: True
+          meta:
+            prompt: "Do you want to synchronize timeseries headers? (yes/no)"
+            help: "Must be either \"yes\" or \"no\""
+          regex: '(yes|no)'
+        tsPoints:
+          type: string
+          empty: False
+          required: True
+          meta:
+            prompt: "Do you want to synchronize timeseries points? (yes/no)"
+            help: "Must be either \"yes\" or \"no\""
+          regex: '(yes|no)'
+        tsPointsWindowsDays:
+          type: string
+          empty: False
+          required: True
+          meta: 
+            prompt: "The time window (in days) for timeseries points synchronization. Use \"-1\" for full history"
+            help: "Must be a natural number or \"-1\" "
+          regex: (^[0-9]+$|-1)
+        enableContextualization:
+          type: string
+          empty: False
+          required: True
+          meta:
+            prompt: "Do you want to try to link timeseries headers to assets? (yes/no)"
+            help: "Must be either \"yes\" or \"no\""
+          regex: '(yes|no)'
+        enableDataSetMapping:
+          type: string
+          empty: False
+          required: True
+          meta:
+            prompt: "Do you want to try mapping the source data set to target data set? (yes/no)"
+            help: "Must be either \"yes\" or \"no\""
+          regex: '(yes|no)'
+
+    denyList:
+      type: dict
+      required: True
+      schema:
+        tsExternalIdRegEx:
+          type: list
+          empty: True
+          required: True
+          meta:
+            prompt: "Enter regular expression for external_ids of timeseries to deny from replication (as comma separated list). Leave empty for no deny list"
+          schema:
+            type: string
+        tsExternalId:
+          type: list
+          empty: True
+          required: True
+          meta:
+            prompt: "Enter external_ids of timeseries to deny from replication (as comma separated list). Leave empty for no deny list"
+          schema:
+            type: string
+
+    allowList:
+      type: dict
+      required: True
+      schema:
+        dataSetExternalId:
+          type: list
+          empty: True
+          required: True
+          meta:
+            prompt: "Enter external ids of data sets to allow for replication (as comma separated list). \"*\" includes all data sets"
+          schema:
+            type: string
+        tsExternalIdRegEx:
+          type: list
+          empty: True
+          required: True
+          meta:
+            prompt: "Enter regular expression for external_ids of timeseries to allow for replication (as comma separated list)"
+          schema:
+            type: string
+        tsExternalId:
+          type: list
+          empty: True
+          required: True
+          meta:
+            prompt: "Enter external_ids of timeseries to include in replication (as comma separated list). \"*\" includes all timeseries"
+          schema:
+            type: string
+            empty: False
+
+assets:
+  type: dict
+  schema:
+    config:
+      type: dict
+      required: True
+      schema:
+        enableDataSetMapping:
+          type: string
+          empty: False
+          required: True
+          meta:
+            prompt: "Do you want to try mapping the source data set to target data set? (yes/no)"
+            help: "Must be either \"yes\" or \"no\""
+          regex: '(yes|no)'
+
+    denyList:
+      type: dict
+      required: True
+      schema:
+        rootAssetExternalId:
+          type: list
+          empty: True
+          required: True
+          meta:
+            prompt: "Enter external_ids of root assets to deny from replication (as comma separated list)"
+          schema:
+            type: string
+
+    allowList:
+      type: dict
+      required: True
+      schema:
+        dataSetExternalId:
+          type: list
+          empty: True
+          required: True
+          meta:
+            prompt: "Enter external ids of data sets to allow for replication (as comma separated list). \"*\" includes all data sets"
+          schema:
+            type: string
+        rootAssetExternalId:
+          type: list
+          empty: True
+          required: True
+          meta:
+            prompt: "Enter external_ids of root assets to allow for replication (as comma separated list). \"*\" includes all assets hierarchies"
+          schema:
+            type: string
+
+events:
+  type: dict
+  schema:
+    config:
+      type: dict
+      required: True
+      schema:
+        enableContextualization:
+          type: string
+          empty: False
+          required: True
+          meta:
+            prompt: "Do you want to try to link events to assets? (yes/no)"
+            help: "Must be either \"yes\" or \"no\""
+          regex: '(yes|no)'
+        enableDataSetMapping:
+          type: string
+          empty: False
+          required: True
+          meta:
+            prompt: "Do you want to try mapping the source data set to target data set? (yes/no)"
+            help: "Must be either \"yes\" or \"no\""
+          regex: '(yes|no)'
+
+    allowList:
+      type: dict
+      required: True
+      schema:
+        dataSetExternalId:
+          type: list
+          empty: True
+          required: True
+          meta:
+            prompt: "Enter external ids of events to include in replication (as comma separated list). \"*\" includes all data sets"
+          schema:
+            type: string

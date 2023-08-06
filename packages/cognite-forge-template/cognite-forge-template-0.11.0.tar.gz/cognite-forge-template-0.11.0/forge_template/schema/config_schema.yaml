@@ -1,0 +1,255 @@
+databricks:
+  type: dict
+  schema:
+    project_name:
+      type: string
+      empty: False
+      required: True
+      meta:
+        prompt: "Project name"
+        help: "Must be a valid name, i.e. contain only [a-zA-Z], '-' and '_'"
+      regex: '^[-\w_]+$'
+    project_description:
+      type: string
+      empty: True
+      required: True
+      meta:
+        prompt: "Databricks project description"
+        help: "The project description should be a text string with length > 0"
+    host:
+      type: string
+      empty: False
+      required: True
+      default: "https://westeurope.azuredatabricks.net"
+      meta:
+        prompt: "Databricks hosting location"
+        help: "The hosting location must be a valid Azure Databricks hosting URL"
+      regex: 'https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]+[.]azuredatabricks[.]net$'
+
+    config_dbfs_path:
+      type: string
+      required: True
+      empty: False
+      default: "/projects/<PROJECT_NAME>"
+      meta:
+        prompt: "DBFS (Databricks File Storage) path where config.yaml will be uploaded"
+        help: "Must be a valid file path (containing only letters, numbers, '-', '/')"
+      regex: '^\/([-\w\/]*)[-\w_]$'
+
+    initial_manage_principal:
+      type: string
+      required: False
+      empty: True
+      allowed: ["", "users"]
+      default: ""
+      meta:
+        prompt: "Initial manage principal (leave empty if using a Premium Databricks tenant, otherwise this should be \"users\")"
+
+    production:
+      type: dict
+      required: True
+      schema:
+        workspace_path:
+          type: string
+          required: True
+          empty: False
+          default: "/projects/prod/<PROJECT_NAME>"
+          meta:
+            prompt: "Databricks production workspace path"
+            help:  "Must be a valid file path (starting with '/' and containing only letters, numbers and '-')"
+          regex: '^\/([-\w\/]*)[-\w_]$'
+        cdf_project_name:
+          type: string
+          required: True
+          empty: False
+          meta:
+            prompt: "Production CDF project name (for instance \"akerbp\" or \"publicdata\")"
+        database_name:
+          type: string
+          required: True
+          empty: False
+          default: "<DB_PROJECT_NAME>_prod_database"
+          meta:
+            prompt: "Name of Databricks database to create for the production workspace"
+            help: "Must be a valid database name (containing only letters, numbers and '_')"
+          regex: '^\w+$'
+        scope:
+          type: dict
+          required: True
+          schema:
+            name:
+              type: string
+              required: True
+              empty: False
+              default: "forge-prod-scope-<PROJECT_NAME>"
+              meta:
+                prompt: "Name of Databricks production scope"
+                help:  "Must be a valid scope name (containing only letters, numbers and '-')"
+              regex: '^[\w-]+$'
+        group:
+          type: dict
+          required: True
+          schema:
+            name:
+              type: string
+              required: True
+              empty: False
+              default: "forge-prod-group-<PROJECT_NAME>"
+              meta:
+                prompt: "Production group name"
+            users:
+              type: list
+              required: False
+              meta:
+                prompt: "Databricks production workspace users (comma separated list of valid emails)"
+                help: "Must be a comma separated list of valid emails"
+              schema:
+                type: string
+                regex: '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+[.][a-zA-Z0-9-.]+$'
+
+    development:
+      type: dict
+      required: True
+      schema:
+        workspace_path:
+          type: string
+          required: True
+          empty: False
+          default: "/projects/dev/<PROJECT_NAME>"
+          meta:
+            prompt: "Databricks development workspace path"
+            help:  "Must be a valid file path (starting with '/' and containing only letters, numbers and '-')"
+          regex: '^\/([-\w\/]*)[-\w_]$'
+        cdf_project_name:
+          type: string
+          required: True
+          empty: False
+          meta:
+            prompt: "Development CDF project name (for instance \"akerbp\" or \"publicdata\")"
+        database_name:
+          type: string
+          required: True
+          empty: False
+          default: "<DB_PROJECT_NAME>_dev_database"
+          meta:
+            prompt: "Name of Databricks database to create for the development workspace"
+            help: "Must be a valid database name (containing only letters, numbers and '_')"
+          regex: '^\w+$'
+        scope:
+          type: dict
+          required: True
+          schema:
+            name:
+              type: string
+              required: True
+              empty: False
+              default: "forge-dev-scope-<PROJECT_NAME>"
+              meta:
+                prompt: "Name of Databricks development scope"
+                help:  "Must be a valid scope name (containing only letters, numbers and '-')"
+              regex: '^[\w-]+$'
+        group:
+          type: dict
+          required: True
+          schema:
+            name:
+              type: string
+              required: True
+              empty: False
+              default: "forge-dev-group-<PROJECT_NAME>"
+              meta:
+                prompt: "Development group name"
+            users:
+              type: list
+              required: False
+              meta:
+                prompt: "Databricks development workspace users (comma separated list of valid emails)"
+                help: "Must be a comma separated list of valid emails"
+              schema:
+                type: string
+                regex: '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+[.][a-zA-Z0-9-.]+$'
+
+powerbi:
+  type: dict
+  schema:
+    tenant_id:
+      type: string
+      required: True
+      empty: False
+      meta:
+        prompt: "Power BI tenant id (help: https://cognitedata.atlassian.net/wiki/spaces/FORGE/pages/1003814928/Power+BI+API+Set+Up)"
+
+    application_id:
+      type: string
+      required: True
+      empty: False
+      meta:
+        prompt: "Power BI application id (help: https://cognitedata.atlassian.net/wiki/spaces/FORGE/pages/1003814928/Power+BI+API+Set+Up)"
+
+    production:
+      type: dict
+      required: True
+      schema:
+        name:
+          type: string
+          empty: False
+          required: True
+          default: "<PROJECT_NAME>-prod"
+          meta:
+            prompt: "Name of Power BI production workspace"
+        principals:
+          type: list
+          required: False
+          minlength: 1
+          meta:
+            prompt: "Power BI production workspace admins (comma separated list of valid emails)"
+            help: "Must be a comma separated list of valid emails"
+          schema:
+            type: string
+            regex: '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+[.][a-zA-Z0-9-.]+$'
+
+    development:
+      type: dict
+      required: True
+      schema:
+        name:
+          type: string
+          empty: False
+          required: True
+          default: "<PROJECT_NAME>-dev"
+          meta:
+            prompt: "Name of Power BI development workspace"
+        principals:
+          type: list
+          required: False
+          minlength: 1
+          meta:
+            prompt: "Power BI development workspace admins (comma separated list of valid emails)"
+            help: "Must be a comma separated list of valid emails"
+          schema:
+            type: string
+            regex: '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+[.][a-zA-Z0-9-.]+$'
+
+azure:
+  type: dict
+  schema:
+    repo_name:
+      type: string
+      required: True
+      empty: False
+      default: "<PROJECT_NAME>-repo"
+      meta:
+        prompt: "Name of Azure repository to be created"
+    principal:
+      type: string
+      required: True
+      empty: False
+      meta:
+        prompt: "Name of Azure organization"
+    project_name:
+      type: string
+      required: True
+      empty: False
+      default: "<PROJECT_NAME>"
+      meta:
+        prompt: "Name of Azure project (this will not be created, it needs to exist up front)"

@@ -1,0 +1,23 @@
+name: deploy-databricks
+
+on:
+  push:
+    branches:
+      - "master"
+    paths:
+      - "databricks/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - name: Setup Python environment
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 3.8
+      - name: Install databricks SDK and run deployment
+        run: pip install databricks-api ruamel.yaml
+      - name: Run deployment
+        run: python pipeline_scripts/deploy_databricks.py ${{ secrets.DATABRICKS_TOKEN }}

@@ -1,0 +1,46 @@
+schedule:
+  type: dict
+  schema:
+    start_date:
+      type: string
+      default: <DATE_TODAY>
+      meta:
+        prompt: "On which date should the replication start?"
+        help: "Must be of the format \"yyyy-mm-dd\""
+      regex: '([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))'
+
+    end_date:
+      type: string
+      empty: True
+      meta:
+        prompt: "Do you want to specify an end date for the replication? If no, leave empty"
+        help: "Must be of the format \"yyyy/mm/dd\""
+      regex: '([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))'
+
+    email:
+      type: list
+      meta:
+        prompt: "Email address for reporting purposes (comma separated list of valid emails)"
+        help: "Must be a comma separated list of valid emails"
+      schema:
+        type: string
+        regex: '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+[.][a-zA-Z0-9-.]+$'
+
+    email_on_failure:
+      type: string
+      default: True
+      meta:
+        prompt: "Do you want to receive an email if the replication fails? (yes/no)"
+        help: "Must be either \"yes\" or \"no\""
+      regex: '(yes|no)'
+
+    schedule_interval:
+      type: string
+      meta:
+        prompt: "The schedule (as cron expression)"
+        help: "For help to specify a valid schedule, please visit: https://en.wikipedia.org/wiki/Cron"
+      regex: '/(@(annually|yearly|monthly|weekly|daily|hourly|reboot))|(@every (\d+(ns|us|µs|ms|s|m|h))+)|((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/'
+
+
+
+

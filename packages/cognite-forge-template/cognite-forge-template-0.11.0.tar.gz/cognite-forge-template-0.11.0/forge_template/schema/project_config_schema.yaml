@@ -1,0 +1,55 @@
+source:
+  type: dict
+  required: True
+  schema:
+    host:
+      type: string
+      empty: False
+      required: True
+      meta: 
+        prompt: "Source tenant: CDF hosting location"
+        help: "The hosting location must be a valid CDF cluster URL (for instance \"https://api.cognitedata.com\")"
+      regex: "https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]+[.]cognitedata[.]com$"
+
+    project:
+      type: string
+      empty: False
+      required: True
+      meta:
+        prompt: "Source tenant: CDF project name (for instance \"akerbp\" or \"publicdata\")"
+
+    api_key: 
+      type: string
+      empty: False
+      required: True
+      meta:
+        prompt: "Source tenant: valid API key for the project with sufficient read/write access rights"
+
+target:
+  type: dict
+  required: True
+  schema:
+    host:
+      type: string
+      empty: False
+      required: True
+      meta:
+        prompt: "Target tenant: CDF hosting location"
+        help: "The hosting location must be a valid CDF cluster URL (for instance \"https://api.cognitedata.com\")"
+      regex: "https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]+[.]cognitedata[.]com$"
+
+    project:
+      type: string
+      empty: False
+      required: True
+      meta:
+        prompt: "Target tenant: CDF project name (for instance \"akerbp\" or \"publicdata\")"
+
+    api_key:
+      type: string
+      empty: False
+      required: True
+      meta:
+        prompt: "Target tenant: Valid API key for the project with sufficient read/write access rights"
+
+
