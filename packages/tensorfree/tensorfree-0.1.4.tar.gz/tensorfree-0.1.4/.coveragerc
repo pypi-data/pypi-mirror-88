@@ -1,0 +1,20 @@
+[paths]
+source =
+   src
+   */site-packages
+
+[run]
+branch = true
+source =
+    tensorfree
+    tests
+parallel = true
+
+[report]
+show_missing = true
+precision = 2
+omit =
+    *migrations*
+    *src/tensorfree/__init__.py
+    *src/tensorfree/model/__init__.py
+    *src/tensorfree/utils/__init__.py
