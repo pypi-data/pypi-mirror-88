@@ -1,0 +1,95 @@
+#!/bin/bash
+rfplasmidpath=`python3 -c "import RFPlasmid as _; print(_.__path__)"|sed 's/^\[.//' |sed 's/.\]$//'`
+
+#the argument array is cleared in the check for input. Save it for later.
+commandLineOptions=$@
+
+# Check for help/version/empty
+SKIP_CHECKS=0
+if [[ $# == 0 ]]; then
+  SKIP_CHECKS=1
+else
+  while [[ $# -gt 0 ]]; do
+    arg="$1"
+    case $arg in
+        -h|--help|--version)
+          SKIP_CHECKS=1
+	  shift
+	  ;;
+	--initialize)
+	  DOWNLOAD_DB=1
+	  shift
+	  ;;
+        *)
+          shift
+	  ;;
+    esac
+  done
+fi
+
+
+if [[ "${SKIP_CHECKS}" -eq 0 ]]; then
+ 
+    if ! [ -x "$(command -v diamond)" ]; then
+      echo 'Error: diamond is not installed.' >&2
+      exit 1
+    fi
+    
+    if ! [ -x "$(command -v checkm)" ]; then
+      echo 'Error: checkm is not installed.' >&2
+      exit 1
+    fi
+
+    if ! [ -x "$(command -v R)" ]; then
+      echo 'Error: R is not installed.' >&2
+      exit 1
+    fi
+
+    if ! [ -x "$(command -v python3)" ]; then
+      echo 'Error: python3 is not installed.' >&2
+      exit 1
+    fi
+    
+    if ! [ -x "$(command -v jellyfish)" ]; then
+      echo 'Warning: Jellyfish is not installed. Not recommended' >&2
+    fi
+
+    if  [[ "DOWNLOAD_DB" -eq 1 ]] ; then
+        echo "Downloading plasmid databases.. Be patient. You may have to run this script with sudo"
+	cd "$rfplasmidpath"
+	bash ./getdb.sh
+	echo "$FILE installed. Please try rfplasmid again"
+	exit 1
+    fi
+
+    if  [[ "DOWNLOAD_DB" -eq 1 ]] ; then
+	echo "Downloading plasmid databases.. Be patient. You may have to run this script with sudo"
+	cd "$rfplasmidpath"
+	bash ./getdb.sh
+	echo "$FILE2 installed. Please try rfplasmid again"
+	exit 1
+    fi
+
+    FILE="$rfplasmidpath"/plasmiddb_cge.dmnd
+    if [ -f "$FILE" ]; then
+        echo
+    else
+        echo "Error: $FILE does not exist. Run rfplasmid --initialize to download databases"
+	exit 1
+    fi
+
+    FILE2="$rfplasmidpath"/plasmiddb_total.dmnd
+    if [ -f "$FILE2" ]; then
+	echo
+    else
+	echo "Error: $FILE2 does not exist. Run rfplasmid --initialize to download databases"
+	exit 1
+    fi
+
+
+    python3 "$rfplasmidpath"/rfplasmid.py $commandLineOptions
+fi
+
+if [[ "${SKIP_CHECKS}" -eq 1 ]]; then
+    python3 "$rfplasmidpath"/rfplasmid.py $commandLineOptions
+fi
