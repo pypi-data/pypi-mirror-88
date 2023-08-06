@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: fastgenius
+Version: 0.0.1
+Summary: A Python wrapper around the Genius API for large scale applications
+Home-page: https://github.com/theomart/fastgenius
+Author: Theo Martin
+Author-email: contacttheomartin+fastgenius@gmail.com
+License: MIT
+Keywords: genius api genius-api music lyrics artists songs fast async python wrapper
+Platform: UNKNOWN
+Classifier: Topic :: Software Development :: Libraries
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+Requires-Dist: beautifulsoup4 (>=4.6.0)
+Requires-Dist: requests (>=2.20.0)
+Provides-Extra: dev
+Requires-Dist: sphinx (~=3.2) ; extra == 'dev'
+Requires-Dist: sphinx-rtd-theme ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: sphinx (~=3.2) ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme ; extra == 'docs'
+
+# roland-gamos
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+
+
+### Usage
+````python
+import fastgenius
+genius = fastgenius.Genius()
+artist_name_list = ['Kekra', 'La F']
+artist_name = 'Kekra'
+
+genius.get_artist_id(artist_name_list)
+genius.get_artist_id(artist_name)
+genius.get_artist_info(artist_name_list)
+genius.get_artist_info(artist_name)
+genius.get_artist_songs(artist_name)
+genius.get_artist_songs(artist_name_list)
+genius.get_song_info('Kekra Ailleurs')
+genius.get_song_info(['Kekra ailleurs', 'kekra laisse les faire'])
+genius.get_artist_lyrics(artist_name)
+genius.get_songs_from_tag('rock', max_nb_songs=100) # takes a lot of time
+````
+
