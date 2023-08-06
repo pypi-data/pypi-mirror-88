@@ -1,0 +1,17 @@
+os: linux
+language: python
+python:
+  - "3.6"
+  - "3.7"
+  - "3.8"
+  - "3.9"
+
+install:
+  - pip install -r requirements.txt
+  - pip install pytest-cov
+
+script:
+  - pytest --cov=pyster/
+
+after_success:
+  - coveralls
