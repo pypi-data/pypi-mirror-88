@@ -1,0 +1,82 @@
+Metadata-Version: 2.1
+Name: py3helpers
+Version: 0.5.1
+Summary: Python utility functions.
+Home-page: https://github.com/adbailey4/py3helpers
+Author: Andrew Dewey Bailey IV
+Author-email: bailey.andrew4@gmail.com
+License: BSD-3-Clause
+Project-URL: Documentation, https://py3helpers.readthedocs.io/
+Project-URL: Changelog, https://py3helpers.readthedocs.io/en/latest/changelog.html
+Project-URL: Issue Tracker, https://github.com/adbailey4/py3helpers/issues
+Description: ========
+        Overview
+        ========
+        
+        
+        
+        General python functions and classes which could be used across multiple projects.
+        
+        * Free software: BSD 3-Clause License
+        
+        Installation
+        ============
+        ::
+        
+            pip install py3helpers
+        
+        You can also install the in-development version with::
+        
+            pip install https://github.com/adbailey4/py3helpers/archive/master.zip
+        
+        You to allow access to seq_tools, you need to install with::
+        
+            pip install py3helpers[seq_tools]
+        
+        Or you can install from source with::
+        
+            git clone https://github.com/adbailey4/python_utils
+            cd python_utils
+            pip install -e.[seq_tools]
+            python setup.py test
+        
+        
+        Documentation
+        =============
+        
+        
+        https://py3helpers.readthedocs.io/
+        
+        
+        Development
+        ===========
+        
+        To run the all tests run::
+        
+            tox
+        
+        
+        
+        Changelog
+        =========
+        
+        0.4.0 (2020-02-27)
+        ------------------
+        
+        * First release on PyPI.
+        
+Keywords: utility,python3,functions
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Utilities
+Requires-Python: >3.5
+Provides-Extra: seq_tools

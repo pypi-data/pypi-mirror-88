@@ -1,0 +1,71 @@
+notifications:
+  slack:
+    secure: fF5IEFsg+x9GU2JFv+Pnm+XMjBbocIv1sm0eWqo5kYeb4yZ8WAkrYHSx7QH5HM1fPRvpKT320JaSx/ZJC/u66xeQ6lkpF4vyrncmOjfoILr2vRERYbGHeMMcwaKgenL4+qyt4Xm6QKH7jq8qNad9n1F+ZDJ8K39OgWsl3pkplN8f3d+nUupZwfbQE1OlhoyySKBokC2JqIRJbXJGFQQgeO3xEuNIiHRrFAQbNoXGMv5FyooOluQdYBntAupwH5Q7Uc4V2eGIelpHNduU2RD8wbfQ+zJ48vTOSj5kYHi8LvkfvxkjsJ5PnHkBCjd/z0fUYmstEKvZxdfM9GnCk5ppGDCE+DcsnDRwODcj9+gbEjRjaV/qdf45ZwGjZ/m2/gHRImDnGfyfB13wJupE0DELk7HwHZcoqdBitoplc6MzEYOQzldvaVHIaiZKe/RNCDJCHOetIJjETZPWy1yjqyv5ngoCEAooWbE4zYKi8WVoAHUQAtMJHqgJTmRirkA83VXyl7J2dv75AZDzsYDbMa/NFq/BgofJXEzWsubKW9WKf58+9EeUq1P7si2QuIRch1dJrFxW9IlResGMwfZyEk+alPJju8TDGOTzcis/ER+GCzeS9jrY2gnEmJwhqlvZ9D+NhHSQJB1NToNVlwaIZ8nAUGFKC/7M0XxWUHCdUTFBexo=
+  email: false
+language: python
+dist: xenial
+cache: false
+env:
+  global:
+  - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
+  - SEGFAULT_SIGNALS=all
+  - secure: tKYjwIt3PnpXOvoAv1EVZ0YvPCHp/uLD5K78RFRf1NxDY7HXYqYX5e3uWcsZeFftAKnX/0NMRR7ZkA2NShO24Z8zyQQInPlZlXqaEPZR9Rz8ogGl23yPBNVXuUwpQkxt3kejEz5ycgaCPHgVAwi8e7w/FdCnPoCKnQFlSOZBcXHnkBsd355K0VFzrqVt7LwtN6EcJqqVSM/hCbLfDbmFNvA6++bFm7kCqchxEM4U5UySK1bDBj/arJUUFXq5aGoxFWqarqWfCjcrVHYq03BJOP7EUoXPQCuhJ/UBaSrsfkMc9u4f0EnsqJAauXJtJ8IIiFZPK2XoNbZINu9pGC2vkz+ZV/kaAoqyg5ph1ecrDorFpD2BN7GSrTF4WpvXZQzvBaiGxS+CBc78Vj769JHPxbAl+FQqac9SLGqcbNBT8yveuxgKWv2KikPWf9CGPAw1+fla5eUeL/3UkKWpOwkIB5S7SB3KeWi+D/N6P8YAbK0jG752G2yWeIUaL3G5l5DWrVxSWmem8Qk8iZMV0b0doNq7lKwii9kZ0dg6IjPAGWFb84dfWBRcyd8xVKF/u4Wq82GTkS9Fx3fMCFPr9sZ2z6JFHzo/XrqU/vdP1JJAFWHvNrtQ/IBh8qI1xHU3o74Pptt/wuAe3SwEMEmTiLc2RZsuAcpZmC3w/+A7cANI6k4=
+
+matrix:
+  include:
+  - python: '3.6'
+    env:
+    - TOXENV=check
+  - python: '3.6'
+    env:
+    - TOXENV=docs
+  - env:
+    - TOXENV=py36,codecov
+    python: '3.6'
+  - env:
+    - TOXENV=py37,codecov
+    python: '3.7'
+  - env:
+    - TOXENV=py38,codecov
+    python: '3.8'
+  - stage: PyPi Release
+    script: echo "Deploying to PyPi ..."
+    deploy:
+      provider: pypi
+      username: __token__
+      password:
+        secure: Cnu0c/bX0f+n4Z1L7aPKfo0MsbYk+49LYv1hVGmcT5GhklHdchGM6dzi5X/hluid6qwUKVWlSThAxouvWXuWxYgsVT2ZUJPnf8rOa2g3ZBnePBwlezLpqB+9+agw/3FQac8iMbor1DpPQn63oZxth7becarE/dx287FY9OnwsE5f7Mp659skg/b4G3Z8fq+r4ioT/bsdY1AH+i3ZqRNpVj3qquoh51LY6Smy8JV01kR6vacvev/xs9gMIHdpor/0QUBokbvpGzGSzpJZfmF5nn51H6EVrsvIXruYOBnyWispGCMln8a9tWnrctjGbAzR+ty1sE+3Bq+vRi3/VD9yEBPoTNRt1kwqof40jj/z0fOylAc7ylzLx9GtxkJkIC+6/IZgwfvBQ70mQit40OHwkSFmMforSe4TjMbJFKqTQmwaCPplB65/IDxfMer3nMcfBf9mjwTlUWS7iUlisAPpPslvv1j+qtiGXRTPBByP8u8x2B9dqEZ4+WPh6q4oWCaKDlEh1YCWdlK4bJR8Tak2dMz1lnLC0AAjWXCzWfLeKRizpNXY40D2WqAj4z8VuJS3nGhQ50lLJp28Rz1zogdMYiZ5MEtm12cL+/C3qIO76qEpIeh8gbZyQDpewC/KDSKlBodmEn10Z8Yupn+pwq+bgvHR9lt4m+nHphw91hVCCAU=
+      on:
+        tags: true
+
+  - stage: GitHub Release
+    script: echo "Deploying to GitHub releases ..."
+    deploy:
+      provider: releases
+      api_key: $GITHUB_OAUTH_TOKEN
+      skip_cleanup: true
+      on:
+        tags: true
+before_install:
+- python --version
+- uname -a
+- lsb_release -a || true
+- |
+  if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+    [[ $TOXENV =~ py3 ]] && brew upgrade python
+    [[ $TOXENV =~ py2 ]] && brew install python@2
+    export PATH="/usr/local/opt/python/libexec/bin:${PATH}"
+  fi
+- python --version
+install:
+- python -mpip install --progress-bar=off tox virtualenv>=16.6.0 pip>=19.1.1 setuptools>=18.0.1
+  six>=1.12.0
+- virtualenv --version
+- easy_install --version
+- pip --version
+- tox --version
+script:
+- tox -v
+after_failure:
+- more .tox/log/* | cat
+- more .tox/*/log/* | cat
