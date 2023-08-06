@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: kpublicip
+Version: 0.0.2
+Summary: get your public ipv4 or ipv6
+Home-page: https://github.com/kkristof200/py_public_ip
+Author: Kristof
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+
+# kpublicip
+![python_version](https://img.shields.io/static/v1?label=Python&message=3.5%20|%203.6%20|%203.7&color=blue) [![PyPI downloads/month](https://img.shields.io/pypi/dm/kpublicip?logo=pypi&logoColor=white)](https://pypi.python.org/pypi/kpublicip)
+
+## Description
+get your public ipv4 or ipv6
+
+## Install
+~~~~bash
+pip install kpublicip
+# or
+pip3 install kpublicip
+~~~~
+
