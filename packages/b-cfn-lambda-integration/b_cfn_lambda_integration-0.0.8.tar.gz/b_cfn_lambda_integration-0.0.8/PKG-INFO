@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: b_cfn_lambda_integration
+Version: 0.0.8
+Summary: AWS CDK based api gateway integration resource that creates a lambda integration as cfn resource.
+Home-page: https://github.com/biomapas/B.CfnLambdaIntegration.git
+Author: Laimonas Sutkus
+Author-email: laimonas.sutkus@biomapas.com
+License: Apache License 2.0
+Description: # TODO
+        
+        # Release history
+        
+        ### 0.0.8
+        * Expose lambda function.
+        
+        ### 0.0.7
+        * Add tests to the pipeline.
+        
+        ### 0.0.6
+        * Add ability to get a consistent hash from the integration class.
+        
+        ### 0.0.5
+        * Add CI/CD pipelines.
+        * Update History file.
+        
+        ### 0.0.4
+        * Set default to 'POST' because we set default 'AWS_PROXY' and:
+        HttpMethod must be POST for AWS_PROXY IntegrationType (Service: AmazonApiGatewayV2;).
+        
+        ### 0.0.3
+        * Add payload version.
+        
+        ### 0.0.2
+        * Generalize.
+        
+        ### 0.0.1
+        * Initial build.
+Keywords: AWS CDK Lambda API Gateway Integration CFN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
