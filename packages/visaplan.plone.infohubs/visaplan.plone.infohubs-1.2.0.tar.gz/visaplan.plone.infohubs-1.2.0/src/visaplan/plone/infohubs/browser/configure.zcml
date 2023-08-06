@@ -1,0 +1,22 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+    <browser:page
+        for="*"
+        name="hubandinfo"
+        class=".browser.Browser"
+        permission="zope2.View"
+        allowed_interface=".interfaces.IHubAndInfo"
+        />
+
+    <browser:page
+        for="*"
+        name="infohubs-demo"
+        template="templates/infohubs-demo.pt"
+        class=".demo.Browser"
+        permission="zope2.View"
+        allowed_interface=".interfaces.IInfohubsDemo"
+        />
+
+</configure>

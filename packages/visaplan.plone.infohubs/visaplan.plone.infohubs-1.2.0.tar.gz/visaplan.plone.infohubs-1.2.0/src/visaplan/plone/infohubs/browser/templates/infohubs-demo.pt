@@ -1,0 +1,118 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:main fill-slot="main"
+tal:define="
+data python:view.data();
+debug python:request.get('debug');
+pformat python:context.getAdapter('pformat');
+urlstem string:@@infohubs-demo?keys=
+">
+<div class="area-title">
+<h1><a href="https://pypi.org/project/visaplan.plone.infohubs">InfoHubs</a> demo</h1>
+</div><!-- .area-title -->
+
+<pre tal:content="python:pformat(data)"
+     tal:condition="debug"/>
+
+<form action="@@infohubs-demo">
+<div class="form-group">
+<label class="col-md-3" for="keys">Keys</label>
+<input type="text" class="col-md-9"
+       name="keys" id="keys"
+       tal:attributes="value python:data['keys']">
+</div><!-- .form-group -->
+<button class="btn btn-default" type="submit">Submit</button>
+</form>
+
+<div class="row" tal:define="
+info python:data['info'];
+hub python:data['hub'];
+available python:data['available'];
+use_structure python:['request'];
+">
+  <div class="col-md-12 col-sm-12"
+       tal:condition="info">
+    <h2>Detected <tt>info</tt> values</h2>
+    <table class="table">
+      <thead><tr>
+        <th>key</th>
+        <th>type</th>
+        <th>value or error</th>
+        <th>description</th>
+      </tr></thead>
+      <tbody><tal:loop repeat="row info">
+        <tr tal:define="ok python:row['ok'];
+                        key python:row['key'];
+                        ">
+          <td><strong tal:omit-tag="python:row['implicit']"
+               ><tt tal:content="key">portal_url</tt></strong></td>
+          <td tal:condition="ok"
+              tal:content="python:row.get('type')">str</td>
+          <td tal:condition="not:ok">
+            <strong>Error:</strong>
+          </td>
+          <td>
+            <tal:if condition="ok"><tal:ns define="u_s python:key in use_structure">
+            <tt tal:condition="u_s" tal:replace="structure python:row['value']"/>
+            <tt tal:condition="not:u_s"
+                tal:content="python:row['value']">https://my.root.url</tt>
+            </tal:ns></tal:if><tal:else condition="not:ok">
+            <pre tal:content="python:row['error']">Traceback: ...</pre>
+            </tal:else>
+          </td>
+          <td tal:content="python:row['description']">The description</td>
+        </tr></tal:loop>
+      </tbody>
+    </table>
+  </div><!-- .col-md-6 col-sm-12 -->
+
+  <div class="col-md-12 col-sm-12"
+       tal:condition="python:0 and hub">
+    <h2>Used tools (<tt>hub</tt>)</h2>
+    <table class="table">
+      <thead><tr>
+        <th>key</th>
+        <th>value</th>
+      </tr></thead>
+      <tbody><tal:loop repeat="row hub">
+        <tr>
+          <td><tt tal:content="python:row['key']">plone_portal_state</tt></td>
+          <td tal:content="python:row['value']">python: implies nocall:</td>
+        </tr></tal:loop>
+      </tbody>
+    </table>
+  </div><!-- .col-md-6 col-sm-12 -->
+
+<pre tal:content="python:pformat(available)"
+     tal:condition="debug"/>
+  <div class="col-md-12 col-sm-12"
+       tal:condition="available">
+    <h2>Available keys</h2>
+    <table class="table">
+      <thead><tr>
+        <th>key</th>
+        <th>description</th>
+      </tr></thead>
+      <tbody><tal:loop repeat="row available">
+        <tr tal:define="done python:row['done']">
+          <td tal:define="key python:row['key']">
+            <a href="@@infohubs-demo?key=loggedin_id"
+               tal:omit-tag="done"
+               tal:attributes="
+               href python:urlstem+key;
+               "><tt tal:content="key">portal_url</tt></a></td>
+          <td tal:content="python:row['description']">The description</td>
+        </tr></tal:loop>
+      </tbody>
+    </table>
+  </div><!-- .col-md-6 col-sm-12 -->
+
+</div><!-- .row -->
+</metal:main>
+</html>
