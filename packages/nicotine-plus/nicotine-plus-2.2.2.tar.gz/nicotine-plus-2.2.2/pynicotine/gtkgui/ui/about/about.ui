@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.18"/>
+  <object class="GtkAboutDialog" id="About">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">About Nicotine+</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="logo_icon_name">org.nicotine_plus.Nicotine</property>
+    <property name="program_name">Nicotine+</property>
+    <property name="comments" translatable="yes">Graphical client for the Soulseek file sharing network</property>
+    <property name="website">https://nicotine-plus.org</property>
+    <property name="copyright">© 2001 PySoulSeek Contributors
+© 2003 Nicotine Team
+© 2004 Nicotine+ Team</property>
+    <property name="license_type">GTK_LICENSE_GPL_3_0</property>
+    <property name="authors"># Nicotine+ Contributors
+
+### Active
+
+eLvErDe
+- Provided Nicotine+ Trac instance
+- Migrated source code from SVN to Github
+- python3-miniupnpc bindings
+- Developer
+
+Kip Warner
+- Developer
+- Debianization
+- [kip(at)thevertigo(dot)com]
+
+Lene Preuss
+- Python3 migration
+- Unit and DEP-8 continuous integration testing
+- [lene.preuss(at)here(dot)com]
+
+mathiascode
+- Developer
+- [mail(at)mathias(dot)is]
+
+Han Boetes
+- Tester
+- Documentation
+- Bug hunting
+
+alekksander
+- Tester
+- Redesign of some graphics
+
+### Retired
+
+daelstorm
+- Developer
+- [daelstorm(at)gmail(dot)com]
+
+gallows (aka 'burp O')
+- Developer, Packager
+- Submitted Slack.Build file
+- [g4ll0ws(at)gmail(dot)com]
+
+QuinoX
+- Developer
+
+hedonist (formerly known as alexbk)
+- OS X nicotine.app maintainer / developer
+- Author of original pyslsk, which is used for
+  nicotine core
+- [ak(at)sensi(dot)org]
+
+lee8oi
+- Bash Commander
+- New and updated /alias
+- [winslaya(at)gmail(dot)com]
+
+INMCM
+- Nicotine+ topic maintainer on ubuntuforums.org
+  https://ubuntuforums.org/showthread.php?t=196835
+
+suser-guru
+- Suse Linux packager
+  https://dev-loki.blogspot.fr/
+- Nicotine+ RPM's for Suse 9.1, 9.2, 9.3, 10.0, 10.1
+
+osiris
+- handy-man
+- documentation
+- some GNU/Linux packaging
+- Nicotine+ on win32
+- Author of Nicotine+ Guide
+- [osiris.contact(at)gmail(dot)com]
+
+Michael Labouebe (aka gfarmerfr)
+- Developer
+- [gfarmerfr(at)free(dot)fr]
+
+Mutnick
+- Created Nicotine+ GitHub Organization
+- Developer
+- [muhing(at)yahoo(dot)com]
+
+# Nicotine Contributors
+
+### Retired
+
+Hyriand
+- Founder
+- [hyriand(at)thegraveyard(dot)org]
+
+osiris
+- handy-man
+- [osiris.contact(at)gmail(dot)com]
+
+SmackleFunky
+- Beta tester
+
+Wretched
+- Beta tester
+- Bringer of great ideas
+
+(va)\\*10^3
+- Beta tester
+- Designer of the old nicotine homepage and artwork
+  (logos)
+
+sierracat
+- MacOSX tester
+- Developed soulseeX
+
+Gustavo
+- Made the exception dialog
+- [gjc(at)inescporto(dot)pt]
+
+SeeSchloss
+- Developer
+- Made 1.0.8 win32 installer
+- Created Soulfind,
+  opensource Soulseek Server written in D
+  https://github.com/seeschloss/soulfind
+
+vasi
+- Mac developer
+- Packaged nicotine on OSX PowerPc
+- [djvasi(at)gmail(dot)com]
+
+# PySoulSeek Contributors
+
+### Retired
+
+Alexander Kanavin
+- Created PySoulSeek
+- [ak(at)sensi(dot)org]
+
+Nir Arbel
+- Helped with many protocol questions I had, and of
+  course he designed and impemented the whole
+  system.
+- [nir(at)slsk(dot)org]
+			    
+Zip (Brett W. Thompson)
+- I used his client code to get an initial impression
+  of how the system works.
+- Supplied the patch for logging chat conversations.
+- [brettt(at)tfn(dot)net]
+
+Josselin Mouette
+- official Debian package maintainer
+- [joss(at)debian(dot)org]
+
+blueboy
+- former unofficial Debian package maintainer
+- [bluegeek(at)eresmas(dot)com]
+
+Christian Swinehart
+- Fink package maintainer
+- [cswinehart(at)users(dot)sourceforge(dot)net]
+
+Hyriand
+- Patches for upload bandwidth management, banning,
+  various UI improvements and more
+- [hyriand(at)thegraveyard(dot)org]
+
+Geert Kloosterman
+- a script for importing windows soulseek configuration
+- [geertk(at)ai(dot)rug(dot)nl]
+
+Joe Halliwell
+- Submitted a patch for optionally discarding search
+  results after closing a search tab
+- [s9900164(at)sms(dot)ed(dot)ac(dot)uk]
+
+Alexey Vyskubov
+- Code cleanups
+- [alexey(dot)vyskubov(at)nokia(dot)com]
+
+Jason Green
+- Ignore list and auto-join checkbox, wishlists
+- [smacklefunky(at)optusnet(dot)com(dot)au]
+
+# Attributions
+
+- This product includes IP2Location LITE data,
+  available from:
+  https://www.ip2location.com
+
+- Country flags licensed under the MIT License.
+  Copyright (c) 2013 Panayiotis Lipiridis
+  https://github.com/lipis/flag-icon-css
+
+- tinytag licensed under the MIT License.
+  Copyright (c) 2014-2018 Tom Wallroth
+  https://github.com/devsnd/tinytag/
+
+- UPnP code adapted from the pyupnp project.
+  pyupnp is licensed under the MIT License.
+  Copyright (c) 2019 Dave Mulford
+  https://github.com/davemulford/pyupnp</property>
+    <property name="translator_credits">Dutch
+ * nince78 (2007)
+ * hyriand
+
+German
+ * Meokater (2007)
+ * (._.) (2007)
+ * lippel (2004)
+ * hyriand (2003)
+
+Spanish
+ * Silvio Orta (2007)
+ * Dreslo
+
+French
+ * m-balthazar (2020)
+ * Michael Labouebe (2016-2017)
+   [gfarmerfr(at)free(dot)fr]
+ * ManWell (2007)
+ * zniavre (2007-2009)
+ * flashfr
+ * systr
+
+Italian
+ * Gianluca Boiano
+ * Nicola (2007) [info(at)nicoladimaria(dot)info]
+ * dbazza
+
+Polish
+ * Amun-Ra (2007)
+ * thine (2007)
+ * owczi
+
+Swedish
+ * alimony [markus(at)samsonrourke(dot)com]
+
+Hungarian
+ * djbaloo [dj_baloo(at)freemail(dot)hu]
+
+Slovak
+ * Josef Riha (2006) [jose1711(at)gmail(dot)com]
+
+Portuguese Brazilian
+ * Suicide|Solution (2006)
+   [felipe(at)bunghole(dot)com(dot)br]
+ * yyyyyyyan (2020)
+
+Lithuanian
+ * Žygimantas Beručka (2006) [uid0(at)akl(dot)lt]
+
+Finnish
+ * Kalevi [mr_auer(at)welho(dot)net]
+
+Euskara
+ * The Librezale.org Team
+   [librezale(at)librezale(dot)org]</property>
+  </object>
+</interface>
