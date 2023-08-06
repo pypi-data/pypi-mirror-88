@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "dr_files"
+version = "0.1.2"
+description = "Read and convert Mechbase files (.dr) to known file formats"
+authors = ["Antonis Kalipetis <akalipetis@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+protobuf = "^3.11.3"
+numpy = "^1.18.2"
+scipy = "^1.4.1"
+nptdms = "^1.1.0"
+
+[tool.poetry.dev-dependencies]
+black = "^19.10b0"
+pylint = "^2.4.4"
+ipython = "^7.13.0"
+ipdb = "^0.13.2"
+pytest = "^5.4.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
