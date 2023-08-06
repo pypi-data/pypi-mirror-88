@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: noglobal-magic
+Version: 0.1.0rc0
+Summary: magic command for prohibit using global variables in Jupyter Notebook
+Home-page: https://github.com/tokusumi/noglobal-magic
+License: MIT
+Keywords: jupyter-notebook
+Author: tokusumi
+Author-email: tksmtoms@gmail.com
+Requires-Python: >=3.6
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: ipython (>=5.5)
+Requires-Dist: pyflakes (>=2)
+Project-URL: Repository, https://github.com/tokusumi/noglobal-magic
+Description-Content-Type: text/markdown
+
+# noglobal-magic
+
+Magic command for prohibit using global variables in Jupyter Notebook.
+
+## Installation
+
+Make sure you've this `noglobal-magic` (And the Python package `pyflakes`).
+
+```shell
+pip install noglobal-magic
+```
+
+## How to use
+
+In a cell on Jupyter Notebook, load and activate this extension:
+
+```notebook
+%load_ext noglobal_magic
+%no_global
+```
+
+You've ready to enjoy coding.
+
+Let's see how it works:
+
