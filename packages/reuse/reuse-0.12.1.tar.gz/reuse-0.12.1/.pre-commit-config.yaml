@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2018 Free Software Foundation Europe e.V. <https://fsfe.org>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+repos:
+-   repo: https://github.com/ambv/black
+    rev: stable
+    hooks:
+    - id: black
+-   repo: local
+    hooks:
+    -   id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+        files: ^(src|tests)/
