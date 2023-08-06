@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+import subprocess as sp
+import os, sys
+import builtins
+
+### Script to execute all pre-commit hooks from `./pre-commit-/`
+
+
+# List printer
+def print_list(in_msg, in_list, pad):
+    print(pad + in_msg.ljust(78, ' ') + pad)
+    for item in in_list:
+        print(pad + ("\t==> " + item).ljust(72, ' ') + pad)  # Assumes TAB to be 8 chars
+
+
+print("\033[93m" + "╔" + 78 * "═" + "╗" + "\033[0m")
+
+CUR_DIR = os.getcwd()
+HOOKS_DIR = os.environ["HOME"] + '/.amz/data/githooks/'
+SCRIPT_NAME = os.path.basename(__file__)
+
+# Green Pipe
+GREEN_PIPE = "\033[93m║\033[0m"
+RED_PIPE = "\033[91m║\033[0m"
+
+# Gets directory contents
+try:
+    hooks = os.listdir(HOOKS_DIR + SCRIPT_NAME + "-")
+    hooks.sort()
+    # Encourage the user to fix everything else before addressing the linters
+    hooks = [h for h in hooks if 'lint' not in h] + [h for h in hooks if 'lint' in h]
+except FileNotFoundError:
+    print(" FAILED TO FIND THE HOOKS ")
+    print("\033[93m" + "╚" + 78 * "═" + "╝" + "\033[0m")
+    sys.exit(1)
+
+# Checks if any scripts exist
+if len(hooks) == 0:
+    print("  Found no " + SCRIPT_NAME + " hooks")
+    print("\033[93m" + "╚" + 78 * "═" + "╝" + "\033[0m")
+    sys.exit(0)
+else:
+    print_list(" Found these " + SCRIPT_NAME + " hooks:", hooks, GREEN_PIPE)
+
+print("\033[93m╠" + 78 * "═" + "╣\033[0m")
+print(GREEN_PIPE + 78 * " " + GREEN_PIPE)
+
+# Construct a dictionary with status codes - default to all fail
+exit_codes = {hook: 1 for hook in hooks}
+
+# Execute each hook and retrieve status codes
+for hook in hooks:
+    print("\033[93m╠══ Running hook ==> " + hook + " " + (57 - len(hook)) * "═" + "╣\033[0m\n")
+    cmd = HOOKS_DIR + SCRIPT_NAME + "-/" + hook
+    s = sp.run(cmd, shell=True)
+    exit_codes[hook] = s.returncode
+    print("")
+
+# Summarize the results
+
+if all(exit_code == 0 for exit_code in exit_codes.values()):
+    print("\033[92m" + "╠" + 34 * "═" + " SUMMARY " + 35 * "═" + "╣\033[0m")
+    print(f"\033[92m║{ (' All ' + SCRIPT_NAME + ' hooks succeeded').ljust(78,' ') }║\033[0m")
+    print("\033[92m" + "╚" + 78 * "═" + "╝" + "\033[0m")
+    sys.exit(0)
+else:
+    print("\033[91m" + "╠" + 34 * "═" + " SUMMARY " + 35 * "═" + "╣\033[0m")
+    fail_list = [hook for (hook, exit_code) in exit_codes.items() if exit_code != 0]
+    print_list(" These " + SCRIPT_NAME + " hooks failed", fail_list, RED_PIPE)
+    print("\033[91m" + "╚" + 78 * "═" + "╝" + "\033[0m")
+    sys.exit(1)

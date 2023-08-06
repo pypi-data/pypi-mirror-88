@@ -1,0 +1,169 @@
+#!/usr/bin/env python3
+
+import sys, argparse, os, subprocess
+import amz.init as init
+import amz.meta as meta
+import amz.install as install
+
+# Define
+AMZ_VERSION = meta.get_version()
+AMZ_VER_STR = f"\033[0m\033[40m\033[37m AMZ Tool \033[0m\033[34m\033[106m {AMZ_VERSION} \033[0m\033[31m"
+AMZ_SPLASH = f'''\033[31m
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                       ,e@MDMMMMMMMMMMM           ejMMMMMMMMMMMMMMMMMMMMMMMM  ║
+║                    ,eRMMMMMMMMMMMMMMMMU        ,@MMMMMMMMMMMMMMMMMMMMMMMMM   ║
+║                  -@MMMMMMM^```eMMMMMMMm       eMMMMMMMD```````````````````   ║
+║               ,eRMMMMMM`     jMMMMMMMMN     zMMMMMMMMMM        e@MMMMMRM     ║
+║             -@MMMMMM^        RMMMMMMMMM    @MMMMMMMMMM      ,@jMMMMMM`       ║
+║          ,eRMMMMMM`,wwwwwwwweMMMMM%MMMMH /RMMMMMMMMMM     eMMMMMMNM          ║
+║        -@MMMMMM" eMMMMMMMMMMMMMMMMMMMM`,@MMMMR^MMMMMM  ,eDMMMMMM^            ║
+║      eMMMMMMM`,@NjjjjjjjjjjMMMMMM  MM ejMMMMM eMMMMD xMMMMMMMMweeeeeeeeee    ║
+║   ,@MMMMMR^               ,MMMMMM   ,MMMMMM` MMMMMMM,MMMMMMMMMMMMMMMMMMMR    ║
+║ eMMMMMMM`                 RMMMMR   *MMMMM^   MMMMMM RMMMMMMMMMMMMMMMMMMMM    ║
+║                                                                              ║
+║   {    AMZ_VER_STR     }                                       MODE__MODE    ║
+║                                                                              ║'''.replace('\n', '', 1)
+
+# CLI Interface
+
+parser = argparse.ArgumentParser(description="AMZ Codebase Management Tool")
+
+parser.add_argument("--version", action='version', version=AMZ_VERSION)
+
+install_group = parser.add_argument_group("Installation Utilities")
+
+install_group.add_argument("command", type=str, nargs='*', help="install, update, init")
+
+install_group.add_argument(
+    "-V",
+    "--verbose",
+    action='store_true',
+    help="verbose",
+)
+
+install_group.add_argument(
+    "-C",
+    "--pilatus",
+    action='store_true',
+    help="verbose",
+)
+
+
+def splash(mode):
+
+    # SPLASH
+    print(AMZ_SPLASH.replace("MODE__MODE", f"\033[43m{('verbose' if mode else 'silent').rjust(9)} \033[0m\033[31m"))
+
+    # Request Blanket sudo Access
+    SUDO_REQ_STR = f"║   \033[33m[sudo] password:\033[31m {58*' '}║"
+    while True:
+        try:
+            p1 = subprocess.run(f'sudo -p "{SUDO_REQ_STR}" echo "Check"', shell=True, stdout=subprocess.PIPE)
+            if p1.stdout.decode() == "Check\n":
+                break
+        except KeyboardInterrupt:
+            print(f"║   Exiting...{65*' '}║")
+            break
+
+    print(f"║{78*' '}║\n╚{ 78 * '═' }╝\033[0m")
+
+
+if __name__ == "__main__":
+
+    # Some initial stuff
+    args = parser.parse_args()
+    verbose = args.verbose
+    splash(verbose)
+
+    # Main command selection
+
+    # amz <Nothing to be done>
+    if len(args.command) == 0:
+        print("Nothing to be done!")
+
+    # amz ___
+    elif len(args.command) == 1:
+
+        # amz init
+        if args.command[0] == 'init':
+            print(f"USAGE: {meta.highlight_cmd('amz init gen')} or {meta.highlight_cmd('amz init repo')}")
+
+        # amz install
+        elif args.command[0] == 'install':
+            print(f"USAGE: {meta.highlight_cmd('amz install <something>')}")
+
+        # amz <wrong>
+        else:
+            print("ERROR: Unknown Command")
+
+    # amz ___ ___ (2 or more args)
+    else:
+
+        ## amz init
+        if args.command[0] == "init":
+
+            ### amz init gen
+            if args.command[1] == "gen":
+                init.amz_gen_init(verbose)
+
+            ### amz init repo
+            elif args.command[1] == "repo":
+                init.amz_repo_init(verbose)
+
+            ### amz init <wrong>
+            else:
+                print("ERROR: Unknown Command")
+
+        ## amz install
+        elif args.command[0] == "install":
+
+            # Get Meta Info First
+            try:
+                amz_root = os.environ['AMZ_ROOT']
+                if amz_root == '':
+                    print(f"ERROR: Have you run {meta.highlight_cmd('amz init repo')}?")
+                    exit()
+            except KeyError:
+                print(f"ERROR: Run {meta.highlight_cmd('amz init repo')} first")
+                exit()
+
+            amz_repo_config = meta.get_amz_config(['amz_repo_meta', 'amz_repo_config'])
+            if amz_repo_config == None:
+                exit()
+
+            # Parse all args after install
+            install_list = args.command[1:]
+
+            script_dict = meta.get_yaml_config(amz_repo_config, ['scripts'])
+            known_list = list(set(install_list) & set(script_dict.keys()))
+            unknown_list = [x for x in install_list if x not in known_list + ['apt-deps', 'py2-deps', 'py3-deps']]
+
+            ### amz install apt-deps
+            if "apt-deps" in install_list:
+                print
+                apt_dep_file = meta.get_yaml_config(amz_repo_config, ['apt-deps'])
+                install.apt_deps(f"{amz_root}/{apt_dep_file}", verbose)
+
+            ### amz install py2-deps
+            if "py2-deps" in install_list:
+                py2_dep_file = meta.get_yaml_config(amz_repo_config, ['py2-deps'])
+                install.py2_deps(f"{amz_root}/{py2_dep_file}", verbose)
+
+            ### amz install py3-deps
+            if "py3-deps" in install_list:
+                py3_dep_file = meta.get_yaml_config(amz_repo_config, ['py3-deps'])
+                install.py3_deps(f"{amz_root}/{py3_dep_file}", verbose)
+
+            ### amz install scr1 scr2 ...
+            if len(known_list) != 0:
+                for scr in known_list:
+                    install.script(f"{amz_root}/{script_dict[scr]}", verbose)
+
+            ### amz install <wrong> <wrong2> ...
+            if len(unknown_list) != 0:
+                print(f"ERROR: Unknown Install Command(s) - {', '.join(unknown_list)}")
+
+        ## amz <wrong>
+        else:
+            print("ERROR: Unknown Command")
