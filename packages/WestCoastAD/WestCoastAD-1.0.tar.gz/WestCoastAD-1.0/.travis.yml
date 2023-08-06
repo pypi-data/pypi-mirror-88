@@ -1,0 +1,12 @@
+language: python
+python:
+    - "3.8"
+install:
+    - pip install coverage
+    - pip install ./
+script:
+    - coverage run -m unittest discover -s WestCoastAD/test -p '*_test.py'
+env:
+    - CODECOV_TOKEN=0fa098f1-6e4f-4846-9879-0c50994723c4
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
