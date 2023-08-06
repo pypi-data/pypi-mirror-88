@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: erroranalysis-py
+Version: 0.6.2
+Summary: Generate error bars and perform binning analysis using jackknife or bootstrap resampling. Calculate average and error in quantum Monte Carlo data (or other data) and on functions of averages (such as fluctuations, skew, and kurtosis).
+Home-page: https://github.com/nscottnichols/erroranalysis-py
+Author: Nathan Nichols
+Author-email: Nathan.Nichols@uvm.edu
+License: MIT
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+
+# erroranalysis-py
+Generate error bars and perform binning analysis using jackknife or bootstrap resampling. Calculate average and error in quantum Monte Carlo data (or other data) and on functions of averages (such as fluctuations, skew, and kurtosis).
+
+
