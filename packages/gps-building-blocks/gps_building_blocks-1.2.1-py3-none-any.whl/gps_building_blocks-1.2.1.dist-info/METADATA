@@ -1,0 +1,160 @@
+Metadata-Version: 2.1
+Name: gps-building-blocks
+Version: 1.2.1
+Summary: Modules and tools useful for use with advanced data solutions on Google Ads, Google Marketing Platform and Google Cloud.
+Home-page: https://github.com/google/gps_building_blocks
+Author: gPS Team
+Author-email: no-reply@google.com
+License: Apache Software License
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Internet
+Classifier: Topic :: Scientific/Engineering
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: absl-py (==0.9.0)
+Requires-Dist: google-api-core (==1.19.0)
+Requires-Dist: google-api-python-client (==1.9.1)
+Requires-Dist: google-auth (==1.16.0)
+Requires-Dist: google-cloud-bigquery (==1.22.0)
+Requires-Dist: google-cloud-firestore (==1.6.2)
+Requires-Dist: google-cloud-storage (==1.28.1)
+Requires-Dist: google-cloud-pubsub (==1.3.1)
+Requires-Dist: requests (==2.23.0)
+Requires-Dist: six (==1.15.0)
+Requires-Dist: dataclasses ; python_version < "3.7"
+
+# gPS Solutions - Core Libraries Repository
+
+go/gPS-BB-doc
+
+<!--*
+# Document freshness: For more information, see go/fresh-source.
+freshness: { owner: 'mfekry' reviewed: '2020-11-25' }
+*-->
+
+NOTE: This is the internal documentation for the gps_building_blocks
+repository and should be used for any content that we do not want to publicize.
+The external documentation can be found [here](EXTERNAL_README.md)
+and should only contain external-friendly information pertaining to the
+repository contents.
+
+This repository utilizes [Copybara](http://go/copybara){target="_blank"} to sync
+its state between google3, Git-on-Borg and GitHub (repo links can be found
+[below](#see-also)). As a result, a few things need to be taken into
+consideration to allow copybara to work properly. The following sections provide
+instructions for gPS BB internal contributors.
+
+**Note:** For more information on configuring copybara and its different
+workflows, refer to the documentation at go/gPS-BB-copybara.
+
+## Commit Messages {#commit-message}
+
+Wrap the CL description you would like to appear on Git-on-Borg and/or GitHub
+with the tags: `BEGIN_PUBLIC` and `END_PUBLIC`. Alternatively, use `PUBLIC:` for
+single-line comments. If you do not add the OSS tags properly the commit message
+will be exported as `Internal Change`. For more information, refer to the
+copybara documentation
+[here](http://go/copybara-library/scrubbing#message_extract_public_description.arguments){target="_blank"}.
+
+## Commit authors
+
+If you want your name and email to appear as author of the external commits on
+GitHub, add your GitHub account to the `whitelisted_authors` element on the
+[copybara configuration file](https://source.corp.google.com/piper///depot/google3/third_party/gps_building_blocks/copy.bara.sky).
+You may also want to consider adding yourself into the `username_mapping` element
+if you want your ldap to be *translated* into your GitHub username throughout
+the code.
+
+## Source Code Files
+
+All source code files must start with the correct license agreement. This is one
+of the OSS requirements imposed by Google (see
+go/releasing/preparing#license-headers). Please use the
+[addlicense](https://github.com/google/addlicense){target="_blank"} tool for
+including the license header. Here is an example for adding the *Apache 2.0*
+license to all source code files in the current directory: <br/>
+`go get -u github.com/google/addlicense && ~/go/bin/addlicense -l apache .`
+
+**Note:** This command is idempotent; it will not add the license to files that
+already have it. Beware however since it will **not** take into consideration
+any excluded files listed in the copybara configuration. So make sure you review
+all modified files after running the script and revert anyundesired chages.
+
+## Usage of google3 Libraries
+
+Please be careful when _explicitly_ referencing internal google3 libraries in
+your python files (e.g. `from google3.xxx` or `import google3.xxx`), since these
+libraries may not be publicly available. There are primarily two ways of
+mitigating this:
+
+*   Modify your BUILD file so that google3 dependencies are _implicitly_
+    referenced (e.g. `import google3.third_party.py.googleapiclient` becomes
+    `import googleapiclient`). See go/py-strict-deps for more information
+*   Explicitly add a _transform_ element to the *py_transforms* array in the
+    [copybara configuration file](copy.bara.sky)
+    to convert the internal library path into its external-friendly one
+
+## Usage of googletest vs. unittest
+
+Copybara will automatically change
+`from google3.testing.pybase import googletest` to `import unittest` for
+export workflows, and vice-versa for imports. Therefore please be consistent and
+always use `from google3.testing.pybase import googletest` internally instead of
+`import unittest`.
+
+## Language Level READMEs
+
+Each language has its own README to cover language level nuances. Please review
+the appropriate language documentation.
+
+*  [Python](py/setuptools/README.md)
+
+    IMPORTANT: If you are writing a new module that relies on APIs, please
+    read about external [dependency management](py/setuptools/README.md#package-dependency-management).
+
+## Testing changes locally
+
+Copybara offers a presubmit service through which you can test both your file
+content and commit message transformations. This can be triggered for a pending
+CL by executing `copybara <path to copy.bara.sky> presubmit_piper_to_gerrit <cl number>`.
+This will create a Gerrit change in the Git-on-Borg gPS Bulding Blocks repo,
+which you should abandon once your test is complete (since Copybara-as-a-Service
+will migrate the change for you automatically). When adding the `--dry-run` flag
+to this command, the Gerrit change will be skipped and instead the metadata of
+the change (i.e. no file changes, only commit message and history) will be
+synced to a local temp git repo (non-work tree).
+
+## Rejecting Public Contributions
+
+If you would like to reject a public contribution, consider commenting directly
+on the GitHub PR and/or closing the PR altogether. You can also _abandon_ the
+automatically generated change in the Gerrit safe review. If the Gerrit change
+had already been approved and a resulting CL was created in Piper, you will not
+be able to _revert_ the CL, since it is owned by the copybara worker. However,
+such CLs will automatically be garbage collected by the copybara worker if they
+have not been updated for a week (see reference documentation
+[here](http://g3doc/devtools/copybara/g3doc/service/piper_cls.md#following-the-state-of-a-cl)).
+
+**Note:** You can
+[now](https://groups.google.com/a/google.com/g/copybara-announce/c/TYbQqQSQjcs/m/57G78ze7BAAJ){target="_blank"}
+use the tag `#DELETE_CL` in a comment (not a reply) and the CL will be deleted
+on a best effort basis, usually within minutes.
+
+## See Also
+
+*   The Building Blocks Project also has a directory in
+    [//corp/gtech/ads](https://source.corp.google.com/piper///depot/google3/corp/gtech/ads/building_blocks/)
+    which is intended to be internal to the CSE/DS team
+*   [Buganizer Component](https://b.corp.google.com/issues?q=componentid:828030%20status:open)
+    for filing issues, etc.
+*   Git-on-Borg
+    [repository](https://cse.googlesource.com/common/gps_building_blocks)
+    {target="_blank"}
+*   GitHub [repository](https://github.com/google/gps_building_blocks)
+    {target="_blank"}
+
+
