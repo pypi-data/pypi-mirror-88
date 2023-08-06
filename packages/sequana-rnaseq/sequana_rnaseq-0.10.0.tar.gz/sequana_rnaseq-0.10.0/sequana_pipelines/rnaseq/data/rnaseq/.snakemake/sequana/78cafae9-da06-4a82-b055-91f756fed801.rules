@@ -1,0 +1,58 @@
+
+
+rule bowtie2_mapping_ref:
+    """Read mapping for either single end and paired end data using Bowtie2.
+
+    Required input:
+        __bowtie2_mapping_ref__input: list with one or two fastq.gz
+
+    Required output:
+        __bowtie2_mapping_ref__sort: output sorted bam file
+
+    Config:
+
+        __bowtie2_mapping_ref__outdir: output directory
+        __bowtie2_mapping_ref__sam: output file in SAM format (temporary file)
+
+        .. code-block:: yaml
+
+            bowtie2_mapping:
+                thread: 4      #number of threads to be used
+                options:  ""   #options for bowtie2 you want use
+    """
+
+    input:
+        fastq = __bowtie2_mapping_ref__input,
+        index = __bowtie2_mapping_ref__index_done
+    output:
+        sort = __bowtie2_mapping_ref__sort,
+        bam = temp(__bowtie2_mapping_ref__bam)
+    log:
+        err = __bowtie2_mapping_ref__logs_err,
+        out = __bowtie2_mapping_ref__logs_out
+    params:
+        prefix_index = __bowtie2_mapping_ref__prefix_index,
+        options = __bowtie2_mapping_ref__options
+    threads:
+        config["bowtie2_mapping_ref"]["threads"]
+    run:
+        cmd = "bowtie2 -p {threads} {params.options} -x {params.prefix_index}"
+        # paired end or single end unzip
+        if len(input.fastq) == 2:
+            bowtie_input = "-1 " + input.fastq[0] + " -2 " + input.fastq[1]
+        else:
+            bowtie_input = "-U " + input.fastq[0]
+        cmd = cmd + " " + bowtie_input
+        # sam to bam
+        cmd = "%s | samtools view -Sbh -> {output.bam}" % cmd
+
+        # logs
+        cmd = "(%s) > {log.out} 2> {log.err}" % cmd
+
+        # sort result
+        cmd = "%s && samtools sort -o {output.sort} {output.bam}" % cmd
+        cmd = "%s && samtools index {output.sort}" % cmd
+
+
+        shell( cmd )
+    
