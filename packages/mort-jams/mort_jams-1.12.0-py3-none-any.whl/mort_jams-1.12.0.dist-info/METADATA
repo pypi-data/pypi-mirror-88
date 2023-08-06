@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: mort-jams
+Version: 1.12.0
+Summary: cats and stuff
+Home-page: https://github.com/justindujardin/mort_jams
+Author: Justin DuJardin
+Author-email: justin@dujardinconsulting.com
+License: UNKNOWN
+Keywords: forms
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic (<2.0.0,>1.0.0)
+Requires-Dist: srsly
+Provides-Extra: dev
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: coverage ; extra == 'dev'
+Requires-Dist: pytest-coverage ; extra == 'dev'
+
+Mort Jams
+---
+
+
+# Development
+
+ - run scripts in `tools` folder from the root
+ - `./tools/setup.sh
+
+. . .
+
+
