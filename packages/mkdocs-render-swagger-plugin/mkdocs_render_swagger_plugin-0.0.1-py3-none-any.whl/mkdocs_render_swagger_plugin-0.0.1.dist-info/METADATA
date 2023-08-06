@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: mkdocs-render-swagger-plugin
+Version: 0.0.1
+Summary: MKDocs plugin for rendering swagger & openapi files.
+Home-page: https://github.com/bharel/mkdocs-render-swagger-plugin
+Author: Bar Harel
+Author-email: bzvi7919@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: mkdocs
+
+# mkdocs-render-swagger-plugin
+A plugin for MKDocs for rendering swagger &amp; openapi schemas using SwaggerUI.
+
+## Usage
+Add the following lines to your mkdocs.yml:
+
+    plugins:
+      - render_swagger
+
+Enter !!swagger \<filename\>!! at the appropriate location inside a markdown file.
+
+
