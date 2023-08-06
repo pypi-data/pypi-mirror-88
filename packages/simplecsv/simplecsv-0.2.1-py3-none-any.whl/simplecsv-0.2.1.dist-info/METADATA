@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: simplecsv
+Version: 0.2.1
+Summary: A tool for students working with CSVs
+Home-page: http://stanford.edu/~cpiech/
+Author: Chris Piech
+Author-email: piech@cs.stanford.edu
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+# SimpleCsv
+
+This package is built to make it truly simple to open an work with a standard CSV file. It was initially written so that students who have just learned python can get started with data as early as possible. 
+
+```python
+from simplecsv import SimpleCsv
+
+def main():
+    data = SimpleCsv('test.csv')
+    for datum in data:
+        print(datum)
+```
+
+
