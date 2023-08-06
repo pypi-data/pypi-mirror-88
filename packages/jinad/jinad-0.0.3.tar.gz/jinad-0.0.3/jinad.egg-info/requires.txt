@@ -1,0 +1,12 @@
+jina@ git+https://github.com/jina-ai/jina.git
+fastapi
+uvicorn
+pydantic
+python-multipart
+requests
+
+[all]
+flaky
+pytest
+pytest-asyncio
+pytest-cov
