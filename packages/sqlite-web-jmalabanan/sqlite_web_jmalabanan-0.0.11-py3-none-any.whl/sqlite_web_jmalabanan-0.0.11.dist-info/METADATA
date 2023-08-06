@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: sqlite-web-jmalabanan
+Version: 0.0.11
+Summary: Web-based SQLite database browser.
+Home-page: https://github.com/jmalab1/sqlite-web
+Author: Charles Leifer
+Author-email: coleifer@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Requires-Dist: pyyaml
+Requires-Dist: argh
+Requires-Dist: flask
+Requires-Dist: peewee (>=3.0.0)
+Requires-Dist: pygments
+Requires-Dist: pyopenssl
+
+Web-based SQLite database browser.
+
+
