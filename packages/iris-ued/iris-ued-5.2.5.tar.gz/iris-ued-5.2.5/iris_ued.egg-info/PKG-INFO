@@ -1,0 +1,113 @@
+Metadata-Version: 2.1
+Name: iris-ued
+Version: 5.2.5
+Summary: Ultrafast electron diffraction data exploration
+Home-page: http://iris-ued.readthedocs.io
+Author: Laurent P. René de Cotret
+Author-email: laurent.renedecotret@mail.mcgill.ca
+Maintainer: Laurent P. René de Cotret
+Maintainer-email: laurent.renedecotret@mail.mcgill.ca
+License: GPLv3
+Download-URL: http://github.com/LaurentRDC/iris-ued
+Project-URL: Documentation, http://iris-ued.readthedocs.io/en/master/
+Project-URL: Source, https://github.com/LaurentRDC/iris-ued
+Project-URL: Tracker, https://github.com/LaurentRDC/iris-ued/issues
+Project-URL: Home, http://www.physics.mcgill.ca/siwicklab/software.html
+Description: # Iris - Ultrafast Electron Scattering Data Exploration
+        
+        [![Documentation Build Status](https://readthedocs.org/projects/iris-ued/badge/?version=master)](http://iris-ued.readthedocs.io/) [![PyPI Version](https://img.shields.io/pypi/v/iris-ued.svg)](https://pypi.python.org/pypi/iris-ued) [![Conda-forge Version](https://img.shields.io/conda/vn/conda-forge/iris-ued.svg)](https://anaconda.org/conda-forge/iris-ued)
+        
+        
+        Iris is both a library for interacting with ultrafast electron
+        diffraction data, as well as a GUI frontend for interactively exploring
+        this data.
+        
+        Iris also includes a plug-in manager so that you can explore your data.
+        
+        ![Two instances of the iris GUI showing data exploration for ultrafast
+        electron diffraction of single crystals and
+        polycrystals.](iris_screen.png)
+        
+        ## Contents:
+          - [Installation](#installation)
+          - [Usage](#usage)
+          - [Test Data](#test-data)
+          - [Documentation](#documentation)
+          - [Citations](#citations)
+          - [Support / Report Issues](#support--report-issues)
+          - [License](#license)
+        
+        ## Installation
+        
+        To interact with [iris]{.title-ref} datasets from a Python environment,
+        the [iris-ued]{.title-ref} package must be installed. [iris]{.title-ref}
+        is available on PyPI; it can be installed with
+        [pip](https://pip.pypa.io).:
+        
+            python -m pip install iris-ued
+        
+        [iris]{.title-ref} is also available on the conda-forge channel:
+        
+            conda config --add channels conda-forge
+            conda install iris-ued
+        
+        To install the latest development version from
+        [Github](https://github.com/LaurentRDC/iris-ued):
+        
+            python -m pip install git+git://github.com/LaurentRDC/iris-ued.git
+        
+        Each version is tested against Python 3.6+. If you are using a different
+        version, tests can be run using the `pytest` package.
+        
+        ## Usage
+        
+        Once installed, the package can be imported as `iris`.
+        
+        The GUI component can be launched from a command line interpreter as
+        `python -m iris` or `pythonw -m iris` (no console window).
+        
+        ## Test Data
+        
+        Test datasets are made available on the Siwick research group public
+        data server, which can be [accessed anonymously
+        here](http://www.physics.mcgill.ca/siwicklab/publications.html).
+        
+        ## Documentation
+        
+        The [Documentation on readthedocs.io](https://iris-ued.readthedocs.io)
+        provides API-level documentation, as well as tutorials.
+        
+        ## Citations
+        
+        If you find this software useful, please consider citing the following
+        publications:
+        
+        ## Support / Report Issues
+        
+        All support requests and issue reports should be [filed on Github as an
+        issue](https://github.com/LaurentRDC/iris-ued/issues).
+        
+        ## License
+        
+        iris is made available under the GPLv3 License. For more details, see
+        [LICENSE.txt](https://github.com/LaurentRDC/iris-ued/blob/master/LICENSE.txt).
+        
+Keywords: ultrafast electron diffraction visualization pyqtgraph
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >= 3.6
+Description-Content-Type: text/markdown
