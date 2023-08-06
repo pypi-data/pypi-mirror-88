@@ -1,0 +1,14 @@
+numpy<=1.19.4,>=1.18.4
+Pillow
+scikit-image<0.18.0,>=0.17.1
+scipy<=1.5.4,>=1.5.0
+openslide-python
+typing_extensions
+
+[testing]
+pytest
+pytest-xdist
+coverage
+pytest-cov
+coveralls
+pytest-benchmark
