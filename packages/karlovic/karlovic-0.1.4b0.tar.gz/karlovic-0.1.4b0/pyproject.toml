@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "karlovic"
+version = "v0.1.4-beta"
+description = "Can only serve machine learning models."
+authors = ["Aiwizo <filip@aiwizo.com>"]
+license = "Apache-2.0"
+readme = "README.rst"
+repository = "https://github.com/aiwizo/karlovic"
+keywords = [
+    "api",
+    "server",
+    "machine",
+    "learning"
+]
+# some classifiers are added automatically, see https://python-poetry.org/docs/pyproject/#classifiers
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Other Environment",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/aiwizo/karlovic/issues"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+bottle = ">=0.12.18"
+cheroot = ">=8.3.0"
+"jaraco.functools" = ">=3.0.0"
+Pillow = ">=7.1.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.8.4"
+pytest = "^6.2.0"
+setuptools = "^51.0.0"
+wheel = "^0.36.2"
+twine = "^3.2.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
