@@ -1,0 +1,36 @@
+/* Alliance Auth Bootstrap fixes
+------------------------------------------------------------------------------------- */
+@media all and (min-width: 768px) {
+    .site-body-wrapper {
+        margin-left: -15px;
+    }
+}
+/* ---------------------------------------------------------------------------------- */
+
+/* General DataTables styles
+------------------------------------------------------------------------------------- */
+@media all {
+    .dataTables_wrapper > .form-inline {
+        margin-bottom: 1rem;
+    }
+
+    .dataTables_wrapper > .form-inline select {
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .dataTables_wrapper > .form-inline select:last-child {
+        margin-right: 0;
+    }
+
+    .dataTables_length select {
+        margin: 0 1rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .dataTables_wrapper > .form-inline select:first-child {
+        margin-left: 1rem;
+    }
+}
+/* ---------------------------------------------------------------------------------- */

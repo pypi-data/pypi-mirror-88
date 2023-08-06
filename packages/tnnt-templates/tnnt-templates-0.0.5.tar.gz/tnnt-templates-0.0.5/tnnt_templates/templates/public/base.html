@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <meta name="og:image" content="https://images.evetech.net/corporations/98000030/logo?size=256">
+        <meta name="og:type" content="website">
+        <meta name="og:site_name" content="auth.terra-nanotech.de">
+        <meta name="og:title" content="Terra Nanotech Authentication">
+        <meta name="og:description" content="Authentication System to get access to Terra Nanotech services, like Discord, Mumble, Forums and more.">
+
+        {% include 'allianceauth/icons.html' %}
+
+        <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+
+        {% include 'bundles/bootstrap-css.html' %}
+        {% include 'bundles/fontawesome.html' %}
+        {% block extra_include %}
+        {% endblock %}
+
+        <link rel="stylesheet" href="{% static 'tnnt_templates/css/terra-nanotech-public.min.css' %}" type="text/css">
+
+        <style>
+            {% block extra_style %}
+            {% endblock %}
+        </style>
+    </head>
+
+    <body>
+        <div class="auth-login-box">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <div class="tnnt-aa-svg-wrapper">
+            {% include "../bundles/svg/ccp_sso.svg" %}
+        </div>
+    </body>
+</html>
