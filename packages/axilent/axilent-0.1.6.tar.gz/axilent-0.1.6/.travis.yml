@@ -1,0 +1,31 @@
+language: python
+
+python:
+  - "3.7"
+
+os: linux
+sudo: required
+dist: bionic
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y gnat zlib1g-dev
+
+before_script:
+  - pip install fusesoc
+  - pip install -e .
+  - git clone --depth 1 https://github.com/ghdl/ghdl.git ghdl
+  - cd ghdl
+  - mkdir build
+  - cd build
+  - ../configure --prefix=../../install-ghdl/
+  - make
+  - make install
+  - cd ../../
+  - export PATH=$PATH:`pwd`/install-ghdl/bin/
+  - pip install cocotb
+                                                                          
+
+script:
+  - pytest tests
+  - cd tests; make
