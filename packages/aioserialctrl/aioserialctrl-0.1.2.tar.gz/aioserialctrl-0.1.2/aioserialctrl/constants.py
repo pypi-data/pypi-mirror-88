@@ -1,0 +1,42 @@
+class ByteSize:
+    FIVE = 5
+    SIX = 6
+    SEVEN = 7
+    EIGHT = 8
+
+
+class Parity:
+    NOPARITY = 0
+    ODDPARITY = 1
+    EVENPARITY = 2
+    MARKPARITY = 3
+    SPACEPARITY = 4
+
+
+class StopBits:
+    ONESTOPBIT = 0
+    ONESTOPBITS = 1
+    TWOSTOPBITS = 2
+
+
+class fDtrControl:
+    DTR_CONTROL_DISABLE = 0x00
+    DTR_CONTROL_ENABLE = 0x01
+    DTR_CONTROL_HANDSHAKE = 0x02
+
+
+class BaudRate:
+    CBR_110 = 100
+    CBR_300 = 300
+    CBR_600 = 600
+    CBR_1200 = 1200
+    CBR_2400 = 2400
+    CBR_4800 = 4800
+    CBR_9600 = 9600
+    CBR_14400 = 14400
+    CBR_19200 = 19200
+    CBR_38400 = 38400
+    CBR_57600 = 57600
+    CBR_115200 = 115200
+    CBR_128000 = 128000
+    CBR_256000 = 256000
