@@ -1,0 +1,21 @@
+Metadata-Version: 1.2
+Name: spaceray
+Version: 0.0.11
+Summary: Integration of HyperSpace with Ray Tune search automation.
+Home-page: https://github.com/maxzvyagin/spaceray
+Author: Max Zvyagin
+Author-email: max.zvyagin7@gmail.com
+License: MIT
+Description: # SpaceRay
+        Integration of HyperSpace with Ray Tune hyperparameter search functionality. Requires definition of objective function, number of trials, and hyperparameter bounds in JSON format. 
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Intended Audience :: Developers
+Requires-Python: >=3.5
