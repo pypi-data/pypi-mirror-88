@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: django-brython
+Version: 1.5.4
+Summary: Django - Brython bindings
+Home-page: https://django-brython.lovasb.com/
+Author: Bence Lovas
+Author-email: me@lovasb.com
+License: UNKNOWN
+Project-URL: Documentation, https://django-brython.lovasb.com/
+Project-URL: Source, https://gitlab.com/lovasb/django-brython
+Project-URL: Tracker, https://gitlab.com/lovasb/django-brython/-/issues
+Description: 
+        **django-brython** is a reusable application to ease the development for a Django based backend application with Python/Brython frontend.
+        
+        This solution use the Django's standard tools (reusable applications and static files), so the client side Brython code can developed, used, and distributed same way as the serve side ones.
+        
+        **Documentation**\ : `link <https://django-brython.lovasb.com/>`_
+        
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/x-rst
