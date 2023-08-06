@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: libLemon
+Version: 0.0.3
+Summary: Lightweight shipborne modular control library.
+Home-page: https://github.com/sjtu-lime
+Author: sjtu-lime
+Author-email: akaza_akari@sjtu.edu.cn
+Maintainer: sjtu-lime
+Maintainer-email: akaza_akari@sjtu.edu.cn
+License: GNU General Public License v3.0
+Platform: all
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: Implementation
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: colorama (==0.4.4)
+Requires-Dist: paho-mqtt (==1.5.1)
+
+# lemon
+
+Lightweight shipborne modular control library.
+
+---
+
+## install
+
+⚠️ ** WIP ** ⚠️
+
+```shell
+pip install libLemon
+```
+
+
+
