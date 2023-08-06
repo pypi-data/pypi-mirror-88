@@ -1,0 +1,20 @@
+name: pyuvdata_tests_windows
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - astropy
+  - h5py
+  - astropy-healpix
+  - numpy
+  - pyyaml
+  - scipy
+  - coverage
+  - pytest<6.2.0
+  - pytest-cov
+  - cython
+  - setuptools_scm
+  - pip
+  - pip:
+      - pytest-cases>=1.12.1
+      - pytest-xdist
