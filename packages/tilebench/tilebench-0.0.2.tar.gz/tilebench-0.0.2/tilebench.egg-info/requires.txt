@@ -1,0 +1,15 @@
+wurlitzer
+loguru
+rasterio
+rio-tiler>=2.0.0rc3
+boto3
+supermercado
+
+[dev]
+pytest
+pytest-cov
+pre-commit
+
+[test]
+pytest
+pytest-cov
