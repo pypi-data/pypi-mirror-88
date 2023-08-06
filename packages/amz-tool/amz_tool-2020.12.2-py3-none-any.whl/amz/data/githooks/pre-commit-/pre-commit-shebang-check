@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Pre commit git hook that checks the format of all code
+ROOT="$(git rev-parse --show-toplevel)"
+
+cd $ROOT
+
+FILES=$(git diff --cached --name-only HEAD '*.py')
+
+if [ -z "${FILES}" ]; then
+    echo "No files to check"
+    exit 0
+fi
+
+FAILED=""
+
+# Make sure files have shebang lines
+"$HOME"/.amz/data/tools/check_shebang.sh $FILES
+if [ "$?" != "0" ]; then
+    FAILED="$FAILED:shebang"
+fi
+
+echo ""
+
+if [ -z "${FAILED}" ]; then
+    echo "All checks passed!"
+    exit 0
+else
+    echo "The following checks failed: "
+    echo "${FAILED}"
+    exit 1
+fi

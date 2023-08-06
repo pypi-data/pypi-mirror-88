@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Redirect output to stderr.
+exec 1>&2
+
+CURRENT_DIR="$(pwd)"
+HAS_ERROR=""
+
+for file in $(git diff --cached --name-only | sort | uniq); do
+
+	if [ ! -f "$file" ]; then
+			# File was deleted or renamed.
+			continue;
+	fi
+
+	file_size=$(du -m $CURRENT_DIR/$file | awk '{print $1}')
+	if [ "$file_size" -ge 5 ]; then
+		echo "$file is over 5MB."
+		HAS_ERROR="1"
+	fi
+done
+
+if [ "$HAS_ERROR" != "" ]; then
+    echo "Size limit of 5MB exceeded - contact admin if this file is essential" >&2
+    exit 1
+fi
+
+>&1 echo "File sizes under 5MB limit"
+
+exit 0
