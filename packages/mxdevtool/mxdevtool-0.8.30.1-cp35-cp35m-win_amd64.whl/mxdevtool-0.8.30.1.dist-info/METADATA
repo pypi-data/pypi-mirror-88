@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: mxdevtool
+Version: 0.8.30.1
+Summary: Python bindings for the MxDevTool library ( Financial Analytics Developting Tools )
+Home-page: https://www.montrix.co.kr
+Author: Montrix
+Author-email: master@montrix.co.kr
+License: Montrix Non-Commercial License
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Natural Language :: English
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Requires-Python: >=3.5
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: pandas
+
+It provides:
+
+* economic scenario generator
+* asset and liability mangement functions
+* fast calculation
+* excel function comparable
+
+This module distributed on PyPI is [Montrix Non-Commercial licensed](https://www.montrix.co.kr/mxdevtool/license).
+
