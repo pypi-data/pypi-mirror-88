@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: aiogemini
+Version: 0.2.0
+Summary: Gemini protocol implementation for asyncio
+Home-page: https://github.com/keis/aiogemini
+Author: David Keijser
+Author-email: keijser@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+Requires-Dist: yarl (~=1.6)
+Requires-Dist: cryptography (~=3.2)
+Provides-Extra: tests
+Requires-Dist: asynctest (~=0.13) ; extra == 'tests'
+Requires-Dist: hypothesis (~=5.41) ; extra == 'tests'
+Requires-Dist: matchmocx (~=2.0) ; extra == 'tests'
+Requires-Dist: pycodestyle (~=2.6) ; extra == 'tests'
+Requires-Dist: PyHamcrest (~=2.0) ; extra == 'tests'
+Requires-Dist: pytest (~=6.0) ; extra == 'tests'
+Requires-Dist: pytest-asyncio (~=0.14) ; extra == 'tests'
+
+# aiogemini
+
+This package provides implementations of a client and server speaking the
+[gemini protocol][gemini] built on the python stdlib asyncio primitives.
+
+it is a work in progress.
+
+try `python -m aiogemini.server` or `python -m aiogemini.client` for something
+to look at.
+
+
+[gemini]: gemini://gemini.circumlunar.space/
+
+
