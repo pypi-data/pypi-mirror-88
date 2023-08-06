@@ -1,0 +1,72 @@
+---
+
+- job:
+    name: tobiko-tox-infrared
+    parent: tox
+    abstract: true
+    timeout: 1800
+    description: |
+      Run test cases using tobiko infrared plugin
+    pre-run: playbooks/infrared/pre.yaml
+    run: playbooks/infrared/run.yaml
+    required-projects:
+      - name: openstack/requirements
+      - name: x/tobiko
+    vars:
+      ensure_pip_from_packages_with_python2: no
+      test_collect_dir: '{{ zuul_output_dir }}/logs'
+      test_inventory_file: '{{ zuul_work_dir }}/ansible_hosts'
+      tox_envlist: infrared
+      tox_extra_args: -- --host secondary --collect-dir {{ test_collect_dir | quote }}
+      tox_constraints_file: '{{ upper_constraints_file }}'
+      upper_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
+      tox_environ:
+        ANSIBLE_INVENTORY: '{{ test_inventory_file }}'
+      zuul_output_dir: '{{ ansible_user_dir }}/zuul-output'
+      zuul_work_dir: "{{ zuul.projects['opendev.org/x/tobiko'].src_dir }}"
+    irrelevant-files:
+      - ^.*\.rst$
+      - ^doc/
+      - ^releasenotes/
+      - ^report/
+      - ^tobiko/tests/functional/
+      - ^tobiko/tests/scenario/
+      - ^tobiko/tests/faults/
+
+
+- job:
+    name: tobiko-tox-infrared-centos-7
+    parent: tobiko-tox-infrared
+    nodeset: centos-7-2-node
+    voting: false
+    description: |
+      Run test cases using tobiko infrared plugin on CentOS 7
+    vars:
+      tox_install_siblings: no
+
+
+- job:
+    name: tobiko-tox-infrared-centos-8
+    parent: tobiko-tox-infrared
+    nodeset: tobiko-centos-8-2-node
+    voting: true
+    description: |
+      Run test cases using tobiko infrared plugin on CentOS 8
+
+
+- job:
+    name: tobiko-tox-infrared-fedora-latest
+    parent: tobiko-tox-infrared
+    nodeset: tobiko-fedora-latest-2-node
+    voting: false
+    description: |
+      Run test cases using tobiko infrared plugin on latest Fedora
+
+
+- job:
+    name: tobiko-tox-infrared-ubuntu-focal
+    parent: tobiko-tox-infrared
+    nodeset: tobiko-ubuntu-focal-2-node
+    voting: false
+    description: |
+      Run test cases using tobiko infrared plugin on Ubuntu Focal

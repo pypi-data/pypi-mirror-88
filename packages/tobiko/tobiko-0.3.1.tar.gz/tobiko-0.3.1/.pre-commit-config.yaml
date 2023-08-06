@@ -1,0 +1,62 @@
+---
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+    rev: v3.1.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-byte-order-marker
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: forbid-new-submodules
+      - id: requirements-txt-fixer
+        args: [requirements.txt, test-requirements.txt, extra-requirements.txt, linters-requirements.txt, doc/requirements.txt, infrared_plugin/requirements.txt]
+      - id: trailing-whitespace
+
+  - repo: https://gitlab.com/pycqa/flake8.git
+    rev: '3.8.3'  # pick a git hash / tag to point to
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-import-order]
+        files: ^tobiko/
+
+  - repo: https://github.com/pre-commit/mirrors-mypy.git
+    rev: 'v0.782'
+    hooks:
+      - id: mypy
+        files: ^tobiko/
+        entry: mypy tobiko/
+        pass_filenames: false
+        # args: [--ignore-missing-imports]
+
+  - repo: https://github.com/ansible/ansible-lint.git
+    rev: v4.2.0
+    hooks:
+      - id: ansible-lint
+        files: \.(yaml|yml)$
+
+  - repo: local
+    hooks:
+      - id: pylint
+        files: ^tobiko/
+        name: pylint
+        entry: .tox/pep8/bin/pylint --max-line-length=80 -E -e W,E -d unused-import,broad-except,fixme
+        language: system
+        types: [python]
+
+
+#  - repo: https://github.com/adrienverge/yamllint.git
+#    rev: v1.23.0
+#    hooks:
+#      - id: yamllint
+#        files: \.(yaml|yml)$
+
+#  - repo: https://opendev.org/openstack/bashate.git
+#    rev: 2.0.0
+#    hooks:
+#      - id: bashate
