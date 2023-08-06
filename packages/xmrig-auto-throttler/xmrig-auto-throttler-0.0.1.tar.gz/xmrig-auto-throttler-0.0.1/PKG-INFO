@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: xmrig-auto-throttler
+Version: 0.0.1
+Summary: Program that switches between xmrig profiles according to your computer usage.
+Home-page: https://github.com/dhensen/xmrig-auto-idle-throttler
+Author: Dino Hensen
+Author-email: dino.hensen+xmrigthrottle@gmail.com
+License: UNKNOWN
+Description: # xmrig auto throttler
+        
+        This program automatically throttles xmrig when you start using your computer and stops throttling when you become idle again. It does so by defining two profiles, which are two config.json's, one for the minimum load situation, one for the maximum load situation.
+        
+        ## Installation
+        
+        ### Arch Linux (or other arch-derivatives like Manjaro, etc...)
+        
+        ```shell
+        sudo pacman -S xprintidle
+        pip3 install xmrig-auto-throttler
+        ```
+        
+        ### Ubuntu (or other Debian based distros)
+        
+        ```shell
+        sudo apt-get install xprintidle
+        pip3 install xmrig-auto-throttler
+        ```
+        
+        ### Windows
+        
+        > Coming soon
+        
+        ## Donate
+        
+        Please consider a donation if you find this program useful.
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: dev
