@@ -1,0 +1,22 @@
+---
+
+model:
+  name: hello_python
+  language: python
+  args: ./src/hello.py  # Runs the python script using default python
+
+  inputs:
+    - name: inFile
+      default_file: ./Input/input.txt
+    - helloQueueIn
+  outputs:
+    - helloQueueOut
+    - name: outFile
+      default_file:
+        name: output_hello.txt
+        in_temp: True
+
+connections:
+  - input: helloQueueOut
+    output: helloQueueIn
+    onexit: printStatus
