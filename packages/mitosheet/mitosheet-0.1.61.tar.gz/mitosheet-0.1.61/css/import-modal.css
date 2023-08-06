@@ -1,0 +1,8 @@
+
+
+.raw-python-textarea {
+    width: 100%;
+    /* Don't let users expand to big and get stuck */
+    resize: vertical;
+    max-height: 150px;
+}
