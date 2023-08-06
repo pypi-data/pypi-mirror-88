@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: gcp-pilot
+Version: 0.3.3
+Summary: Google Cloud Platform Friendly Pilot
+Author: Joao Daher
+Author-email: joao@daher.dev
+Requires-Python: >=3.8,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Provides-Extra: bigquery
+Provides-Extra: build
+Provides-Extra: pubsub
+Provides-Extra: sheets
+Provides-Extra: speech
+Provides-Extra: storage
+Provides-Extra: tasks
+Requires-Dist: google-api-python-client (>=1,<2)
+Requires-Dist: google-cloud-bigquery (>=1,<2); extra == "bigquery"
+Requires-Dist: google-cloud-build (>=3,<4); extra == "build"
+Requires-Dist: google-cloud-pubsub (>=2,<3); extra == "pubsub"
+Requires-Dist: google-cloud-scheduler (>=2,<3); extra == "tasks"
+Requires-Dist: google-cloud-speech (>=1,<2); extra == "speech"
+Requires-Dist: google-cloud-storage (>=1,<2); extra == "storage"
+Requires-Dist: google-cloud-tasks (>=2,<3); extra == "tasks"
+Requires-Dist: gspread (>=3,<4); extra == "sheets"
