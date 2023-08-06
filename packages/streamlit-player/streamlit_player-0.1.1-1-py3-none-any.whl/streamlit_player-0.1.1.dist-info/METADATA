@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: streamlit-player
+Version: 0.1.1
+Summary: A streamlit component to embed video and music players from various websites.
+Home-page: https://github.com/okld/streamlit-player
+Author: okld
+Author-email: 
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: streamlit (>=0.63)
+
+# Streamlit Player [![Open in Streamlit][badge]][share]
+
+## Getting started
+
+### Installation
+
+```sh
+pip install streamlit-player
+```
+
+### Quick usage
+
+```python
+import streamlit as st
+from streamlit_player import st_player
+
+# Embed a youtube video
+st_player("https://youtu.be/CmSKVW1v0xM")
+
+# Embed a music from SoundCloud
+st_player("https://soundcloud.com/imaginedragons/demons")
+```
+
+### Demo
+
+Interested to see Streamlit Player in action? You can try it out now in [Streamlit Sharing][share]!
+
+You can [click here][code] to see how the demo work.
+
+![Demo preview][preview]
+
+
+[badge]: https://static.streamlit.io/badges/streamlit_badge_black_white.svg
+[share]: https://share.streamlit.io/okld/streamlit-player-demo/main/app.py
+[code]: https://github.com/okld/streamlit-player-demo/blob/main/app.py
+[preview]: https://raw.githubusercontent.com/okld/streamlit-player-demo/main/app.png
+
+
