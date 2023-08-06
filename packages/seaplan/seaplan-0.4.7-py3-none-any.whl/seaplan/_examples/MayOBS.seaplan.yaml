@@ -1,0 +1,95 @@
+---
+format_version: "0.4"
+variables:
+    station_file:
+      name: 'MayOBS_stations.csv' 
+      field_separator: ";"
+    printout:
+      show_comments: False
+      print_past: True
+    timing:
+      ignore_depart_arrive_times: False
+      ship_speed.kn_i: 7
+      ship_latency.h: 0.2                   
+      action_times.h:
+        "Deploy":
+          "SP": 0.25
+          "BB": 0.5
+          default: 0.5
+        "Survey":
+          default: 2.0
+    map:
+      grid:
+        x: 0.2
+        y: 0.1
+      bounds: [45, 46, -13.1, -12.4]   # degrees left, right, bottom, top
+      bathy_map: True
+      plot_past_tracks: True
+      show_plot: True
+
+events:
+  - station: "Port"
+    lat: -12.72
+    lon: 45.16
+    arrive_time: 2019-02-23T06:00
+    depart_time: 2019-02-23T08:00
+  - station: "Pilot"
+    lat: -12.69
+    lon: 45.16
+  - station: "MONO"
+    action: "Acoustic tests"
+    hours: 3
+  - station: "MONO"
+    action: "Deploy"
+    arrive_time: 2019-02-23T18:00
+    depart_time: 2019-02-23T19:20
+  - station: "MONN"
+    comment: "OBS prep problem, no deployment"
+    arrive_time: 2019-02-23T18:00
+    depart_time: 2019-02-23T19:20
+  - station: "MONO"
+    action: "Survey"
+    arrive_time: 2019-02-24T03:56
+    depart_time: 2019-02-24T05:15
+  - station: "MONN"
+    action: "Deploy"
+    depart_time: 2019-02-24T07:24
+  - station: "MONE"
+    action: "Deploy"
+    depart_time: 2019-02-24T12:15
+  - station: "MOCE"
+    action: "Deploy"
+    depart_time: 2019-02-24T14:15
+    depart_time: 2019-02-24T14:22
+  - station: "MOSE"
+    action: "Deploy"
+    depart_time: 2019-02-24T17:10
+    depart_time: 2019-02-24T17:35
+  - station: "MONE"
+    action: "Survey"
+    arrive_time: 2019-02-24T20:05
+    depart_time: 2019-02-24T22:26
+    comment: "long because left site before survey complete"
+  - station: "MONN"
+    action: "Survey"
+    arrive_time: 2019-02-25T00:50
+    depart_time: 2019-02-25T03:09
+  - station: "MOCE"
+    action: "Survey"
+    arrive_time: 2019-02-25T06:55
+    depart_time: 2019-02-25T08:38
+  - station: "MOSO"
+    action: "Deploy"
+    arrive_time: 2019-02-25T11:37
+    depart_time: 2019-02-25T11:44
+  - station: "MOSE"
+    action: "Survey"
+  - station: "MOSO"
+    action: "Survey"
+  - station: "Pt Nord"
+    action: "Waypt"
+    lat: -12.73
+    lon: 45.3
+  - station: "Pilot"
+    action: "Waypt"
+  - station: "Port"

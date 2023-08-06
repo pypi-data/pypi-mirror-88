@@ -1,0 +1,148 @@
+Metadata-Version: 2.1
+Name: seaplan
+Version: 0.4.7
+Summary: Sea-going mission planning
+Home-page: https://github.com/WayneCrawford/seaplan
+Author: Wayne Crawford
+Author-email: crawford@ipgp.fr
+License: UNKNOWN
+Keywords: oceanography,marine,OBS
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.7
+Description-Content-Type: text/x-rst; charset=UTF-8
+Requires-Dist: numpy (>=1.18)
+Requires-Dist: scipy (>=1.4)
+Requires-Dist: matplotlib (>=3.0)
+Requires-Dist: cartopy (>=0.16)
+Requires-Dist: pyyaml (>=3.0)
+Requires-Dist: xarray (>0.16)
+Requires-Dist: jsonschema (>=2.6)
+Requires-Dist: docutils (>=0.16)
+Requires-Dist: jsonref (>=0.2)
+
+===================
+seaplan
+===================
+
+Seagoing mission planning based on station positions and occupation times
+
+Overview
+======================
+
+Reads in a parameter file  (YAML format) containing variables 
+and a list of actions to perform.
+
+The parameter file can also specify a "station file" containing the names, latitudes
+and longitudes of the stations.  All of these stations will be plotted on the map and
+if an action has the same name and no specified latitude and longitude, this station's
+position will be used.
+
+Outputs a table of actions with predicted (or specified) times.  The table is in
+MultiMarkdown format, it can be printed as is or converted to HTML, LaTeX etc for pretty
+printing.
+
+Parameter file
+======================
+
+Variables that can be provided in the parameter files are (default in [braces]):
+
+- ``station_file``: A CSV file containing station information.
+
+  The CSV file's first line is a header that specifies the field order, using the names
+  ``Name``, ``Lat``, ``Lon``, ``Type`` and ``Comment``
+
+  - ``name``: Name of CSV file
+  - ``field_separator``: [``';'``]
+
+
+- ``printout``:
+
+Controls what is printed in the output table:
+
+  - ``show_comments`` :  Print comments [``False``]
+  - ``show_waypoints`` : Print waypoints (events with ``hours=0``) [``True``]
+  - ``print_past`` :     Print past events [``False``]
+
+- ``timing``:
+
+  - ``ignore_depart_arrive_times``: Ignore ``'arrive_time'`` and 
+    ``'depart_time'`` in events (allows you to test time predictions)
+    [``False``]
+  - ``ship_speed.kn_i``:  Cruising speed of the ship in knots [``10.``]
+  - ``ship_latency.h``:   Hours lost getting to speed from stopped [``0.5``]
+  - ``action_times.h``:   Default hours for each action/station type::
+
+      action_times.h:
+          "{action_type1}":
+              "{station_type1}": *float*
+              "{station_type2}": *float*
+              default: *float*
+          "{action_type2}":
+              default: *float*
+
+- ``map``:
+
+  - ``grid``: grid spacing in decimal degrees [``x:1; y:1``]
+  - ``bounds``: plot bounds in Decimal degrees  (MANDATORY if plot_map==True)
+  - bathy_map: Map background image [False].  Three possibilities:
+
+    * ``{string}``: Name of a netCDF file to plot as background image on the map
+    * ``True``: Plot an etopo image as background
+    * ``False``: No background map
+
+  - ``plot_past_tracks``: Plot past ship tracks [``True``]
+  - ``show_plot``: Plot the the screen as well as a file [``False``]
+
+- ``events``:  Sequential list of "events" [MANDATORY].  
+           If the "station" key corresponds to a "Name" in the station file,
+           then the station position, type and comments
+           are taken from that file.  If not, you must specify at least the
+           lat and lon the first time you name the station. The
+           keys are:
+
+  - ``station (str)``:     station name [MANDATORY]
+  - ``lat (float)``:       station latitude  [station.lat or 0.]
+  - ``lon (float)``:       station longitude [station.lat or 0.]
+  - ``arrive_time (ISO)``: [previous depart_time+transit+latency]
+  - ``depart_time (ISO)``: [arrive_time + hours]
+  - ``hours (float)``:     time spent on the operation.  If zero, the event
+    is considered to be a waypoint.  Defaults (listed in order of priority):
+    - ``action_time.h['{action_type}']['{station_type}']``, 
+    - ``action_time.h['{action_type}']['default']``,
+    - ``0.``
+  - ``comment (str)``:     comment
+  - ``speed (float)``:     speed between previous and given site [ship_speed_knots] 
+
+Miscellaneous features
+---------------------------------
+
+- Puts name of stations/actions on plot UNLESS they have no "hours" (just a
+  waypoint) 
+
+- Crosses out stations that have already been visited (departure_time entered
+  and before UTCDateTime.now() 
+
+- Changes the color of the ship's track every time you use the action name "NEWLEG"
+
+Other subdirectories
+======================
+
+`seaplan/_examples/`
+------------------------------------------------------------
+
+Example files and scripts:
+
+Use `reStructuredText
+<http://docutils.sourceforge.net/rst.html>`_ to modify this file.
+

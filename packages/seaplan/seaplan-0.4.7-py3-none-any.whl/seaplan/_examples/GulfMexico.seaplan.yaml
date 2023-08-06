@@ -1,0 +1,38 @@
+---
+format_version: "0.4"
+variables:
+    printout:
+      show_comments: False
+      print_past: True
+    timing:
+      ignore_depart_arrive_times: False
+      ship_speed.kn_i: 10
+      ship_latency.h: 0.25                   
+    map:
+      grid:
+        x: 2
+        y: 2
+      bounds: [-100,-80,18,31]   # degrees left, right, bottom, top
+      bathy_map: True
+      plot_past_tracks: True
+      show_plot: True
+
+events:
+  - station: "Galveston, TX"
+    lat: 29.301
+    lon: -94.798
+    hours: 2
+    depart_time: 2019-02-23T08:00
+  - station: "ST_1"
+    lat: 25
+    lon: -95
+    hours: 2
+  - station: "ST_2"
+    lat: 24
+    lon: -90
+    hours: 2
+  - station: "Naples, FL"
+    lat: 26.142
+    lon: -81.795
+    hours: 8
+  - station: "Galveston, TX"

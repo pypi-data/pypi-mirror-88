@@ -1,0 +1,145 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "seaDeploy parameters",
+	"description": "Parameters for seagoing deployment",
+	"type": "object",
+	"required": ["format_version","variables","events"],
+	"properties": {
+	    "format_version" : {"$ref" : "#/definitions/format_version"},
+	    "variables" :      {"$ref" : "#/definitions/variables"},
+		"events":          {"$ref" : "#/definitions/events"}
+	},
+    "additionalProperties" : false,
+	"definitions": {
+	    "format_version" : {
+            "type": "string",
+            "pattern": "^0\\.4$"
+	    },
+		"variables": {
+			"type": "object",
+			"required": ["timing"],
+			"properties": {
+				"station_file": {"$ref" : "#/definitions/station_file" },
+				"printout":     {"$ref" : "#/definitions/printout" },
+				"timing":       {"$ref" : "#/definitions/timing" },
+				"map":          {"$ref" : "#/definitions/map" }
+			},
+			"additionalProperties" : false
+		},
+        "events": {
+            "type": "array",
+            "description": "Sequential list of events",
+            "minItems" : 1,
+            "items" : { "$ref" : "#/definitions/event"}
+        },
+        "event": {
+            "type": "object",
+            "description": "A sea planning event",
+			"properties": {
+				"station":     {"type" : "string" },
+				"action":      {"type" : "string"},
+				"lat":         {"type" : "number" },
+				"lon":         {"type" : "number" },
+				"comment":     {"type" : "string" },
+				"arrive_time": {"$ref" : "#/definitions/date_time" },
+				"depart_time": {"$ref" : "#/definitions/date_time" },
+				"speed":       {"$ref" : "#/definitions/speed" },
+				"hours":       {"type" : "number" }
+			},
+			"additionalProperties" : false
+        },
+        "speed": {
+			"type" : "number", 
+			"comment":"replaces ship_speed.kn_i for this event"
+		},
+		"station_file": {
+            "type":"object",
+            "title": "Description of stations file",
+			"required": [ "name" ],
+			"properties": {
+				"name":               {"type" : "string" },
+				"field_separator":    {"type" : "string" }
+			},
+			"additionalProperties" : false
+        },
+        "printout": {
+            "type":"object",
+            "title": "Controls what values are printed out",
+			"properties": {
+				"show_comments":   {"type" : "boolean" },
+				"print_past":      {"type" : "boolean" },
+				"print_waypoints": {"type" : "boolean" }
+			},
+			"additionalProperties" : false
+        },
+        "timing": {
+            "type":"object",
+            "title": "Parameters that affect timing",
+			"required": [ "ship_speed.kn_i", "ship_latency.h" ],
+			"properties": {
+				"ship_speed.kn_i":           {"type" : "number" },
+				"ship_latency.h":             {"type" : "number" },
+				"ignore_depart_arrive_times": {"type" : "boolean" },
+				"action_times.h":             {"$ref" : "#/definitions/action_times.h"}
+			},
+			"additionalProperties" : false
+        },
+        "map": {
+            "type":"object",
+            "title": "Plotted map parameters",
+			"properties": {
+				"show_plot":        {"type" : "boolean" },
+				"grid":             {"$ref" : "#/definitions/grid"},
+				"bounds":           {"$ref" : "#/definitions/map_bounds" },
+				"bathy_map":        {"$ref" : "#/definitions/bathy_map" },
+				"plot_past_tracks": {"type" : "boolean" }
+			},
+			"additionalProperties" : false
+        },
+		"action_times.h": {
+		    "type": "object",
+            "description": "Default times for specific actions",
+            "$comment": "In draft-06, 'patternProperties' should probably be replaced by 'propertyNames':{'pattern':}",
+            "patternProperties": {
+                "^[A-Za-z0-9_-]+$": { "$ref" : "#/definitions/action_time.h" }
+            },
+            "additionalProperties": false
+		},
+		"action_time.h": {
+		    "type": "object",
+            "description": "Default times for specific types within actions",
+            "$comment": "In draft-06, 'patternProperties' should probably be replaced by 'propertyNames':{'pattern':}",
+            "patternProperties": {
+                "^[A-Za-z0-9_-]+$": { "type" : "number" }
+            },
+            "additionalProperties": false
+		},
+		"grid": {
+            "type":"object",
+            "title": "Plot grid spacing",
+            "required": ["x","y"],
+			"properties": {
+				"x":        {"type" : "number" },
+				"y":        {"type" : "number" }
+			},
+            "additionalProperties": false
+		},
+		"map_bounds": {
+            "type": "array",
+            "description": "Map bounds in decimal degrees: [left, right, bottom, top]",
+            "numItems" : 4,
+            "items" : { "type" : "number"}
+		},
+		"bathy_map": {
+		    "oneOf" : [
+		        {"type": "boolean"},
+		        {"type": "string"}
+		    ]
+		},
+        "date_time": {
+            "type": "string",
+            "description": "Date-time in ISO format, optional seconds",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}(:[0-9]{2})?(\\.[0-9]*)?$"
+        }
+	}
+}
