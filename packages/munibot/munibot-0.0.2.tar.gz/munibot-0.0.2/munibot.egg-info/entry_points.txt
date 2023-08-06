@@ -1,0 +1,7 @@
+[console_scripts]
+munibot = munibot.munibot:main
+
+[munibot_profiles]
+cat = munibot.profiles.cat:MuniBotCat
+es = munibot.profiles.es:MuniBotEs
+
