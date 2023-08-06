@@ -1,0 +1,1 @@
+Just screenshot allure report and send.
