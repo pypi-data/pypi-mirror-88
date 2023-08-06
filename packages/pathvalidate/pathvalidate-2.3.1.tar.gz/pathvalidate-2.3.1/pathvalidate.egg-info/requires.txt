@@ -1,0 +1,10 @@
+
+[test]
+allpairspy
+click
+faker
+pytest>=6.0.1
+pytest-md-report>=0.0.12
+
+[test:python_version <= "3.9"]
+pytest-discord>=0.0.5
