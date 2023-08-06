@@ -1,0 +1,94 @@
+{
+  "public": {
+    "hostname": "{protocol}://{host}.{domain}",
+    "domain": "widgetbrain.io",
+    "services": {
+      "core": {
+        "dev": "wb-core-development",
+        "test": "wb-core-test",
+        "prod": "wb-core"
+      },
+      "baas": {
+        "dev": "baas-development",
+        "test": "baas-test-u",
+        "prod": "baas-u"
+      },
+      "release": {
+        "dev": "release-dev",
+        "test": "release-test",
+        "prod": "release"
+      },
+      "pythia": {
+        "dev": "pythia-dev",
+        "test": "pythia-test-u",
+        "prod": "pythia-u"
+      },
+      "meta": {
+        "dev": "meta-dev",
+        "test": "meta-test-u",
+        "prod": "meta-u"
+      },
+      "data": {
+        "dev": "data-dev",
+        "test": "data-test",
+        "prod": "data"
+      },
+      "watch": {
+        "dev": "watch-dev",
+        "test": "watch-test",
+        "prod": "watch"
+      },
+      "ais": {
+        "dev": "ais-dev",
+        "test": "ais-test",
+        "prod": "ais"
+      }
+    }
+  },
+  "quinyx": {
+    "hostname": "{protocol}://{host}-{region}.{domain}",
+    "domain": "ai.quinyx.com",
+    "services": {
+      "core": {
+        "dev": "alfa-core-test",
+        "test": "alfa-core-staging",
+        "prod": "alfa-core-prod"
+      },
+      "baas": {
+        "dev": "alfa-baas-test",
+        "test": "alfa-baas-staging",
+        "prod": "alfa-baas-prod"
+      },
+      "release": {
+        "dev": "alfa-release-test",
+        "test": "alfa-release-staging",
+        "prod": "alfa-release-prod"
+      },
+      "pythia": {
+        "dev": "alfa-pythia-test",
+        "test": "alfa-pythia-staging",
+        "prod": "alfa-pythia-prod"
+      },
+      "meta": {
+        "dev": "alfa-meta-test",
+        "test": "alfa-meta-staging",
+        "prod": "alfa-meta-prod"
+      },
+      "data": {
+        "dev": "alfa-data-test",
+        "test": "alfa-data-staging",
+        "prod": "alfa-data-prod"
+      },
+      "watch": {
+        "dev": "alfa-watch-test",
+        "test": "alfa-watch-staging",
+        "prod": "alfa-watch-prod"
+      },
+      "ais": {
+        "dev": "alfa-ais-test",
+        "test": "alfa-ais-staging",
+        "prod": "alfa-ais-prod"
+      }
+    }
+  }
+}
