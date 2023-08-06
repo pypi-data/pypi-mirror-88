@@ -1,0 +1,98 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-12-10 21:19-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps.py:6
+msgid "utils"
+msgstr "Utils"
+
+#: models.py:21
+msgid "creation date"
+msgstr "creation date"
+
+#: models.py:22
+msgid "date when the object was created"
+msgstr "date when the object was created"
+
+#: models.py:27
+msgid "update date"
+msgstr "update date"
+
+#: models.py:28
+msgid "date when the object was modified"
+msgstr "date when the object was modified"
+
+#: models.py:34
+msgid "creation user"
+msgstr "creation user"
+
+#: models.py:35
+msgid "user who created the object"
+msgstr "user who created the object"
+
+#: models.py:41
+msgid "update user"
+msgstr "update user"
+
+#: models.py:42
+msgid "user who performed the update"
+msgstr "user who performed the update"
+
+#: models.py:95
+msgid "name"
+msgstr "name"
+
+#: models.py:96
+msgid "departament"
+msgstr ""
+
+#: models.py:99
+msgid "city"
+msgstr "city"
+
+#: models.py:100
+msgid "cities"
+msgstr "cities"
+
+#: views_api.py:43 views_api.py:51
+msgid "Service to log in using token, with username and password"
+msgstr "Service to log in using token, with username and password"
+
+#: views_api.py:62
+msgid "has closed session correctly"
+msgstr "has closed session correctly"
+
+#: views_api.py:68
+msgid "Service to log out."
+msgstr "Service to log out."
+
+#: views_api.py:88 views_api.py:134
+msgid "Service to forget password. ** {\"username\": \"user1\"} **"
+msgstr "Service to forget password. ** {\"username\": \"user1\"} **"
+
+#: views_api.py:109 views_api.py:115 views_api.py:124
+msgid "Your new password is:"
+msgstr "Your new password is:"
+
+#: views_api.py:127 views_api.py:130
+msgid "the new password has been send to Email."
+msgstr "the new password has been send to Email."
+
+#~ msgid "state"
+#~ msgstr "state"
