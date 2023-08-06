@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: best-of
+Version: 0.3.1
+Summary: Generates a ranked list of awesome libraries and tools.
+Home-page: https://github.com/ml-tooling/best-of-generator
+Author: ML Tooling Team
+Author-email: team@mltooling.org
+License: MIT
+Project-URL: Changelog, https://github.com/ml-tooling/best-of-generator/releases
+Project-URL: Issue Tracker, https://github.com/ml-tooling/best-of-generator/issues
+Project-URL: Documentation, https://github.com/ml-tooling/best-of-generator#documentation
+Project-URL: Source, https://github.com/ml-tooling/best-of-generator
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Environment :: Console
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: click
+Requires-Dist: tqdm
+Requires-Dist: pybraries
+Requires-Dist: requirements-parser
+Requires-Dist: pypistats
+Requires-Dist: requests
+Requires-Dist: addict
+Requires-Dist: beautifulsoup4
+Requires-Dist: PyYAML
+Requires-Dist: python-dateutil
+Provides-Extra: dev
+Requires-Dist: setuptools ; extra == 'dev'
+Requires-Dist: wheel ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-mock ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: pydocstyle ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: lazydocs ; extra == 'dev'
+
+# best-of-generator
+🏆 Generates a ranked list of awesome libraries and tools.
+
+
