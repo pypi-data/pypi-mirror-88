@@ -1,0 +1,223 @@
+# 简介
+
+***
+
+本库是专门用于爬取或操作列表式网页的页面类，基于 DrissionPage。  
+页面类抽象了列表式页面基本特征，封装了常用方法。
+只需少量设置即可进行爬取或页面操作，实现可复用、可扩展。  
+广泛适用于各种网站的列表页面。  
+
+示例：https://gitee.com/g1879/DrissionPage-demos
+
+DrissionPage库：https://gitee.com/g1879/DrissionPage
+
+联系邮箱：g1879@qq.com
+
+# 背景及特性
+**背景**
+
+大量的数据用列表页方式存放在网站中，这些列表页有相同的特征，用相同的方法爬取。  
+爬取网站时经常重复编写相同的代码，做重复的劳动。  
+因此本库把列表页共有的特征提取出来，封装成类，实现可复用。减轻开发的工作量。
+
+**特性**
+
+- 配置简单，上手容易
+- 封装常用列表页属性及方法，实现可复用
+- 不同类型页面使用相同的操作方式，使用方便
+- 可根据特殊情况扩展，实用性强
+- 支持 requests 和 selenium 方式，并支持无缝切换。
+
+**原理**
+
+所有列表页都有共同的特征：**数据行**、**行中的数据列**。能通过 **翻页按钮 ** 或 **滚动页面** 方式翻页。
+
+只要获取到这几个元素的定位方式，就能封装一个方法实现 **读取 -> 翻页（滚动） -> 读取** 的循环操作，直到没有下一页或到达指定页数。
+
+本库支持 xpath 或 css selector 路径，针对不同页面把必要元素路径传递给页面对象，即可实现一行爬取全部页的功能。
+
+# 简单演示
+
+***
+
+一段简单的代码，演示爬取码云推荐项目列表（全部页）。
+
+```python
+from ListPage import ListPageS, Targets, Xpaths
+
+# 定义页面结构
+xpaths = Xpaths()
+xpaths.pages_count = '//a[@class="icon item"]/preceding-sibling::a[1]'  # 总页数
+xpaths.rows = '//div[@class="project-title"]'  # 行
+xpaths.set_col('项目', './/h3/a')  # 列1
+xpaths.set_col('星数', './/div[@class="stars-count"]')  # 列2
+
+# 定义目标
+targets = Targets(xpaths)
+targets.add_target('项目')
+targets.add_target('项目', 'href')
+targets.add_target('星数')
+
+# 列表第一页
+url = 'https://gitee.com/explore/weixin-app?page=1'
+
+p = ListPageS(xpaths, url)
+p.num_param = 'page'  # url中页面的参数
+
+# 爬取全部页
+p.get_list(targets)
+```
+
+输出：
+
+```
+第1页
+https://gitee.com/explore/all
+['guanguans/soar-php', 'https://gitee.com/guanguans/soar-php', '6']
+...第1页省略部分...
+['drinkjava2/jBeanBox', 'https://gitee.com/drinkjava2/jBeanBox', '61']
+
+第2页
+https://gitee.com/explore/all?page=2
+['pai01234/tokencore', 'https://gitee.com/pai01234/tokencore', '22']
+...第2页省略部分...
+['docsifyjs/docsify', 'https://gitee.com/docsifyjs/docsify', '47']
+
+...省略下面98页...
+```
+
+
+# 使用方法
+
+***
+
+## 安装及导入
+
+**安装**
+
+```
+pip install ListPage
+```
+
+**导入**
+
+```python
+# 翻页式列表页
+from ListPage import ListPage, Paths, Targets
+
+# 滚动式列表页
+from ScrollingPage import ScrollingPage, Paths, Targets
+```
+
+
+
+## 初始化
+
+如只使用 requests 方式爬取，或已在系统变量加入 chrome.exe 和 chromedriver.exe 的路径，可跳过本节。
+
+ListPage 是基于 DrissionPage 实现的，初始化的方法与 DrissionPage 一致，请查看 [DrissionPage 初始化方法]()。
+
+
+
+## Paths 类
+
+Paths 类用于管理关键元素的路径信息。  
+
+支持
+
+它拥有以下属性：
+
+```python
+# 共有的关键元素，必须
+targets.rows  # 列表行元素的定位路径
+targets.cols  # 行元素中列元素的定位路径，字典格式
+
+# 翻页式列表页独有属性
+targets.page_count  # 总页数所在元素路径，可指定元素属性及提取正则表达式，非必须，按页面情况使用
+targets.next_btn  # 下一页按钮元素路径，非必须，按页面情况使用
+
+# 滚动式列表页独有属性
+targets.container  # 列表容器，必须
+targets.more_btn  # 加载更多按钮，非必须，按页码情况使用
+```
+
+
+
+**用法**
+
+
+
+
+
+## Targets 类
+
+Targets 类用于定义爬取目标。
+
+
+
+## ListPage 类
+
+ListPage 类是翻页式列表页基本类，继承自 DrissionPage 的 MixPage 类。  
+专门用于处理翻页式列表页面。如商城产品页、文章列表页。   
+它有两种模式，s 模式使用 requests 处理页面，d 模式使用 selenium。  
+s 模式效率高，适用于非 js 加载页面数据爬取。  
+d 模式可处理 js 加载的页面，可用于自动化操作。  
+这两种模式可以互相切换，但要一般没有必要。
+
+ListPage 封装了以下方法：
+- 读取一定范围页数据列表
+- 获取当前页数据列表
+- 获取当前页行元素对象列表
+- 跳转到下一页
+- 跳转到特定页
+- 获取总页数
+
+使用 ListPage 前须按上文定义页面关键元素的路径及爬取目标，推荐使用 Paths 和 Targets 对象，也可用字典和列表或元组代替。
+
+使用字典代替 Paths 对象：
+
+```python
+paths = {
+    'type': 'xpath',  # 'css' 或 'xpath'，指定路径的类型，非必须
+    'page_count': '',
+    '': '',
+    'rows': '',  # 列表行定位路径，必须
+    '': '',
+    '': '',
+    '': '',
+    '': '',
+}
+```
+
+使用列表或元组代替 Targets 对象：
+
+```python
+
+```
+
+
+
+
+
+## ScrollingPage 类
+
+ScrollingPage 类是滚动加载式列表页基本类，继承自 DrissionPage 的 MixPage 类。  
+专门用于处理滚动加载式列表页面。如新闻列表页。  
+封装了对页面的基本读取和操作方法，只能在 MixPage 的 d 模式下工作。  
+
+它封装了以下方法：
+
+- 获取当前数据列表
+- 获取当前行元素对象
+- 获取新加载的数据列表
+- 获取新加载的元素对象
+- 滚动一页
+
+# APIs
+
+***
+
+## ListPage 类
+
+## class ListPage
+
