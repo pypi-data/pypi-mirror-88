@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: mpi4jax
+Version: 0.2.7
+Summary: UNKNOWN
+Home-page: https://github.com/PhilipVinc/mpi4jax
+Author: Filippo Vicentini
+Author-email: filippovicentini@gmail.com
+License: MIT
+Description: Jax-mpi provides integration among jax and MPI, so that
+            code containing MPI calls can be correctly jit-compiled through jax.
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Provides-Extra: dev
