@@ -1,0 +1,6 @@
+include README.md LICENSE
+recursive-include expfactory *
+recursive-include expfactory * *
+prune docs
+prune __pycache__
+prune OLD
