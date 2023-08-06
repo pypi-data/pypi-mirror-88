@@ -1,0 +1,37 @@
+#  This file is part of RADAR.
+#  Copyright (C) 2019 Cole Daubenspeck
+#
+#  RADAR is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  RADAR is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with RADAR.  If not, see <https://www.gnu.org/licenses/>.
+
+# How often the uplink should check to see if data needs to be synced
+sync_interval = 10
+uplink_port = 1684
+
+# logging level (https://docs.python.org/3/library/logging.html#levels)
+logging-level = 20
+
+[distributed]
+watch_interval = 60  # Seconds to wait if there was no command in queue before checking again
+
+[server]
+# hostname/ip
+host = "localhost"
+# port (default 1794)
+port = 1794
+# Use https instead of http (make sure server is running HTTPS if you enable this)
+use-https = false
+# Do not blindly trust RADAR Control Server's SSL certificate
+verify-host = true
+# Non-system CA certificate used to verify RADAR Control Server's SSL certificate
+CA-certificate = "rootCA.pem"
