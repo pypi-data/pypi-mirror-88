@@ -1,0 +1,5 @@
+include requirements.txt
+include LICENSE
+include dowhy/VERSION
+recursive-include docs *
+recursive-include tests *.py
