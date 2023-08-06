@@ -1,0 +1,724 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dicom_parser package &mdash; dicom_parser 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dicom_parser.utils package" href="dicom_parser.utils.html" />
+    <link rel="prev" title="Reference" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> dicom_parser
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vendors.html">Vendor-specific Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">dicom_parser package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.html">dicom_parser.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dicom_parser.header">dicom_parser.header module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dicom_parser.image">dicom_parser.image module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dicom_parser.series">dicom_parser.series module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dicom_parser">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dicom_parser</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Reference</a> &raquo;</li>
+        
+      <li>dicom_parser package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/modules/dicom_parser.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dicom-parser-package">
+<h1>dicom_parser package<a class="headerlink" href="#dicom-parser-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dicom_parser.utils.html">dicom_parser.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dicom_parser.utils.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dicom_parser.utils.code_strings.html">dicom_parser.utils.code_strings package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.code_strings.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.code_strings.html#module-dicom_parser.utils.code_strings.modality">dicom_parser.utils.code_strings.modality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.code_strings.html#module-dicom_parser.utils.code_strings.patient_position">dicom_parser.utils.code_strings.patient_position module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.code_strings.html#module-dicom_parser.utils.code_strings.scanning_sequence">dicom_parser.utils.code_strings.scanning_sequence module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.code_strings.html#module-dicom_parser.utils.code_strings.sequence_variant">dicom_parser.utils.code_strings.sequence_variant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.code_strings.html#module-dicom_parser.utils.code_strings.sex">dicom_parser.utils.code_strings.sex module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.code_strings.html#module-dicom_parser.utils.code_strings">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dicom_parser.utils.sequence_detector.html">dicom_parser.utils.sequence_detector package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.sequence_detector.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.sequence_detector.html#module-dicom_parser.utils.sequence_detector.messages">dicom_parser.utils.sequence_detector.messages module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.sequence_detector.html#module-dicom_parser.utils.sequence_detector.sequence_detector">dicom_parser.utils.sequence_detector.sequence_detector module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.sequence_detector.html#module-dicom_parser.utils.sequence_detector.sequences">dicom_parser.utils.sequence_detector.sequences module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.sequence_detector.html#module-dicom_parser.utils.sequence_detector">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dicom_parser.utils.siemens.html">dicom_parser.utils.siemens package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.siemens.html#module-dicom_parser.utils.siemens">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.siemens.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="dicom_parser.utils.siemens.csa.html">dicom_parser.utils.siemens.csa package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="dicom_parser.utils.siemens.csa.html#module-dicom_parser.utils.siemens.csa">Module contents</a></li>
+<li class="toctree-l6"><a class="reference internal" href="dicom_parser.utils.siemens.csa.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="dicom_parser.utils.siemens.csa.html#module-dicom_parser.utils.siemens.csa.data_element">dicom_parser.utils.siemens.csa.data_element module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="dicom_parser.utils.siemens.csa.html#module-dicom_parser.utils.siemens.csa.header">dicom_parser.utils.siemens.csa.header module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="dicom_parser.utils.siemens.csa.html#module-dicom_parser.utils.siemens.csa.parser">dicom_parser.utils.siemens.csa.parser module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.siemens.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dicom_parser.utils.siemens.html#module-dicom_parser.utils.siemens.private_tags">dicom_parser.utils.siemens.private_tags module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dicom_parser.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dicom_parser.utils.html#module-dicom_parser.utils.choice_enum">dicom_parser.utils.choice_enum module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dicom_parser.utils.html#module-dicom_parser.utils.peek">dicom_parser.utils.peek module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dicom_parser.utils.html#module-dicom_parser.utils.read_file">dicom_parser.utils.read_file module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dicom_parser.utils.html#module-dicom_parser.utils.value_representation">dicom_parser.utils.value_representation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dicom_parser.utils.html#module-dicom_parser.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-dicom_parser.header">
+<span id="dicom-parser-header-module"></span><h2>dicom_parser.header module<a class="headerlink" href="#module-dicom_parser.header" title="Permalink to this headline">¶</a></h2>
+<p>Definition of the Header class, which extends the functionality of
+<a class="reference external" href="https://github.com/pydicom/pydicom">pydicom</a>.</p>
+<dl class="py class">
+<dt id="dicom_parser.header.Header">
+<em class="property">class </em><code class="sig-prename descclassname">dicom_parser.header.</code><code class="sig-name descname">Header</code><span class="sig-paren">(</span><em class="sig-param">raw: Union[pydicom.dataset.FileDataset, str, pathlib.Path], sequence_detector=&lt;class 'dicom_parser.utils.sequence_detector.sequence_detector.SequenceDetector'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#dicom_parser.header.Header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Facilitates access to <a class="reference external" href="https://www.dicomstandard.org/">DICOM</a> header information from <a class="reference external" href="https://github.com/pydicom/pydicom">pydicom</a>’s
+<a class="reference external" href="https://github.com/pydicom/pydicom/blob/master/pydicom/dataset.py">FileDataset</a>.</p>
+<dl class="py attribute">
+<dt id="dicom_parser.header.Header.DATAFRAME_COLUMNS">
+<code class="sig-name descname">DATAFRAME_COLUMNS</code><em class="property"> = ('Tag', 'Keyword', 'VR', 'VM', 'Value')</em><a class="headerlink" href="#dicom_parser.header.Header.DATAFRAME_COLUMNS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="dicom_parser.header.Header.DATAFRAME_INDEX">
+<code class="sig-name descname">DATAFRAME_INDEX</code><em class="property"> = 'Tag'</em><a class="headerlink" href="#dicom_parser.header.Header.DATAFRAME_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.as_dict">
+<em class="property">property </em><code class="sig-name descname">as_dict</code><a class="headerlink" href="#dicom_parser.header.Header.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.data_elements">
+<em class="property">property </em><code class="sig-name descname">data_elements</code><a class="headerlink" href="#dicom_parser.header.Header.data_elements" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.detect_sequence">
+<code class="sig-name descname">detect_sequence</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><a class="headerlink" href="#dicom_parser.header.Header.detect_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the detected imaging sequence using the modality’s sequence
+identifying header information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Imaging sequence name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag_or_keyword</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parsed</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">missing_ok</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">as_json</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#dicom_parser.header.Header.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value of a pydicom data element, selected by tag (<cite>tuple</cite>)
+or keyword (<cite>str</cite>). Input may also be a <cite>list</cite> of such identifiers, in
+which case a dictionary will be returned with the identifiers as keys and
+header information as values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tag_or_keyword</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Tag or keyword representing the requested data element, or a list
+of such</p></li>
+<li><p><strong>parsed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to return a parsed or raw value (the default is True,
+which will return the parsed value)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The requested data element value (or a dict for multiple values)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.get_data_element">
+<code class="sig-name descname">get_data_element</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag_or_keyword</span></em><span class="sig-paren">)</span> &#x2192; dicom_parser.data_element.DataElement<a class="headerlink" href="#dicom_parser.header.Header.get_data_element" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.get_data_elements">
+<code class="sig-name descname">get_data_elements</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value_representation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">private</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a><a class="headerlink" href="#dicom_parser.header.Header.get_data_elements" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.get_parsed_value">
+<code class="sig-name descname">get_parsed_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag_or_keyword</span></em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#dicom_parser.header.Header.get_parsed_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the parsed value of <a class="reference external" href="https://github.com/pydicom/pydicom">pydicom</a> data element using the this class’s
+parser attribute. The data element may be represented by tag or by its
+<a class="reference external" href="https://github.com/pydicom/pydicom">pydicom</a> keyword. If none is found will return None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tag_or_keyword</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Tag or keyword representing the requested data element</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Parsed data element value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.get_private_tag">
+<code class="sig-name descname">get_private_tag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keyword</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a><a class="headerlink" href="#dicom_parser.header.Header.get_private_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a vendor-specific private tag corresponding to the provided keyword,
+if the tag is registered (see the <code class="xref py py-mod docutils literal notranslate"><span class="pre">private_tags</span></code> module).
+This is required because pydicom does not offer keyword access to private tags.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keyword</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Private data element keyword</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Private data element tag</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.get_raw_element">
+<code class="sig-name descname">get_raw_element</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag_or_keyword</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataelem.DataElement.html#pydicom.dataelem.DataElement" title="(in pydicom v2.1.2)">pydicom.dataelem.DataElement</a><a class="headerlink" href="#dicom_parser.header.Header.get_raw_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference external" href="https://github.com/pydicom/pydicom">pydicom</a> <a class="reference external" href="https://github.com/pydicom/pydicom/blob/master/pydicom/dataelem.py">PydicomDataElement</a> from the associated <a class="reference external" href="https://github.com/pydicom/pydicom/blob/master/pydicom/dataset.py">FileDataset</a> either by
+tag (passed as a tuple) or a keyword (passed as a string). If none found
+or the tag or keyword are invalid, returns None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tag_or_keyword</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Tag or keyword representing the requested data element</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The requested data element</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PydicomDataElement</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.get_raw_element_by_keyword">
+<code class="sig-name descname">get_raw_element_by_keyword</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keyword</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataelem.DataElement.html#pydicom.dataelem.DataElement" title="(in pydicom v2.1.2)">pydicom.dataelem.DataElement</a><a class="headerlink" href="#dicom_parser.header.Header.get_raw_element_by_keyword" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference external" href="https://github.com/pydicom/pydicom">pydicom</a> <a class="reference external" href="https://github.com/pydicom/pydicom/blob/master/pydicom/dataelem.py">PydicomDataElement</a> from the header (<a class="reference external" href="https://github.com/pydicom/pydicom/blob/master/pydicom/dataset.py">FileDataset</a> isntance)
+by keyword.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keyword</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The keyword representing the DICOM data element in pydicom</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The requested data element</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PydicomDataElement</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.get_raw_element_by_tag">
+<code class="sig-name descname">get_raw_element_by_tag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataelem.DataElement.html#pydicom.dataelem.DataElement" title="(in pydicom v2.1.2)">pydicom.dataelem.DataElement</a><a class="headerlink" href="#dicom_parser.header.Header.get_raw_element_by_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference external" href="https://github.com/pydicom/pydicom">pydicom</a> <a class="reference external" href="https://github.com/pydicom/pydicom/blob/master/pydicom/dataelem.py">PydicomDataElement</a> from the header (<a class="reference external" href="https://github.com/pydicom/pydicom/blob/master/pydicom/dataset.py">FileDataset</a> isntance)
+by tag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – The DICOM tag of the desired data element</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The requested data element</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PydicomDataElement</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.get_raw_value">
+<code class="sig-name descname">get_raw_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag_or_keyword</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dicom_parser.header.Header.get_raw_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the raw value for the requested data element, as returned by
+<a class="reference external" href="https://github.com/pydicom/pydicom">pydicom</a>. If none is found will return None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tag_or_keyword</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Tag or keyword representing the requested data element.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The raw value of the data element</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)">type</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.keys">
+<em class="property">property </em><code class="sig-name descname">keys</code><a class="headerlink" href="#dicom_parser.header.Header.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="dicom_parser.header.Header.sequence_identifiers">
+<code class="sig-name descname">sequence_identifiers</code><em class="property"> = {'Magnetic Resonance': ['ScanningSequence', 'SequenceVariant']}</em><a class="headerlink" href="#dicom_parser.header.Header.sequence_identifiers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.to_dataframe">
+<code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_elements</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">value_representation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">private</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#dicom_parser.header.Header.to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.header.Header.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parsed</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a><a class="headerlink" href="#dicom_parser.header.Header.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dicom_parser.image">
+<span id="dicom-parser-image-module"></span><h2>dicom_parser.image module<a class="headerlink" href="#module-dicom_parser.image" title="Permalink to this headline">¶</a></h2>
+<p>Definition of the <a class="reference internal" href="#dicom_parser.image.Image" title="dicom_parser.image.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a> class, representing a single pair of
+<a class="reference internal" href="#dicom_parser.header.Header" title="dicom_parser.header.Header"><code class="xref py py-class docutils literal notranslate"><span class="pre">Header</span></code></a> and data (3D <a class="reference external" href="https://numpy.org">NumPy</a>
+array).</p>
+<dl class="py class">
+<dt id="dicom_parser.image.Image">
+<em class="property">class </em><code class="sig-prename descclassname">dicom_parser.image.</code><code class="sig-name descname">Image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataset.FileDataset.html#pydicom.dataset.FileDataset" title="(in pydicom v2.1.2)">pydicom.dataset.FileDataset</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dicom_parser.image.Image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>This class represents a single DICOM image (i.e. <cite>.dcm</cite> file) and provides
+unified access to it’s header information and data.</p>
+<dl class="py method">
+<dt id="dicom_parser.image.Image.data">
+<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#dicom_parser.image.Image.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the pixel data array after having applied any required
+transformations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Pixel data array</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.image.Image.default_relative_path">
+<em class="property">property </em><code class="sig-name descname">default_relative_path</code><a class="headerlink" href="#dicom_parser.image.Image.default_relative_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.image.Image.fix_data">
+<code class="sig-name descname">fix_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#dicom_parser.image.Image.fix_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies any required transformation to the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Pixel array data</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.image.Image.get_default_relative_path">
+<code class="sig-name descname">get_default_relative_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a><a class="headerlink" href="#dicom_parser.image.Image.get_default_relative_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.image.Image.is_fmri">
+<em class="property">property </em><code class="sig-name descname">is_fmri</code><a class="headerlink" href="#dicom_parser.image.Image.is_fmri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True for fMRI images according to their header information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether this image represents fMRI data</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.image.Image.is_mosaic">
+<em class="property">property </em><code class="sig-name descname">is_mosaic</code><a class="headerlink" href="#dicom_parser.image.Image.is_mosaic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a 3D volume is encoded as a 2D Mosaic.
+For more information, see the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Mosaic</span></code>
+class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether the image is a mosaic encoded volume</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.image.Image.read_raw_data">
+<code class="sig-name descname">read_raw_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#dicom_parser.image.Image.read_raw_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the pixel array data as returned by pydicom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Pixel array data</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dicom_parser.series">
+<span id="dicom-parser-series-module"></span><h2>dicom_parser.series module<a class="headerlink" href="#module-dicom_parser.series" title="Permalink to this headline">¶</a></h2>
+<p>Definition of the <a class="reference internal" href="#dicom_parser.series.Series" title="dicom_parser.series.Series"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></a> class.</p>
+<dl class="py class">
+<dt id="dicom_parser.series.Series">
+<em class="property">class </em><code class="sig-prename descclassname">dicom_parser.series.</code><code class="sig-name descname">Series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dicom_parser.series.Series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>This class represents a complete collection of Image instances originating
+from a single directory and ordered by InstanceNumber.</p>
+<dl class="py method">
+<dt id="dicom_parser.series.Series.check_path">
+<code class="sig-name descname">check_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a><a class="headerlink" href="#dicom_parser.series.Series.check_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts to a <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a> instance if required and checks
+that it represents an existing directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>Path</em>) – The provided path.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pathlib.Path instance representing an existing directory</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the provided path is not an existing directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.series.Series.data">
+<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#dicom_parser.series.Series.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caches the stacked 3D array containing the entire series’ data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Series 3D data</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.series.Series.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag_or_keyword</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parsed</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">missing_ok</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#dicom_parser.series.Series.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns header information from the
+<a class="reference internal" href="#dicom_parser.image.Image" title="dicom_parser.image.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a> that compose this series.
+If one distinct value is returned from all the images’ headers,
+returns that value. Otherwise, returns a list of the values
+(ordered the same as the <cite>images</cite> attribute, by instance number).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tag_or_keyword</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Tag or keyword representing the requested data element, or a list
+of such</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The requested data element value for the entire series</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.series.Series.get_dcm_paths">
+<code class="sig-name descname">get_dcm_paths</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; generator<a class="headerlink" href="#dicom_parser.series.Series.get_dcm_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a generator of .dcm files within the provided directory path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>DICOM images (.dcm files) generator</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>GeneratorType</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#FileNotFoundError" title="(in Python v3.9)"><strong>FileNotFoundError</strong></a> – No DICOM images found under provided directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.series.Series.get_images">
+<code class="sig-name descname">get_images</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a><a class="headerlink" href="#dicom_parser.series.Series.get_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of <a class="reference internal" href="#dicom_parser.image.Image" title="dicom_parser.image.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a> instances
+ordered by instance number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Image instance by instance number</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.series.Series.get_spatial_resolution">
+<code class="sig-name descname">get_spatial_resolution</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a><a class="headerlink" href="#dicom_parser.series.Series.get_spatial_resolution" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dicom_parser.series.Series.spatial_resolution">
+<em class="property">property </em><code class="sig-name descname">spatial_resolution</code><a class="headerlink" href="#dicom_parser.series.Series.spatial_resolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the spatial resolution of the series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Spatial resolution</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dicom_parser">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dicom_parser" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dicom_parser.utils.html" class="btn btn-neutral float-right" title="dicom_parser.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Zvi Baratz
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
