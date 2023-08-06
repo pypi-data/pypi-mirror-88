@@ -1,0 +1,77 @@
+#!python
+
+import configparser
+import json
+import sys
+
+from awsdeployer.__apigateway.Wrapper import ApiWrapper
+from awsdeployer.__util import has_file, create_path
+
+
+class AWSApiGatewayDeployer:
+    def __init__(self, aws_config, api_configs, full_responses, extended_responses):
+        self.api_wrapper = ApiWrapper(aws_config, full_responses, extended_responses)
+        self.api_configs = api_configs
+
+    def create_method(self, path, method):
+        method_configs = self.api_configs[path][method]
+        self.api_wrapper.create_method(path, method, method_configs)
+
+        # deploy changes
+        self.api_wrapper.deploy_api()
+
+    def create_full_api(self):
+        for resource in api_configs.keys():
+            self.api_wrapper.create_resource(resource)
+            for method in self.api_configs[resource].keys():
+                self.create_method(resource, method)
+
+        # deploy changes
+        self.api_wrapper.deploy_api()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print('No argument provided')
+        exit(1)
+
+    aws_config_file = 'awsdeployer.ini'
+    api_config_file = 'awsdeployer_api.json'
+
+    # try parent dir if file is not in current
+    if not has_file(aws_config_file):
+        aws_config_file = create_path('..', aws_config_file)
+
+    if not has_file(api_config_file):
+        api_config_file = create_path('..', api_config_file)
+
+    config = configparser.ConfigParser()
+    config.read(aws_config_file)
+
+    aws_config = {
+        'region': config['ACCOUNT']['region'],
+        'access_key': config['ACCOUNT']['access_key'],
+        'secret_key': config['ACCOUNT']['secret_key'],
+        'account_id': config['ACCOUNT']['account_id'],
+
+        'api_id': config['API_GATEWAY']['api_id'],
+        'stage': config['API_GATEWAY']['stage']
+    }
+
+    with open(api_config_file) as json_file:
+        api_configs = json.load(json_file)
+
+    api_gateway = AWSApiGatewayDeployer(aws_config, api_configs, True, False)
+
+    # interpret terminal input
+    arg = sys.argv[1]
+    if arg == 'all':
+        api_gateway.create_full_api()
+    else:
+        if len(sys.argv) < 3:
+            print('No argument provided')
+            exit(1)
+
+        method = sys.argv[1]
+        path = sys.argv[2]
+        api_gateway.create_method(path, method)
