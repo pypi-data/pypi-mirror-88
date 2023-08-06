@@ -1,0 +1,6 @@
+
+[pg:platform_python_implementation=="CPython"]
+psycopg2
+
+[pg:platform_python_implementation=="PyPy"]
+psycopg2cffi
