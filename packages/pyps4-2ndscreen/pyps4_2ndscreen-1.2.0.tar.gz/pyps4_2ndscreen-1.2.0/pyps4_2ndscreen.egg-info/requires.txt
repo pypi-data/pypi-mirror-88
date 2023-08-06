@@ -1,0 +1,7 @@
+aiohttp>=3.5.4
+click>=7.0
+construct>=2.9.45
+pycryptodomex>=3.7.2
+
+[:platform_system == "Windows"]
+windows-curses>=2.1.0
