@@ -1,0 +1,90 @@
+Metadata-Version: 1.2
+Name: map-parallel
+Version: 0.1.1
+Summary: A drop-in replacement of map/starmap but in parallel with different backends.
+Home-page: https://github.com/ickc/python-map_parallel
+Author: Kolen Cheung
+Author-email: christian.kolen@gmail.com
+License: BSD-3-Clause
+Project-URL: Documentation, https://python-map_parallel.readthedocs.io/
+Project-URL: Changelog, https://python-map_parallel.readthedocs.io/en/latest/changelog.html
+Project-URL: Issue Tracker, https://github.com/ickc/python-map_parallel/issues
+Description: ========
+        Overview
+        ========
+        
+        
+        
+        A drop-in replacement of map/starmap but in parallel with different backends.
+        
+        * Free software: BSD 3-Clause License
+        
+        Installation
+        ============
+        
+        ::
+        
+            pip install map-parallel
+        
+        You can also install the in-development version with::
+        
+            pip install https://github.com/ickc/python-map_parallel/archive/master.zip
+        
+        
+        Documentation
+        =============
+        
+        
+        https://python-map_parallel.readthedocs.io/
+        
+        
+        Development
+        ===========
+        
+        To run all the tests run::
+        
+            tox
+        
+        Note, to combine the coverage data from all the tox environments run:
+        
+        .. list-table::
+            :widths: 10 90
+            :stub-columns: 1
+        
+            - - Windows
+              - ::
+        
+                    set PYTEST_ADDOPTS=--cov-append
+                    tox
+        
+            - - Other
+              - ::
+        
+                    PYTEST_ADDOPTS=--cov-append tox
+        
+        
+        Changelog
+        =========
+        
+        0.1 (2020-11-20)
+        ----------------
+        
+        * First release on PyPI.
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
