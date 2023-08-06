@@ -1,0 +1,58 @@
+# omq
+
+Omq is a IPC that uses [ZMQ](https://pyzmq.readthedocs.io/en/latest/api/zmq.html) under the hood. It likes MQTT in some degree.
+
+### Concept
+ZMQ is a one of the best IPC. But its sub-pub mode is not very good for us to use. So, omq bornd. Through omq, you can easily publish and subscribe message like MQTT.
+
+## Installation
+```python
+pip install omq
+```
+
+Omq requires python 3.6+
+
+## Usage
+
+Omq implements Broker and Socket. Before publish and subscribe, you need to start a broker at first.
+
+
+### Basic
+
+```python
+# broker.py
+from omq import Broker
+
+b = Broker()
+b.loop_forever()
+
+# b.loop_start()
+# while True:
+#     import time
+#     time.sleep(1)
+```
+
+
+```python
+# omq_sub.py
+from omq import Client
+
+def on_message(client, topic, payload):
+    print(f'{topic} - {payload}')
+    if payload == 'b':
+        client.close()
+
+c = Client()
+c.on_message = on_message
+c.subscribe('test')
+c.loop_forever()
+```
+
+```python
+# omq_pub.py
+from omq import Client
+
+c = Client()
+c.publish('test', 'hello world')
+c.close()
+```
