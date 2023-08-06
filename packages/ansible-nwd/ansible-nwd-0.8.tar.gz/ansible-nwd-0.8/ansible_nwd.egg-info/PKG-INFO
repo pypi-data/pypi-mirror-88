@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: ansible-nwd
+Version: 0.8
+Summary: Ansible role automatic documentation
+Home-page: https://github.com/VasseurLaurent/ansible-nwd
+Author: VASSEUR Laurent
+Author-email: mail.laurentvasseur@gmail.com
+License: MIT License
+Download-URL: https://github.com/VasseurLaurent/ansible-nwd/archive/v0.7.tar.gz
+Description: # Ansible Never Write the Doc
+        
+        [![Build Status](https://travis-ci.com/VasseurLaurent/ansible-nwd.svg?branch=master)](https://travis-ci.com/VasseurLaurent/ansible-nwd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PyPI version](https://badge.fury.io/py/ansible-nwd.svg)](https://badge.fury.io/py/ansible-nwd) ![Upload Pypi & build docker](https://github.com/VasseurLaurent/ansible-nwd/workflows/Upload%20Pypi%20&%20build%20docker/badge.svg)
+        
+        ## Introduction
+        
+        ``Ansible Never Write the Doc`` provides you an automatic way to create Ansible roles documentation.
+        
+        It parses all Ansible roles folders and gathers information to write them into a ``Readme.md`` for you.
+        
+        ``Ansible-nwd`` is also compatible with ``molecule`` , it will parse your different scenarios and write them into your documentation file.
+        
+        ## Resources
+        
+        * Documentation : https://docs.ansible-nwd.com
+        
+        * Pip download : https://pypi.org/project/ansible-nwd/
+        
+        * Docker image : https://hub.docker.com/repository/docker/laurentvasseur/ansible-nwd
+        
+        ## Example
+        
+        In this repo, you can find an example of Ansible role and all ``Ansible-nwd`` pattern available at the following path : ``examples/python3``
+        
+Keywords: ansible,documentation,automation
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: Environment :: Console
+Classifier: Topic :: System :: Systems Administration
+Classifier: Topic :: Utilities
+Classifier: Topic :: Documentation
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
