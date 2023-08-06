@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: brain-slam
+Version: 0.0.3
+Summary: Surface anaLysis And Modeling
+Home-page: https://github.com/gauzias/slam
+Author: Guillaume Auzias
+License: MIT
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Requires-Python: >=3.6
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: trimesh
+Requires-Dist: nibabel (>=2.1)
+Requires-Dist: networkx
+Provides-Extra: advanced-dev
+Requires-Dist: tvb-gdist ; extra == 'advanced-dev'
+Requires-Dist: flake8 ; extra == 'advanced-dev'
+Requires-Dist: autopep8 ; extra == 'advanced-dev'
+Requires-Dist: pytest ; extra == 'advanced-dev'
+Requires-Dist: pytest-cov ; extra == 'advanced-dev'
+Requires-Dist: coveralls ; extra == 'advanced-dev'
+Provides-Extra: advanced-user
+Requires-Dist: tvb-gdist ; extra == 'advanced-user'
+Provides-Extra: default-dev
+Requires-Dist: flake8 ; extra == 'default-dev'
+Requires-Dist: autopep8 ; extra == 'default-dev'
+Requires-Dist: pytest ; extra == 'default-dev'
+Requires-Dist: pytest-cov ; extra == 'default-dev'
+Requires-Dist: coveralls ; extra == 'default-dev'
+Provides-Extra: full
+Requires-Dist: tvb-gdist ; extra == 'full'
+Requires-Dist: flake8 ; extra == 'full'
+Requires-Dist: autopep8 ; extra == 'full'
+Requires-Dist: pytest ; extra == 'full'
+Requires-Dist: pytest-cov ; extra == 'full'
+Requires-Dist: coveralls ; extra == 'full'
+Requires-Dist: visbrain ; extra == 'full'
+
+UNKNOWN
+
+
