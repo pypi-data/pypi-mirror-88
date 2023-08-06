@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nvector.objects.GeoPoint &mdash; nvector 0.7.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="nvector.objects.GeoPath" href="nvector.objects.GeoPath.html" />
+    <link rel="prev" title="nvector.objects.FrameL" href="nvector.objects.FrameL.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> nvector
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html">Introduction to nvector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#description">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#documentation-and-code">Documentation and code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#unit-tests">Unit tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#acknowledgement">Acknowledgement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/getting_started_functional.html">     Functional examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Module Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../nvector.html">nvector package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvector.html#geodesic-functions">Geodesic functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvector.html#rotation-matrices-and-angles">Rotation matrices and angles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvector.html#misc-functions">Misc functions</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../nvector.html#oo-interface-to-geodesic-functions">OO interface to Geodesic functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.delta_E.html">nvector.objects.delta_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.delta_N.html">nvector.objects.delta_N</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.delta_L.html">nvector.objects.delta_L</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.diff_positions.html">nvector.objects.diff_positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.ECEFvector.html">nvector.objects.ECEFvector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.FrameB.html">nvector.objects.FrameB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.FrameE.html">nvector.objects.FrameE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.FrameN.html">nvector.objects.FrameN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.FrameL.html">nvector.objects.FrameL</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nvector.objects.GeoPoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.GeoPath.html">nvector.objects.GeoPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.Nvector.html">nvector.objects.Nvector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector.objects.Pvector.html">nvector.objects.Pvector</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">nvector</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../modules.html">Modules</a> &raquo;</li>
+        
+          <li><a href="../nvector.html">nvector package</a> &raquo;</li>
+        
+      <li>nvector.objects.GeoPoint</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/generated/nvector.objects.GeoPoint.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nvector-objects-geopoint">
+<h1>nvector.objects.GeoPoint<a class="headerlink" href="#nvector-objects-geopoint" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="nvector.objects.GeoPoint">
+<em class="property">class </em><code class="sig-name descname">GeoPoint</code><span class="sig-paren">(</span><em class="sig-param">latitude</em>, <em class="sig-param">longitude</em>, <em class="sig-param">z=0</em>, <em class="sig-param">frame=None</em>, <em class="sig-param">degrees=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nvector/objects.html#GeoPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.objects.GeoPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geographical position given as latitude, longitude, depth in frame E.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>latitude, longitude: real scalars or vectors of length n.</strong></dt><dd><p>Geodetic latitude and longitude given in [rad or deg]</p>
+</dd>
+<dt><strong>z: real scalar or vector of length n.</strong></dt><dd><p>Depth(s) [m]  relative to the ellipsoid (depth = -height)</p>
+</dd>
+<dt><strong>frame: FrameE object</strong></dt><dd><p>reference ellipsoid. The default ellipsoid model used is WGS84, but
+other ellipsoids/spheres might be specified.</p>
+</dd>
+<dt><strong>degrees: bool</strong></dt><dd><p>True if input are given in degrees otherwise radians are assumed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Solve geodesic problems.</p>
+<p>The following illustrates its use</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">nvector</span> <span class="k">as</span> <span class="nn">nv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wgs84</span> <span class="o">=</span> <span class="n">nv</span><span class="o">.</span><span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point_a</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="o">-</span><span class="mf">41.32</span><span class="p">,</span> <span class="mf">174.81</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mf">40.96</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.50</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">point_a</span><span class="p">)</span>
+<span class="go">GeoPoint(latitude=-0.721170046924057,</span>
+<span class="go">         longitude=3.0510100654112877,</span>
+<span class="go">         z=0,</span>
+<span class="go">        frame=FrameE(a=6378137.0,</span>
+<span class="go">                     f=0.0033528106647474805,</span>
+<span class="go">                     name=&#39;WGS84&#39;,</span>
+<span class="go">                     R_Ee=[[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]]))</span>
+</pre></div>
+</div>
+<p>The geodesic inverse problem</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s12</span><span class="p">,</span> <span class="n">az1</span><span class="p">,</span> <span class="n">az2</span> <span class="o">=</span> <span class="n">point_a</span><span class="o">.</span><span class="n">distance_and_azimuth</span><span class="p">(</span><span class="n">point_b</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;s12 = </span><span class="si">{:5.2f}</span><span class="s1">, az1 = </span><span class="si">{:5.2f}</span><span class="s1">, az2 = </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s12</span><span class="p">,</span> <span class="n">az1</span><span class="p">,</span> <span class="n">az2</span><span class="p">)</span>
+<span class="go">&#39;s12 = 19959679.27, az1 = 161.07, az2 = 18.83&#39;</span>
+</pre></div>
+</div>
+<p>The geodesic direct problem</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point_a</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mf">40.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">73.8</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">az1</span><span class="p">,</span> <span class="n">distance</span> <span class="o">=</span> <span class="mi">45</span><span class="p">,</span> <span class="mf">10000e3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point_b</span><span class="p">,</span> <span class="n">az2</span> <span class="o">=</span> <span class="n">point_a</span><span class="o">.</span><span class="n">displace</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="n">az1</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">point_b</span><span class="o">.</span><span class="n">latitude_deg</span><span class="p">,</span> <span class="n">point_b</span><span class="o">.</span><span class="n">longitude_deg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;lat2 = </span><span class="si">{:5.2f}</span><span class="s1">, lon2 = </span><span class="si">{:5.2f}</span><span class="s1">, az2 = </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">az2</span><span class="p">)</span>
+<span class="go">&#39;lat2 = 32.64, lon2 = 49.01, az2 = 140.37&#39;</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="nvector.objects.GeoPoint.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">latitude</em>, <em class="sig-param">longitude</em>, <em class="sig-param">z=0</em>, <em class="sig-param">frame=None</em>, <em class="sig-param">degrees=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nvector/objects.html#GeoPoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.objects.GeoPoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#nvector.objects.GeoPoint.__init__" title="nvector.objects.GeoPoint.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self, latitude, longitude[, z, …])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delta_to</span></code>(self, other)</p></td>
+<td><p>Returns cartesian delta vector from positions a to b decomposed in N.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">displace</span></code>(self, distance, azimuth[, …])</p></td>
+<td><p>Returns position b computed from current position, distance and azimuth.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_and_azimuth</span></code>(self, point[, …])</p></td>
+<td><p>Returns ellipsoidal distance between positions as well as the direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_ecef_vector</span></code>(self)</p></td>
+<td><p>Returns position as ECEFvector object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_geo_point</span></code>(self)</p></td>
+<td><p>Returns position as GeoPoint object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nvector</span></code>(self)</p></td>
+<td><p>Returns position as Nvector object.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">latitude_deg</span></code></p></td>
+<td><p>latitude in degrees.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">latlon</span></code></p></td>
+<td><p>(latitude, longitude, z) tuple, angles are in radian.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">latlon_deg</span></code></p></td>
+<td><p>(latitude_deg, longitude_deg, z) tuple, angles are in degree.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">longitude_deg</span></code></p></td>
+<td><p>longitude in degrees.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="nvector.objects.GeoPath.html" class="btn btn-neutral float-right" title="nvector.objects.GeoPath" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="nvector.objects.FrameL.html" class="btn btn-neutral float-left" title="nvector.objects.FrameL" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2020, Norwegian Defence Research Establishment (FFI)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

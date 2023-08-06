@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nvector._core.on_great_circle &mdash; nvector 0.7.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="nvector._core.on_great_circle_path" href="nvector._core.on_great_circle_path.html" />
+    <link rel="prev" title="nvector._core.n_EA_E_distance_and_azimuth2n_EB_E" href="nvector._core.n_EA_E_distance_and_azimuth2n_EB_E.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> nvector
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html">Introduction to nvector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#description">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#documentation-and-code">Documentation and code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#unit-tests">Unit tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#acknowledgement">Acknowledgement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/getting_started_functional.html">     Functional examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Module Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../nvector.html">nvector package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../nvector.html#geodesic-functions">Geodesic functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.closest_point_on_great_circle.html">nvector._core.closest_point_on_great_circle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.cross_track_distance.html">nvector._core.cross_track_distance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.euclidean_distance.html">nvector._core.euclidean_distance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.great_circle_distance.html">nvector._core.great_circle_distance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.intersect.html">nvector._core.intersect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.lat_lon2n_E.html">nvector._core.lat_lon2n_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.mean_horizontal_position.html">nvector._core.mean_horizontal_position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_E2lat_lon.html">nvector._core.n_E2lat_lon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EB_E2p_EB_E.html">nvector._core.n_EB_E2p_EB_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.p_EB_E2n_EB_E.html">nvector._core.p_EB_E2n_EB_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EA_E_and_n_EB_E2p_AB_E.html">nvector._core.n_EA_E_and_n_EB_E2p_AB_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EA_E_and_p_AB_E2n_EB_E.html">nvector._core.n_EA_E_and_p_AB_E2n_EB_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EA_E_and_n_EB_E2azimuth.html">nvector._core.n_EA_E_and_n_EB_E2azimuth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EA_E_distance_and_azimuth2n_EB_E.html">nvector._core.n_EA_E_distance_and_azimuth2n_EB_E</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nvector._core.on_great_circle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.on_great_circle_path.html">nvector._core.on_great_circle_path</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../nvector.html#rotation-matrices-and-angles">Rotation matrices and angles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvector.html#misc-functions">Misc functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvector.html#oo-interface-to-geodesic-functions">OO interface to Geodesic functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">nvector</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../modules.html">Modules</a> &raquo;</li>
+        
+          <li><a href="../nvector.html">nvector package</a> &raquo;</li>
+        
+      <li>nvector._core.on_great_circle</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/generated/nvector._core.on_great_circle.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nvector-core-on-great-circle">
+<h1>nvector._core.on_great_circle<a class="headerlink" href="#nvector-core-on-great-circle" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="nvector._core.on_great_circle">
+<code class="sig-name descname">on_great_circle</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">n_EB_E</em>, <em class="sig-param">radius=6371009.0</em>, <em class="sig-param">atol=1e-08</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nvector/_core.html#on_great_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector._core.on_great_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if position B is on great circle through path A.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>path: tuple of 2 n-vectors</strong></dt><dd><blockquote>
+<div><p>2 n-vectors of positions defining path A, decomposed in E.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>n_EB_E:  3 x m array</dt><dd><p>n-vector(s) of position B to check to.</p>
+</dd>
+<dt>radius: real scalar</dt><dd><p>radius of sphere. (default 6371009.0)</p>
+</dd>
+<dt>atol: real scalar</dt><dd><p>The absolute tolerance parameter (See notes).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>on</strong><span class="classifier">bool array of length max(n, m)</span></dt><dd><p>True if position B is on great circle through path A.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The default value of <cite>atol</cite> is not zero, and is used to determine what
+small values should be considered close to zero. The default value is
+appropriate for expected values of order unity. However, <cite>atol</cite> should
+be carefully selected for the use case at hand. Typically the value
+should be set to the accepted error tolerance. For GPS data the error
+ranges from 0.01 m to 15 m.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="nvector._core.on_great_circle_path.html" class="btn btn-neutral float-right" title="nvector._core.on_great_circle_path" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="nvector._core.n_EA_E_distance_and_azimuth2n_EB_E.html" class="btn btn-neutral float-left" title="nvector._core.n_EA_E_distance_and_azimuth2n_EB_E" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2020, Norwegian Defence Research Establishment (FFI)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

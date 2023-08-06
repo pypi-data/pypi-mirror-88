@@ -1,0 +1,584 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nvector.tests package &mdash; nvector 0.7.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> nvector
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../src/overview.html">Introduction to nvector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/overview.html#description">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/overview.html#documentation-and-code">Documentation and code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/overview.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/overview.html#unit-tests">Unit tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/overview.html#acknowledgement">Acknowledgement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/overview.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/getting_started_functional.html">     Functional examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">nvector</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>nvector.tests package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/nvector.tests.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nvector-tests-package">
+<h1>nvector.tests package<a class="headerlink" href="#nvector-tests-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-nvector.tests.test_frames">
+<span id="nvector-tests-test-frames-module"></span><h2>nvector.tests.test_frames module<a class="headerlink" href="#module-nvector.tests.test_frames" title="Permalink to this headline">¶</a></h2>
+<p>Created on 18. des. 2015</p>
+<p>&#64;author: pab</p>
+<dl class="class">
+<dt id="nvector.tests.test_frames.TestExamples">
+<em class="property">class </em><code class="sig-name descname">TestExamples</code><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex10_cross_track_distance">
+<code class="sig-name descname">test_Ex10_cross_track_distance</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex10_cross_track_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex10_cross_track_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex1_A_and_B_to_delta_in_frame_N">
+<em class="property">static </em><code class="sig-name descname">test_Ex1_A_and_B_to_delta_in_frame_N</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex1_A_and_B_to_delta_in_frame_N"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex1_A_and_B_to_delta_in_frame_N" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E">
+<em class="property">static </em><code class="sig-name descname">test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex3_ECEF_vector_to_geodetic_latitude">
+<em class="property">static </em><code class="sig-name descname">test_Ex3_ECEF_vector_to_geodetic_latitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex3_ECEF_vector_to_geodetic_latitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex3_ECEF_vector_to_geodetic_latitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex4_geodetic_latitude_to_ECEF_vector">
+<em class="property">static </em><code class="sig-name descname">test_Ex4_geodetic_latitude_to_ECEF_vector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex4_geodetic_latitude_to_ECEF_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex4_geodetic_latitude_to_ECEF_vector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex5_great_circle_distance">
+<em class="property">static </em><code class="sig-name descname">test_Ex5_great_circle_distance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex5_great_circle_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex5_great_circle_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex6_interpolated_position">
+<em class="property">static </em><code class="sig-name descname">test_Ex6_interpolated_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex6_interpolated_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex6_interpolated_position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex7_mean_position">
+<em class="property">static </em><code class="sig-name descname">test_Ex7_mean_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex7_mean_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex7_mean_position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex8_position_A_and_azimuth_and_distance_to_B">
+<em class="property">static </em><code class="sig-name descname">test_Ex8_position_A_and_azimuth_and_distance_to_B</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex8_position_A_and_azimuth_and_distance_to_B"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex8_position_A_and_azimuth_and_distance_to_B" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_Ex9_intersect">
+<em class="property">static </em><code class="sig-name descname">test_Ex9_intersect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_Ex9_intersect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_Ex9_intersect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_alternative_great_circle_distance">
+<em class="property">static </em><code class="sig-name descname">test_alternative_great_circle_distance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_alternative_great_circle_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_alternative_great_circle_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_compute_delta_L_in_moving_frame_east">
+<em class="property">static </em><code class="sig-name descname">test_compute_delta_L_in_moving_frame_east</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_compute_delta_L_in_moving_frame_east"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_compute_delta_L_in_moving_frame_east" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_compute_delta_L_in_moving_frame_north">
+<em class="property">static </em><code class="sig-name descname">test_compute_delta_L_in_moving_frame_north</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_compute_delta_L_in_moving_frame_north"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_compute_delta_L_in_moving_frame_north" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_compute_delta_N_in_moving_frame_east">
+<em class="property">static </em><code class="sig-name descname">test_compute_delta_N_in_moving_frame_east</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_compute_delta_N_in_moving_frame_east"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_compute_delta_N_in_moving_frame_east" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_exact_ellipsoidal_distance">
+<em class="property">static </em><code class="sig-name descname">test_exact_ellipsoidal_distance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_exact_ellipsoidal_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_exact_ellipsoidal_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestExamples.test_intersect_on_parallell_paths">
+<code class="sig-name descname">test_intersect_on_parallell_paths</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestExamples.test_intersect_on_parallell_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestExamples.test_intersect_on_parallell_paths" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nvector.tests.test_frames.TestFrames">
+<em class="property">class </em><code class="sig-name descname">TestFrames</code><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestFrames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestFrames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestFrames.test_compare_B_frames">
+<code class="sig-name descname">test_compare_B_frames</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestFrames.test_compare_B_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestFrames.test_compare_B_frames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestFrames.test_compare_E_frames">
+<code class="sig-name descname">test_compare_E_frames</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestFrames.test_compare_E_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestFrames.test_compare_E_frames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestFrames.test_compare_L_frames">
+<code class="sig-name descname">test_compare_L_frames</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestFrames.test_compare_L_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestFrames.test_compare_L_frames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestFrames.test_compare_N_frames">
+<code class="sig-name descname">test_compare_N_frames</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestFrames.test_compare_N_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestFrames.test_compare_N_frames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nvector.tests.test_frames.TestGeoPoint">
+<em class="property">class </em><code class="sig-name descname">TestGeoPoint</code><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestGeoPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestGeoPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestGeoPoint.test_scalar_geopoint_to_nvector_to_ecef_to_geopoint">
+<code class="sig-name descname">test_scalar_geopoint_to_nvector_to_ecef_to_geopoint</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestGeoPoint.test_scalar_geopoint_to_nvector_to_ecef_to_geopoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestGeoPoint.test_scalar_geopoint_to_nvector_to_ecef_to_geopoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestGeoPoint.test_scalar_geopoint_to_nvector_to_geopoint">
+<code class="sig-name descname">test_scalar_geopoint_to_nvector_to_geopoint</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestGeoPoint.test_scalar_geopoint_to_nvector_to_geopoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestGeoPoint.test_scalar_geopoint_to_nvector_to_geopoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestGeoPoint.test_vector_geopoint_to_nvector_to_ecef_to_geopoint">
+<code class="sig-name descname">test_vector_geopoint_to_nvector_to_ecef_to_geopoint</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestGeoPoint.test_vector_geopoint_to_nvector_to_ecef_to_geopoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestGeoPoint.test_vector_geopoint_to_nvector_to_ecef_to_geopoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_frames.TestGeoPoint.test_vector_geopoint_to_nvector_to_geopoint">
+<code class="sig-name descname">test_vector_geopoint_to_nvector_to_geopoint</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#TestGeoPoint.test_vector_geopoint_to_nvector_to_geopoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.TestGeoPoint.test_vector_geopoint_to_nvector_to_geopoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="nvector.tests.test_frames.test_geo_path_on_path">
+<code class="sig-name descname">test_geo_path_on_path</code><span class="sig-paren">(</span><em class="sig-param">lat_a</em>, <em class="sig-param">lat_b</em>, <em class="sig-param">method</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_frames.html#test_geo_path_on_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_frames.test_geo_path_on_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-nvector.tests.test_geodesic">
+<span id="nvector-tests-test-geodesic-module"></span><h2>nvector.tests.test_geodesic module<a class="headerlink" href="#module-nvector.tests.test_geodesic" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest">
+<em class="property">class </em><code class="sig-name descname">GeodSolveTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve0">
+<code class="sig-name descname">test_GeodSolve0</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve1">
+<code class="sig-name descname">test_GeodSolve1</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve10">
+<code class="sig-name descname">test_GeodSolve10</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve10" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve11">
+<code class="sig-name descname">test_GeodSolve11</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve11" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve12">
+<code class="sig-name descname">test_GeodSolve12</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve12" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve14">
+<code class="sig-name descname">test_GeodSolve14</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve14"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve14" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve17">
+<code class="sig-name descname">test_GeodSolve17</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve17"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve17" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve2">
+<code class="sig-name descname">test_GeodSolve2</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve29">
+<code class="sig-name descname">test_GeodSolve29</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve29" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve33">
+<code class="sig-name descname">test_GeodSolve33</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve33"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve33" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve4">
+<code class="sig-name descname">test_GeodSolve4</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve5">
+<code class="sig-name descname">test_GeodSolve5</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve55">
+<code class="sig-name descname">test_GeodSolve55</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve55"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve55" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve6">
+<code class="sig-name descname">test_GeodSolve6</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve6"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve9">
+<code class="sig-name descname">test_GeodSolve9</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodSolveTest.test_GeodSolve9"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve9" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nvector.tests.test_geodesic.GeodesicTest">
+<em class="property">class </em><code class="sig-name descname">GeodesicTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodesicTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodesicTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodesicTest.test_direct">
+<code class="sig-name descname">test_direct</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodesicTest.test_direct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodesicTest.test_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_geodesic.GeodesicTest.test_inverse">
+<code class="sig-name descname">test_inverse</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_geodesic.html#GeodesicTest.test_inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_geodesic.GeodesicTest.test_inverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nvector.tests.test_nvector">
+<span id="nvector-tests-test-nvector-module"></span><h2>nvector.tests.test_nvector module<a class="headerlink" href="#module-nvector.tests.test_nvector" title="Permalink to this headline">¶</a></h2>
+<p>This file contains solutions to the examples given at
+www.navlab.net/nvector</p>
+<p>The content of this file is based on the following publication:</p>
+<p>Gade, K. (2010). A Nonsingular Horizontal Position Representation, The Journal
+of Navigation, Volume 63, Issue 03, pp 395-417, July 2010.
+(www.navlab.net/Publications/A_Nonsingular_Horizontal_Position_Representation.pdf)</p>
+<p>Copyright (c) 2015, Norwegian Defence Research Establishment (FFI)
+All rights reserved.</p>
+<p>Originated: 2015.03.26 Kenneth Gade, FFI</p>
+<p>NOTES:
+- All angles are by default assumed to be in radians, if an angle is
+in degrees, the variable name has the following ending: _deg</p>
+<ul class="simple">
+<li><p>The dot product (inner product) of vectors x and y is written dot(x,y).</p></li>
+</ul>
+<dl class="class">
+<dt id="nvector.tests.test_nvector.TestNvector">
+<em class="property">class </em><code class="sig-name descname">TestNvector</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex10_cross_track_distance">
+<em class="property">static </em><code class="sig-name descname">test_Ex10_cross_track_distance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex10_cross_track_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex10_cross_track_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex1_A_and_B_to_delta_in_frame_N">
+<em class="property">static </em><code class="sig-name descname">test_Ex1_A_and_B_to_delta_in_frame_N</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex1_A_and_B_to_delta_in_frame_N"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex1_A_and_B_to_delta_in_frame_N" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E">
+<em class="property">static </em><code class="sig-name descname">test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex3_ECEF_vector_to_geodetic_latitude">
+<em class="property">static </em><code class="sig-name descname">test_Ex3_ECEF_vector_to_geodetic_latitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex3_ECEF_vector_to_geodetic_latitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex3_ECEF_vector_to_geodetic_latitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex4_geodetic_latitude_to_ECEF_vector">
+<em class="property">static </em><code class="sig-name descname">test_Ex4_geodetic_latitude_to_ECEF_vector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex4_geodetic_latitude_to_ECEF_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex4_geodetic_latitude_to_ECEF_vector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex5_great_circle_distance">
+<em class="property">static </em><code class="sig-name descname">test_Ex5_great_circle_distance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex5_great_circle_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex5_great_circle_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex6_interpolated_position">
+<em class="property">static </em><code class="sig-name descname">test_Ex6_interpolated_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex6_interpolated_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex6_interpolated_position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex7_mean_position">
+<em class="property">static </em><code class="sig-name descname">test_Ex7_mean_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex7_mean_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex7_mean_position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex8_position_A_and_azimuth_and_distance_to_B">
+<em class="property">static </em><code class="sig-name descname">test_Ex8_position_A_and_azimuth_and_distance_to_B</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex8_position_A_and_azimuth_and_distance_to_B"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex8_position_A_and_azimuth_and_distance_to_B" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_Ex9_intersect">
+<em class="property">static </em><code class="sig-name descname">test_Ex9_intersect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_Ex9_intersect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_Ex9_intersect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_R2xyz">
+<em class="property">static </em><code class="sig-name descname">test_R2xyz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_R2xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_R2xyz" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_R2xyz_with_vectors">
+<em class="property">static </em><code class="sig-name descname">test_R2xyz_with_vectors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_R2xyz_with_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_R2xyz_with_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_R2zxy">
+<em class="property">static </em><code class="sig-name descname">test_R2zxy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_R2zxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_R2zxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_R2zxy_0">
+<em class="property">static </em><code class="sig-name descname">test_R2zxy_0</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_R2zxy_0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_R2zxy_0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_R2zxy_x90">
+<em class="property">static </em><code class="sig-name descname">test_R2zxy_x90</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_R2zxy_x90"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_R2zxy_x90" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_R2zxy_y90">
+<em class="property">static </em><code class="sig-name descname">test_R2zxy_y90</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_R2zxy_y90"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_R2zxy_y90" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_R2zxy_z90">
+<em class="property">static </em><code class="sig-name descname">test_R2zxy_z90</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_R2zxy_z90"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_R2zxy_z90" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_n_EA_E_and_n_EB_E2azimuth">
+<em class="property">static </em><code class="sig-name descname">test_n_EA_E_and_n_EB_E2azimuth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_n_EA_E_and_n_EB_E2azimuth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_n_EA_E_and_n_EB_E2azimuth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_n_E_and_wa2R_EL">
+<em class="property">static </em><code class="sig-name descname">test_n_E_and_wa2R_EL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_n_E_and_wa2R_EL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_n_E_and_wa2R_EL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nvector.tests.test_nvector.TestNvector.test_small_and_large_cross_track_distance">
+<code class="sig-name descname">test_small_and_large_cross_track_distance</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nvector/tests/test_nvector.html#TestNvector.test_small_and_large_cross_track_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector.tests.test_nvector.TestNvector.test_small_and_large_cross_track_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nvector.tests">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nvector.tests" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2020, Norwegian Defence Research Establishment (FFI)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

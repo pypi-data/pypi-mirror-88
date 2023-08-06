@@ -1,0 +1,756 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nvector.tests.test_frames &mdash; nvector 0.7.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> nvector
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html">Introduction to nvector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#description">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#documentation-and-code">Documentation and code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#unit-tests">Unit tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#acknowledgement">Acknowledgement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/getting_started_functional.html">     Functional examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">Module Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">nvector</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>nvector.tests.test_frames</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nvector.tests.test_frames</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on 18. des. 2015</span>
+
+<span class="sd">@author: pab</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_array_almost_equal</span>  <span class="c1"># @UnresolvedImport</span>
+<span class="kn">from</span> <span class="nn">nvector</span> <span class="kn">import</span> <span class="n">FrameB</span><span class="p">,</span> <span class="n">FrameE</span><span class="p">,</span> <span class="n">FrameN</span><span class="p">,</span> <span class="n">FrameL</span><span class="p">,</span> <span class="n">GeoPoint</span><span class="p">,</span> <span class="n">GeoPath</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">delta_L</span>
+
+<span class="n">EARTH_RADIUS_M</span> <span class="o">=</span> <span class="mf">6371009.0</span>
+
+<div class="viewcode-block" id="test_geo_path_on_path"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.test_geo_path_on_path">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;lat_a,lat_b,method&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="mi">81</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;ellipsoid&#39;</span><span class="p">),</span>
+                                                <span class="p">(</span><span class="mi">79</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;ellipsoid&#39;</span><span class="p">),</span>
+                                                <span class="p">(</span><span class="mi">81</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;greatcircle&#39;</span><span class="p">),</span>
+                                                <span class="p">(</span><span class="mi">79</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;greatcircle&#39;</span><span class="p">)])</span>
+<span class="k">def</span> <span class="nf">test_geo_path_on_path</span><span class="p">(</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">lat_b</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+    <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+    <span class="n">point_a</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">point_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat_b</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">point_c</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">lat_a</span><span class="o">+</span><span class="n">lat_b</span><span class="p">),</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="p">[</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">point_c</span><span class="p">]:</span>
+        <span class="k">assert</span> <span class="n">path</span><span class="o">.</span><span class="n">on_path</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+
+    <span class="n">point_a1</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">point_b1</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat_b</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="p">[</span><span class="n">point_a1</span><span class="p">,</span> <span class="n">point_b1</span><span class="p">]:</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">on_path</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-10</span>
+    <span class="n">lat_e</span><span class="p">,</span> <span class="n">lat_f</span> <span class="o">=</span> <span class="p">(</span><span class="n">lat_a</span><span class="o">-</span><span class="n">tol</span><span class="p">,</span> <span class="n">lat_b</span> <span class="o">+</span> <span class="n">tol</span><span class="p">)</span> <span class="k">if</span> <span class="n">lat_a</span> <span class="o">&lt;</span> <span class="n">lat_b</span> <span class="k">else</span> <span class="p">(</span><span class="n">lat_a</span><span class="o">+</span><span class="n">tol</span><span class="p">,</span> <span class="n">lat_b</span> <span class="o">-</span> <span class="n">tol</span><span class="p">)</span>
+    <span class="n">point_e</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat_e</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">point_f</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat_f</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="p">[</span><span class="n">point_e</span><span class="p">,</span> <span class="n">point_f</span><span class="p">]:</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">on_path</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span></div>
+
+    <span class="c1"># Test vectorized</span>
+
+<div class="viewcode-block" id="TestGeoPoint"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestGeoPoint">[docs]</a><span class="k">class</span> <span class="nc">TestGeoPoint</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TestGeoPoint.test_scalar_geopoint_to_nvector_to_geopoint"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestGeoPoint.test_scalar_geopoint_to_nvector_to_geopoint">[docs]</a>    <span class="k">def</span> <span class="nf">test_scalar_geopoint_to_nvector_to_geopoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">gp1</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">np1</span> <span class="o">=</span> <span class="n">gp1</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+        <span class="n">gp2</span> <span class="o">=</span> <span class="n">np1</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">gp1</span> <span class="o">==</span> <span class="n">gp2</span>
+        <span class="c1"># Check that the round trip returns a scalar GeoPoint</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="TestGeoPoint.test_scalar_geopoint_to_nvector_to_ecef_to_geopoint"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestGeoPoint.test_scalar_geopoint_to_nvector_to_ecef_to_geopoint">[docs]</a>    <span class="k">def</span> <span class="nf">test_scalar_geopoint_to_nvector_to_ecef_to_geopoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">gp1</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">np1</span> <span class="o">=</span> <span class="n">gp1</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+        <span class="n">ep1</span> <span class="o">=</span> <span class="n">np1</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+        <span class="n">gp2</span> <span class="o">=</span> <span class="n">ep1</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">gp1</span> <span class="o">==</span> <span class="n">gp2</span>
+        <span class="c1"># Check that the round trip returns a scalar GeoPoint</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">ep1</span><span class="o">.</span><span class="n">length</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">ep1</span><span class="o">.</span><span class="n">azimuth</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">ep1</span><span class="o">.</span><span class="n">elevation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="TestGeoPoint.test_vector_geopoint_to_nvector_to_geopoint"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestGeoPoint.test_vector_geopoint_to_nvector_to_geopoint">[docs]</a>    <span class="k">def</span> <span class="nf">test_vector_geopoint_to_nvector_to_geopoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">gp1</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">np1</span> <span class="o">=</span> <span class="n">gp1</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+        <span class="n">gp2</span> <span class="o">=</span> <span class="n">np1</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">gp1</span> <span class="o">==</span> <span class="n">gp2</span>
+        <span class="c1"># Check that the round trip returns a vector GeoPoint</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="TestGeoPoint.test_vector_geopoint_to_nvector_to_ecef_to_geopoint"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestGeoPoint.test_vector_geopoint_to_nvector_to_ecef_to_geopoint">[docs]</a>    <span class="k">def</span> <span class="nf">test_vector_geopoint_to_nvector_to_ecef_to_geopoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">gp1</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">np1</span> <span class="o">=</span> <span class="n">gp1</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+        <span class="n">ep1</span> <span class="o">=</span> <span class="n">np1</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+        <span class="n">gp2</span> <span class="o">=</span> <span class="n">ep1</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">gp1</span> <span class="o">==</span> <span class="n">gp2</span>
+        <span class="c1"># Check that the round trip returns a vector GeoPoint</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">gp2</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">ep1</span><span class="o">.</span><span class="n">length</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">ep1</span><span class="o">.</span><span class="n">azimuth</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">ep1</span><span class="o">.</span><span class="n">elevation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span></div></div>
+
+
+<div class="viewcode-block" id="TestFrames"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestFrames">[docs]</a><span class="k">class</span> <span class="nc">TestFrames</span><span class="p">:</span>
+<div class="viewcode-block" id="TestFrames.test_compare_E_frames"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestFrames.test_compare_E_frames">[docs]</a>    <span class="k">def</span> <span class="nf">test_compare_E_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">E2</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">E</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">E</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">E</span> <span class="o">==</span> <span class="n">E2</span>
+        <span class="k">assert</span> <span class="n">E</span> <span class="o">==</span> <span class="n">E</span>
+        <span class="n">E3</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">E</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">E</span> <span class="o">!=</span> <span class="n">E3</span></div>
+
+<div class="viewcode-block" id="TestFrames.test_compare_B_frames"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestFrames.test_compare_B_frames">[docs]</a>    <span class="k">def</span> <span class="nf">test_compare_B_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">E2</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS72&#39;</span><span class="p">)</span>
+
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="n">unit</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">]]),</span> <span class="n">z</span><span class="o">=-</span><span class="mi">400</span><span class="p">)</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">FrameB</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">,</span> <span class="n">yaw</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">B</span> <span class="o">==</span> <span class="n">B</span>
+        <span class="k">assert</span> <span class="n">B</span> <span class="o">!=</span> <span class="n">E</span>
+
+        <span class="n">B2</span> <span class="o">=</span> <span class="n">FrameB</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">,</span> <span class="n">yaw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">B</span> <span class="o">!=</span> <span class="n">B2</span>
+
+        <span class="n">B3</span> <span class="o">=</span> <span class="n">FrameB</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">,</span> <span class="n">yaw</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">B</span> <span class="o">==</span> <span class="n">B3</span>
+
+        <span class="n">n_EC_E</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="n">unit</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]]),</span> <span class="n">z</span><span class="o">=-</span><span class="mi">400</span><span class="p">)</span>
+        <span class="n">B4</span> <span class="o">=</span> <span class="n">FrameB</span><span class="p">(</span><span class="n">n_EC_E</span><span class="p">,</span> <span class="n">yaw</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">B</span> <span class="o">!=</span> <span class="n">B4</span>
+
+        <span class="n">n_ED_E</span> <span class="o">=</span> <span class="n">E2</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="n">unit</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">]]),</span> <span class="n">z</span><span class="o">=-</span><span class="mi">400</span><span class="p">)</span>
+        <span class="n">B5</span> <span class="o">=</span> <span class="n">FrameB</span><span class="p">(</span><span class="n">n_ED_E</span><span class="p">,</span> <span class="n">yaw</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">B</span> <span class="o">!=</span> <span class="n">B5</span></div>
+
+<div class="viewcode-block" id="TestFrames.test_compare_N_frames"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestFrames.test_compare_N_frames">[docs]</a>    <span class="k">def</span> <span class="nf">test_compare_N_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">wgs72</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS72&#39;</span><span class="p">)</span>
+        <span class="n">pointA</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB</span> <span class="o">=</span> <span class="n">wgs72</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">frame_N</span> <span class="o">=</span> <span class="n">FrameN</span><span class="p">(</span><span class="n">pointA</span><span class="p">)</span>
+        <span class="n">frame_L1</span> <span class="o">=</span> <span class="n">FrameL</span><span class="p">(</span><span class="n">pointA</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">frame_L2</span> <span class="o">=</span> <span class="n">FrameL</span><span class="p">(</span><span class="n">pointA</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">frame_L3</span> <span class="o">=</span> <span class="n">FrameL</span><span class="p">(</span><span class="n">pointB</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">frame_N</span> <span class="o">==</span> <span class="n">frame_N</span>
+
+        <span class="k">assert</span> <span class="n">frame_N</span> <span class="o">==</span> <span class="n">frame_L1</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="n">frame_N</span> <span class="o">!=</span> <span class="n">frame_L1</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">frame_N</span> <span class="o">==</span> <span class="n">frame_L2</span>
+
+        <span class="k">assert</span> <span class="n">frame_N</span> <span class="o">!=</span> <span class="n">frame_L3</span>
+        <span class="k">assert</span> <span class="n">frame_L1</span> <span class="o">!=</span> <span class="n">frame_L3</span></div>
+
+<div class="viewcode-block" id="TestFrames.test_compare_L_frames"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestFrames.test_compare_L_frames">[docs]</a>    <span class="k">def</span> <span class="nf">test_compare_L_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">wgs72</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS72&#39;</span><span class="p">)</span>
+        <span class="n">pointA</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB</span> <span class="o">=</span> <span class="n">wgs72</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">frame_N</span> <span class="o">=</span> <span class="n">FrameL</span><span class="p">(</span><span class="n">pointA</span><span class="p">)</span>
+        <span class="n">frame_N1</span> <span class="o">=</span> <span class="n">FrameL</span><span class="p">(</span><span class="n">pointA</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">frame_N2</span> <span class="o">=</span> <span class="n">FrameL</span><span class="p">(</span><span class="n">pointB</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">frame_N</span> <span class="o">==</span> <span class="n">frame_N</span>
+        <span class="k">assert</span> <span class="n">frame_N</span> <span class="o">!=</span> <span class="n">frame_N1</span>
+        <span class="k">assert</span> <span class="n">frame_N</span> <span class="o">!=</span> <span class="n">frame_N2</span>
+        <span class="k">assert</span> <span class="n">frame_N1</span> <span class="o">!=</span> <span class="n">frame_N2</span></div></div>
+
+
+<div class="viewcode-block" id="TestExamples"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples">[docs]</a><span class="k">class</span> <span class="nc">TestExamples</span><span class="p">:</span>
+<div class="viewcode-block" id="TestExamples.test_compute_delta_L_in_moving_frame_east"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_compute_delta_L_in_moving_frame_east">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_compute_delta_L_in_moving_frame_east</span><span class="p">():</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">point_a</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">point_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">2.005</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">sensor_position</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mf">1.000090437</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">2.0025</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span>
+        <span class="n">ti</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">ship_positions0</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ship_positions1</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">headings</span> <span class="o">=</span> <span class="n">ship_positions0</span><span class="o">.</span><span class="n">delta_to</span><span class="p">(</span><span class="n">ship_positions1</span><span class="p">)</span><span class="o">.</span><span class="n">azimuth_deg</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">headings</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">ship_positions</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti</span><span class="p">)</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">delta_L</span><span class="p">(</span><span class="n">ship_positions</span><span class="p">,</span> <span class="n">sensor_position</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">pvector</span>
+        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">azimuth_deg</span><span class="p">)</span>
+        <span class="c1"># positive angle about down-axis</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, delta L = </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">pvector</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, azimuth = </span><span class="si">{0}</span><span class="s1"> deg&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">azimuth</span><span class="p">))</span>
+
+        <span class="n">true_x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">278.2566243359911</span><span class="p">,</span> <span class="mf">198.7547317612817</span><span class="p">,</span> <span class="mf">119.25283909376164</span><span class="p">,</span>
+                  <span class="mf">39.750946370747656</span><span class="p">,</span> <span class="o">-</span><span class="mf">39.75094637085409</span><span class="p">,</span> <span class="o">-</span><span class="mf">119.25283909387079</span><span class="p">,</span>
+                  <span class="o">-</span><span class="mf">198.75473176137066</span><span class="p">,</span> <span class="o">-</span><span class="mf">278.2566243360949</span><span class="p">]</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">true_x</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">azimuth</span><span class="p">,</span>
+                                  <span class="p">[</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">14.</span><span class="p">,</span> <span class="o">-</span><span class="mf">166.</span><span class="p">,</span> <span class="o">-</span><span class="mf">175.</span><span class="p">,</span> <span class="o">-</span><span class="mf">177.</span><span class="p">,</span> <span class="o">-</span><span class="mf">178.</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_compute_delta_N_in_moving_frame_east"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_compute_delta_N_in_moving_frame_east">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_compute_delta_N_in_moving_frame_east</span><span class="p">():</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">point_a</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">point_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">2.005</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">sensor_position</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">2.0025</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span>
+        <span class="n">ti</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">ship_positions0</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ship_positions1</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">headings</span> <span class="o">=</span> <span class="n">ship_positions0</span><span class="o">.</span><span class="n">delta_to</span><span class="p">(</span><span class="n">ship_positions1</span><span class="p">)</span><span class="o">.</span><span class="n">azimuth_deg</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">headings</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">ship_positions</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti</span><span class="p">)</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">ship_positions</span><span class="o">.</span><span class="n">delta_to</span><span class="p">(</span><span class="n">sensor_position</span><span class="p">)</span>
+
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">pvector</span>
+        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">azimuth_deg</span><span class="p">)</span>
+        <span class="c1"># positive angle about down-axis</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, delta north, east, down = </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">pvector</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, azimuth = </span><span class="si">{0}</span><span class="s1"> deg&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">azimuth</span><span class="p">))</span>
+
+        <span class="n">true_y</span> <span class="o">=</span> <span class="p">[</span><span class="mf">278.2566243359911</span><span class="p">,</span> <span class="mf">198.7547317612817</span><span class="p">,</span> <span class="mf">119.25283909376164</span><span class="p">,</span>
+                  <span class="mf">39.750946370747656</span><span class="p">,</span> <span class="o">-</span><span class="mf">39.75094637085409</span><span class="p">,</span> <span class="o">-</span><span class="mf">119.25283909387079</span><span class="p">,</span>
+                  <span class="o">-</span><span class="mf">198.75473176137066</span><span class="p">,</span> <span class="o">-</span><span class="mf">278.2566243360949</span><span class="p">]</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">true_y</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">n2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">azimuth</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">azimuth</span><span class="p">[:</span><span class="n">n2</span><span class="p">],</span> <span class="mi">90</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">azimuth</span><span class="p">[</span><span class="n">n2</span><span class="p">:],</span> <span class="o">-</span><span class="mi">90</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_compute_delta_L_in_moving_frame_north"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_compute_delta_L_in_moving_frame_north">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_compute_delta_L_in_moving_frame_north</span><span class="p">():</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">point_a</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">point_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mf">1.005</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">sensor_position</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mf">1.0025</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span>
+        <span class="n">ti</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">ship_positions0</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ship_positions1</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">headings</span> <span class="o">=</span> <span class="n">ship_positions0</span><span class="o">.</span><span class="n">delta_to</span><span class="p">(</span><span class="n">ship_positions1</span><span class="p">)</span><span class="o">.</span><span class="n">azimuth_deg</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">headings</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+        <span class="n">ship_positions</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti</span><span class="p">)</span>
+
+        <span class="n">delta0</span> <span class="o">=</span> <span class="n">delta_L</span><span class="p">(</span><span class="n">ship_positions</span><span class="p">,</span> <span class="n">sensor_position</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">ship_positions</span><span class="o">.</span><span class="n">delta_to</span><span class="p">(</span><span class="n">sensor_position</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">delta0</span><span class="o">.</span><span class="n">pvector</span><span class="p">,</span> <span class="n">delta</span><span class="o">.</span><span class="n">pvector</span><span class="p">)</span>
+
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">pvector</span>
+        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">azimuth_deg</span><span class="p">))</span>
+        <span class="c1"># positive angle about down-axis</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, delta north, east, down = </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">pvector</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, azimuth = </span><span class="si">{0}</span><span class="s1"> deg&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">azimuth</span><span class="p">))</span>
+
+        <span class="n">true_x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">276.436537069603</span><span class="p">,</span> <span class="mf">197.45466985931083</span><span class="p">,</span> <span class="mf">118.47280221160541</span><span class="p">,</span>
+                  <span class="mf">39.49093416312986</span><span class="p">,</span> <span class="o">-</span><span class="mf">39.490934249581684</span><span class="p">,</span> <span class="o">-</span><span class="mf">118.47280298990226</span><span class="p">,</span>
+                  <span class="o">-</span><span class="mf">197.454672021303</span><span class="p">,</span> <span class="o">-</span><span class="mf">276.4365413071498</span><span class="p">]</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">true_x</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">n2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">azimuth</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">azimuth</span><span class="p">[:</span><span class="n">n2</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">azimuth</span><span class="p">[</span><span class="n">n2</span><span class="p">:],</span> <span class="mi">180</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex1_A_and_B_to_delta_in_frame_N"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex1_A_and_B_to_delta_in_frame_N">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_Ex1_A_and_B_to_delta_in_frame_N</span><span class="p">():</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">point_a</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">point_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Find the exact vector between the two positions, given in meters</span>
+        <span class="c1"># north, east, and down, i.e. find delta_N.</span>
+
+        <span class="c1"># SOLUTION:</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">point_a</span><span class="o">.</span><span class="n">delta_to</span><span class="p">(</span><span class="n">point_b</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">pvector</span>
+        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">azimuth_deg</span>
+        <span class="n">elevation</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">elevation_deg</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, delta north, east, down = </span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1">, </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, azimuth = </span><span class="si">{0}</span><span class="s1"> deg&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">azimuth</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">331730.23478089</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mf">332997.87498927</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mf">17404.27136194</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">azimuth</span><span class="p">,</span> <span class="mf">45.10926324</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">elevation</span><span class="p">,</span> <span class="mf">2.12055861</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E</span><span class="p">():</span>
+        <span class="c1"># delta vector from B to C, decomposed in B is given:</span>
+
+        <span class="c1"># A custom reference ellipsoid is given (replacing WGS-84):</span>
+        <span class="n">wgs72</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS72&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Position and orientation of B is given 400m above E:</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="n">wgs72</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="n">unit</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">]]),</span> <span class="n">z</span><span class="o">=-</span><span class="mi">400</span><span class="p">)</span>
+
+        <span class="n">frame_B</span> <span class="o">=</span> <span class="n">FrameB</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">,</span> <span class="n">yaw</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">p_BC_B</span> <span class="o">=</span> <span class="n">frame_B</span><span class="o">.</span><span class="n">Pvector</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+
+        <span class="n">p_BC_E</span> <span class="o">=</span> <span class="n">p_BC_B</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+        <span class="n">p_EB_E</span> <span class="o">=</span> <span class="n">n_EB_E</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+        <span class="n">p_EC_E</span> <span class="o">=</span> <span class="n">p_EB_E</span> <span class="o">+</span> <span class="n">p_BC_E</span>
+
+        <span class="n">pointC</span> <span class="o">=</span> <span class="n">p_EC_E</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+
+        <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">pointC</span><span class="o">.</span><span class="n">latlon_deg</span>
+        <span class="c1"># Here we also assume that the user wants output height (= - depth):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex2, Pos C: lat, lon = </span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1"> deg,  height = </span><span class="si">{}</span><span class="s1"> m&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="mf">53.32637826</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="mf">63.46812344</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">-</span><span class="mf">406.00719607</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex3_ECEF_vector_to_geodetic_latitude"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex3_ECEF_vector_to_geodetic_latitude">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_Ex3_ECEF_vector_to_geodetic_latitude</span><span class="p">():</span>
+
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="c1"># Position B is given as p_EB_E (&quot;ECEF-vector&quot;)</span>
+        <span class="n">position_B</span> <span class="o">=</span> <span class="mf">6371e3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="mf">0.9</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">))</span>  <span class="c1"># m</span>
+        <span class="n">p_EB_E</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">ECEFvector</span><span class="p">(</span><span class="n">position_B</span><span class="p">)</span>
+
+        <span class="c1"># Find position B as geodetic latitude, longitude and height</span>
+        <span class="n">pointB</span> <span class="o">=</span> <span class="n">p_EB_E</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+        <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">pointB</span><span class="o">.</span><span class="n">latitude_deg</span><span class="p">,</span> <span class="n">pointB</span><span class="o">.</span><span class="n">longitude_deg</span><span class="p">,</span> <span class="o">-</span><span class="n">pointB</span><span class="o">.</span><span class="n">z</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex3, Pos B: lat, lon = </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> deg, height = </span><span class="si">{}</span><span class="s1"> m&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="mf">39.37874867</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="o">-</span><span class="mf">48.0127875</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mf">4702059.83429485</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex4_geodetic_latitude_to_ECEF_vector"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex4_geodetic_latitude_to_ECEF_vector">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_Ex4_geodetic_latitude_to_ECEF_vector</span><span class="p">():</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">pointB</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">p_EB_E</span> <span class="o">=</span> <span class="n">pointB</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex4: p_EB_E = </span><span class="si">{0}</span><span class="s1"> m&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p_EB_E</span><span class="o">.</span><span class="n">pvector</span><span class="o">.</span><span class="n">ravel</span><span class="p">()))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">p_EB_E</span><span class="o">.</span><span class="n">pvector</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                                  <span class="p">[</span><span class="mf">6373290.27721828</span><span class="p">,</span> <span class="mf">222560.20067474</span><span class="p">,</span>
+                                   <span class="mf">110568.82718179</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex5_great_circle_distance"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex5_great_circle_distance">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_Ex5_great_circle_distance</span><span class="p">():</span>
+        <span class="n">frame_E</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">6371e3</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">positionA</span> <span class="o">=</span> <span class="n">frame_E</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">88</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">positionB</span> <span class="o">=</span> <span class="n">frame_E</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">89</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=-</span><span class="mi">170</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">s_AB</span><span class="p">,</span> <span class="n">_azia</span><span class="p">,</span> <span class="n">_azib</span> <span class="o">=</span> <span class="n">positionA</span><span class="o">.</span><span class="n">distance_and_azimuth</span><span class="p">(</span><span class="n">positionB</span><span class="p">)</span>
+
+        <span class="n">p_AB_E</span> <span class="o">=</span> <span class="n">positionB</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span> <span class="o">-</span> <span class="n">positionA</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+        <span class="c1"># The Euclidean distance is given by:</span>
+        <span class="n">d_AB</span> <span class="o">=</span> <span class="n">p_AB_E</span><span class="o">.</span><span class="n">length</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex5, Great circle distance = </span><span class="si">{}</span><span class="s1"> km, Euclidean distance = </span><span class="si">{}</span><span class="s1"> km&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">d_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">s_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">332.45644411</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">d_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">332.41872486</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_alternative_great_circle_distance"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_alternative_great_circle_distance">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_alternative_great_circle_distance</span><span class="p">():</span>
+        <span class="n">frame_E</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">6371e3</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">point_a</span> <span class="o">=</span> <span class="n">frame_E</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">88</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">point_b</span> <span class="o">=</span> <span class="n">frame_E</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">89</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=-</span><span class="mi">170</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span>
+
+        <span class="n">s_AB</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">track_distance</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;greatcircle&#39;</span><span class="p">)</span>
+        <span class="n">d_AB</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">track_distance</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">s1_AB</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">track_distance</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">)</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex5, Great circle distance = </span><span class="si">{}</span><span class="s1"> km, Euclidean distance = </span><span class="si">{}</span><span class="s1"> km&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">d_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">s_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">332.45644411</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">s1_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">332.45644411</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">d_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">332.41872486</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_exact_ellipsoidal_distance"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_exact_ellipsoidal_distance">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_exact_ellipsoidal_distance</span><span class="p">():</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">pointA</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">88</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">89</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=-</span><span class="mi">170</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">s_AB</span><span class="p">,</span> <span class="n">_azia</span><span class="p">,</span> <span class="n">_azib</span> <span class="o">=</span> <span class="n">pointA</span><span class="o">.</span><span class="n">distance_and_azimuth</span><span class="p">(</span><span class="n">pointB</span><span class="p">)</span>
+
+        <span class="n">p_AB_E</span> <span class="o">=</span> <span class="n">pointB</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span> <span class="o">-</span> <span class="n">pointA</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+        <span class="c1"># The Euclidean distance is given by:</span>
+        <span class="n">d_AB</span> <span class="o">=</span> <span class="n">p_AB_E</span><span class="o">.</span><span class="n">length</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex5, Great circle distance = </span><span class="si">{}</span><span class="s1"> km, Euclidean distance = </span><span class="si">{}</span><span class="s1"> km&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">d_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">s_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">333.94750946834665</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">d_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">333.90962112</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex6_interpolated_position"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex6_interpolated_position">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_Ex6_interpolated_position</span><span class="p">():</span>
+
+        <span class="c1"># Position B at time t0 and t2 is given as n_EB_E_t0 and n_EB_E_t1:</span>
+        <span class="c1"># Enter elements as lat/long in deg:</span>
+        <span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+        <span class="n">n_EB_E_t0</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mi">89</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+        <span class="n">n_EB_E_t1</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mi">89</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+
+        <span class="c1"># The times are given as:</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="mf">10.</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="mf">20.</span>
+        <span class="n">ti</span> <span class="o">=</span> <span class="mf">16.</span>  <span class="c1"># time of interpolation</span>
+
+        <span class="c1"># Find the interpolated position at time ti, n_EB_E_ti</span>
+
+        <span class="c1"># SOLUTION:</span>
+        <span class="c1"># Using standard interpolation:</span>
+        <span class="n">ti_n</span> <span class="o">=</span> <span class="p">(</span><span class="n">ti</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span>
+        <span class="n">n_EB_E_ti</span> <span class="o">=</span> <span class="n">n_EB_E_t0</span> <span class="o">+</span> <span class="n">ti_n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_EB_E_t1</span> <span class="o">-</span> <span class="n">n_EB_E_t0</span><span class="p">)</span>
+
+        <span class="c1"># When displaying the resulting position for humans, it is more</span>
+        <span class="c1"># convenient to see lat, long:</span>
+        <span class="n">g_EB_E_ti</span> <span class="o">=</span> <span class="n">n_EB_E_ti</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+        <span class="n">lat_ti</span><span class="p">,</span> <span class="n">lon_ti</span> <span class="o">=</span> <span class="n">g_EB_E_ti</span><span class="o">.</span><span class="n">latitude_deg</span><span class="p">,</span> <span class="n">g_EB_E_ti</span><span class="o">.</span><span class="n">longitude_deg</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex6, Interpolated position: lat, long = </span><span class="si">{}</span><span class="s1"> deg, </span><span class="si">{}</span><span class="s1"> deg&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat_ti</span><span class="p">,</span> <span class="n">lon_ti</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lat_ti</span><span class="p">,</span> <span class="mf">89.7999805</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lon_ti</span><span class="p">,</span> <span class="mf">180.</span><span class="p">)</span>
+
+        <span class="c1"># Alternative solution</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">n_EB_E_t0</span><span class="p">,</span> <span class="n">n_EB_E_t1</span><span class="p">)</span>
+
+        <span class="n">g_EB_E_ti</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ti_n</span><span class="p">)</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+        <span class="n">lat_ti</span><span class="p">,</span> <span class="n">lon_ti</span> <span class="o">=</span> <span class="n">g_EB_E_ti</span><span class="o">.</span><span class="n">latitude_deg</span><span class="p">,</span> <span class="n">g_EB_E_ti</span><span class="o">.</span><span class="n">longitude_deg</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex6, Interpolated position: lat, long = </span><span class="si">{}</span><span class="s1"> deg, </span><span class="si">{}</span><span class="s1"> deg&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat_ti</span><span class="p">,</span> <span class="n">lon_ti</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lat_ti</span><span class="p">,</span> <span class="mf">89.7999805</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lon_ti</span><span class="p">,</span> <span class="mf">180.</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex7_mean_position"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex7_mean_position">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_Ex7_mean_position</span><span class="p">():</span>
+
+        <span class="c1"># Three positions A, B and C are given:</span>
+        <span class="c1"># Enter elements directly:</span>
+        <span class="c1"># n_EA_E=unit(np.vstack((1, 0, -2)))</span>
+        <span class="c1"># n_EB_E=unit(np.vstack((-1, -2, 0)))</span>
+        <span class="c1"># n_EC_E=unit(np.vstack((0, -2, 3)))</span>
+
+        <span class="c1"># or input as lat/long in deg:</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">longitude</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">],</span>
+                          <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">nvectors</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+        <span class="n">nmean</span> <span class="o">=</span> <span class="n">nvectors</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">n_EM_E</span> <span class="o">=</span> <span class="n">nmean</span><span class="o">.</span><span class="n">normal</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">n_EM_E</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                                  <span class="p">[</span><span class="mf">0.384117</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.046602</span><span class="p">,</span> <span class="mf">0.922107</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex8_position_A_and_azimuth_and_distance_to_B"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex8_position_A_and_azimuth_and_distance_to_B">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_Ex8_position_A_and_azimuth_and_distance_to_B</span><span class="p">():</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">EARTH_RADIUS_M</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">pointA</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB</span><span class="p">,</span> <span class="n">_azimuthb</span> <span class="o">=</span> <span class="n">pointA</span><span class="o">.</span><span class="n">displace</span><span class="p">(</span><span class="n">distance</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">azimuth</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                                            <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB2</span><span class="p">,</span> <span class="n">_azimuthb</span> <span class="o">=</span> <span class="n">pointA</span><span class="o">.</span><span class="n">displace</span><span class="p">(</span><span class="n">distance</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                             <span class="n">azimuth</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mi">200</span><span class="p">))</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">pointB</span><span class="o">.</span><span class="n">latlon</span><span class="p">,</span> <span class="n">pointB2</span><span class="o">.</span><span class="n">latlon</span><span class="p">)</span>
+
+        <span class="n">lat_B</span><span class="p">,</span> <span class="n">lon_B</span> <span class="o">=</span> <span class="n">pointB</span><span class="o">.</span><span class="n">latitude_deg</span><span class="p">,</span> <span class="n">pointB</span><span class="o">.</span><span class="n">longitude_deg</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex8, Destination: lat, long = </span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1"> deg&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat_B</span><span class="p">,</span> <span class="n">lon_B</span><span class="p">))</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lat_B</span><span class="p">,</span> <span class="mf">79.99154867</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lon_B</span><span class="p">,</span> <span class="o">-</span><span class="mf">90.01769837</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex9_intersect"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex9_intersect">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test_Ex9_intersect</span><span class="p">():</span>
+
+        <span class="c1"># Two paths A and B are given by two pairs of positions:</span>
+        <span class="n">pointA1</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointA2</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB1</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB2</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pathA</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">pointA1</span><span class="p">,</span> <span class="n">pointA2</span><span class="p">)</span>
+        <span class="n">pathB</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">pointB1</span><span class="p">,</span> <span class="n">pointB2</span><span class="p">)</span>
+
+        <span class="n">pointC</span> <span class="o">=</span> <span class="n">pathA</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">pathB</span><span class="p">)</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+
+        <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">pointC</span><span class="o">.</span><span class="n">latitude_deg</span><span class="p">,</span> <span class="n">pointC</span><span class="o">.</span><span class="n">longitude_deg</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex9, Intersection: lat, long = </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> deg&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">))</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="mf">40.31864307</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="mf">55.90186788</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_intersect_on_parallell_paths"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_intersect_on_parallell_paths">[docs]</a>    <span class="k">def</span> <span class="nf">test_intersect_on_parallell_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Two paths A and B are given by two pairs of positions:</span>
+        <span class="n">pointA1</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointA2</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB1</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB2</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pathA</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">pointA1</span><span class="p">,</span> <span class="n">pointA2</span><span class="p">)</span>
+        <span class="n">pathB</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">pointB1</span><span class="p">,</span> <span class="n">pointB2</span><span class="p">)</span>
+
+        <span class="n">pointC</span> <span class="o">=</span> <span class="n">pathA</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">pathB</span><span class="p">)</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+
+        <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">pointC</span><span class="o">.</span><span class="n">latitude_deg</span><span class="p">,</span> <span class="n">pointC</span><span class="o">.</span><span class="n">longitude_deg</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex9, Intersection: lat, long = </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> deg&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestExamples.test_Ex10_cross_track_distance"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_frames.TestExamples.test_Ex10_cross_track_distance">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex10_cross_track_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">6371e3</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Position A1 and A2 and B as lat/long in deg:</span>
+        <span class="n">pointA1</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointA2</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB2</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pointB3</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">pathA</span> <span class="o">=</span> <span class="n">GeoPath</span><span class="p">(</span><span class="n">pointA1</span><span class="p">,</span> <span class="n">pointA2</span><span class="p">)</span>
+
+        <span class="c1"># Find the cross track distance from path A to position B.</span>
+        <span class="n">s_xt</span> <span class="o">=</span> <span class="n">pathA</span><span class="o">.</span><span class="n">cross_track_distance</span><span class="p">(</span><span class="n">pointB</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;greatcircle&#39;</span><span class="p">)</span>
+        <span class="n">d_xt</span> <span class="o">=</span> <span class="n">pathA</span><span class="o">.</span><span class="n">cross_track_distance</span><span class="p">(</span><span class="n">pointB</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex10, Cross track distance = </span><span class="si">{}</span><span class="s1"> m, Euclidean = </span><span class="si">{}</span><span class="s1"> m&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_xt</span><span class="p">,</span> <span class="n">d_xt</span><span class="p">))</span>
+
+        <span class="n">pointC</span> <span class="o">=</span> <span class="n">pathA</span><span class="o">.</span><span class="n">closest_point_on_great_circle</span><span class="p">(</span><span class="n">pointB</span><span class="p">)</span>
+        <span class="n">pointC2</span> <span class="o">=</span> <span class="n">pathA</span><span class="o">.</span><span class="n">closest_point_on_great_circle</span><span class="p">(</span><span class="n">pointB2</span><span class="p">)</span>
+        <span class="n">pointC3</span> <span class="o">=</span> <span class="n">pathA</span><span class="o">.</span><span class="n">closest_point_on_path</span><span class="p">(</span><span class="n">pointB2</span><span class="p">)</span>
+        <span class="n">pointC4</span> <span class="o">=</span> <span class="n">pathA</span><span class="o">.</span><span class="n">closest_point_on_path</span><span class="p">(</span><span class="n">pointB3</span><span class="p">)</span>
+        <span class="n">s_xt2</span><span class="p">,</span> <span class="n">_az_bc</span><span class="p">,</span> <span class="n">_az_cb</span> <span class="o">=</span> <span class="n">pointB</span><span class="o">.</span><span class="n">distance_and_azimuth</span><span class="p">(</span><span class="n">pointC</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">s_xt2</span><span class="p">,</span> <span class="mf">11117.79911015</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">s_xt</span><span class="p">,</span> <span class="mf">11117.79911015</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">d_xt</span><span class="p">,</span> <span class="mf">11117.79346741</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">pathA</span><span class="o">.</span><span class="n">on_path</span><span class="p">(</span><span class="n">pointC</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">pathA</span><span class="o">.</span><span class="n">on_path</span><span class="p">(</span><span class="n">pointC</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">pathA</span><span class="o">.</span><span class="n">on_path</span><span class="p">(</span><span class="n">pointC2</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">pathA</span><span class="o">.</span><span class="n">on_path</span><span class="p">(</span><span class="n">pointC2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">pointC3</span> <span class="o">==</span> <span class="n">pointA2</span>
+        <span class="k">assert</span> <span class="n">pointC4</span> <span class="o">==</span> <span class="n">pointA1</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2020, Norwegian Defence Research Establishment (FFI)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
