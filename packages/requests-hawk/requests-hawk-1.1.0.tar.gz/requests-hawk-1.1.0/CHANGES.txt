@@ -1,0 +1,49 @@
+CHANGELOG
+=========
+
+1.1.0 (2020-12-16)
+------------------
+
+- Allow to skip hashing request and response bodies with `always_hash_content`.
+
+
+1.0.1 (2020-01-20)
+------------------
+
+- Add Python 3 support. (#22)
+
+
+1.0.0 (2015-12-15)
+------------------
+
+- Simplified API for using HawkAuth when the id and key are known. (#8)
+- Added support for overriding the default algorithm (sha256) when deriving
+  credentials from the hawk session token, via a new ``algorithm`` parameter.
+
+See the README for migration advice if you use the ``credentials`` parameter.
+
+
+0.2.1 (2015-10-14)
+------------------
+
+- Make sure the requests json parameter is handled properly. (#7)
+
+
+0.2.0 (2015-05-19)
+------------------
+
+- Fix encoding error in setup.py with Python 3.4
+- Add a configuration parameter in order to be able to set the
+  timestamp to use.
+
+
+0.1.2 (2014-08-13)
+------------------
+
+- Add Python3 support
+
+
+0.1.1 (2014-07-21)
+------------------
+
+- First version
