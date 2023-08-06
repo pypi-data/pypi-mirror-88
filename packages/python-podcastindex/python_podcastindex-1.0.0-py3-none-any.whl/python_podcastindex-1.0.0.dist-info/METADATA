@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: python-podcastindex
+Version: 1.0.0
+Summary: A python wrapper for the Podcast Index API (podcastindex.org).
+Home-page: https://github.com/SarvagyaVaish/python-podcastindex
+Author: Sarvagya (Survy) Vaish
+Author-email: sarvagya.vaish7@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+
+[![Build Status](https://travis-ci.com/SarvagyaVaish/python-podcastindex.svg?branch=main)](https://travis-ci.com/SarvagyaVaish/python-podcastindex)
+[![codecov](https://codecov.io/gh/SarvagyaVaish/python-podcastindex/branch/main/graph/badge.svg?token=H154DI9JUR)](https://codecov.io/gh/SarvagyaVaish/python-podcastindex)
+
+# python-podcastindex
+
+A python wrapper for the Podcast Index API (podcastindex.org)
+
+## Installation
+
+(coming soon)
+
+## Usage
+
+```
+import podcastindex
+
+config = {
+    "api_key": "YOUR API KEY HERE",
+    "api_secret": "YOUR API SECRET HERE"
+}
+
+index = podcast_index.init(config)
+```
+
+## Contributing
+
+(coming soon)
+
+
