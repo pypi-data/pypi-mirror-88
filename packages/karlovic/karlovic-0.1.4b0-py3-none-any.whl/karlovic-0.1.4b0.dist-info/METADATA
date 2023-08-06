@@ -1,0 +1,83 @@
+Metadata-Version: 2.1
+Name: karlovic
+Version: 0.1.4b0
+Summary: Can only serve machine learning models.
+Home-page: https://github.com/aiwizo/karlovic
+License: Apache-2.0
+Keywords: api,server,machine,learning
+Author: Aiwizo
+Author-email: filip@aiwizo.com
+Requires-Python: >=3.6,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Other Environment
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: Pillow (>=7.1.0)
+Requires-Dist: bottle (>=0.12.18)
+Requires-Dist: cheroot (>=8.3.0)
+Requires-Dist: jaraco.functools (>=3.0.0)
+Project-URL: Bug Tracker, https://github.com/aiwizo/karlovic/issues
+Project-URL: Repository, https://github.com/aiwizo/karlovic
+Description-Content-Type: text/x-rst
+
+============
+Model Server
+============
+
+NOTE: Currently in beta development. Breaking changes may happen at any time.
+
+The Karlovic library aims to simplify the process of setting up a htts server that serves machine learning models.
+
+Install
+=======
+
+.. code-block::
+
+    pip install karlovic
+
+Usage
+=====
+
+.. code-block:: python
+
+    from karlovic import model_server
+
+    def bottle_configuration_function(bottle):
+      # Configure bottle
+      pass
+
+    plugins = [
+      SomePlugin,
+      ...
+    ]
+
+    app, run_server = model_server(plugins, bottle_configuration_function)
+
+    # Use the app decorator to define endpoints
+    @app.get('/hello')
+    def hello():
+      return "<h1>Hello World</h1>"
+
+    @app.post('/world')
+    def hello(image):
+      return "some response"
+
+    use_image_form(app, ['/world'])
+    # Creates GET '/world/form' that posts an
+    # image to '/world'
+
+    run_server()
+
+
