@@ -1,0 +1,99 @@
+Metadata-Version: 2.1
+Name: tseuler
+Version: 0.0.4.dev0
+Summary: A library for Time-Series exploration, analysis & modelling.
+Home-page: https://github.com/ag-ds-bubble/tseuler
+Author: Achintya Gupta
+Author-email: ag.ds.bubble@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: matplotlib (>=3.2.2)
+Requires-Dist: altair (>=4.1.0)
+Requires-Dist: tqdm (>=4.52.0)
+Requires-Dist: param (>=1.10.0)
+Requires-Dist: numpy (>=1.19.4)
+Requires-Dist: mplfinance (>=0.12.7a0)
+Requires-Dist: bokeh (>=2.2.3)
+Requires-Dist: seaborn (>=0.11.0)
+Requires-Dist: statsmodels (>=0.12.1)
+Requires-Dist: pandas (>=1.1.4)
+Requires-Dist: panel (>=0.10.1)
+Requires-Dist: ipython (>=7.19.0)
+
+<img style="float: right;" src="examples/logo_big.png"  width='100%'>
+
+# tseuler
+A library for Time Series exploration, analysis & modelling. This includes -
+
+
+As of now, this libray is in pre-alpha phase, i.e there is a lot of work still left before its first stable release.
+
+### TSMAD - Time Series Mini Analysis DashBoard.
+Functionalities Include
+
+    - A mini Dashboard for Time Series Analysis, with multiple variations to each kind of analysis
+    - Inbuilt Freqency Variation analysis
+    - Intervention Analysis (In Future) 
+
+
+### TSSTATS - Time Series Statistical & Modelling Functions
+Functionalities Include:
+
+    - Rolling Origin Framework (Currently Supports - statsmodels, sklearn, sklearn) for both multi-variate and uni-variate
+    - Residual Diagnostics
+    - Statistical Tests
+    - Entropy Calculations
+    - Intervention Analysis (In Future)
+
+## Example
+****
+<img style="float: right;" src="examples/example_gif.gif"  width='100%'>
+
+## Installation
+****
+Installation 
+```py
+pip install tseuler
+```
+## Usage
+****
+- ### Instantiating a DashBoard
+
+    ```py
+    import pandas as pd
+    import tseuler as tse
+    # Read the Time Series DataFrame
+    dataDF = pd.read_csv('Raw Data/stocks_data.csv', index_col=0)
+    tsmadObj = tse.TSMAD(tsdata = dataDF, data_desc = 'Stocks Data',
+                     target_columns = ['close'], categorical_columns = ['Name'],
+                     dt_format = '%Y-%m-%d', dt_freq = 'B',
+                     how_aggregate = {'open':'first', 'high':'max', 'low':'min', 'close':'last'},
+                     force_interactive = True)
+    tsmadObj.get_board()
+    ```
+
+`tseuler` has been built upon:-
+****
+- pandas
+- numpy
+- panel
+- altair
+- matplotlib
+- statsmodels
+
+
+
+## History
+****
+<u>v0.0.4dev0 : Development Package</u>
+- Added TSMAD
+- Added TSSTATS
+
+
