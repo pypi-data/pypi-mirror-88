@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: datacaster
+Version: 0.10.0
+Summary: Cast class attributes on instantiation.
+Home-page: https://github.com/tomguyatt/datacaster
+Author: Tom Guyatt
+Author-email: tomguyatt@gmail.com
+Maintainer: Tom Guyatt
+Maintainer-email: tomguyatt@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: typeguard (==2.7.1)
+Provides-Extra: test
+Requires-Dist: pytest (==4.6.3) ; extra == 'test'
+Requires-Dist: pytest-cov (==2.8.1) ; extra == 'test'
+Requires-Dist: coverage (==5.0) ; extra == 'test'
+Requires-Dist: typeguard (==2.7.1) ; extra == 'test'
+
+UNKNOWN
+
+
