@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: django-logingovpl
+Version: 0.0.1
+Summary: Django Login.gov.pl auth
+Home-page: https://github.com/kuter/django-logingovpl
+Author: kuter
+Author-email: contact@devktr.pl
+License: MIT license
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 2.1
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Dist: Django (<2.2,>=2.1)
+Requires-Dist: django-appconf
+Requires-Dist: xmlsec
+Requires-Dist: defusedxml
+Requires-Dist: requests
+Requires-Dist: pycryptodome
+Requires-Dist: cryptography
+
+UNKNOWN
+
+
