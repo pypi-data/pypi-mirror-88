@@ -1,0 +1,12 @@
+numpy>=1.13.0
+pybind11>=2.5.0
+setuptools>=40.6.0
+setuptools_scm
+
+[release]
+twine
+wheel
+pep517
+
+[test]
+pytest
