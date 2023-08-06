@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: extraEncodings
+Version: 1.4.1a1
+Summary: Extra text encodings for python.
+Home-page: UNKNOWN
+Author: codecode
+Author-email: code80191@gmail.com
+License: UNKNOWN
+Description: # Extra encodings for Python 
+        
+        ## Update 1.4
+        ---
+        Changed my license.
+        Added Gui with tkinter (Please have tkinter or the whole thing won't work)\
+        Finshed ichor\
+        Added a class for a 2 way dict in classsstuff.py so check that out\
+        Killed my brain\
+        Decided not to release a version every week and now every month.
+        Decided to delete encodingsbeta and will make  a beta version package (Coming January)
+        
+        ## Update 1.3.2
+        ----
+        Gen2 and LTF64 released for beta and ichor has progressed for US keyboard.\
+        Updated import process for beta for technical reasons\
+        Added support for Python 3.6\
+        
+        
+        ## Plans:
+        ----
+        Add a function that makes a encoding\
+        Add a github project\
+        Adding more encodings/decodings\
+        Make my TwoWayDict class more feature rich.\
+        Add Binary encodings
+        
+        
+        ## Notes
+        ----
+        This is my first ever package (Which noone has ever installed)\
+        Ichor is not available in GUI due to python dictionarys being stubborn\
+        Currently we only support all characters on a US keyboard for all encoding types and a computer that runs a standard os like Win32/64 , macOS (Not tested), Linux Debian,Ubuntu and distros based on them.
+        
+        ## Planned and Implmented Decodings and encodings:
+        ----
+        Ichor\
+        Gen2\
+        LTF-64\
+        GTX2\
+        BIN10(future update)
+        
+        ## How to import
+        ----
+        ```
+            import extra_Encodings.extra_Encodings_pkg as ExtraEncodings
+             from ExtraEncodings import * 
+        ```
+         
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable 
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
