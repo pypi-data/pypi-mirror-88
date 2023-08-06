@@ -1,0 +1,17 @@
+{
+    "bonds": [
+        {
+            "...": "include(basis/bonds.json)"
+        }
+    ],
+    "coordinates": {
+        "...": "include(basis/atomic_coordinates.json)"
+    },
+    "elements": [
+        {
+            "...": "include(basis/atomic_elements.json)"
+        }
+    ],
+    "name": "basis",
+    "units": "crystal"
+}
