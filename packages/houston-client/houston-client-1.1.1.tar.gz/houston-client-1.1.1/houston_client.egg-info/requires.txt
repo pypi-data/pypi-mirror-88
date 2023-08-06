@@ -1,0 +1,9 @@
+requests<3.0.0dev,>=2.18.0
+requests[security]<3.0.0dev,>=2.18.0
+
+[azure]
+azure-eventgrid<2.0.0,>=1.2.0
+azure-mgmt-eventgrid<3.0.0,>=2.2.0
+
+[gcp]
+google-cloud-pubsub<2.0.0,>=1.2.0
