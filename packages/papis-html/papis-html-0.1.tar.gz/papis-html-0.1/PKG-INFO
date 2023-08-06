@@ -1,0 +1,58 @@
+Metadata-Version: 1.1
+Name: papis-html
+Version: 0.1
+Summary: Create a simple searchable offline html site with your references
+Home-page: https://github.com/papis/scripts/tree/master/papis-html
+Author: Alejandro Gallo
+Author-email: aamsgallo@gmail.com
+License: GPLv3
+Description: .. image:: https://badge.fury.io/py/papis-html.svg
+            :target: https://badge.fury.io/py/papis-html
+        
+        Papis-HTML
+        ==========
+        
+        ::
+        
+          Usage: papis-html [OPTIONS] [QUERY]
+        
+            Create a simple searchable offline html site with your references
+        
+          Options:
+            -h, --help  Show this message and exit.
+            --out TEXT  Output directory
+        
+        For instance, doing
+        
+        ::
+        
+          papis html einstein -o einstein-papers
+        
+        will get you a directory ``einstein-papers`` with a website inside.
+        
+        You can find an example in
+        `here <https://papis.github.io/papis-html/einstein/>`_.
+        
+        Acknowledgements
+        ================
+        
+        This is a simple application of the very nice library
+        `bibtex-js <https://github.com/pcooksey/bibtex-js>`_.
+        
+        
+Keywords: papis,html,bibtex,javascriptmanagement,cli,biliography
+Platform: linux
+Platform: osx
+Classifier: Environment :: Console
+Classifier: Environment :: Console :: Curses
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Utilities
