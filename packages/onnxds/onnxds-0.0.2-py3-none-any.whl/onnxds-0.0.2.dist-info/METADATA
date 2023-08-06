@@ -1,0 +1,29 @@
+Metadata-Version: 2.0
+Name: onnxds
+Version: 0.0.2
+Summary: Create datasets using onnx and serialize tensorflow_datasets in onnx datasets.
+Home-page: https://github.com/mingkaic/onnxds
+Author: Ming Kai Chen
+Author-email: mingkaichen2009@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: tensorflow
+Requires-Dist: tensorflow-datasets
+
+# onnxds
+
+This project partially extends onnx by creating a dataset structure similar to tensorflow_datasets.
+
+# tfgen_dataset
+
+This tool serializes datasets in tensorflow_datasets to onnx TensorProto objects.
+This aims to take all the benefits of datasets without relying on installing tensorflow and its dependencies.
+
+
