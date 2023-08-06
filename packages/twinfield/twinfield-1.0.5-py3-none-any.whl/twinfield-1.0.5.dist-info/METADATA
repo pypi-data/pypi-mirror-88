@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: twinfield
+Version: 1.0.5
+Summary: Read and insert data using the Twinfield API.
+Home-page: https://github.com/zypp-io/twinfield
+Author: Melvin Folkers, Erfan Nariman
+Author-email: melvin@zypp.io, erfan@zypp.io
+License: UNKNOWN
+Project-URL: Bug Reports, https://github.com/zypp-io/twinfield/issues
+Project-URL: Source, https://github.com/zypp-io/twinfield
+Keywords: python,twinfield,API
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: numpy (==1.19.3)
+Requires-Dist: pandas (~=1.1.4)
+Requires-Dist: requests (~=2.24.0)
+Requires-Dist: SQLAlchemy (~=1.3.20)
+Requires-Dist: tqdm (~=4.51.0)
+Requires-Dist: python-dotenv (~=0.15.0)
+
+<p align="center"><img alt="logo" src="https://www.zypp.io/static/assets/img/logos/Main logo - White/Zypp - White - JPG.jpg" width="200"></p>
+
+# twinfield
+
+> Repository for reading and insert data in twinfield using their API.
+
+The repository currently supports the import of the following modules:
+
+<b>Browse codes</b>
+1. 030_1 (transactions)
+2. 040_1 (annual report)
+3. 100 (Customers)
+4. 200 (Suppliers) 
+
+<b>Dimensions</b>
+1. dimensions_kpl (kostenplaatsen)
+2. dimensions_deb (debiteuren stamgegevens)
+3. dimensions_crd (crediteuren stamgegevens)
+
+## Usage
+
+`from twinfield import twinfield` 
+<br><br>
+`df = twinfield.query("040_1",jaar =2020)`
+
+## Environments variables
+Some credentials are needed for connecting with the twinfield API.Add the following credentials to the environment variables.<br> 
+```
+TW_USER_LS=""
+TW_PW_LS=""
+TW_ORG_LS=""
+```
+
+[Link](https://www.twinfield.nl/api) to the Twinfield API documentation.
+
