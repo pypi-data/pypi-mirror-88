@@ -1,0 +1,22 @@
+{{ log.debug() }}
+
+<div class="doc doc-object doc-{{ kind }}">
+  <h{{ heading_level }}
+      id="{{ obj.abs_id }}"
+      class="doc doc-heading"
+      data-toc-label="{{ obj.short_name }}">
+
+    {% if obj.abstract %}<small style="font-weight: normal">abstract</small> {% endif %}
+    <code class="highlight language-crystal">
+      {{ obj.short_name }}<span style="font-weight: normal">{% if obj.args_string.startswith(" ") %} {% endif %}{{ obj.args_string |striptags |highlight(language="crystal", inline=True) }}</span>
+    </code>
+  </h{{ heading_level }}>
+
+  <div class="doc doc-contents {% if root %}first{% endif %}">
+    {% if obj.doc %}{{ obj.doc |convert_markdown(obj, heading_level) }}{% endif %}
+  </div>
+
+  {% if config.show_source_links and obj.source_link %}
+    [<a href="{{ obj.source_link }}">View source</a>]
+  {% endif %}
+</div>
