@@ -1,0 +1,8 @@
+{% extends 'cms/blocks/_sizer.html' %}
+{% load my wagtailimages_tags %}
+
+{% block sizer_content %}
+    <div class="embed-container {% if value.animation %}animation fade-up{% endif %}">
+        {% autoescape off %}{{ value.link|embed }}{% endautoescape %}
+    </div>
+{% endblock %}

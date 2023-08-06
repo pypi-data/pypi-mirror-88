@@ -1,0 +1,43 @@
+.tag-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 50px;
+
+  a {
+    text-decoration: none;
+  }
+
+  &.inline {
+    display: block;
+    min-height: 135px;
+    text-align: center;
+
+    .tag {
+      display: inline-block;
+    }
+  }
+
+  .tag {
+    padding: 5px 20px;
+    margin: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 80px;
+    display: inline-block;
+
+    @include theme($themes) {
+      border: 1px solid $color-2;
+
+      color: t('colorP');
+      background: t('kaks');
+      border-radius: 10px;
+    }
+
+    &.checked {
+      background: $color-2;
+    }
+  }
+}

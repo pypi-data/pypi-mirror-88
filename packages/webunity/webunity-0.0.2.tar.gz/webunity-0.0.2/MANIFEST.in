@@ -1,0 +1,7 @@
+include *.rst
+include AUTHORS
+include LICENSE
+recursive-include src/webunity/cms/templates *.txt *.xml *.html *.js
+recursive-include src/webunity/cms/static *
+recursive-include src/webunity/cms/templatetags *
+recursive-include src/webunity/cms/locale *.mo *.po

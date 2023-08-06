@@ -1,0 +1,30 @@
+{% extends 'cms/blocks/_card.html' %}
+{% load wagtailcore_tags my %}
+{% load static %}
+
+{% block card_entity %}custom{% endblock %}
+
+{% block card_icon %}
+{% endblock %}
+
+{% block card_content %}
+    <div class="align-text-center">
+        {% for media in value.media %}
+            {% include_block media with block_num=block_num %}
+        {% endfor %}
+        {% if value.text %}
+            {% include_block value.text %}
+        {% endif %}
+        {% for useless in 'xxxxx' %}
+            {% if value.score > forloop.counter0 %}
+                <img loading="lazy" class="s-icon x1 nopad review-star"
+                     data-src="{{ icons.star_enable|ico:page.theme }}"
+                     alt="Star enable"/>
+            {% else %}
+                <img loading="lazy" class="s-icon x1 nopad review-star"
+                     data-src="{{ icons.star_disable|ico:page.theme }}"
+                     alt="Star disable"/>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
