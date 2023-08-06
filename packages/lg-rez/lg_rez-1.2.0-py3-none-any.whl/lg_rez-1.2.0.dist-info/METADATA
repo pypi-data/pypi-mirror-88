@@ -1,0 +1,220 @@
+Metadata-Version: 2.1
+Name: lg-rez
+Version: 1.2.0
+Summary: Discord bot for organizing Werewolf RP games ESPCI-style
+Home-page: https://github.com/loic-simon/lg-rez
+Author: Loïc Simon, Tom Lacoma
+Author-email: loic.simon@espci.org, tom.lacoma@espci.org
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: AsyncIO
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: French
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Games/Entertainment :: Role-Playing
+Classifier: Topic :: Internet
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: aiohttp (==3.6.3)
+Requires-Dist: akinator.py (==4.0.1)
+Requires-Dist: async-timeout (==3.0.1)
+Requires-Dist: asyncode (==1.0.0)
+Requires-Dist: attrs (==20.3.0)
+Requires-Dist: cachetools (==4.1.1)
+Requires-Dist: certifi (==2020.11.8)
+Requires-Dist: chardet (==3.0.4)
+Requires-Dist: cycler (==0.10.0)
+Requires-Dist: discord (==1.0.1)
+Requires-Dist: discord-webhook (==0.11.0)
+Requires-Dist: discord.py (==1.5.1)
+Requires-Dist: google-api-core (==1.23.0)
+Requires-Dist: google-api-python-client (==1.12.8)
+Requires-Dist: google-auth (==1.23.0)
+Requires-Dist: google-auth-httplib2 (==0.0.4)
+Requires-Dist: google-auth-oauthlib (==0.4.2)
+Requires-Dist: googleapis-common-protos (==1.52.0)
+Requires-Dist: gspread (==3.6.0)
+Requires-Dist: httplib2 (==0.18.1)
+Requires-Dist: idna (==2.10)
+Requires-Dist: kiwisolver (==1.3.1)
+Requires-Dist: matplotlib (==3.3.3)
+Requires-Dist: multidict (==4.7.6)
+Requires-Dist: numpy (==1.19.4)
+Requires-Dist: oauth2client (==4.1.3)
+Requires-Dist: oauthlib (==3.1.0)
+Requires-Dist: Pillow (==8.0.1)
+Requires-Dist: protobuf (==3.14.0)
+Requires-Dist: psycopg2 (==2.8.6)
+Requires-Dist: pyasn1 (==0.4.8)
+Requires-Dist: pyasn1-modules (==0.2.8)
+Requires-Dist: pyparsing (==2.4.7)
+Requires-Dist: python-dateutil (==2.8.1)
+Requires-Dist: python-dotenv (==0.15.0)
+Requires-Dist: pytz (==2020.4)
+Requires-Dist: requests (==2.25.0)
+Requires-Dist: requests-oauthlib (==1.3.0)
+Requires-Dist: rsa (==4.6)
+Requires-Dist: six (==1.15.0)
+Requires-Dist: SQLAlchemy (==1.3.20)
+Requires-Dist: typing-extensions (==3.7.4.3)
+Requires-Dist: Unidecode (==1.1.1)
+Requires-Dist: uritemplate (==3.0.1)
+Requires-Dist: urllib3 (==1.26.2)
+Requires-Dist: yarl (==1.5.1)
+
+# lg-rez
+
+[![PyPI](https://img.shields.io/pypi/v/lg-rez)](https://pypi.org/project/lg-rez)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/lg-rez)](https://pypi.org/project/lg-rez)
+[![PyPI - Wheel](https://img.shields.io/pypi/wheel/lg-rez)](https://pypi.org/project/lg-rez)
+[![Read the Docs](https://img.shields.io/readthedocs/lg-rez)](https://lg-rez.readthedocs.io)
+
+Discord bot for organizing boisterous Werewolf RP games ESPCI-style.
+
+*Please not that this project's source code (comments, docstrings) is written exclusively in French. The bot itself uses only French language; no internationalization is available at this time.*
+
+
+## Installation
+
+Use the package manager [pip](https://pypi.org/project/pip) to install lg-rez:
+```bash
+pip install lg-rez
+```
+
+We strongly recommand to install this package in a dedicated virtualenv (`python3 -m venv <yourfolder>`).
+
+
+### Dependencies
+
+* Python 3.8+
+* Packages: see [`requirements.txt`](https://github.com/loic-simon/lg-rez/blob/1.2.0/requirements.txt)
+
+
+
+## Configuration
+
+To run correctly, the bot needs to be connected to several external services, each needing more or less sensitive tokens, stocked as environments variables. We support and encourage the use of [`python-dotenv`](https://pypi.org/project/python-dotenv/) to read them from a `.env` file, but you may prefer exporting them as usual environment variables.
+
+All necessary variables, prefixed by `LGREZ_`, are listed in [`model.env`](https://github.com/loic-simon/lg-rez/blob/1.2.0/model.env).
+
+
+### Configuration Assistant Tool
+
+We provide a command-line assistant tool to help you set up every services and generate the `.env` file (which you can later `source` and delete if you wish).
+
+Run it simply with:
+```bash
+cd <your/code/folder>
+<your/venv>/bin/python -m lgrez
+```
+
+This tool also creates a `bot.py` file containing the minimal code needed to run the bot (see *Usage* section below).
+
+
+### Manual configuration
+
+You may prefer to manually write your environment variables, or just check instructions regarding a specific one: they can be found in [`CONFIGURE.md`](https://github.com/loic-simon/lg-rez/blob/1.2.0/CONFIGURE.md).
+
+**Warning**: the Configuration Assistant Tool checks every variable by running specific tests, which is not the case for manual configuration, so be sure of what you do!
+
+
+
+## Usage
+
+This package's external API consists essentially in a [`discord.ext.commands.Bot`](https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#bot) subclass, **`LGBot`**, which implements every features needed to play.
+
+The minimal code needed to run the bot in a configured folder (generated by the configuration assistant tool) is:
+```py
+from lgrez import LGBot
+
+bot = LGBot()
+bot.run()
+```
+
+### Bot usage
+
+Once the bot connected to your Discord server, send `!help` to see every available commands (note: some commands are only visible by specific roles; grant yourself the "`MJ`" AND "Joueur en vie" roles to see everything.) \
+Use `!help command` to get more information about a command.
+
+For precisions relative to non-command features (such as "IA" reactions to messages), look at the corresponding file in [`features`](https://github.com/loic-simon/lg-rez/blob/1.2.0/lgrez/features) (commented and documented).
+
+
+### Customization
+
+Since `LGBot` is a subclass of [`discord.ext.commands.Bot`](https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#bot), you can use every arguments and methods it supports or subclass it to override existing behavior.
+
+See additional attributes and overriden methods on [the doc](https://lg-rez.readthedocs.io/) (beta, French)
+
+Some useful examples:
+
+#### Change command prefix
+```py
+from lgrez import LGBot
+
+bot = LGBot(command_prefix="?")
+bot.run()
+```
+
+#### Delete a command or alias
+```py
+from lgrez import LGBot
+
+bot = LGBot()
+bot.remove_command("command_name")
+bot.run()
+```
+
+#### Add a command or change the behavior of a command
+```py
+from discord.ext import commands
+from lgrez import LGBot
+
+@commands.command()
+async def mycommand(ctx, ...):
+    ...
+
+bot = LGBot()
+bot.remove_command("mycommand")     # If replacing an existing command
+bot.add_command(mycommand)
+bot.run()
+```
+
+#### Enhance or replace the reaction to a Discord event
+```py
+from lgrez import LGBot
+
+async def say_hello(bot, member):
+    await member.send("Hey!")
+
+class MyBot(LGBot):
+    """Your customized bot class"""
+    async def on_member_join(self, member):
+        await say_hello(self, member)
+        super().on_member_join(member)      # Invoke the original reaction
+
+bot = MyBot()
+bot.run()
+```
+
+See [discord.py documentation](https://discordpy.readthedocs.io) for more ideas.
+
+
+
+## Contributing
+
+Community contributions are not welcome for now. Get in touch with the authors (see below) for any question or suggestion about this project.
+
+
+
+## License
+This work is shared under [the MIT license](https://github.com/loic-simon/lg-rez/blob/1.2.0/LICENSE).
+
+© 2020 Loïc Simon, Tom Lacoma et al. – Club BD-Jeux × GRIs – ESPCI Paris - PSL
+
+Reach us on Discord: [LaCarpe#1674](https://discordapp.com/users/264482202966818825), [TaupeOrAfk#3218](https://discordapp.com/users/176763552202358785) or by mail: [loic.simon@espci.org](mailto:loic.simon@espci.org), [tom.lacoma@espci.org](mailto:tom.lacoma@espci.org)
+
+
