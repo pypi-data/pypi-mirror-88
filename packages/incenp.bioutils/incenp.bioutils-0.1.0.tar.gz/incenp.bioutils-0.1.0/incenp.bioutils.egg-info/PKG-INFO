@@ -1,0 +1,109 @@
+Metadata-Version: 2.1
+Name: incenp.bioutils
+Version: 0.1.0
+Summary: Incenp.org’s utilities for computational biology
+Home-page: UNKNOWN
+Author: Damien Goutte-Gattat
+Author-email: dgouttegattat@incenp.org
+License: UNKNOWN
+Description: Incenp.Bioutils - Incenp.org’s utilities for computational biology
+        ==================================================================
+        
+        Incenp.Bioutils is a set of command line utilities and helper Python
+        modules to deal with some computational biology tasks.
+        
+        
+        Utilities
+        ---------
+        
+        ### SeqTool
+        
+        *SeqTool* is intended as a “Swiss Army knife” to perform various
+        operations on biological sequence files.
+        
+        Among other things, it provides wrappers for the `blast` and `dotter`
+        alignment tools; the main interest of those wrappers is that they can be
+        used with sequences in any format supported by Biopython’s SeqIO module,
+        whereas the original tools only read files in the FASTA format.
+        
+        
+        ### SeqVault
+        
+        *SeqVault* is a command-line interface to [BioSQL](https://biosql.org/)
+        databases.
+        
+        *SeqVault* is intended to be used with a slightly modified version of the
+        BioSQL database schema (provided in the `biosql` directory), where every
+        `biodatabase` is associated with a 3-letters prefix. That prefix is then
+        used to automatically assign accession numbers (of the form `PRE_xxxxxx`
+        where `PRE` is the prefix) when importing sequences into the database.
+        However *SeqVault* can also be used with pristine BioSQL databases.
+        
+        
+        #### Quickstart (example with PostgreSQL)
+        Create a new PostgreSQL user account and a new database::
+        
+            # createuser <username>
+            # createdb -O owner <username> <dbname>
+            
+        Initialize the newly created database by running the provided
+        `biosql/biosqldb-pg.sql` script::
+        
+            $ psql -h localhost -U <username> <dbname> < biosql/biosqldb-pg.sql
+            
+        Next, create a plaintext file in `$XDG_CONFIG_HOME/seqvault/seqvault.rc`
+        and fill it as follows::
+        
+            [Server]
+            host: localhost
+            user: <username>
+            password: <PostgreSQL user password>
+            database: <dbname>
+            
+        *SeqVault* is now ready to be used.
+        
+        
+        ### cc3d-runner
+        
+        *CC3d-Runner* is a small wrapper around the command-line interface of
+        [CompuCell3D](https://compucell3d.org/), to run headless simulations.
+        
+        
+        Prerequisites
+        -------------
+        The following Python packages are necessary:
+        
+        - [Biopython](https://biopython.org/),
+        
+        - [Click](https://palletsprojects.com/p/click/),
+        
+        - [Click-Shell](https://github.com/clarkperkins/click-shell).
+        
+        [ReportLab](http://www.reportlab.com/) is required to run the `plasmm`
+        subcommand of the `seqtool` utility.
+        
+        The `seqvault` utility requires a SQL adapter for the database server
+        you plan to use it with, such as [psycopg2](https://psycopg.org/) for
+        PostgreSQL. 
+        
+        
+        Copying
+        -------
+        Incenp.Bioutils is distributed under the terms of the GNU General Public
+        License, version 3 or higher. The full license is included in the
+        [COPYING file](COPYING) of the source distribution.
+        
+        
+        Homepage and repository
+        -----------------------
+        The project is located at <https://incenp.org/dvlpt/bioutils.html>. The
+        source code is available in a Git repository at
+        <https://git.incenp.org/damien/bioutils>.
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+Provides-Extra: plasmm
