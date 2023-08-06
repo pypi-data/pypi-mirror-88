@@ -1,0 +1,1 @@
+from .sortingperformancewidget import plot_sorting_performance
