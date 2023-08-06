@@ -1,0 +1,84 @@
+WARNING: VerifyWarning: Invalid 'BLANK' keyword in header.  The 'BLANK' keyword is only applicable to integer data, and will be ignored in this HDU. [astropy.io.fits.hdu.image]
+WARNING: FITSFixedWarning: 'datfix' made the change 'Set DATE-REF to '1858-11-17' from MJD-REF'. [astropy.wcs.wcs]
+Reading fitsdata/NGC4047.co.smo7msk.K.fits
+RA ref is 180.71125
+DEC ref is 48.6361944444
+This is a data cube of shape (44, 128, 128)
+Axis 1: crpix=65.0
+Axis 2: crpix=65.0
+Axis 3: crpix=1.0
+Remainder:  [1, 1, 0]
+  Name   ix  iy  iz  ra_off   dec_off  rad_arc azi_ang  vel   co_data
+                      deg       deg     arcsec   deg   km / s    K   
+------- --- --- --- -------- --------- ------- ------- ------ -------
+NGC4047   1   1  20 0.026472 -0.017503 100.105  42.997 3380.0     nan
+NGC4047   1   1  21 0.026472 -0.017503 100.105  42.997 3400.0     nan
+NGC4047   1   1  22 0.026472 -0.017503 100.105  42.997 3420.0     nan
+NGC4047   1   1  23 0.026472 -0.017503 100.105  42.997 3440.0     nan
+NGC4047   1   1  24 0.026472 -0.017503 100.105  42.997 3460.0     nan
+NGC4047   1   1  25 0.026472 -0.017503 100.105  42.997 3480.0     nan
+NGC4047   1   1  26 0.026472 -0.017503 100.105  42.997 3500.0     nan
+NGC4047   1   1  27 0.026472 -0.017503 100.105  42.997 3520.0     nan
+NGC4047   1   1  28 0.026472 -0.017503 100.105  42.997 3540.0     nan
+NGC4047   1   1  29 0.026472 -0.017503 100.105  42.997 3560.0     nan
+    ... ... ... ...      ...       ...     ...     ...    ...     ...
+NGC4047   1   1  40 0.026472 -0.017503 100.105  42.997 3780.0     nan
+NGC4047   1   1  41 0.026472 -0.017503 100.105  42.997 3800.0     nan
+NGC4047   1   1  42 0.026472 -0.017503 100.105  42.997 3820.0     nan
+NGC4047   1   1  43 0.026472 -0.017503 100.105  42.997 3840.0     nan
+NGC4047   1   4   0 0.026473 -0.016670  97.079  41.505 2980.0     nan
+NGC4047   1   4   1 0.026473 -0.016670  97.079  41.505 3000.0     nan
+NGC4047   1   4   2 0.026473 -0.016670  97.079  41.505 3020.0     nan
+NGC4047   1   4   3 0.026473 -0.016670  97.079  41.505 3040.0     nan
+NGC4047   1   4   4 0.026473 -0.016670  97.079  41.505 3060.0     nan
+NGC4047   1   4   5 0.026473 -0.016670  97.079  41.505 3080.0     nan
+Length = 30 rows
+Reading fitsdata/NGC4047.co.smo7_dil.ecube.fits.gz
+RA ref is 180.71125
+DEC ref is 48.6361944444
+This is a data cube of shape (44, 128, 128)
+Axis 1: crpix=65.0
+Axis 2: crpix=65.0
+Axis 3: crpix=1.0
+Remainder:  [1, 1, 0]
+Reading fitsdata/NGC4047.co.smo7_dil.mask.fits.gz
+RA ref is 180.71125
+DEC ref is 48.6361944444
+This is a data cube of shape (44, 128, 128)
+Axis 1: crpix=65.0
+Axis 2: crpix=65.0
+Axis 3: crpix=1.0
+Remainder:  [1, 1, 0]
+Reading fitsdata/NGC4047.co.smo7_smo.mask.fits.gz
+RA ref is 180.71125
+DEC ref is 48.6361944444
+This is a data cube of shape (44, 128, 128)
+Axis 1: crpix=65.0
+Axis 2: crpix=65.0
+Axis 3: crpix=1.0
+Remainder:  [1, 1, 0]
+  Name   ix  iy  iz  ra_off  ...  vel   co_data co_rms co_dilmsk co_smomsk
+                      deg    ... km / s    K      K                       
+------- --- --- --- -------- ... ------ ------- ------ --------- ---------
+NGC4047   1   1  20 0.026472 ... 3380.0     nan    nan       0.0       0.0
+NGC4047   1   1  21 0.026472 ... 3400.0     nan    nan       0.0       0.0
+NGC4047   1   1  22 0.026472 ... 3420.0     nan    nan       0.0       0.0
+NGC4047   1   1  23 0.026472 ... 3440.0     nan    nan       0.0       0.0
+NGC4047   1   1  24 0.026472 ... 3460.0     nan    nan       0.0       0.0
+NGC4047   1   1  25 0.026472 ... 3480.0     nan    nan       0.0       0.0
+NGC4047   1   1  26 0.026472 ... 3500.0     nan    nan       0.0       0.0
+NGC4047   1   1  27 0.026472 ... 3520.0     nan    nan       0.0       0.0
+NGC4047   1   1  28 0.026472 ... 3540.0     nan    nan       0.0       0.0
+NGC4047   1   1  29 0.026472 ... 3560.0     nan    nan       0.0       0.0
+    ... ... ... ...      ... ...    ...     ...    ...       ...       ...
+NGC4047   1   1  40 0.026472 ... 3780.0     nan    nan       0.0       0.0
+NGC4047   1   1  41 0.026472 ... 3800.0     nan    nan       0.0       0.0
+NGC4047   1   1  42 0.026472 ... 3820.0     nan    nan       0.0       0.0
+NGC4047   1   1  43 0.026472 ... 3840.0     nan    nan       0.0       0.0
+NGC4047   1   4   0 0.026473 ... 2980.0     nan    nan       0.0       0.0
+NGC4047   1   4   1 0.026473 ... 3000.0     nan    nan       0.0       0.0
+NGC4047   1   4   2 0.026473 ... 3020.0     nan    nan       0.0       0.0
+NGC4047   1   4   3 0.026473 ... 3040.0     nan    nan       0.0       0.0
+NGC4047   1   4   4 0.026473 ... 3060.0     nan    nan       0.0       0.0
+NGC4047   1   4   5 0.026473 ... 3080.0     nan    nan       0.0       0.0
+Length = 30 rows
