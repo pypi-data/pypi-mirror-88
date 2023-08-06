@@ -1,0 +1,17 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "steamstore"
+dist-name = "steamstore"
+description-file = "README.md"
+author = "Sauce"
+author-email = "saucesteals@gmail.com"
+home-page = "https://github.com/saucesteals/steamstore.py"
+classifiers = [
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+]
+requires-python = ">=3.6"
