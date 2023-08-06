@@ -1,0 +1,216 @@
+Metadata-Version: 2.1
+Name: autodiff-djw
+Version: 0.1
+Summary: Automatic differentiation package AC207
+Home-page: https://github.com/DJ-WJ/cs107-FinalProject
+Author: David Chataway, Javiera Astudillo, Wenhan Zhang
+Author-email: jastudillo@g.harvard.edu
+License: UNKNOWN
+Description: [![codecov](https://codecov.io/gh/DJ-WJ/cs107-FinalProject/branch/master/graph/badge.svg?token=C38YL2T5X5)](https://codecov.io/gh/DJ-WJ/cs107-FinalProject)
+        
+        [![Build Status](https://travis-ci.com/DJ-WJ/cs107-FinalProject.svg?token=q44Rdg7inB6rSpQTpr1j&branch=master)](https://travis-ci.com/DJ-WJ/cs107-FinalProject)
+        
+        # cs107-FinalProject
+        
+        ## Group 26
+        
+        * David Chataway
+        * Javiera Astudillo
+        * Wenhan Zhang
+        
+        ## Introduction
+        
+        Our library, AutoDiff, will seek to provide an automatic differentiation (AD) tool that will contain modules for both forward and reverse mode and will enable user customization (for instance, optional arguments for the unit vector(s) to seed and which execution information, like run time, to return). The library will be able to return the partial derivative of an output function with respect to an input variable so that other users will be able to use the library in other algorithms like Newton’s method. Developing a user-friendly and efficient AD library is important for two primary reasons: 
+        
+        1. Automatic differentiation can improve upon symbolic differentiation offered by symbolic libraries (like SymPy) or by web services (like Wolfram Alpha) because AD methods can achieve machine precision while executing faster because AD does not need to carry through the whole expression tree and doesn’t suffer from exponentially longer derivative expressions (due to for example multiple product rules).
+            
+        2. Efficient automatic differentiation is necessary to optimize computational cost and time due to different scaling between forward and reverse modes and the storing of intermediate variables and expressions. This is crucial in many applications such as optimization algorithms (e.g. gradient descent).
+            
+        ## Background
+        
+        In our understanding, at the heart of AD is the idea that functional expressions can be broken down into elementary symbolic expressions and the numerical result of the function’s derivatives can be calculated by storing the value and derivative value at intermediate variables of those expressions. The graph structure of automatic differentiation arises because these intermediate variables can have both parents and children that each point to different steps in the evaluation trace. Furthermore, many of these intermediate variables will have multiple children - i.e. they will be used more than once in the evaluation trace. 
+        Although forward and reverse mode differ in terms of the order in which the graph is evaluated, both modes 1) produce the same graph, 2) evaluate the derivatives at each child node by using a stored derivative value with respect to the parent node(s) and 3) take a function of dimension n (number of input variables) and produce its numerical derivative, in the form of a Jacobian (or its transpose) of dimension m (number of outputs).
+        
+        <img src="imgs/jacobian.PNG" width="400">
+        
+        ### Forward mode
+        
+        In the forward mode, we calculate the partial derivatives by evaluating the chain rule for each intermediate variable during the forward pass. This is done by both applying a symbolic derivative of the intermediate variable and directly applying the derivative value of the parent node(s). For instance, for an intermediate variable expressed as a function of a function (its parent node), h(u(t)), the chain rule is evaluated as follows:
+        
+        <img src="imgs/forward_formula.PNG" width="100">
+        
+        where the first term of the multiplication is evaluated symbolically and the second term is taken from the derivative value of the parent node.
+        
+        Because of the graph structure, the forward mode will be able to compute the partial derivative of all of the n outputs with respect to a single input variable (if seeded in the unit direction of that specific input variable). That is, each forward pass produces a single column of the Jacobian matrix.
+        
+        ### Reverse mode
+        
+        In the reverse mode, rather than directly computing the chain rule at each intermediate variable, you just store the partial derivatives and the dependencies of the expression tree during the forward pass. Then, you do a reverse pass by starting at a single output variable, ‘seeding it’ (e.g. set the derivative of the output variable to 1 and the derivatives of the other output variables to 0) and propagating backwards to all the input variables. We are essentially asking, ‘the output variable affect can affect which input variables’? This is possible by calculating the ‘adjoint’ which stores the current value of the partial derivative of the output with respect to the variable at node i according to the following formula, where j is a child of i.
+        
+        <img src="imgs/reverse_formula_1.PNG" width="175">
+        
+        However, in order to calculate the derivative of a different output variable, we need to re-run the program again with a different unit seed. As a result, each run of the reverse mode will generate a single row of the Jacobian (or a column of the transpose of the Jacobian).
+        
+        #### Example
+        
+        For example, consider the function f(x,y), shown below (same as the one in pair programming 6). 
+        
+        <img src="imgs/Example.PNG" width="250">
+        
+        Rather than storing the entire symbolic derivative expression, we can instead break down the function into intermediate variables (shown below) and store (or overload) the symbolic derivatives of the elemental operations of +/-, \*\*2, exp(), sin() and cos(). 
+        
+        For forward mode, all that needs to be stored is a tuple of the value and the derivative value according to a particular seed. Thus, this evaluation would need to be run twice for the two seed vectors corresponding to each input variable.
+        
+        <img src="imgs/forward_example_trace.PNG" width="350">
+        
+        If this automatic differentiation were to be evaluated in reverse mode, on the forward pass at each node we would instead store the values of the intermediate variable partial derivatives with respect to each parent argument (rather that applying the chain rule) and then we would work backwards in one pass to calculate df/dx and df/dy using the adjoint method. These graph structures are outlined below:
+        
+        <img src="imgs/graph_structure.PNG" width="900">
+        
+        ## How to use
+        
+        Our solution is provided as a Python package called `AutoDiff` and is available through [`pip`](https://pypi.org/project/pip/), a package installer tool for Python. The prerequisite to use `AutoDiff` is to have [`Python`](https://www.python.org/downloads/) installed.
+        
+        ### PIP
+        
+        ```
+        python3 -m pip install autodiff-djw
+        ```
+        
+        ### Demo
+        
+        Let's say we want to take the derivative with respect to `x` at `x=pi/16` for the following function:
+        
+        <img src="imgs/demo_formula.png" width="500">
+        
+        This analytical solution may be approximated through the `AutoDiff` library through either the forward or reverse modes as follows. It can be seen that the returned derivatives are equal to each other (within machine precision) and to the expected value.
+        
+        #### Forward Mode
+        
+        ```
+        import numpy as np
+        from autodiff import AutoDiff
+        from autodiff.elementary import log, exp, sin, cos, tan, arcsin, arccos, arctan, sinh, cosh, tanh, sqrt, expit
+        
+        inputs_vals = [np.pi/4, np.pi/8, np.pi/16] 
+        seed = [1,1,0]
+        
+        f1 = lambda inputs: inputs[0]*inputs[2]**2 
+        f2 = lambda inputs: sin(inputs[1])
+        f = np.array([f1, f2])
+        
+        autodiff = AutoDiff(f=f, vals=inputs_vals, mode='forward') 
+        
+        print(autodiff.inputs)
+        >> [0.7853981633974483, 0.39269908169872414, 0.19634954084936207]
+        
+        print(autodiff.outputs)
+        >> [0.03027956707060529, 0.3826834323650898]
+        
+        print(autodiff.jacobian)
+        >> [[0.03855314 0.         0.30842514]
+         [0.         0.92387953 0.        ]]
+         
+        print(autodiff.gradient(fn_idx=0))
+        >> [0.03855314 0.         0.30842514]
+        
+        print(autodiff.dir_der(seed=seed))
+        >> [0.03855314 0.92387953]
+        ```
+        
+        #### Reverse Mode
+        
+        ```
+        import numpy as np
+        from autodiff import AutoDiff
+        from autodiff.elementary import log, exp, sin, cos, tan, arcsin, arccos, arctan, sinh, cosh, tanh, sqrt, expit
+        
+        inputs_vals = [np.pi/4, np.pi/8, np.pi/16] 
+        seed = [1,1,0]
+        
+        f1 = lambda inputs: inputs[0]*inputs[2]**2 
+        f2 = lambda inputs: sin(inputs[1])
+        f = np.array([f1, f2])
+        
+        autodiff = AutoDiff(f=f, vals=inputs_vals, mode='reverse') 
+        
+        print(autodiff.inputs)
+        >> [0.7853981633974483, 0.39269908169872414, 0.19634954084936207]
+        
+        print(autodiff.outputs)
+        >> [0.03027956707060529, 0.3826834323650898]
+        
+        print(autodiff.jacobian)
+        >> [[0.03855314 0.         0.30842514]
+         [0.         0.92387953 0.        ]]
+         
+        print(autodiff.gradient(fn_idx=0))
+        >> [0.03855314 0.         0.30842514]
+        
+        print(autodiff.dir_der(seed=seed))
+        >> [0.03855314 0.92387953]
+        ```
+        
+        
+        ## Software organization
+        
+        The current structure of our project is as following:
+        
+        ```
+        .
+        ├── src
+        │   ├── autodiff
+        │   │   ├── autodiff_.py
+        │   │   ├── elementary.py
+        │   │   ├── forward.py
+        │   │   ├── reverse.py
+        │   │   └── ...
+        │   ├── demo
+        │   └── tests
+        └── docs
+            ├── README.md
+            └── imgs
+        
+        ```
+        
+        `forward.py` and `reverse.py` modules contain the core functions to use our `AutoDiff` package in forward and reverse mode correspondingly. `elementary.py` provides elementary math functions to use in conjunction with our library while `autodiff_.py` contains the `AutoDiff` class for accesing the auto-differentiation methods of our library. All our tests are located in `src/tests` which are integrated with Travis CI and Codecov. To run the test suite you'll need to install `pytest` and `codecov`:
+        
+        ```
+        pip install pytest pytest-cov
+        pip install codecov
+        ```
+        
+        Once both previous packages are installed you may run the test suite locally (starting at the root of our folder structure):
+        
+        ```
+        cd .
+        export PYTHONPATH="$PWD/src"
+        python -m pytest --cov src/tests
+        ```
+        
+        ## Implementation details
+        
+        #### Forward Mode
+        1) A “Variable” class was created with .val and .der attributes and overloaded elementary dunder methods (add, mul, pow)
+        2) Functions were created for other mathematical expressions (e.g. sin, log) that output Variable objects with .val and .der attributes
+        3) The user is required to input variables as Variable objects
+        4) The user is required to input functions according to syntax in #2
+        5) The partial derivatives are computed by seeding input variables with .der = 1 and other input variables with .der = 0
+        
+        #### Reverse Mode
+        1) A “Node” class was created with .val, .grad_value and .children ([partial der, child object]) attributes and overloaded elementary dunder methods (add, mul, pow) that output the partial derivatives and updates the .children attribute for both self and ‘other’
+        2) Functions were created for other mathematical expressions (e.g. sin, log) that output Node objects and update the .children atrribute for the input Nodes (thus acting as the forward pass)
+        3) A grad method was created that recursively sums the (partial der * adjoint) for all children of the parent Node (thus acting as the backwards pass)
+        4) The user is required to input variables as Node objects
+        5) The user is required to input functions according to syntax in #2
+        6) The partial derivatives are computed by seeding output functions with .grad_value = 1 and other output functions with .grad_value = 0. Since the grad() method is recursive, it will compute the summation of the partial derivative and adjoints from the child output functions to the parent input variables.
+        
+        ## Future Features
+        Development work is currently being conducted to a) add more functions to the list of compatible functions, b) return the Jacobian by iterating the seed vectors and c) return information about the execution of the program (such as run time).
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
