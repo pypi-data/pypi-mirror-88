@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: pmon
+Version: 0.1.1
+Summary: A process monitor for linux
+Home-page: https://github.com/pmav99/pmon
+License: MIT
+Keywords: cli,typer,process,monitor
+Author: Panos Mavrogiorgos
+Author-email: pmav99@gmail.com
+Requires-Python: >=3.6,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development
+Classifier: Topic :: System
+Classifier: Topic :: Utilities
+Requires-Dist: psutil (>=5.7.3,<6.0.0)
+Requires-Dist: typer[all] (>=0.3.2,<0.4.0)
+Project-URL: Repository, https://github.com/pmav99/pmon
+Description-Content-Type: text/markdown
+
+## pmon
+
+A process monitor for linux
+
+```
+$ pmon 23245
+
+rss       vms       pss       swap      uss       cpu (%)   mem (%)
+1.06G     2.52G     1.05G     0B        1.05G     0.00      6.83
+1.06G     2.52G     1.05G     0B        1.05G     0.00      6.83
+1.12G     2.58G     1.11G     0B        1.11G     64.20     7.22
+1.12G     2.58G     1.11G     0B        1.11G     0.00      7.22
+```
+
+### Install
+
+```
+pipx install pmon
+```
+
