@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: sciutils
+Version: 0.2
+Summary: UNKNOWN
+Home-page: UNKNOWN
+License: UNKNOWN
+Description: 🧪 sciutils
+        ===========
+        
+        .. image:: https://github.com/tillahoffmann/sciutils/workflows/CI/badge.svg
+          :target: https://github.com/tillahoffmann/sciutils/actions?query=workflow%3A%22CI%22
+        
+        .. image:: https://img.shields.io/pypi/v/sciutils.svg?style=flat-square
+           :target: https://pypi.python.org/pypi/sciutils
+        
+        .. image:: https://readthedocs.org/projects/sciutils/badge/?version=latest
+          :target: https://sciutils.readthedocs.io/en/latest/?badge=latest
+        
+        A collection of functionality useful for scientific computing.
+        
+        Interface
+        ---------
+        
+        :code:`.. automodule:: sciutils`
+           :members:
+        
+        :code:`.. automodule:: sciutils.stats`
+           :members:
+        
+Platform: UNKNOWN
+Description-Content-Type: text/x-rst
+Provides-Extra: tests
+Provides-Extra: docs
