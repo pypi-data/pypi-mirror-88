@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: varg
+Version: 1.6.7
+Summary: Benchmark vcf-files against a truth-set of positive controls
+License: MIT
+Author: henrikstranneheim
+Author-email: henrik.stranneheim@scilifelab.se
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: Cython (>=0.29.21,<0.30.0)
+Requires-Dist: click (==7.1.2)
+Requires-Dist: coloredlogs (>=14.0,<15.0)
+Requires-Dist: cyvcf2 (>=0.10.0,<0.11.0)
+Requires-Dist: importlib-metadata (>=3.1.1,<4.0.0)
