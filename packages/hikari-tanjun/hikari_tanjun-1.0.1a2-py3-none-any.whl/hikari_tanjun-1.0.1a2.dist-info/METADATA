@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: hikari-tanjun
+Version: 1.0.1a2
+Summary: A flexible command client designed to extend Hikari
+Home-page: https://github.com/FasterSpeeding/Tanjun
+Author: Faster Speeding
+Author-email: luke@lmbyrne.dev
+License: BSD
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Planning
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8.0,<3.10
+Description-Content-Type: text/markdown
+Requires-Dist: hikari (~=2.0.0.dev94)
+Requires-Dist: hikari-yuyo (~=0.0.3.a1)
+
+# Tanjun
+
+A flexible command framework designed to extend Hikari.
+
+# Instillation
+
+You can install Tanjun from PyPI using the following command.
+
+```
+python -m pip install hikari-tanjun -U
+```
+
+# Quick Usage.
+
+For usage see the the [documentation](https://fasterspeeding.github.io/Tanjun/)
+and the [examples](https://github.com/FasterSpeeding/Tanjun/tree/master/examples).
+
+
+
