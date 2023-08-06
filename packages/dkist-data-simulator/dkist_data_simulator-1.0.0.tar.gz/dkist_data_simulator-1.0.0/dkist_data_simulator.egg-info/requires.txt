@@ -1,0 +1,15 @@
+dkist-fits-specifications
+
+[all]
+
+[docs]
+sphinx
+sphinx-automodapi
+sphinx-autodoc-typehints
+
+[test]
+pytest
+pytest-doctestplus
+pytest-cov
+fits-validator
+dkist-inventory
