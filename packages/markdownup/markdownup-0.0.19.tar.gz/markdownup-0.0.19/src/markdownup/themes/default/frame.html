@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8"/>
+
+        <title>{{title}}</title>
+
+        <link rel="stylesheet" type="text/css" href="/frame.css" />
+        <link rel="stylesheet" type="text/css" href="/pygmentize-codehilite.css" />
+
+        <script src="/relative-time.js"></script>
+    </head>
+
+    <body>
+        {{#root}}
+            <div class="header">
+                {{#index}}
+                    <a class="title" href="{{request_path}}">{{title}}</a>
+                {{/index}}
+                {{#auth}}
+                    {{#display_name}}
+                        <span class="auth_display_name">{{display_name}}</span>
+                    {{/display_name}}
+                {{/auth}}
+            </div>
+
+            <div class="menu">
+                {{>menu}}
+            </div>
+        {{/root}}
+
+        <div class="document">
+            {{#file.version}}
+                <div class="version">
+                    Version <abbr title="{{hash}}">{{short_hash}}</abbr>
+                    committed <time datetime="{{date}}">{{date}}</time>
+                    by {{author.name}}.
+                </div>
+            {{/file.version}}
+
+            <div class="content">
+                {{{content}}}
+            </div>
+        </div>
+    </body>
+</html>
