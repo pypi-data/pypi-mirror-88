@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: dude
+Version: 0.1.2
+Summary: tool similar to du but a little fancier i guess
+Home-page: https://github.com/andrew12/dude
+License: MIT
+Author: Andrew Herbig
+Author-email: notandrewherbig@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: humanize (>=3.1.0,<4.0.0)
+Requires-Dist: tabulate (>=0.8.7,<0.9.0)
+Project-URL: Repository, https://github.com/andrew12/dude
