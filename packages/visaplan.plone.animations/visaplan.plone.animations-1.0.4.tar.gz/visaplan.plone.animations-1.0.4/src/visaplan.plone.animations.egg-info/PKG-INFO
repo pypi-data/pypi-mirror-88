@@ -1,0 +1,164 @@
+Metadata-Version: 2.1
+Name: visaplan.plone.animations
+Version: 1.0.4
+Summary: A dexterity-based content type for animations.
+Home-page: UNKNOWN
+Author: Tobias Herp
+Author-email: tobias.herp@visaplan.com
+License: GPL version 2
+Project-URL: Source, https://github.com/visaplan/visaplan.plone.animations
+Project-URL: Documentation, https://pypi.org/project/visaplan.plone.animations
+Project-URL: Tracker, https://github.com/visaplan/visaplan.plone.animations/issues
+Description: .. This README is meant for consumption by humans and pypi. Pypi can render rst files so please do not use Sphinx features.
+           If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide.html
+           This text does not appear on pypi or github. It is a comment.
+        
+        =========================
+        visaplan.plone.animations
+        =========================
+        
+        A dexterity-based content type for animations.
+        
+        
+        Features
+        --------
+        
+        - Can be bullet points
+        
+        
+        Examples
+        --------
+        
+        This add-on can be seen in action at the following sites:
+        
+        - Is there a page on the internet where everybody can see the features?
+        - https://www.unitracc.de
+        - https://www.unitracc.com
+        
+        
+        Documentation
+        -------------
+        
+        Sorry, we don't have real user documentation yet.
+        
+        
+        Installation
+        ------------
+        
+        Install visaplan.plone.animations by adding it to your buildout::
+        
+            [buildout]
+        
+            ...
+        
+            eggs =
+                visaplan.plone.animations
+        
+        
+        and then running ``bin/buildout``
+        
+        
+        Contribute
+        ----------
+        
+        - Issue Tracker: https://github.com/visaplan/visaplan.plone.animations/issues
+        - Source Code: https://github.com/visaplan/visaplan.plone.animations
+        
+        
+        Support
+        -------
+        
+        If you are having issues, please let us know;
+        please use the `issue tracker`_ mentioned above.
+        
+        
+        License
+        -------
+        
+        The project is licensed under the GPLv2.
+        
+        .. _`issue tracker`: https://github.com/visaplan/visaplan.plone.animations/issues
+        
+        .. vim: tw=79 cc=+1 sw=4 sts=4 si et
+        
+        
+        Contributors
+        ============
+        
+        - Tobias Herp, tobias.herp@visaplan.com
+        
+        
+        Changelog
+        =========
+        
+        
+        1.1 (unreleased)
+        ----------------
+        
+        - CreateJS-based "Type 2", using `class` instead of `id` attributes
+        
+        [tobiasherp]
+        
+        
+        1.0.4 (2020-12-16)
+        ------------------
+        
+        Improvements:
+        
+        - Made FolderishAnimations clickable even if lacking a preview image
+        
+        [tobiasherp]
+        
+        
+        1.0.3 (2020-03-05)
+        ------------------
+        
+        - Views for AJAX navigation support (based on visaplan.plone.ajaxnavigation_)
+        - Added an ``ajax-nav`` view to prevent Plone from trying to load a FolderishAnimation via AJAX
+          (since this doesn't work yet).
+        - Since it is not usable as an AJAX navigation target,
+          the ``embed`` view has been renamed to ``onlyme``
+        
+        [tobiasherp]
+        
+        
+        1.0.2 (2019-10-22)
+        ------------------
+        
+        - Removed profile dependency on visaplan.plone.behaviors, since the current version 1.0.2 doesn't have one.
+        
+        [tobiasherp]
+        
+        
+        1.0.1 (2019-06-26)
+        ------------------
+        
+        - Support for preloader images, recognized by name
+        - use visaplan.plone.staticthumbnails_
+        - Add CSS classes to HTML text
+        
+        [tobiasherp]
+        
+        
+        1.0 (2019-05-20)
+        ----------------
+        
+        - Initial release.
+          [tobiasherp]
+        
+        .. _visaplan.plone.ajaxnavigation: https://pypi.org/project/visaplan.plone.ajaxnavigation
+        .. _visaplan.plone.staticthumbnails: https://pypi.org/project/visaplan.plone.staticthumbnails
+        
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Plone
+Classifier: Framework :: Plone :: 4.3
+Classifier: Framework :: Zope2
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: German
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: GNU General Public License v2 (GPLv2)
+Description-Content-Type: text/x-rst
+Provides-Extra: test

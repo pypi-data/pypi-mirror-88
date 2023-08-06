@@ -1,0 +1,65 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# Translations catalog template for the visaplan.plone.animations Plone add-on.
+# Tobias Herp <tobias.herp@visaplan.com>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: visaplan.plone.animations\n"
+"POT-Creation-Date: 2019-05-16 09:01+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: visaplan.plone.animations\n"
+
+#: ../profiles/default/types/FolderishAnimation.xml
+msgid "A folderish animation type which *contains* auxiliary files"
+msgstr ""
+
+#: ../content/folderish_animation.py:35
+msgid "Basic"
+msgstr ""
+
+#: ../profiles/default/types/FolderishAnimation.xml
+msgid "Edit"
+msgstr ""
+
+#: ../profiles/default/types/FolderishAnimation.xml
+msgid "FolderishAnimation"
+msgstr ""
+
+#: ../configure.zcml:30
+msgid "Installs the visaplan.plone.animations add-on."
+msgstr ""
+
+msgid "Open a new window to start the animation"
+msgstr ""
+
+#: ../content/folderish_animation.py:43
+msgid "The implementation of folderish animations might evolve, and some of the improvents might be incompatible to older animation objects."
+msgstr ""
+
+#: ../content/folderish_animation.py:40
+msgid "Type number"
+msgstr ""
+
+#: ../configure.zcml:39
+msgid "Uninstalls the visaplan.plone.animations add-on."
+msgstr ""
+
+#: ../profiles/default/types/FolderishAnimation.xml
+msgid "View"
+msgstr ""
+
+#: ../configure.zcml:30
+msgid "visaplan.plone.animations"
+msgstr ""
+
+#: ../configure.zcml:39
+msgid "visaplan.plone.animations (uninstall)"
+msgstr ""

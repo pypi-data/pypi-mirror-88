@@ -1,0 +1,39 @@
+<tal:req tal:define="
+set python:request.set;
+dummy python:set('span_class', 'col-md-9');
+"><html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="context/main_template/macros/master"
+      >
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+all_values view/all_values;
+">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <h1 class="documentFirstHeading" tal:content="context/title" />
+
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+        <p class="documentDescription" tal:content="context/description" />
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+        <a href="onlyme" target="_blank"
+           title="Open a new window to start the animation"
+           i18n:attributes="title"><img
+           tal:replace="structure all_values/preview_image_tag"
+           /></a>
+
+        <div tal:replace="structure provider:plone.belowcontentbody"
+             tal:condition="python:0"/>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html></tal:req>

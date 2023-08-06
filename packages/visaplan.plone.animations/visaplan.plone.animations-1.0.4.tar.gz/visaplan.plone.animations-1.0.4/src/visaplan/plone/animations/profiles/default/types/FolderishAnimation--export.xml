@@ -1,0 +1,19 @@
+<model
+    xmlns="http://namespaces.plone.org/supermodel/schema"
+    xmlns:security="http://namespaces.plone.org/supermodel/security"
+    xmlns:form="http://namespaces.plone.org/supermodel/form"
+    xmlns:marshal="http://namespaces.plone.org/supermodel/marshal"
+>
+  <schema>
+    <field name="height" type="zope.schema.Int">
+      <description>The height needed for a reasonable view of the animation</description>
+      <title>Height</title>
+    </field>
+    <field name="width" type="zope.schema.Int">
+      <description>The width needed for a reasonable view of the animation</description>
+      <title>Width</title>
+    </field>
+    <fieldset name="dimensions" label="Dimensions"/>
+    <fieldset name="folderish_animation" label="Folderish Animation Settings"/>
+  </schema>
+</model>
