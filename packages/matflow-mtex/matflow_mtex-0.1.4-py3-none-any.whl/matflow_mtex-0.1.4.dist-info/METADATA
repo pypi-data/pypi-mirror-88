@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: matflow-mtex
+Version: 0.1.4
+Summary: Matflow extension for the MTEX MATLAB toolbox.
+Home-page: UNKNOWN
+Author: Adam J. Plowman
+Author-email: adam.plowman@manchester.ac.uk
+License: MIT license
+Project-URL: GitHub, https://github.com/LightForm-group/matflow-mtex
+Keywords: matflow,materials-science,computational-workflow
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: matflow
+Requires-Dist: numpy
+
+# matflow-mtex
+
+[![PyPI version](https://img.shields.io/pypi/v/matflow_mtex.svg)](https://pypi.python.org/pypi/matflow_mtex)
+[![Documentation Status](https://readthedocs.org/projects/matflow-mtex/badge/?version=latest)](https://matflow-mtex.readthedocs.io/en/latest/?badge=latest)
+
+Matflow extension for the MTEX MATLAB toolbox.
+
+- Documentation: https://matflow-mtex.readthedocs.io.
+
+## Features
+- TODO
+
+
+# Change Log
+
+## [0.1.4] - 2020.12.10
+
+### Fixed
+
+- Fix output mapper functions `parse_orientations` and `parse_MTEX_ODF_file` for cases where the files have only one row of data. Now we use the `ndmin=2` argument of `numpy.loadtxt` to ensure arrays of consistent dimensions are returned.
+
+## [0.1.3] - 2020.08.18
+
+### Added
+
+- Support specifying orientation coordinate system, which can be used to correctly align, within the model, the textures with respect to e.g. RD/TD/ND.
+
+## [0.1.2] - 2020.07.18
+
+### Added
+
+- Support generating an ODF from CRC (and CPR) EBSD files (in addition to existing CTF file support).
+
+## [0.1.1] - 2020.07.01
+
+### Added
+
+- Add `fibre` method to `get_model_texture` task.
+- Add `random` method to `get_model_texture` task.
+
+### Changed
+
+- Use `orientation.byMiller` in `get_unimodal_ODF.m`
+
+## [0.1.0] - 2020.06.09
+
+- Initial release.
+
+
