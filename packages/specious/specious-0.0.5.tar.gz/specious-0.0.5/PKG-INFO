@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: specious
+Version: 0.0.5
+Summary: Just screenshot allure report and send.
+Home-page: https://github.com/aquichita/specious
+Author: aquichita
+Author-email: chaochao.wu@outlook.com
+License: UNKNOWN
+Description: Just screenshot allure report and send.
+        -
+        
+        usage:
+        `pip install specious`
+        
+        ```python
+        from pathlib import Path
+        
+        from specious.reports import allure_email_handler
+        
+        result = Path(".").resolve().parent
+        allure_email_handler(results_dir=result.joinpath("allure-results"),
+                             allure_config=dict(
+                                 protocol="http",
+                                 host="...",
+                                 port="...",
+                                 task="htms-automated-test"
+                             ),
+                             email_config=dict(
+                                sender="...",
+                                pwd="...",
+                                host="smtphm.qiye.163.com",
+                                port=465,
+                                smtp_ssl=True,
+                                address="...",
+                                subject="HTMS AUTOMATED REPORT",
+                             ))
+        ```
+        
+Platform: UNKNOWN
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
