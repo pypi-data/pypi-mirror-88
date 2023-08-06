@@ -1,0 +1,15 @@
+six
+
+[:python_version == "2.7"]
+crcmod>=1.7
+
+[:python_version >= "3.5"]
+google-crc32c<2.0dev,>=1.0
+
+[aiohttp]
+
+[aiohttp:python_version >= "3.6"]
+aiohttp<4.0.0dev,>=3.6.2
+
+[requests]
+requests<3.0.0dev,>=2.18.0
