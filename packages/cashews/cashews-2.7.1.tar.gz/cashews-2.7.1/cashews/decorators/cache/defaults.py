@@ -1,0 +1,98 @@
+from contextvars import ContextVar
+from typing import Any
+
+from ...typing import CacheCondition
+
+_empty = object()
+
+
+def _default_store_condition(result, args, kwargs) -> bool:
+    return result is not None
+
+
+def _store_all(result, args, kwargs) -> bool:
+    return True
+
+
+def _get_cache_condition(condition: CacheCondition):
+    if condition is None:
+        return _default_store_condition
+    if condition in [Any, "all", any, "any"]:
+        return _store_all
+    return condition
+
+
+class CacheDetect:
+    def __init__(self, previous_level=0, unset_token=None):
+        self._value = {}
+        self._unset_token = unset_token
+        self._previous_level = previous_level
+
+    def _set(self, key: str, **kwargs):
+        self._value.setdefault(key, []).append(kwargs)
+
+    @property
+    def keys(self):
+        return dict(self._value)
+
+    def _merge(self, other):
+        self._value.update(other._value)
+
+
+_level = ContextVar("level", default=0)
+
+
+class _ContextCacheDetect:
+    def __init__(self):
+        self._levels = {}
+        self._pointer = 0
+
+    @property
+    def level(self):
+        return _level.get()
+
+    def _get_next_level(self):
+        self._pointer += 1
+        return self._pointer
+
+    def _start(self) -> CacheDetect:
+        previous_level = self.level
+        level = self._get_next_level()
+        token = _level.set(level)
+        self._levels[level] = CacheDetect(previous_level=previous_level, unset_token=token)
+        return self._levels[level]
+
+    def _set(self, key: str, **kwargs):
+        level = self.level
+        while level:
+            var: CacheDetect = self._levels.get(level)
+            if var is None:
+                return
+            var._set(key, **kwargs)
+            level = var._previous_level
+
+    def _get(self):
+        var = self._levels.get(self.level)
+        if var is not None:
+            return var.get()
+
+    def _merge(self, other: CacheDetect):
+        var = self._levels.get(self.level)
+        if var is not None:
+            var._merge(other)
+
+    def _stop(self):
+        self._pointer -= 1
+        if self.level in self._levels:
+            token = self._levels[self.level]._unset_token
+            del self._levels[self.level]
+            _level.reset(token)
+
+    def __enter__(self) -> CacheDetect:
+        return self._start()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._stop()
+
+
+context_cache_detect = _ContextCacheDetect()
