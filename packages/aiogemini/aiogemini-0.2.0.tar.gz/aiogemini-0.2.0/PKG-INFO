@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: aiogemini
+Version: 0.2.0
+Summary: Gemini protocol implementation for asyncio
+Home-page: https://github.com/keis/aiogemini
+Author: David Keijser
+Author-email: keijser@gmail.com
+License: UNKNOWN
+Description: # aiogemini
+        
+        This package provides implementations of a client and server speaking the
+        [gemini protocol][gemini] built on the python stdlib asyncio primitives.
+        
+        it is a work in progress.
+        
+        try `python -m aiogemini.server` or `python -m aiogemini.client` for something
+        to look at.
+        
+        
+        [gemini]: gemini://gemini.circumlunar.space/
+        
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+Provides-Extra: tests
