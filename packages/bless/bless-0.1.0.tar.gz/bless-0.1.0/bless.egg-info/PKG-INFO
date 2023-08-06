@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: bless
+Version: 0.1.0
+Summary: A Bluetooth Low Energy Server supplement to Bleak
+Home-page: https://github.com/kevincar/bless
+Author: Kevin Davis
+Author-email: kevincarrolldavis@gmail.com
+License: UNKNOWN
+Description: # Bless
+        
+        Bless is an extension of [Bleak](https://github.com/hbldh/bleak). 
+        
+        Bless is an acronym for Bluetooth Low Energy Server Supplement since this
+        library intends to supplement the [Bleak](https://github.com/hbldh/bleak)
+        client library
+        
+        # Installation
+        
+        ```bash
+        pip install bless
+        ```
+        
+        # Features
+        
+        |OS|Implemented|
+        |--|---------|
+        |MacOS|:white_check_mark:|
+        |Windows|:white_check_mark:|
+        |Linux|:white_check_mark:|
+        
+        # Examples
+        
+        See our [Server
+        Example](https://github.com/kevincar/bless/blob/master/examples/server.py)
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
