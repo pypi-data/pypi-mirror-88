@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: OpenPGPpy
+Version: 0.1
+Summary: OpenPGP smartcard communication library
+Home-page: https://github.com/bitlogik/OpenPGPpy
+Author: BitLogiK
+Author-email: contact@bitlogik.fr
+License: GPLv3
+Platform: UNKNOWN
+Requires-Python: >=3.6,<3.9
+Requires-Dist: pyscard
+Provides-Extra: dev
+Requires-Dist: PyNaCl (==1.4.0) ; extra == 'dev'
+
+UNKNOWN
+
+
