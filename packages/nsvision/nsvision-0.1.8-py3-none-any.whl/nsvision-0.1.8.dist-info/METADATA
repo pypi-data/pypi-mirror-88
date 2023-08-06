@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: nsvision
+Version: 0.1.8
+Summary: nsvision - Computer Vision Wrapper built on top of PIL, cv2 and Numpy
+Home-page: https://github.com/Nsemble/nsvision
+Author: Nsemble.ai
+Author-email: admin@nsemble.ai
+License: MIT
+Platform: UNKNOWN
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy (==1.18.3)
+Requires-Dist: Pillow (==7.0.0)
+
+# nsvision
+nsvision is a python library and commandline tool build for simplifying image preprocessing / postprocessing.
+We have optimised the library for reducing the code work while working on image / video processing for data science related work.
+
+## Installation:
+```bash
+pip install nsvision
+```
+
+## Documentation:
+
+Refer [nsvision](https://nsvision.nsemble.ai) for complete documentation<br>
+
+Read the docs link: [click here](https://nsvision.readthedocs.org)
+
+
