@@ -1,0 +1,13 @@
+setuptools
+valer.core.listing==1.5.3rc1
+valer.core.spotlight==1.0.3rc1
+valer.core==1.3.5rc1
+valer.impress==1.2.4rc1
+valer.jsonapi==1.2.3rc1
+valer.panic==1.0.1rc1
+
+[test]
+Products.PloneTestCase
+Products.SecureMailHost
+plone.app.testing
+unittest2
