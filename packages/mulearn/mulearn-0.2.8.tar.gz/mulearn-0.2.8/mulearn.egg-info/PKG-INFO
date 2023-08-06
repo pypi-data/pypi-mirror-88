@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: mulearn
+Version: 0.2.8
+Summary: A python package for inducing membership functions from labeled data
+Home-page: https://github.com/dariomalchiodi/mulearn/tree/master/
+Author: Dario Malchiodi
+Author-email: dario.malchiodi@unimi.it
+License: Apache Software License 2.0
+Description: # Title
+        
+        [![Documentation Status](https://readthedocs.org/projects/mulearn/badge/?version=latest)](https://mulearn.readthedocs.io/en/latest/?badge=latest)
+        
+        > summary
+        
+        
+        <h1>Table of Contents<span class="tocSkip"></span></h1>
+        <div class="toc"><ul class="toc-item"><li><span><a href="#mulearn" data-toc-modified-id="mulearn-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>mulearn</a></span><ul class="toc-item"><li><span><a href="#Install" data-toc-modified-id="Install-1.1"><span class="toc-item-num">1.1&nbsp;&nbsp;</span>Install</a></span></li><li><span><a href="#How-to-use" data-toc-modified-id="How-to-use-1.2"><span class="toc-item-num">1.2&nbsp;&nbsp;</span>How to use</a></span><ul class="toc-item"><li><span><a href="#Fuzzifier" data-toc-modified-id="Fuzzifier-1.2.1"><span class="toc-item-num">1.2.1&nbsp;&nbsp;</span>Fuzzifier</a></span></li><li><span><a href="#Kernel" data-toc-modified-id="Kernel-1.2.2"><span class="toc-item-num">1.2.2&nbsp;&nbsp;</span>Kernel</a></span></li></ul></li></ul></li></ul></div>
+        
+        # mulearn
+        
+        mulearn is a python package implementing the metodology for data-driven induction of fuzzy sets described in
+        
+        - D. Malchiodi and W. Pedrycz, _Learning Membership Functions for Fuzzy Sets through Modified Support Vector Clustering_, in F. Masulli, G. Pasi e R. Yager (Eds.), Fuzzy Logic and Applications. 10th International Workshop, WILF 2013, Genoa, Italy, November 19–22, 2013. Proceedings., Vol. 8256, Springer International Publishing, Switzerland, Lecture Notes on Artificial Intelligence, 2013;
+        - D. Malchiodi and A. G. B. Tettamanzi, _Predicting the Possibilistic Score of OWL Axioms through Modified Support Vector Clustering_, in H. Haddad, R. L. Wainwright e R. Chbeir (Eds.), SAC'18: Proceedings of the 33rd Annual ACM Symposium on Applied Computing, ACM (ISBN 9781450351911), 1984–1991, 2018.
+        
+        ## Install
+        
+        The package can easily be installed via `pip`:
+        
+        `pip install mulearn`
+        
+        or using the source code available at https://github.com/dariomalchiodi/mulearn.
+        
+        
+Keywords: fuzzy membership induction
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
