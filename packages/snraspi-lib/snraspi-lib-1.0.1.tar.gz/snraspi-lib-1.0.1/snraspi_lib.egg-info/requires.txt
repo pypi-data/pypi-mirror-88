@@ -1,0 +1,15 @@
+adafruit-blinka==5.9.1
+adafruit-circuitpython-bme280==2.5.1
+adafruit-circuitpython-busdevice==5.0.1
+adafruit-circuitpython-dht==3.5.1
+logging-plus==1.0.0
+pyserial==3.5
+pyusb==1.1.0
+rpi.gpio==0.7.0
+
+[:python_version >= "3.5"]
+adafruit-platformdetect==2.23.0
+adafruit-pureio==1.1.8
+pyftdi==0.52.0
+
+[dev]

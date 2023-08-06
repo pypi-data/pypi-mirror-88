@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: snraspi-lib
+Version: 1.0.1
+Summary: Convenience utilities for Raspberry Pi
+Home-page: https://github.com/signag/snraspi-lib
+Author: signag
+Author-email: siegfried.nagel@t-online.de
+License: UNKNOWN
+Project-URL: Source, https://github.com/signag/snraspi-lib/
+Description: # snraspi-lib
+        
+        This Package includes convenience functions for Raspberry Pi
+        
+        ## Package 'sensors'
+        
+        - [Environment Sensors](https://github.com/signag/snraspi-lib/blob/main/docs/EnvironmentSensors.md)
+        
+Keywords: Raspberry Pi sensors
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: dev
