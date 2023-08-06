@@ -1,0 +1,18 @@
+import sys
+from azure.ml.component.dsl._component import ComponentExecutor,\
+    InputPath, OutputPath, StringParameter, IntParameter, FloatParameter, BoolParameter
+from azure.ml.component import dsl
+from azure.ml.component.dsl._notebook import execute_notebook
+
+
+@dsl._component({dsl_param_dict})
+def {func_name}({func_args}
+):
+    execute_notebook(
+        '{entry}',
+        '{entry_out}',
+        dict({parameters_dict}))
+
+
+if __name__ == '__main__':
+    ComponentExecutor({func_name}).execute(sys.argv)
