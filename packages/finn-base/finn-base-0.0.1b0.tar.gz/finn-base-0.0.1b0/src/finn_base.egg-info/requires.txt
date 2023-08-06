@@ -1,0 +1,18 @@
+bitstring>=3.1.7
+numpy
+
+[docs]
+sphinx>=3.2.1
+sphinx_rtd_theme>=0.5.0
+
+[onnx]
+onnx==1.7.0
+onnxruntime==1.4.0
+toposort>=1.5.0
+
+[pyverilator]
+pyverilator@ https://github.com/maltanar/pyverilator/tarball/master#egg=pyverilator"
+
+[testing]
+pytest
+pytest-cov
