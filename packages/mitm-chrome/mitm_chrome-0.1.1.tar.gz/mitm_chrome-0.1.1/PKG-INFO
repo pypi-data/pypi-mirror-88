@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: mitm-chrome
+Version: 0.1.1
+Summary: Integrate chrome with mitmproxy.
+Home-page: https://github.com/linw1995/mitm_chrome
+License: MIT
+Author: 林玮 (Jade Lin)
+Author-email: linw1995@icloud.com
+Requires-Python: >=3.8,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: mitmproxy (>=5.0.1,<6.0.0)
+Project-URL: Repository, https://github.com/linw1995/mitm_chrome
+Description-Content-Type: text/markdown
+
+# mitm chrome
+
+Integrate chrome with [mitmproxy](https://mitmproxy.org/).
+
+## installation
+
+```shell
+git clone https://github.com/linw1995/mitm_chrome.git
+pip install ./mitm_chrome
+```
+
+## Usage
+
+On MacOS
+
+```shell
+mitm_chrome --chrome-path='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' mitmproxy
+```
+
+Else
+
+```shell
+mitm_chrome mitmproxy
+```
+
