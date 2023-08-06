@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: osmolytes
+Version: 1.2.0
+Summary: This code attempts to predict the influence of osmolytes on protein stability
+Home-page: https://github.com/Electrostatics/osmolytes
+Author: Nathan Baker
+Author-email: nathanandrewbaker@gmail.com
+License: CC0-1.0
+Keywords: science chemistry biophysics biochemistry
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Common Public License
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.8
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: pyyaml
+Requires-Dist: pandas
+Requires-Dist: openpyxl
+
+This code attempts to predict the influence of osmolytes on protein stability, using the methods in:  Auton M, Bolen DW. Predicting the energetics of osmolyte-induced protein folding/unfolding. *Proc Natl Acad Sci* 102:15065 (2005) https://doi.org/10.1073/pnas.0507053102. Other models may be added in the future.
+
+
