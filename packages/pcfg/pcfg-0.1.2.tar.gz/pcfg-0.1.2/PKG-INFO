@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: pcfg
+Version: 0.1.2
+Summary: Generate sentences from a probabilistic context-free grammar.
+Home-page: https://github.com/thomasbreydo/pcfg
+License: MIT
+Author: Thomas Breydo
+Author-email: tbreydo@gmail.com
+Requires-Python: >=3.5,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: importlib-metadata (>=3.1.1,<4.0.0)
+Requires-Dist: nltk (>=3.5,<4.0)
+Project-URL: Repository, https://github.com/thomasbreydo/pcfg
