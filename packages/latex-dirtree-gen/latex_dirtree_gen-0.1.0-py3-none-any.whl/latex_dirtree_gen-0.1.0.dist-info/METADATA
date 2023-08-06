@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: latex-dirtree-gen
+Version: 0.1.0
+Summary: Generate dirtrees for LaTeX
+Home-page: https://gitlab.com/matyashorky/latex-dirtree-gen
+Author: Matyáš Horký
+Author-email: info@matyashorky.cz
+License: MIT
+Keywords: latex,dirtree
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6.1
+Description-Content-Type: text/markdown
+
+# latex-dirtree-gen
+
+Python version of the Perl [latex-dirtree-generator](https://github.com/d-koppenhagen/latex-dirtree-generator) by [Danny Koppenhagen](https://github.com/d-koppenhagen).
+
+## Usage
+
+```
+usage: latex-dirtree-gen [-h] [-d DEPTH] [--color] directory
+
+positional arguments:
+  directory             project root
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DEPTH, --depth DEPTH
+                        how many directories should the program descend
+  --color               draw directories in red
+```
+
+## Examples
+
+```
+# use default settings
+latex-dirtree-gen .
+# set depth to two directores and print directory names in red
+latex-dirtree-gen -d 2 --color .
+```
+
+Sample output:
+
+```
+\dirtree{%
+ .1 .
+ .2 pdf.
+ .3 cover.pdf.
+ .2 text.
+ .3 01-introduction.tex.
+ .3 02-content.tex.
+ .3 99-other.tex.
+ .3 04-email.tex.
+ .2 README.md.
+ .2 main.tex.
+ .2 main.pdf.
+ .2 .gitignore.
+}
+```
+
+Just a basic dirtree, just as you'd expect.
+
+## Contributing
+
+If you find an error or have an improvement idea, file an issue!
+
+
