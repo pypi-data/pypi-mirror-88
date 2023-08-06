@@ -1,0 +1,29 @@
+cloudpickle
+jupyter-client>=5.3.4
+pyzmq>=17
+
+[:platform_system != "Windows"]
+wurlitzer>=1.0.3
+
+[:python_version < "3"]
+ipykernel<5
+ipython<6
+
+[:python_version >= "3"]
+ipykernel>=5.1.3
+ipython>=7.6.0
+
+[test]
+codecov
+cython
+dask[distributed]
+flaky
+matplotlib
+mock
+numpy
+pandas
+pytest
+pytest-cov
+scipy
+xarray
+pillow
