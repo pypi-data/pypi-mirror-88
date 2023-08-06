@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: django-aid
+Version: 0.1.9
+Summary: Helper module used in general django applications
+Home-page: https://github.com/LeeHanYeong/django-aid
+Author: lhy
+Author-email: dev@lhy.kr
+License: MIT
+Description: # django-aid
+        
+        Helper module used in general django applications
+        
+        
+        
+        ## Django
+        
+        ### Jinja2
+        
+        #### `django.jinja2.environment`
+        
+        
+        
+        ### Model
+        
+        #### `django.model.QuerySet`
+        
+        - **`annotate_choices`**
+          Annotate the get_FOO_display() values of fields where choices exist
+        
+        
+        
+        ## DRF
+        
+        ### ViewSet
+        
+        - **`viewsets.***ModelViewSet`**
+          ViewSetMixin클래스를 상속받은 GenericViewSet.
+          `serializer_classes` 속성을 사용하며, `put` 메서드에 대한 문서화를 해제한다.
+        
+        
+        
+        ### Renderer
+        
+        - **`renderers.BrowsableAPIRenderer`**
+          Form을 제거한 BrowsableAPIRendrer
+        
+        
+        
+        ### Fields
+        
+        - **`fields.pk_model_field.PkModelField`**
+          **특정 Model의 instance를 나타내는 Field**
+          주어지는 데이터가 아래와 같을 경우를 처리
+        
+          ```python
+          # dict
+          {'pk': 1} or {'id': 1}
+        
+          # literal (pk가 될 수 있는 숫자/문자 등의 고정 값)
+          1 or '1'
+          ```
+        
+          > 생성시에만 사용 가능하다
+        
+        ####
+        
+        ### drf-yasg
+        
+        - **`drf_yasg.schema`**
+          문서화 생성 헬퍼 클래스
+        
+Platform: UNKNOWN
+Classifier: Framework :: Django
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
