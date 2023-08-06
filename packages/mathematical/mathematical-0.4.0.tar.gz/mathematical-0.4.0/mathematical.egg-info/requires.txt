@@ -1,0 +1,11 @@
+domdf-python-tools>=0.9.0
+pandas>=1.0.1
+typing-extensions>=3.7.4.3
+
+[:platform_system != "Windows"]
+numpy>=1.19.1
+
+[:platform_system == "Windows"]
+numpy==1.19.3
+
+[all]
