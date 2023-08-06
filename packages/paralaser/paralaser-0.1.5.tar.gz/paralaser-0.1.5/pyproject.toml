@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "paralaser"
+version = "0.1.5"
+authors = []
+description = ""
+license = "BSD-3-Clause"
+
+packages = [
+    { include = "paralaser" }
+]
+include = ["paralaser/tools-external/**/*"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Cython = "^0.29.21"
+numpy = "^1.19.4"
+faiss-gpu = "^1.6.5"
+transliterate = "^1.10.2"
+jieba = "^0.42.1"
+torch = "^1.7.1"
+wget = "^3.2"
+fastBPE = "^0.1.0"
+
+[tool.poetry.dev-dependencies]
+
+# [tool.poetry.build]
+# generate-setup-file = false
+# script = "build.py"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
