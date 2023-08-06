@@ -1,0 +1,882 @@
+Metadata-Version: 2.1
+Name: reuse
+Version: 0.12.1
+Summary: reuse is a tool for compliance with the REUSE recommendations.
+Home-page: https://reuse.software/
+Author: Carmen Bianca Bakker
+Author-email: carmenbianca@fsfe.org
+License: GPL-3.0-or-later AND Apache-2.0 AND CC0-1.0 AND CC-BY-SA-4.0
+Project-URL: Documentation, https://reuse.readthedocs.io/
+Project-URL: Source, https://github.com/fsfe/reuse-tool
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+Requires-Dist: python-debian
+Requires-Dist: requests
+Requires-Dist: license-expression
+Requires-Dist: boolean.py
+Requires-Dist: Jinja2
+Requires-Dist: binaryornot
+
+<!--
+SPDX-FileCopyrightText: 2017 Free Software Foundation Europe e.V. <https://fsfe.org>
+
+SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+
+# reuse
+
+[![](https://img.shields.io/pypi/v/reuse.svg)](https://pypi.python.org/pypi/reuse)
+[![](https://img.shields.io/pypi/pyversions/reuse.svg)](https://pypi.python.org/pypi/reuse)
+[![REUSE status](https://api.reuse.software/badge/github.com/fsfe/reuse-tool)](https://api.reuse.software/info/github.com/fsfe/reuse-tool)
+[![](https://img.shields.io/badge/readme_style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme)
+
+> reuse is a tool for compliance with the [REUSE](https://reuse.software/)
+> recommendations.
+
+- Documentation: <https://reuse.readthedocs.io> and <https://reuse.software>
+- Source code: <https://github.com/fsfe/reuse-tool>
+- PyPI: <https://pypi.python.org/pypi/reuse>
+- REUSE: 3.0
+- Python: 3.6+
+
+## Background
+
+Copyright and licensing is difficult, especially when reusing software from
+different projects that are released under various different licenses.
+[REUSE](https://reuse.software) was started by the [Free Software Foundation
+Europe](https://fsfe.org) (FSFE) to provide a set of recommendations to make
+licensing your Free Software projects easier. Not only do these recommendations
+make it easier for you to declare the licenses under which your works are
+released, but they also make it easier for a computer to understand how your
+project is licensed.
+
+As a short summary, the recommendations are threefold:
+
+1. Choose and provide licenses
+2. Add copyright and licensing information to each file
+3. Confirm REUSE compliance
+
+You are recommended to read [our
+tutorial](https://reuse.software/tutorial) for a step-by-step guide
+through these three steps. The [FAQ](https://reuse.software/faq) covers
+basic questions about licensing, copyright, and more complex use cases.
+Advanced users and integrators will find the [full
+specification](https://reuse.software/spec) helpful.
+
+This tool exists to facilitate the developer in complying with the above
+recommendations.
+
+There are [other tools](https://reuse.software/comparison) that have a
+lot more features and functionality surrounding the analysis and
+inspection of copyright and licenses in software projects. The REUSE
+helper tool, on the other hand, is solely designed to be a simple tool
+to assist in compliance with the REUSE recommendations.
+
+## Example demo
+
+In this screencast, we are going to follow the
+[tutorial](https://reuse.software/tutorial), making the [REUSE example
+repository](https://github.com/fsfe/reuse-example/) compliant.
+
+![Demo of some basic REUSE tool commands](https://download.fsfe.org/videos/reuse/screencasts/reuse-tool.gif)
+
+## Install
+
+### Installation via pip
+
+To install reuse, you need to have the following pieces of software on
+your computer:
+
+- Python 3.6+
+- pip
+
+You then only need to run the following command:
+
+```bash
+pip3 install --user reuse
+```
+
+After this, make sure that `~/.local/bin` is in your `$PATH`. On
+Windows, the required path for your environment may look like
+`%USERPROFILE%\AppData\Roaming\Python\Python39\Scripts`, depending on
+the Python version you have installed.
+
+To update reuse, run this command:
+
+```bash
+pip3 install --user --upgrade reuse
+```
+
+For full functionality, the following pieces of software are recommended:
+
+- Git
+- Mercurial 4.3+
+
+### Installation via package managers
+
+There are packages available for easy install on some operating systems. You are
+welcome to help us package this tool for more distributions!
+
+* Arch Linux (AUR): [reuse](https://aur.archlinux.org/packages/reuse/)
+* Fedora: [reuse](https://apps.fedoraproject.org/packages/reuse)
+* openSUSE: [reuse](https://software.opensuse.org/package/reuse)
+* GNU Guix: [reuse](https://guix.gnu.org/packages/reuse-0.5.0/)
+* NixOS: [reuse](https://nixos.org/nixos/packages.html?attr=reuse)
+
+### Installation from source
+
+You can also install this tool from the source code, but we recommend the
+methods above for easier and more stable updates. Please make sure the
+requirements for the installation via pip are present on your machine.
+
+```bash
+python3 setup.py install
+```
+
+## Usage
+
+First, read the [REUSE tutorial](https://reuse.software/tutorial/). In a
+nutshell:
+
+1. Put your licenses in the `LICENSES/` directory.
+2. Add a comment header to each file that says `SPDX-License-Identifier:
+   GPL-3.0-or-later`, and `SPDX-FileCopyrightText: $YEAR $NAME`. You can be
+   flexible with the format, just make sure that the line starts with
+   `SPDX-FileCopyrightText:`.
+3. Verify your work using this tool.
+
+Example of header:
+
+```
+# SPDX-FileCopyrightText: 2017 Free Software Foundation Europe e.V. <https://fsfe.org>
+#
+# SPDX-License-Identifier: CC-BY-SA-4.0
+```
+
+To check against the recommendations, use `reuse lint`:
+
+```
+~/Projects/reuse-tool $ reuse lint
+[...]
+
+Congratulations! Your project is compliant with version 3.0 of the REUSE Specification :-)
+```
+
+This tool can do various more things, detailed in the documentation. Here a
+short summary:
+
+- `addheader` --- Add copyright and/or licensing information to the header of a
+  file.
+
+- `download` --- Download the specified license into the `LICENSES/` directory.
+
+- `init` --- Set up the project for REUSE compliance.
+
+- `lint` --- Verify the project for REUSE compliance.
+
+- `spdx` --- Generate an SPDX Document of all files in the project.
+
+### Run in Docker
+
+The `fsfe/reuse` Docker image is available on [Docker
+Hub](https://hub.docker.com/r/fsfe/reuse). With it, you can easily include REUSE
+in CI/CD processes. This way, you can check for REUSE compliance for each build.
+In our [resources for developers](https://reuse.software/dev/) you can learn how
+to integrate the REUSE tool in Drone, Travis, GitHub, or GitLab CI.
+
+You can run the helper tool simply by providing the command you want to run
+(e.g., `lint`, `spdx`). The image's working directory is `/data` by default. So
+if you want to lint a project that is in your current working directory, you can
+mount it on the container's `/data` directory, and tell the tool to lint. That
+looks a little like this:
+
+```bash
+docker run --volume $(pwd):/data fsfe/reuse lint
+```
+
+You can also provide additional arguments, like so:
+
+```bash
+docker run --volume $(pwd):/data fsfe/reuse --include-submodules spdx -o out.spdx
+```
+
+### Run as pre-commit hook
+
+You can automatically run `reuse lint` on every commit as a pre-commit hook for
+Git. This uses [pre-commit](https://pre-commit.com/). Once you [have it
+installed](https://pre-commit.com/#install), add this to the
+`.pre-commit-config.yaml` in your repository:
+
+```yaml
+repos:
+-   repo: https://github.com/fsfe/reuse-tool
+    rev: latest
+    hooks:
+    - id: reuse
+```
+
+Then run `pre-commit install`. Now, every time you commit, `reuse lint` is run
+in the background, and will prevent your commit from going through if there was
+an error.
+
+## Maintainers
+
+-   Carmen Bianca Bakker - <carmenbianca@fsfe.org>
+
+## Contribute
+
+Any pull requests or suggestions are welcome at
+<https://github.com/fsfe/reuse-tool> or via e-mail to one of the maintainers.
+General inquiries can be sent to <reuse@lists.fsfe.org>.
+
+Interaction within this project is covered by the [FSFE's Code of
+Conduct](https://fsfe.org/about/codeofconduct).
+
+Starting local development is very simple, just execute the following
+commands:
+
+```bash
+git clone git@github.com:fsfe/reuse-tool.git
+cd reuse-tool/
+python3 -mvenv venv
+source venv/bin/activate
+make develop
+```
+
+You need to run `make develop` at least once to set up the virtualenv.
+
+Next, run `make help` to see the available interactions.
+
+## License
+
+This work is licensed under multiple licences. Because keeping this section
+up-to-date is challenging, here is a brief summary as of April 2020:
+
+- All original source code is licensed under GPL-3.0-or-later.
+- All documentation is licensed under CC-BY-SA-4.0.
+- Some configuration and data files are licensed under CC0-1.0.
+- Some code borrowed from
+  [spdx/tool-python](https://github.com/spdx/tools-python) is licensed under
+  Apache-2.0.
+
+For more accurate information, check the individual files.
+
+
+<!--
+SPDX-FileCopyrightText: 2017 Free Software Foundation Europe e.V. <https://fsfe.org>
+SPDX-FileCopyrightText: © 2020 Liferay, Inc. <https://liferay.com>
+
+SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+
+# Change log
+
+This change log follows the [Keep a
+Changelog](http://keepachangelog.com/) spec. Every release contains the
+following sections:
+
+-   `Added` for new features.
+-   `Changed` for changes in existing functionality.
+-   `Deprecated` for soon-to-be removed features.
+-   `Removed` for now removed features.
+-   `Fixed` for any bug fixes.
+-   `Security` in case of vulnerabilities.
+
+The versions follow [semantic versioning](https://semver.org).
+
+<!--
+## Unreleased - YYYY-MM-DD
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+-->
+
+## 0.12.1 - 2020-12-17
+
+### Fixed
+
+- Bumped versions of requirements (#288).
+
+## 0.12.0 - 2020-12-16
+
+This release was delayed due to the absence of the lead developer (Carmen, me,
+the person writing these release notes). Many thanks to Max Mehl for
+coordinating the project in my absence. Many thanks also to the contributors who
+sent in pull requests, in reverse chronological order: Olaf Meeuwissen, Mikko
+Piuola, Wolfgang Traylor, Paul Spooren, Robert Cohn, ethulhu, pukkamustard, and
+Diego Elio Pettenò.
+
+### Added
+
+- Separate Docker image with additional executables installed
+  (`fsfe/reuse:latest-extra`) (#238)
+
+- Allow different styles of copyright lines: SPDX (default), String, String (C),
+  String ©, and © (#248)
+
+- Convenience function to update resources (SPDX license list and exceptions)
+  (#268)
+
+- More file types are recognised:
+  + ClojureScript (`.cljc`, `.cljs`)
+  + Fortran (`.F`, `.F90`, `.f90`, `.f95`, `.f03`, `.f`, `.for`)
+  + Makefile (`.mk`)
+  + PlantUML (`.iuml`, `.plantuml`, `.pu`, `.puml`)
+  + R (`.R`, `.Renviron`, `.Rprofile`)
+  + ReStructured Text (`.rst`)
+  + RMarkdown (`.Rmd`)
+  + Scheme (`.scm`)
+  + TypeScript (`.ts`)
+  + TypeScript JSX (`.tsx`)
+  + Windows Batch (`.bat`)
+
+- More file names are recognised:
+  + .dockerignore
+  + Gemfile
+  + go.mod
+  + meson.build
+  + Rakefile
+
+### Changed
+
+- Use UTF-8 explicitly when reading files (#242)
+
+### Fixed
+
+- Updated license list to 3.11.
+
+## 0.11.1 - 2020-06-08
+
+### Fixed
+
+- Similar to CAL-1.0 and CAL-1.0-Combined-Work-Exception, SHL-2.1 is now ignored
+  because it contains an SPDX tag within itself.
+
+## 0.11.0 - 2020-05-25
+
+### Added
+
+- Added `--skip-unrecognised` flag to `addheader` in order to skip files with
+  unrecognised comment styles instead of aborting without processing any file.
+
+### Changed
+
+- Always write the output files encoded in UTF-8, explicitly. This is already the
+  default on most Unix systems, but it was not on Windows.
+
+- All symlinks and 0-sized files in projects are now ignored.
+
+### Fixed
+
+- The licenses CAL-1.0 and CAL-1.0-Combined-Work-Exception contain an SPDX tag
+  within themselves. Files that are named after these licenses are now ignored.
+
+- Fixed a bug where `addheader` wouldn't properly apply the template on
+  `.license` files if the `.license` file was non-empty, but did not contain
+  valid SPDX tags.
+
+## 0.10.1 - 2020-05-14
+
+### Fixed
+
+- Updated license list to 3.8-106-g4cfec76.
+
+## 0.10.0 - 2020-04-24
+
+### Added
+
+- Add support for autoconf comment style (listed as m4).
+
+- More file types are recognised:
+
+  + Cython (`.pyx`, `.pxd`)
+  + Sass and SCSS (`.sass`, `.scss`)
+  + XSL (`.xsl`)
+  + Mailmap (`.mailmap`)
+
+- Added `--single-line` and `--multi-line` flags to `addheader`. These flags
+  force a certain comment style.
+
+### Changed
+
+- The Docker image has an entrypoint now. In effect, this means running:
+
+ `docker run -v $(pwd):/data fsfe/reuse lint`
+
+ instead of
+
+ `docker run -v $(pwd):/data fsfe/reuse reuse lint`.
+
+## 0.9.0 - 2020-04-21
+
+### Added
+
+- Added support for Mercurial 4.3+.
+
+- A pre-commit hook has been added.
+
+- When an incorrect SPDX identifier is forwarded to `download` or `init`, the
+  tool now suggests what you might have meant.
+
+### Changed
+
+- Under the hood, a lot of code that has to do with Git and Mercurial was moved
+  into its own module.
+
+- The Docker image has been changed such that it now automagically runs `reuse
+  lint` on the `/data` directory unless something else is specified by the user.
+
+### Fixed
+
+- Fixed a bug with `addheader --explicit-license` that would result in
+  `file.license.license` if `file.license` already existed.
+
+- Fixed a Windows-only bug to do with calling subprocesses.
+
+- Fixed a rare bug that would trigger when a directory is both ignored and
+  contains a `.git` file.
+
+## 0.8.1 - 2020-02-22
+
+### Added
+
+- Support Jinja (Jinja2) comment style.
+
+- Support all multi-line comment endings when parsing for SPDX information.
+
+### Fixed
+
+- Improvements to German translation by Thomas Doczkal.
+
+- No longer remove newlines at the end of files when using `addheader`.
+
+- There can now be a tab as whitespace after `SPDX-License-Identifier` and
+  `SPDX-FileCopyrightText`.
+
+## 0.8.0 - 2020-01-20
+
+### Added
+
+- Implemented `--root` argument to specify the root of the project without
+  heuristics.
+
+- The linter will complain about licenses without file extensions.
+
+- Deprecated licenses are now recognised. `lint` will complain about deprecated
+  licenses.
+
+- ProjectReport generation (`lint`, `spdx`) now uses Python multiprocessing,
+  more commonly called multi-threading outside of Python. This has a significant
+  speedup of approximately 300% in testing. Because of overhead, performance
+  increase is not exactly linear.
+
+- For setups where multiprocessing is unsupported or unwanted,
+  `--no-multiprocessing` is added as flag.
+
+- `addheader` now recognises many more extensions. Too many to list here.
+
+- `addheader` now also recognises full filenames such as `Makefile` and
+  `.gitignore`.
+
+- Added BibTex comment style.
+
+- Updated translations:
+
+  + Dutch (André Ockers, Carmen Bianca Bakker)
+  + French (OliBug, Vincent Lequertier)
+  + Galician (pd)
+  + German (Max Mehl)
+  + Esperanto (Carmen Bianca Bakker)
+  + Portuguese (José Vieira)
+  + Spanish (Roberto Bauglir)
+  + Turkish (T. E. Kalayci)
+
+### Changed
+
+- The linter output has been very slightly re-ordered to be more internally
+  consistent.
+
+- `reuse --version` now prints a version with a Git hash on development
+  versions. Towards that end, the tool now depends on `setuptools-scm` during
+  setup. It is not a runtime dependency.
+
+### Removed
+
+- `lint` no longer accepts path arguments. Where previously one could do `reuse
+  lint SUBDIRECTORY`, this is no longer possible. When linting, you must always
+  lint the entire project. To change the project's root, use `--root`.
+
+- `FileReportInfo` has been removed. `FileReport` is used instead.
+
+### Fixed
+
+- A license that does not have a file extension, but whose full name is a valid
+  SPDX License Identifier, is now correctly identified as such. The linter will
+  complain about them, however.
+
+- If the linter detects a license as being a bad license, that license can now
+  also be detected as being missing.
+
+- Performance of `project.all_files()` has been improved by quite a lot.
+
+- Files with CRLF line endings are now better supported.
+
+## 0.7.0 - 2019-11-28
+
+### Changed
+
+- The program's package name on PyPI has been changed from `fsfe-reuse` to
+  `reuse`. `fsfe-reuse==1.0.0` has been created as an alias that depends on
+  `reuse`. `fsfe-reuse` will not receive any more updates, but will still host
+  the old versions.
+
+- For users of `fsfe-reuse`, this means:
+
+  + If you depend on `fsfe-reuse` or `fsfe-reuse>=0.X.Y` in your
+    requirements.txt, you will get the latest version of `reuse` when you
+    install `fsfe-reuse`. You may like to change the name to `reuse` explicitly,
+    but this is not strictly necessary.
+
+  + If you depend on `fsfe-reuse==0.X.Y`, then you will keep getting that
+    version. When you bump the version you depend on, you will need to change
+    the name to `reuse`.
+
+  + If you depend on `fsfe-reuse>=0.X.Y<1.0.0`, then 0.6.0 will be the latest
+    version you receive. In order to get a later version, you will need to
+    change the name to `reuse`.
+
+## 0.6.0 - 2019-11-19
+
+### Added
+
+- `--include-submodules` is added to also include submodules when linting et
+  cetera.
+
+- `addheader` now also recognises the following extensions:
+
+  + .kt
+  + .xml
+  + .yaml
+  + .yml
+
+### Changed
+
+- Made the workaround for `MachineReadableFormatError` introduced in 0.5.2 more
+  generic.
+
+- Improved shebang detection in `addheader`.
+
+- For `addheader`, the SPDX comment block now need not be the first thing in the
+  file. It will find the SPDX comment block and deal with it in-place.
+
+- Git submodules are now ignored by default.
+
+- `addheader --explicit-license` now no longer breaks on unsupported filetypes.
+
+## 0.5.2 - 2019-10-27
+
+### Added
+
+- `python3 -m reuse` now works.
+
+### Changed
+
+- Updated license list to 3.6-2-g2a14810.
+
+### Fixed
+
+- Performance of `reuse lint` improved by at least a factor of 2. It no longer
+  does any checksums on files behind the scenes.
+
+- Also handle `MachineReadableFormatError` when parsing DEP5 files. Tries to
+  import that error. If the import is unsuccessful, it is handled.
+
+## 0.5.1 - 2019-10-24 [YANKED]
+
+This release was replaced by 0.5.2 due to importing
+`MachineReadableFormatError`, which is not a backwards-compatible change.
+
+## 0.5.0 - 2019-08-29
+
+### Added
+
+- TeX and ML comment styles added.
+
+- Added `--year` and `--exclude-year` to `reuse addheader`.
+
+- Added `--template` to `reuse addheader`.
+
+- Added `--explicit-license` to `reuse addheader`.
+
+- `binaryornot` added as new dependency.
+
+- Greatly improved the usage documentation.
+
+### Changed
+
+- `reuse addheader` now automatically adds the current year to the copyright
+  notice.
+
+- `reuse addheader` preserves the original header below the new header if it did
+  not contain any SPDX information.
+
+- `reuse addheader` now correctly handles `.license` files.
+
+- Bad licenses are no longer resolved to LicenseRef-Unknown<n>. They are instead
+  resolved to the stem of the path. This reduces the magic in the code base.
+
+- `.gitkeep` files are now ignored by the tool.
+
+- Changed Lisp's comment character from ';;' to ';'.
+
+## 0.4.1 - 2019-08-07
+
+### Added
+
+- `--all` argument help to `reuse download`, which downloads all detected
+  missing licenses.
+
+### Fixed
+
+- When using `reuse addheader` on a file that contains a shebang, the shebang is
+  preserved.
+
+- Copyright lines in `reuse spdx` are now sorted.
+
+- Some publicly visible TODOs were patched away.
+
+## 0.4.0 - 2019-08-07
+
+This release is a major overhaul and refactoring of the tool. Its
+primary focus is improved usability and speed, as well as adhering to version
+3.0 of the REUSE Specification.
+
+### Added
+
+- `reuse addheader` has been added as a way to automatically add copyright
+  statements and license identifiers to the headers of files. It is currently
+  not complete.
+
+- `reuse init` has been added as a way to initialise a REUSE project. Its
+  functionality is currently scarce, but should improve in the future.
+
+### Changed
+
+- `reuse lint` now provides a helpful summary instead of merely spitting out
+  non-compliant files.
+
+- `reuse compile` is now `reuse spdx`.
+
+- In addition to `Copyright` and `©`, copyright lines can be marked with the tag
+  `SPDX-FileCopyrightText:`. This is the new recommended default.
+
+- Project no longer depends on pygit2.
+
+- The list of SPDX licenses has been updated.
+
+- `Valid-License-Identifier` is no longer used, and licenses and exceptions can
+  now only live inside of the LICENSES/ directory.
+
+### Removed
+
+- Removed `--ignore-debian`.
+
+- Removed `--spdx-mandatory`, `--copyright-mandatory`, `--ignore-missing`
+  arguments from `reuse lint`.
+
+- Remove `reuse license`.
+
+- GPL-3.0 and GPL-3.0+ (and all other similar GPL licenses) are no longer
+  detected as SPDX identifiers. Use GPL-3.0-only and GPL-3.0-or-later instead.
+
+### Fixed
+
+- Scanning a Git directory is a lot faster now.
+
+- Scanning binary files is a lot faster now.
+
+## 0.3.4 - 2019-04-15
+
+This release should be a short-lived one. A new (slightly
+backwards-incompatible) version is in the works.
+
+### Added
+
+-   Copyrights can now start with `©` in addition to `Copyright`. The
+    former is now recommended, but they are functionally similar.
+
+### Changed
+
+-   The source code of reuse is now formatted with black.
+-   The repository has been moved from
+    <https://git.fsfe.org/reuse/reuse> to
+    <https://gitlab.com/reuse/reuse>.
+
+## 0.3.3 - 2018-07-15
+
+### Fixed
+
+-   Any files with the suffix `.spdx` are no longer considered licenses.
+
+## 0.3.2 - 2018-07-15
+
+### Fixed
+
+-   The documentation now builds under Python 3.7.
+
+## 0.3.1 - 2018-07-14
+
+### Fixed
+
+-   When using reuse from a child directory using pygit2, correctly find
+    the root.
+
+## 0.3.0 - 2018-05-16
+
+### Changed
+
+-   The output of `reuse compile` is now deterministic. The files,
+    copyright lines and SPDX expressions are sorted alphabetically.
+
+### Fixed
+
+-   When a GPL license could not be found, the correct `-only` or
+    `-or-later` extension is now used in the warning message, rather
+    than a bare `GPL-3.0`.
+-   If you have a license listed as
+    `SPDX-Valid-License: GPL-3.0-or-later`, this now correctly matches
+    corresponding SPDX identifiers. Still it is recommended to use
+    `SPDX-Valid-License: GPL-3.0` instead.
+
+## 0.2.0 - 2018-04-17
+
+### Added
+
+-   Internationalisation support added. Initial support for:
+    -   English.
+    -   Dutch.
+    -   Esperanto.
+    -   Spanish.
+
+### Fixed
+
+-   The license list of SPDX 3.0 has deprecated `GPL-3.0` and `GPL-3.0+`
+    et al in favour of `GPL-3.0-only` and `GPL-3.0-or-later`. The
+    program has been amended to accommodate sufficiently for those
+    licenses.
+
+### Changed
+
+-   `Project.reuse_info_of` now extracts, combines and returns
+    information both from the file itself and from debian/copyright.
+-   `ReuseInfo` now holds sets instead of lists.
+    -   As a result of this, `ReuseInfo` will not hold duplicates of
+        copyright lines or SPDX expressions.
+-   click removed as dependency. Good old argparse from the library is
+    used instead.
+
+## 0.1.1 - 2017-12-14
+
+### Changed
+
+-   The `reuse --help` text has been tidied up a little bit.
+
+### Fixed
+
+-   Release date in change log fixed.
+-   The PyPI homepage now gets reStructuredText instead of Markdown.
+
+## 0.1.0 - 2017-12-14
+
+### Added
+
+-   Successfully parse old-style C and HTML comments now.
+-   Added `reuse compile`, which creates an SPDX bill of materials.
+-   Added `--ignore-missing` to `reuse lint`.
+-   Allow to specify multiple paths to `reuse lint`.
+-   `chardet` added as dependency.
+-   `pygit2` added as soft dependency. reuse remains usable without it,
+    but the performance with `pygit2` is significantly better. Because
+    `pygit2` has a non-Python dependency (`libgit2`), it must be
+    installed independently by the user. In the future, when reuse is
+    packaged natively, this will not be an issue.
+
+### Changed
+
+-   Updated to version 2.0 of the REUSE recommendations. The
+    most important change is that `License-Filename` is no longer used.
+    Instead, the filename is deducted from `SPDX-License-Identifier`.
+    This change is **NOT** backwards compatible.
+-   The conditions for linting have changed. A file is now non-compliant
+    when:
+    -   The license associated with the file could not be found.
+    -   There is no SPDX expression associated with the file.
+    -   There is no copyright notice associated with the file.
+-   Only read the first 4 KiB (by default) from code files rather than
+    the entire file when searching for SPDX tags. This speeds up the
+    tool a bit.
+-   `Project.reuse_info_of` no longer raises an exception. Instead, it
+    returns an empty `ReuseInfo` object when no reuse information is
+    found.
+-   Logging is a lot prettier now. Only output entries from the `reuse`
+    module.
+
+### Fixed
+
+-   `reuse --ignore-debian compile` now works as expected.
+-   The tool no longer breaks when reading a file that has a non-UTF-8
+    encoding. Instead, `chardet` is used to detect the encoding before
+    reading the file. If a file still has errors during decoding, those
+    errors are silently ignored and replaced.
+
+## 0.0.4 - 2017-11-06
+
+### Fixed
+
+-   Removed dependency on `os.PathLike` so that Python 3.5 is actually
+    supported
+
+## 0.0.3 - 2017-11-06
+
+### Fixed
+
+-   Fixed the link to PyPI in the README.
+
+## 0.0.2 - 2017-11-03
+
+This is a very early development release aimed at distributing the
+program as soon as possible. Because this is the first release, the
+changelog is a little empty beyond "created the program".
+
+The program can do roughly the following:
+
+-   Detect the license of a given file through one of three methods (in
+    order of precedence):
+    -   Information embedded in the .license file.
+    -   Information embedded in its header.
+    -   Information from the global debian/copyright file.
+-   Find and report all files in a project tree of which the license
+    could not be found.
+-   Ignore files ignored by Git.
+-   Do some logging into STDERR.
+
+
