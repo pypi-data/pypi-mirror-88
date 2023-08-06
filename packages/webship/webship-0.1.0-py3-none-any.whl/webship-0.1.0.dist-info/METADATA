@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: webship
+Version: 0.1.0
+Summary: Tools to deploy python web application
+License: MIT
+Author: kamal
+Author-email: kamal@xoxzo.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: fabric2 (>=2.5.0,<3.0.0)
