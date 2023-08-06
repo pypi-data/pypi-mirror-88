@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo {{ some_random_variable }}
+
+# {{ another_variable | b64encode }}
+
+foo="
+{{ break_lines | b64decode }}
+"
