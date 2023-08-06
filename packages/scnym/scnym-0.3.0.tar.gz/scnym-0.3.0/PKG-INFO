@@ -1,0 +1,14 @@
+Metadata-Version: 1.2
+Name: scnym
+Version: 0.3.0
+Summary: Semi supervised adversarial network networks for single cell classification
+Home-page: http://github.com/calico/scnym
+Author: Jacob C. Kimmel, David R. Kelley
+Author-email: jacobkimmel+scnym@gmail.com, drk@calicolabs.com
+License: Apache
+Description: scNym uses the semi-supervised MixMatch framework and domain adversarial training to take advantage of information in both the labeled and unlabeled datasets.
+Platform: UNKNOWN
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.6
