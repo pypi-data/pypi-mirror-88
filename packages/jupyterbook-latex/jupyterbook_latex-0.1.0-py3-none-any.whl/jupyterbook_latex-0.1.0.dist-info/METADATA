@@ -1,0 +1,81 @@
+Metadata-Version: 2.1
+Name: jupyterbook-latex
+Version: 0.1.0
+Summary: Latex specific features for jupyter book
+Home-page: UNKNOWN
+License: BSD
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+Requires-Dist: sphinx (>=3)
+Requires-Dist: myst-nb
+Requires-Dist: pyyaml
+Provides-Extra: code_style
+Requires-Dist: flake8 (<3.8.0,>=3.7.0) ; extra == 'code_style'
+Requires-Dist: black ; extra == 'code_style'
+Requires-Dist: pre-commit (==1.17.0) ; extra == 'code_style'
+Provides-Extra: rtd
+Requires-Dist: sphinx (>=3.0) ; extra == 'rtd'
+Requires-Dist: sphinx-book-theme ; extra == 'rtd'
+Requires-Dist: myst-parser ; extra == 'rtd'
+Provides-Extra: testing
+Requires-Dist: coverage ; extra == 'testing'
+Requires-Dist: pytest (<4,>=3.6) ; extra == 'testing'
+Requires-Dist: pytest-cov (~=2.8) ; extra == 'testing'
+Requires-Dist: coverage (<5.0) ; extra == 'testing'
+Requires-Dist: pytest-regressions ; extra == 'testing'
+Requires-Dist: texsoup ; extra == 'testing'
+Requires-Dist: jupyter-book ; extra == 'testing'
+Requires-Dist: sphinxcontrib-bibtex (==1.0.0) ; extra == 'testing'
+
+# jupyterbook-latex
+
+Supporting LaTeX infrastructure for Jupyter Book
+
+This repository is a **development** project to improve LaTeX support
+in `Jupyter Book`.
+
+Getting Started
+------------
+
+1. Clone this repository
+
+```
+git fork https://github.com/executablebooks/jupyterbook-latex.git
+```
+
+2. Install using the setup file
+
+```
+cd jupyterbook-latex
+python setup.py install
+```
+
+3. Add jupyterbook-latex to the `config.yml` file in your jupyterbook projects:
+
+```
+sphinx:
+    extra_extensions:
+        - jupyterbook_latex
+```
+
+or `conf.py` in your sphinx projects:
+
+```
+extensions = ['jupyterbook_latex']
+```
+
+Issues
+------
+
+A list of issues that need to be addressed:
+
+https://github.com/executablebooks/meta/issues/169
+
+Developer Notes
+---------------
+
+A [repository that contains many different project configurations](https://github.com/mmcky/ebp-test-projectstructure)
+for testing and development is available, along with implementation
+idea and notes
+
+
