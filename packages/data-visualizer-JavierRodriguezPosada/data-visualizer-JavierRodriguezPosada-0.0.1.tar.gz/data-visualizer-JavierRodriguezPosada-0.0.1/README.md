@@ -1,0 +1,36 @@
+# Introduction 
+Data visualization tool based in Dash framework. Allows to easly visualize 3D data sets from a data matrix in the source file. Currently supported graphics are:
+- 3D Scatter 
+
+# Getting Started
+1. Installation process
+Its recommended to install all depdendencies in a virtual environment.
+```
+python -m venv .\.env
+.\.env\Scripts\activate
+pip install -r .\requirements.dev.txt
+```
+
+2. Run the app
+```
+python .\src\app.py
+```
+Access the url [http://127.0.0.1:8050/](http://127.0.0.1:8050/)
+
+3. Software dependencies
+- Python 3
+4. Latest releases
+
+# Build and Test
+TODO: Describe and show how to build your code and run the tests. 
+
+# Generate package
+```
+python3 -m pip install --user --upgrade setuptools wheel twine
+python3 setup.py sdist bdist_wheel
+```
+
+
+
+# Contribute
+TODO 
