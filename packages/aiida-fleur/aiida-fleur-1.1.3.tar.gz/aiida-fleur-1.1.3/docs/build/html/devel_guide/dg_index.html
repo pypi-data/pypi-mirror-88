@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Developer’s guide &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Source code Documentation (API reference)" href="../module_guide/mg_index.html" />
+    <link rel="prev" title="Exit codes" href="../user_guide/hints/exit_codes.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer’s guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#package-layout">Package layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automated-tests">Automated tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plugin-development">Plugin development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow-chain-development">Workflow/chain development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-workflow-development-guidelines">General Workflow development guidelines:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fleur-specific-desgin-suggestions-conventions">FLEUR specific desgin suggestions, conventions:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#entrypoints">Entrypoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-information">Other information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#useful-to-know">Useful to know</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Developer’s guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developer-s-guide">
+<h1><a class="toc-backref" href="#id1">Developer’s guide</a><a class="headerlink" href="#developer-s-guide" title="Permalink to this headline">¶</a></h1>
+<p>This is the developers guide for AiiDA-FLEUR</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#developer-s-guide" id="id1">Developer’s guide</a></p>
+<ul>
+<li><p><a class="reference internal" href="#package-layout" id="id2">Package layout</a></p></li>
+<li><p><a class="reference internal" href="#automated-tests" id="id3">Automated tests</a></p></li>
+<li><p><a class="reference internal" href="#plugin-development" id="id4">Plugin development</a></p></li>
+<li><p><a class="reference internal" href="#workflow-chain-development" id="id5">Workflow/chain development</a></p>
+<ul>
+<li><p><a class="reference internal" href="#general-workflow-development-guidelines" id="id6">General Workflow development guidelines:</a></p></li>
+<li><p><a class="reference internal" href="#fleur-specific-desgin-suggestions-conventions" id="id7">FLEUR specific desgin suggestions, conventions:</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#entrypoints" id="id8">Entrypoints</a></p></li>
+<li><p><a class="reference internal" href="#other-information" id="id9">Other information</a></p>
+<ul>
+<li><p><a class="reference internal" href="#useful-to-know" id="id10">Useful to know</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="package-layout">
+<h2><a class="toc-backref" href="#id2">Package layout</a><a class="headerlink" href="#package-layout" title="Permalink to this headline">¶</a></h2>
+<p>All source code is under ‘aiida_fleur/’</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Folder name</p></th>
+<th class="head"><p>Content</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>calculation</p></td>
+<td><p>Calculation plugin classes. Each within his own file.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cmdline</p></td>
+<td><p>Verdi command line plugins.</p></td>
+</tr>
+<tr class="row-even"><td><p>common</p></td>
+<td><p>BaseRestartWorkChain routines copied from AiiDA-core.</p></td>
+</tr>
+<tr class="row-odd"><td><p>data</p></td>
+<td><p>Data structure plugins, each with his own file.</p></td>
+</tr>
+<tr class="row-even"><td><p>fleur_schema</p></td>
+<td><p>Place of the XML schema files to validate Fleur input files</p></td>
+</tr>
+<tr class="row-odd"><td><p>parsers</p></td>
+<td><p>Parsers of the package, each has its own source file.</p></td>
+</tr>
+<tr class="row-even"><td><p>tests</p></td>
+<td><p>Contineous integration tests</p></td>
+</tr>
+<tr class="row-odd"><td><p>tools</p></td>
+<td><p>Everything using, common used functions and workfunctions</p></td>
+</tr>
+<tr class="row-even"><td><p>workflows</p></td>
+<td><p>All workchain/workflow classes, each has its own file.</p></td>
+</tr>
+</tbody>
+</table>
+<p>The example folder contains currently some small manual examples, tutorials, calculation ]
+and workchain submission tests.
+Documentation is fully contained within the docs folder. The rest of the files are needed
+for python packaging or continuous integration things.</p>
+</div>
+<div class="section" id="automated-tests">
+<h2><a class="toc-backref" href="#id3">Automated tests</a><a class="headerlink" href="#automated-tests" title="Permalink to this headline">¶</a></h2>
+<p>Every decent software should have a set of rather fast tests which can be run after every commit.
+The more complete all code features and code lines are tested the better. Read the unittest design guidelines on the web.
+Through idealy there should be only one test(set) for one ‘unit’, to ensure that
+if something breaks, it stays local in the test result. Tests should be clearly understanble and documented.</p>
+<p>You can run the continuous integration tests of aiida-fleur via
+(for this make sure that postgres ‘pg_ctl’ command is in your path):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">aiida_fleur</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span>
+<span class="o">./</span><span class="n">run_all_cov</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>the output should look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">env_aiida</span><span class="p">)</span><span class="o">%</span> <span class="o">./</span><span class="n">run_all</span><span class="o">.</span><span class="n">sh</span>
+<span class="o">=======================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">2.7</span><span class="o">.</span><span class="mi">15</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">3.5</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.5</span><span class="o">.</span><span class="mi">3</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.6</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">aiida</span><span class="o">-</span><span class="n">fleur</span><span class="p">,</span> <span class="n">inifile</span><span class="p">:</span> <span class="n">pytest</span><span class="o">.</span><span class="n">ini</span>
+<span class="n">plugins</span><span class="p">:</span> <span class="n">cov</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">collected</span> <span class="mi">166</span> <span class="n">items</span>
+
+<span class="n">test_entrypoints</span><span class="o">.</span><span class="n">py</span> <span class="o">............</span>                                                      <span class="p">[</span>  <span class="mi">7</span><span class="o">%</span><span class="p">]</span>
+<span class="n">data</span><span class="o">/</span><span class="n">test_fleurinp</span><span class="o">.</span><span class="n">py</span> <span class="o">................................................................</span><span class="p">[</span> <span class="mi">63</span><span class="o">%</span><span class="p">]</span>
+<span class="n">parsers</span><span class="o">/</span><span class="n">test_fleur_parser</span><span class="o">.</span><span class="n">py</span> <span class="o">........</span>                                                 <span class="p">[</span> <span class="mi">68</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tools</span><span class="o">/</span><span class="n">test_common_aiida</span><span class="o">.</span><span class="n">py</span> <span class="o">.</span>                                                          <span class="p">[</span> <span class="mi">68</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tools</span><span class="o">/</span><span class="n">test_common_fleur_wf</span><span class="o">.</span><span class="n">py</span> <span class="o">..</span>                                                      <span class="p">[</span> <span class="mi">69</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tools</span><span class="o">/</span><span class="n">test_common_fleur_wf_util</span><span class="o">.</span><span class="n">py</span> <span class="o">..........</span>                                         <span class="p">[</span> <span class="mi">75</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tools</span><span class="o">/</span><span class="n">test_element_econfig_list</span><span class="o">.</span><span class="n">py</span> <span class="o">.......</span>                                            <span class="p">[</span> <span class="mi">80</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tools</span><span class="o">/</span><span class="n">test_extract_corelevels</span><span class="o">.</span><span class="n">py</span> <span class="o">...</span>                                                  <span class="p">[</span> <span class="mi">81</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tools</span><span class="o">/</span><span class="n">test_io_routines</span><span class="o">.</span><span class="n">py</span> <span class="o">..</span>                                                          <span class="p">[</span> <span class="mi">83</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tools</span><span class="o">/</span><span class="n">test_parameterdata_util</span><span class="o">.</span><span class="n">py</span> <span class="o">..</span>                                                   <span class="p">[</span> <span class="mi">84</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tools</span><span class="o">/</span><span class="n">test_read_cif_folder</span><span class="o">.</span><span class="n">py</span> <span class="o">.</span>                                                       <span class="p">[</span> <span class="mi">84</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tools</span><span class="o">/</span><span class="n">test_xml_util</span><span class="o">.</span><span class="n">py</span> <span class="o">................</span>                                               <span class="p">[</span> <span class="mi">94</span><span class="o">%</span><span class="p">]</span>
+<span class="n">workflows</span><span class="o">/</span><span class="n">test_workflows_builder_init</span><span class="o">.</span><span class="n">py</span> <span class="o">.........</span>                                    <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
+
+<span class="o">----------</span> <span class="n">coverage</span><span class="p">:</span> <span class="n">platform</span> <span class="n">darwin</span><span class="p">,</span> <span class="n">python</span> <span class="mf">2.7</span><span class="o">.</span><span class="mi">15</span><span class="o">-</span><span class="n">final</span><span class="o">-</span><span class="mi">0</span> <span class="o">----------</span>
+<span class="n">Name</span>                                                           <span class="n">Stmts</span>   <span class="n">Miss</span>  <span class="n">Cover</span>   <span class="n">Missing</span>
+<span class="o">--------------------------------------------------------------------------------------------</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>                            <span class="mi">2</span>      <span class="mi">0</span>   <span class="mi">100</span><span class="o">%</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">calculation</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>                <span class="mi">1</span>      <span class="mi">0</span>   <span class="mi">100</span><span class="o">%</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">calculation</span><span class="o">/</span><span class="n">fleur</span><span class="o">.</span><span class="n">py</span>                 <span class="mi">305</span>    <span class="mi">284</span>     <span class="mi">7</span><span class="o">%</span>   <span class="mi">43</span><span class="o">-</span><span class="mi">221</span><span class="p">,</span> <span class="n">xxx</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">calculation</span><span class="o">/</span><span class="n">fleurinputgen</span><span class="o">.</span><span class="n">py</span>         <span class="mi">264</span>    <span class="mi">234</span>    <span class="mi">11</span><span class="o">%</span>   <span class="mi">40</span><span class="o">-</span><span class="mi">63</span><span class="p">,</span> <span class="n">xxx</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>                       <span class="mi">1</span>      <span class="mi">0</span>   <span class="mi">100</span><span class="o">%</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fleurinp</span><span class="o">.</span><span class="n">py</span>                     <span class="mi">409</span>    <span class="mi">132</span>    <span class="mi">68</span><span class="o">%</span>   <span class="mi">85</span><span class="o">-</span><span class="mi">86</span><span class="p">,</span> <span class="n">xxx</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fleurinpmodifier</span><span class="o">.</span><span class="n">py</span>             <span class="mi">175</span>     <span class="mi">69</span>    <span class="mi">61</span><span class="o">%</span>   <span class="mi">72</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="n">xxx</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">fleur_schema</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>               <span class="mi">1</span>      <span class="mi">0</span>   <span class="mi">100</span><span class="o">%</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">fleur_schema</span><span class="o">/</span><span class="n">schemafile_index</span><span class="o">.</span><span class="n">py</span>      <span class="mi">14</span>      <span class="mi">0</span>   <span class="mi">100</span><span class="o">%</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">parsers</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>                    <span class="mi">4</span>      <span class="mi">0</span>   <span class="mi">100</span><span class="o">%</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">parsers</span><span class="o">/</span><span class="n">fleur</span><span class="o">.</span><span class="n">py</span>                     <span class="mi">461</span>    <span class="mi">199</span>    <span class="mi">57</span><span class="o">%</span>   <span class="mi">50</span><span class="o">-</span><span class="mi">61</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="n">xxx</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">parsers</span><span class="o">/</span><span class="n">fleur_inputgen</span><span class="o">.</span><span class="n">py</span>             <span class="mi">52</span>     <span class="mi">42</span>    <span class="mi">19</span><span class="o">%</span>   <span class="mi">46</span><span class="o">-</span><span class="mi">55</span><span class="p">,</span> <span class="mi">65</span><span class="o">-</span><span class="mi">152</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">ParameterData_util</span><span class="o">.</span><span class="n">py</span>           <span class="mi">33</span>      <span class="mi">5</span>    <span class="mi">85</span><span class="o">%</span>   <span class="mi">48</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">70</span><span class="o">-</span><span class="mi">73</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">StructureData_util</span><span class="o">.</span><span class="n">py</span>          <span class="mi">361</span>    <span class="mi">312</span>    <span class="mi">14</span><span class="o">%</span>   <span class="mi">39</span><span class="o">-</span><span class="mi">71</span><span class="p">,</span> <span class="mi">79</span><span class="o">-</span><span class="mi">84</span><span class="p">,</span> <span class="n">xxx</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>                      <span class="mi">1</span>      <span class="mi">0</span>   <span class="mi">100</span><span class="o">%</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">check_existence</span><span class="o">.</span><span class="n">py</span>               <span class="mi">7</span>      <span class="mi">7</span>     <span class="mi">0</span><span class="o">%</span>   <span class="mi">14</span><span class="o">-</span><span class="mi">149</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">common_aiida</span><span class="o">.</span><span class="n">py</span>                <span class="mi">130</span>     <span class="mi">97</span>    <span class="mi">25</span><span class="o">%</span>   <span class="mi">53</span><span class="o">-</span><span class="mi">73</span><span class="p">,</span> <span class="mi">89</span><span class="o">-</span><span class="mi">121</span><span class="p">,</span> <span class="n">xxx</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">common_fleur_wf</span><span class="o">.</span><span class="n">py</span>             <span class="mi">260</span>    <span class="mi">209</span>    <span class="mi">20</span><span class="o">%</span>   <span class="mi">39</span><span class="p">,</span> <span class="mi">47</span><span class="o">-</span><span class="mi">51</span><span class="p">,</span> <span class="mi">56</span><span class="o">-</span><span class="mi">57</span><span class="p">,</span> <span class="n">xxx</span>
+<span class="o">./</span><span class="n">aiida_fleur</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">common_fleur_wf_util</span><span class="o">.</span><span class="n">py</span>        <span class="mi">232</span>    <span class="mi">108</span>    <span class="mi">53</span><span class="o">%</span>   <span class="mi">24</span><span class="o">-</span><span class="mi">43</span><span class="p">,</span> <span class="mi">80</span><span class="o">-</span><span class="mi">102</span><span class="p">,</span> <span class="n">xxx</span>
+<span class="n">xxx</span>
+<span class="o">--------------------------------------------------------------------------------------------</span>
+<span class="n">TOTAL</span>                                                                     <span class="mi">7316</span>   <span class="mi">5332</span>    <span class="mi">27</span><span class="o">%</span>
+
+
+
+<span class="o">====================================</span> <span class="mi">166</span> <span class="n">passed</span> <span class="ow">in</span> <span class="mf">22.53</span> <span class="n">seconds</span> <span class="o">===========================</span>
+</pre></div>
+</div>
+<p>If anything (especially a lot of tests) fails it is very likly that your
+installation is messed up. Maybe some packages are missing (reinstall them by hand and report please).
+Or the aiida-fleur version you have installed is not compatible with the aiida-core version you are running,
+since not all aiida-core versions are backcompatible.
+We try to not break back compability within aiida-fleur itself.
+Therfore, newer versions of it should still work with older versions of the FLEUR code,
+but newer FLEUR releases force you to migrate to a newer aiida-fleur version.</p>
+<p>The current test coverage of AiiDA-FLEUR has room to improve which is mainly due to the fact that calculations and workchains are not yet in the CI tests, because this requires more effort.
+Also most functions that do not depend on AiiDA are moved out of this package.</p>
+<div class="topic">
+<p class="topic-title">Parser and fleurinp test:</p>
+<p>There are basic parser tests which run for every outputfile (out.xml) in folder ‘aiida_fleur/tests/files/outxml/all_test/’
+If something changes in the FLEUR output or output of a certain feature or codepath, just add
+such an outputfile to this folder (try to keep the filesize small, if possible).</p>
+<p>For input file testing add input files to be tested to the ‘aiida_fleur/tests/files/inpxml’ folder and subfolders.
+On these files some basic fleurinpData tests are run.</p>
+</div>
+</div>
+<div class="section" id="plugin-development">
+<h2><a class="toc-backref" href="#id4">Plugin development</a><a class="headerlink" href="#plugin-development" title="Permalink to this headline">¶</a></h2>
+<p>Read the AiiDA plugin developer guide.
+In general ensure the provenance and try to reduce complexity and use a minimum number of nodes.
+Here some questions you should ask yourself:</p>
+<div class="topic">
+<p class="topic-title">For calculation plugins:</p>
+<ul class="simple">
+<li><p>What are my input nodes, are they all needed?</p></li>
+<li><p>Is it apparent to the user how/where the input is specified?</p></li>
+<li><p>What features of the code are supported/unsupported?</p></li>
+<li><p>Is the plugin robust, transparent? Keep as simple/dump as possible/neccessary.</p></li>
+<li><p>What are usual errors a user will do? Can they be circumvented? At least they should be caught.</p></li>
+<li><p>Are AiiDA espected name convention accounted for? Otherwise it won’t work.</p></li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title">Parsers:</p>
+<ul class="simple">
+<li><p>Is the parser robust? The parser should never fail.</p></li>
+<li><p>Is the parser code modular, easy to read and understand?</p></li>
+<li><p>Fully tested? Parsers are rather easy testable, do so!</p></li>
+<li><p>Parsers should have a version number. Can one reparse?</p></li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title">For datastructure plugins:</p>
+<ul class="simple">
+<li><p>Do you really need a new Datastructure?</p></li>
+<li><p>What is stored in the Database/Attributes?</p></li>
+<li><p>Do the names/keys apply with AiiDA conventions?</p></li>
+<li><p>Is the ususal information the user is interested easy to query for?</p></li>
+<li><p>What is stored in the Repository/Files?</p></li>
+<li><p>Is the data code specific or rather general? If general it should become an extra extermal plugin.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="workflow-chain-development">
+<h2><a class="toc-backref" href="#id5">Workflow/chain development</a><a class="headerlink" href="#workflow-chain-development" title="Permalink to this headline">¶</a></h2>
+<p>Here are some guidelines for writing FLEUR workflows/workchains and workflows in general.
+Keep in mind that a workflow is <strong>SOFTWARE</strong> which will be used by others and build on top and <strong>NOT</strong> just a script.
+Also not for every task a workflow is needed. Read the workchain guidelines of AiiDA-core itself and the aiida-quantumespresso package.</p>
+<div class="section" id="general-workflow-development-guidelines">
+<h3><a class="toc-backref" href="#id6">General Workflow development guidelines:</a><a class="headerlink" href="#general-workflow-development-guidelines" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Every workflow needs a clear <strong>documentation</strong> of input, output! Think this through and do not change it later on light hearted, because you will break the code of others! Therefore, invest the time to think about a <strong>clear interface</strong>.</p></li>
+<li><p>Think about the <strong>complete design</strong> of the workflow first, break it into smaller parts. Write a clear, self esplaining ‘spec.outline’ then implement step for step.</p></li>
+<li><p><strong>Reuse</strong> as much of previous workflows <strong>code</strong> as possible, use subworkflows. (otherwise your code explodes, is hard to understand again und not reusable)</p></li>
+<li><p>If you think some processing is common or might be useful for something else, make it <strong>modular</strong>, and import the method (goes along with point 3.).</p></li>
+<li><p>Try to keep the workflow <strong>context clean</strong>! (this part will always be saved and visible, there people track what is going on.</p></li>
+<li><p>Give the <strong>user feedback</strong> of what is going on. Write clear report statements in the <strong>workflow report</strong>.</p></li>
+<li><p>Think about <strong>resource management</strong>.
+i.e if a big system needs to be calculated and the user says use x hundred cores,
+and in the workflow simulations on very small systems need to be done, it makes no
+sense to submit a job with the same huge amount of resources. Use resource estimators and check if plausible.</p></li>
+<li><p><strong>ERROR handling</strong>:
+Error handling is very important and might take a lot of effort. Write at least an outline (named: inspect_xx, handle_xx), which skeleton for all the errors (treated or not). (look at the AiiDA QE workflows as good example)
+Now iterative put every time you encounter a ‘crash’ because something failed (usually variable/node access stuff), the corresponding code in a try block and call your handler.
+Use the workchain exit methods to clearly terminate the workflow in the case something went wrong and it makes no sense to continue.
+Keep in mind, your workflow should never:</p>
+<ul class="simple">
+<li><p>End up in a while true. Check calculation or subworkflow failure cases.</p></li>
+<li><p>Crash at a later point because a calculation or subworkflow failed. The user won’t understand easily what happend. Also this makes it impossible to build useful error handling of your workflow on top, if using your workflow as a subworkflow.</p></li>
+</ul>
+</li>
+<li><p><strong>Write tests</strong> and provide <strong>easy examples</strong>. Doing so for workchains is not trivial. It helps a lot to keep things modular and certain function seperate for testing.</p></li>
+<li><p>Workflows should have a version number. Everytime the output or input of the workflow changes the version number should increase. (This allows to account for different workflow version handling in data parsing and processing later on. Or ggf )</p></li>
+</ol>
+</div>
+<div class="section" id="fleur-specific-desgin-suggestions-conventions">
+<h3><a class="toc-backref" href="#id7">FLEUR specific desgin suggestions, conventions:</a><a class="headerlink" href="#fleur-specific-desgin-suggestions-conventions" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Output nodes of a workflow has the <strong>naming convention</strong> ‘output_wfname_description’
+i.e ‘output_scf_wc_para’</p></li>
+<li><p>Every workflow should give back <strong>one parameter output node named ‘output_wfname_para’</strong>
+which contains all the ‘physical results’ the workflow is designed to provide,
+or at least information to access these results directly (if stored in files and so on)
+further the node should contain valuable information to make sense/judge the quality of the data.
+Try to design this node in a way that if you take a look at it, you understand
+the following questions:</p>
+<ul class="simple">
+<li><p>Which workflow was run, what version?</p></li>
+<li><p>What came out?</p></li>
+<li><p>What was put in, how can I see what was put in?</p></li>
+<li><p>Is this valueable or garbage?</p></li>
+<li><p>What were the last calculations run?</p></li>
+</ul>
+</li>
+<li><p>So far <strong>name Fleur workflows/workchains classes: fleur_name_wc</strong>
+‘Fleur’ avoids confusion when working with multi codes because other codes perform similar task and have similar workchains.
+The ‘_wc’ ending because it makes it clearer on import in you scripts and notebook to know that this in not a simple function.</p></li>
+<li><p>For user friendlyness: add <strong>extras, label, descriptions</strong> to calculations and output nodes. In ‘verdi calculation list’ the user should be able to what workchain the calculation belongs to and what it runs on.
+Also if you run many simulations think about creating a group node for all the workflow internal(between) calculations. All these efforts makes it easier to extract results from global queries.</p></li>
+<li><p>Write <strong>base subworkchains</strong>, that take all FLAPW parameters as given, but do their task very well and then write workchains on top of these.
+Which then can use workchains/functions to optimize the FLEUR FLAPW parameters.</p></li>
+<li><p>Outsource methods to test for calculation failure, that you have only one routine in all workchains, that one can improve</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="entrypoints">
+<h2><a class="toc-backref" href="#id8">Entrypoints</a><a class="headerlink" href="#entrypoints" title="Permalink to this headline">¶</a></h2>
+<p>In order to make AiiDA aware of any classes (plugins) like (calculations, parsers, data, workchains, workflows, commandline)
+the python entrypoint system is used. Therefore, you have to register any  of the above classes as an entrypoint in the ‘setup.json’ file.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;entry_points&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;aiida.calculations&quot;</span> <span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;fleur.fleur = aiida_fleur.calculation.fleur:FleurCalculation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fleur.inpgen = aiida_fleur.calculation.fleurinputgen:FleurinputgenCalculation&quot;</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;aiida.data&quot;</span> <span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;fleur.fleurinp = aiida_fleur.data.fleurinp:FleurinpData&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fleur.fleurinpmodifier = aiida_fleur.data.fleurinpmodifier:FleurinpModifier&quot;</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;aiida.parsers&quot;</span> <span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;fleur.fleurparser = aiida_fleur.parsers.fleur:FleurParser&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fleur.fleurinpgenparser = aiida_fleur.parsers.fleur_inputgen:Fleur_inputgenParser&quot;</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;aiida.workflows&quot;</span> <span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;fleur.scf = aiida_fleur.workflows.scf:fleur_scf_wc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fleur.dos = aiida_fleur.workflows.dos:fleur_dos_wc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fleur.band = aiida_fleur.workflows.band:FleurBandWorkChain&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fleur.eos = aiida_fleur.workflows.eos:fleur_eos_wc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fleur.dummy = aida_fleur.workflows.dummy:dummy_wc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fleur.sub_dummy = aida_fleur.workflows.dummy:sub_dummy_wc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fleur.init_cls = aiida_fleur.workflows.initial_cls:fleur_initial_cls_wc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fleur.corehole = aiida_fleur.workflows.corehole:fleur_corehole_wc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fleur.corelevel = aiida_fleur.workflows.corelevel:fleur_corelevel_wc&quot;</span>
+    <span class="p">]}</span>
+</pre></div>
+</div>
+<p>The left handside will be the entry point name. This name has to be used in any FactoryClasses of AiiDA.
+The convention here is that the name has two parts ‘package_name.whatevername’.
+The package name has to be reserved/registerd in the AiiDA registry, because entry points should be unique.
+The right handside has the form ‘module_path:class_name’.</p>
+</div>
+<div class="section" id="other-information">
+<h2><a class="toc-backref" href="#id9">Other information</a><a class="headerlink" href="#other-information" title="Permalink to this headline">¶</a></h2>
+<p>Google python guide, doing releases, pypi, packaging, git basics, issues, aiida logs, loglevel, …</p>
+<div class="section" id="useful-to-know">
+<h3><a class="toc-backref" href="#id10">Useful to know</a><a class="headerlink" href="#useful-to-know" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>pip -e is your friend:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="n">package_dir</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Always install python packages you are working on with -e, this way the new version is used, if the files are changed, as long as the ‘.pyc’ files are updated.</p>
+<ol class="arabic" start="2">
+<li><p>In jupyter/python use the magic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>This will import your classes everytime anew. Otherwise they are not reimportet if they have already importet. This is very useful for development work.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../module_guide/mg_index.html" class="btn btn-neutral float-right" title="Source code Documentation (API reference)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../user_guide/hints/exit_codes.html" class="btn btn-neutral float-left" title="Exit codes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

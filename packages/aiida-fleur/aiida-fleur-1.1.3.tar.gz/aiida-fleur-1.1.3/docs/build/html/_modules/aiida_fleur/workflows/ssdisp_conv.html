@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.workflows.ssdisp_conv &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.workflows.ssdisp_conv</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.workflows.ssdisp_conv</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    In this module you find the workflow &#39;FleurSSDispConvWorkChain&#39; for the calculation of</span>
+<span class="sd">    Spin Spiral energy Dispersion converging all the directions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">WorkChain</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">calcfunction</span> <span class="k">as</span> <span class="n">cf</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">aiida.common</span> <span class="kn">import</span> <span class="n">AttributeDict</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.workflows.scf</span> <span class="kn">import</span> <span class="n">FleurScfWorkChain</span>
+
+
+<div class="viewcode-block" id="FleurSSDispConvWorkChain"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.ssdisp_conv.FleurSSDispConvWorkChain">[docs]</a><span class="k">class</span> <span class="nc">FleurSSDispConvWorkChain</span><span class="p">(</span><span class="n">WorkChain</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This workflow calculates the Spin Spiral Dispersion of a structure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_workflowversion</span> <span class="o">=</span> <span class="s1">&#39;0.2.0&#39;</span>
+
+    <span class="n">_default_wf_para</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;all&#39;</span><span class="p">:</span> <span class="mf">1.57079</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;q_vectors&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+            <span class="s1">&#39;label2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;suppress_symmetries&#39;</span><span class="p">:</span> <span class="kc">False</span>
+    <span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FleurSSDispConvWorkChain</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">expose_inputs</span><span class="p">(</span><span class="n">FleurScfWorkChain</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s1">&#39;scf&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;wf_parameters&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">spec</span><span class="o">.</span><span class="n">outline</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">converge_scf</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_results</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">return_results</span><span class="p">)</span>
+
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;out&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">)</span>
+
+        <span class="c1"># exit codes</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">230</span><span class="p">,</span> <span class="s1">&#39;ERROR_INVALID_INPUT_PARAM&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Invalid workchain parameters.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">340</span><span class="p">,</span>
+                       <span class="s1">&#39;ERROR_ALL_QVECTORS_FAILED&#39;</span><span class="p">,</span>
+                       <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Convergence SSDisp calculation failed for all q-vectors.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">341</span><span class="p">,</span>
+                       <span class="s1">&#39;ERROR_SOME_QVECTORS_FAILED&#39;</span><span class="p">,</span>
+                       <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Convergence SSDisp calculation failed for some q-vectors.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FleurSSDispConvWorkChain.start"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.ssdisp_conv.FleurSSDispConvWorkChain.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve and initialize paramters of the WorkChain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: started Spin Stiffness calculation&#39;</span>
+                    <span class="s1">&#39; convergence calculation workflow version </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_workflowversion</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energy_dict</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># initialize the dictionary using defaults if no wf paramters are given</span>
+        <span class="n">wf_default</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_wf_para</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;wf_parameters&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">wf_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">wf_dict</span> <span class="o">=</span> <span class="n">wf_default</span>
+
+        <span class="n">extra_keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wf_default</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">extra_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extra_keys</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: input wf_parameters for SSDisp Conv contains extra keys: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extra_keys</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_PARAM</span>
+
+        <span class="c1"># extend wf parameters given by user using defaults</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">wf_default</span><span class="p">):</span>
+            <span class="n">wf_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span> <span class="o">=</span> <span class="n">wf_dict</span></div>
+
+<div class="viewcode-block" id="FleurSSDispConvWorkChain.converge_scf"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.ssdisp_conv.FleurSSDispConvWorkChain.converge_scf">[docs]</a>    <span class="k">def</span> <span class="nf">converge_scf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converge charge density with or without SOC.</span>
+<span class="sd">        Depending on a branch of Spiral calculation, submit a single Fleur calculation to obtain</span>
+<span class="sd">        a reference for further force theorem calculations or</span>
+<span class="sd">        submit a set of Fleur calculations to converge charge density for all given SQAs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">q_vector</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="p">[</span><span class="s1">&#39;q_vectors&#39;</span><span class="p">]):</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_inputs_scf</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="p">[</span><span class="s1">&#39;suppress_symmetries&#39;</span><span class="p">]:</span>
+                <span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">calc_parameters</span><span class="p">[</span><span class="s1">&#39;qss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">1.221</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.522</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5251</span><span class="p">}</span>
+                <span class="n">changes_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;qss&#39;</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">q_vector</span><span class="p">))}</span>
+                <span class="n">wf_para</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+                <span class="n">wf_para</span><span class="p">[</span><span class="s1">&#39;inpxml_changes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_inpchanges&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;change_dict&#39;</span><span class="p">:</span> <span class="n">changes_dict</span><span class="p">}))</span>
+                <span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">wf_parameters</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">wf_para</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">calc_parameters</span><span class="p">[</span><span class="s1">&#39;qss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">q_vector</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">q_vector</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="n">q_vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">calc_parameters</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;calc_parameters&#39;</span><span class="p">])</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">FleurScfWorkChain</span><span class="p">,</span> <span class="o">**</span><span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">to_context</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">res</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="FleurSSDispConvWorkChain.get_inputs_scf"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.ssdisp_conv.FleurSSDispConvWorkChain.get_inputs_scf">[docs]</a>    <span class="k">def</span> <span class="nf">get_inputs_scf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize inputs for scf workflow:</span>
+<span class="sd">        wf_param, options, calculation parameters, codes, structure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">input_scf</span> <span class="o">=</span> <span class="n">AttributeDict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exposed_inputs</span><span class="p">(</span><span class="n">FleurScfWorkChain</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s1">&#39;scf&#39;</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="s1">&#39;wf_parameters&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_scf</span><span class="p">:</span>
+            <span class="n">scf_wf_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scf_wf_dict</span> <span class="o">=</span> <span class="n">input_scf</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s1">&#39;inpxml_changes&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">scf_wf_dict</span><span class="p">:</span>
+            <span class="n">scf_wf_dict</span><span class="p">[</span><span class="s1">&#39;inpxml_changes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># change beta parameter</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">)):</span>
+            <span class="n">scf_wf_dict</span><span class="p">[</span><span class="s1">&#39;inpxml_changes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_atomgr_att_label&#39;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="s1">&#39;attributedict&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;nocoParams&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">)]</span>
+                <span class="p">},</span>
+                <span class="s1">&#39;atom_label&#39;</span><span class="p">:</span> <span class="n">key</span>
+            <span class="p">}))</span>
+
+        <span class="n">input_scf</span><span class="o">.</span><span class="n">wf_parameters</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">scf_wf_dict</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;calc_parameters&#39;</span> <span class="ow">in</span> <span class="n">input_scf</span><span class="p">:</span>
+            <span class="n">calc_parameters</span> <span class="o">=</span> <span class="n">input_scf</span><span class="o">.</span><span class="n">calc_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">calc_parameters</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">input_scf</span><span class="o">.</span><span class="n">calc_parameters</span> <span class="o">=</span> <span class="n">calc_parameters</span>
+
+        <span class="k">return</span> <span class="n">input_scf</span></div>
+
+<div class="viewcode-block" id="FleurSSDispConvWorkChain.get_results"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.ssdisp_conv.FleurSSDispConvWorkChain.get_results">[docs]</a>    <span class="k">def</span> <span class="nf">get_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve results of converge calculations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">t_energydict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">original_t_energydict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">outnodedict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">htr_to_eV</span> <span class="o">=</span> <span class="mf">27.21138602</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="p">[</span><span class="s1">&#39;q_vectors&#39;</span><span class="p">]):</span>
+            <span class="n">calc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">calc</span><span class="o">.</span><span class="n">is_finished_ok</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;One SCF workflow was not successful: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">outnodedict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">output_scf_wc_para</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;One SCF workflow failed, no scf output node: </span><span class="si">{}</span><span class="s1">.&#39;</span> <span class="s1">&#39; I skip this one.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">outpara</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">output_scf_wc_para</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+
+            <span class="n">t_e</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;total_energy&#39;</span><span class="p">,</span> <span class="s1">&#39;failed&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t_e</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Did not manage to extract float total energy from one &#39;</span> <span class="s1">&#39;SCF workflow: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">e_u</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;total_energy_units&#39;</span><span class="p">,</span> <span class="s1">&#39;Htr&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">e_u</span> <span class="o">==</span> <span class="s1">&#39;Htr&#39;</span> <span class="ow">or</span> <span class="s1">&#39;htr&#39;</span><span class="p">:</span>
+                <span class="n">t_e</span> <span class="o">=</span> <span class="n">t_e</span> <span class="o">*</span> <span class="n">htr_to_eV</span>
+            <span class="n">t_energydict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_e</span>
+
+        <span class="k">if</span> <span class="n">t_energydict</span><span class="p">:</span>
+            <span class="c1"># Find a minimal value of Spiral and count it as 0</span>
+            <span class="n">minenergy</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">t_energydict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="n">t_energydict</span><span class="p">):</span>
+                <span class="n">original_t_energydict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_energydict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">t_energydict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_energydict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">-</span> <span class="n">minenergy</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energydict</span> <span class="o">=</span> <span class="n">t_energydict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">original_energydict</span> <span class="o">=</span> <span class="n">original_t_energydict</span></div>
+
+<div class="viewcode-block" id="FleurSSDispConvWorkChain.return_results"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.ssdisp_conv.FleurSSDispConvWorkChain.return_results">[docs]</a>    <span class="k">def</span> <span class="nf">return_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve results of converge calculations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">failed_labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="p">[</span><span class="s1">&#39;q_vectors&#39;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energydict</span><span class="p">):</span>
+                <span class="n">failed_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;workflow_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s1">&#39;workflow_version&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workflowversion</span><span class="p">,</span>
+            <span class="c1"># &#39;initial_structure&#39;: self.inputs.structure.uuid,</span>
+            <span class="s1">&#39;energies&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energydict</span><span class="p">,</span>
+            <span class="s1">&#39;original_energies&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">original_energydict</span><span class="p">,</span>
+            <span class="s1">&#39;q_vectors&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="p">[</span><span class="s1">&#39;q_vectors&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;failed_labels&#39;</span><span class="p">:</span> <span class="n">failed_labels</span><span class="p">,</span>
+            <span class="s1">&#39;energy_units&#39;</span><span class="p">:</span> <span class="s1">&#39;eV&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
+            <span class="s1">&#39;warnings&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span><span class="p">,</span>
+            <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span>
+        <span class="p">}</span>
+
+        <span class="c1"># create link to workchain node</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">save_output_node</span><span class="p">(</span><span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">out</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="s1">&#39;out&#39;</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energydict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_ALL_QVECTORS_FAILED</span>
+        <span class="k">elif</span> <span class="n">failed_labels</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_SOME_QVECTORS_FAILED</span></div>
+
+<div class="viewcode-block" id="FleurSSDispConvWorkChain.control_end_wc"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.ssdisp_conv.FleurSSDispConvWorkChain.control_end_wc">[docs]</a>    <span class="k">def</span> <span class="nf">control_end_wc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errormsg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Controlled way to shutdown the workchain. will initialize the output nodes</span>
+<span class="sd">        The shutdown of the workchain will has to be done afterwards</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_results</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="save_output_node"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.ssdisp_conv.save_output_node">[docs]</a><span class="nd">@cf</span>
+<span class="k">def</span> <span class="nf">save_output_node</span><span class="p">(</span><span class="n">out</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This calcfunction saves the out dict in the db</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out_wc</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">out_wc</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

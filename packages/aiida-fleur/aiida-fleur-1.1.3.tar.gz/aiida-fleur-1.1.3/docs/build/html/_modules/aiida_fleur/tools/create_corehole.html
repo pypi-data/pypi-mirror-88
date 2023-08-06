@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.tools.create_corehole &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.tools.create_corehole</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.tools.create_corehole</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Contains helper functions to create core-holes in</span>
+<span class="sd">Fleur input files from AiiDA data nodes.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<span class="c1"># TODO maybe merge these methods into fleurinp or structure util? or create a parameterData utils</span>
+<span class="c1">#355</span>
+<div class="viewcode-block" id="create_corehole_para"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.create_corehole.create_corehole_para">[docs]</a><span class="k">def</span> <span class="nf">create_corehole_para</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">econfig</span><span class="p">,</span> <span class="n">species_name</span><span class="o">=</span><span class="s1">&#39;corehole&#39;</span><span class="p">,</span> <span class="n">parameterdata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This methods sets of electron configurations for a kind</span>
+<span class="sd">    or position given, make sure to break the symmetry for this position/kind</span>
+<span class="sd">    beforehand, otherwise you will create several coreholes.</span>
+
+<span class="sd">    :param structure: StructureData</span>
+<span class="sd">    :param kind: a string with the kind_name (TODO: alternative the kind object)</span>
+<span class="sd">    :param econfig: string, e.g. econfig = &quot;[Kr] 5s2 4d10 4f13 | 5p6 5d5 6s2&quot; to set, i.e. the corehole</span>
+
+<span class="sd">    :return: a Dict node</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: Since fleur MaXR5 there is a default econfig file and the order behavior</span>
+    <span class="c1"># has changed. now to atom lists only change the default if they have an id.</span>
+    <span class="kn">from</span> <span class="nn">aiida.common.constants</span> <span class="kn">import</span> <span class="n">elements</span> <span class="k">as</span> <span class="n">PeriodicTableElements</span>
+    <span class="kn">from</span> <span class="nn">aiida</span> <span class="kn">import</span> <span class="n">orm</span>
+    <span class="n">_atomic_numbers</span> <span class="o">=</span> <span class="p">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]:</span> <span class="n">num</span> <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">PeriodicTableElements</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="c1">#from aiida_fleur.tools.merge_parameter import merge_parameter</span>
+
+    <span class="n">kindo</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">get_kind</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
+    <span class="n">symbol</span> <span class="o">=</span> <span class="n">kindo</span><span class="o">.</span><span class="n">symbol</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">kindo</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;01223456789&#39;</span><span class="p">)</span>
+    <span class="n">charge</span> <span class="o">=</span> <span class="n">_atomic_numbers</span><span class="p">[</span><span class="n">kindo</span><span class="o">.</span><span class="n">symbol</span><span class="p">]</span>
+    <span class="n">a_id</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">charge</span><span class="p">,</span> <span class="n">kindo</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">head</span><span class="p">):]))</span>
+
+    <span class="c1"># get kind symbol, get kind name,</span>
+    <span class="c1">#&amp;atom element=&quot;W&quot; jri=921 lmax=8 rmt=2.52 dx=0.014 lo=&quot;5p&quot; econfig=&quot;[Kr] 5s2 4d10 4f13 | 5p6 5d4 6s2&quot; /</span>
+    <span class="c1">#count = 0</span>
+    <span class="k">if</span> <span class="n">parameterdata</span><span class="p">:</span>
+        <span class="n">new_parameterd</span> <span class="o">=</span> <span class="n">parameterdata</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>  <span class="c1"># dict()otherwise parameterdata is changed</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">new_parameterd</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s1">&#39;atom&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;element&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="n">symbol</span><span class="p">:</span>
+                    <span class="c1"># remember atomic id is atomic number.some int</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">a_id</span> <span class="ow">and</span> <span class="nb">float</span><span class="p">(</span><span class="n">a_id</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))):</span>
+                        <span class="n">val</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;econfig&#39;</span><span class="p">:</span> <span class="n">econfig</span><span class="p">})</span>
+                        <span class="k">break</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">a_id</span><span class="p">:</span>
+                        <span class="n">val</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;econfig&#39;</span><span class="p">:</span> <span class="n">econfig</span><span class="p">})</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">a_id</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">species_name</span><span class="p">:</span>
+                <span class="n">new_parameterd</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;atom&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="n">symbol</span><span class="p">,</span> <span class="s1">&#39;econfig&#39;</span><span class="p">:</span> <span class="n">econfig</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">a_id</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">species_name</span><span class="p">}}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_parameterd</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;atom&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="n">symbol</span><span class="p">,</span> <span class="s1">&#39;econfig&#39;</span><span class="p">:</span> <span class="n">econfig</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">a_id</span><span class="p">}}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_parameterd</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;atom&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="n">symbol</span><span class="p">,</span> <span class="s1">&#39;econfig&#39;</span><span class="p">:</span> <span class="n">econfig</span><span class="p">}}</span>
+
+    <span class="n">new_parameter</span> <span class="o">=</span> <span class="n">orm</span><span class="o">.</span><span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">new_parameterd</span><span class="p">)</span>
+    <span class="c1">#if parameterdata:</span>
+    <span class="c1">#    new_parameter = merge_parameter(parameterdata, new_parameter)</span>
+    <span class="k">return</span> <span class="n">new_parameter</span>  <span class="c1">#structure</span></div>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd"># Move to fleurinpmod? fleurinp-&gt;self</span>
+<span class="sd"># This method is fully implemented yet since it turned out to better go over inpgen</span>
+<span class="sd">def create_corehole_fleurinp(fleurinp, species, stateocc, pos=None, coreconfig=&#39;same&#39;, valenceconfig=&#39;same&#39;):</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    Removes an electron from the core and adds it to the valence band of the kind</span>
+<span class="sd">    given econfig as in inp.xml::</span>
+
+<span class="sd">        [Kr] (5s1/2) (4d3/2) (4d5/2) (4f5/2) (4f7/2)</span>
+
+<span class="sd">    if position(pos) is given the electronConfig for the specified position will be set.</span>
+<span class="sd">    (or todo? econfig, either::</span>
+
+<span class="sd">            [Kr] 5s2 4d10 4f13 | 5p6 5d4 6s2</span>
+
+<span class="sd">    or::</span>
+
+<span class="sd">        [Kr] 2(5s1/2) 4(4d3/2) 6(4d5/2) 6(4f5/2) 8(4f7/2) |2(5p1/2) 4(5p3/2) 2(6s1/2) 2(5d3/2) 2(5d5/2))</span>
+
+<span class="sd">    occ tags already there will be untouched, unless the state is the same as given.</span>
+
+<span class="sd">    :params fleurinp: an unstored! changes are done on this fleurinp fleurinpdata object # TODO alternatively stored?</span>
+<span class="sd">    :params species: string with species name</span>
+<span class="sd">    :params stateocc: dict state tuples (spinup, spindown), exp: {&#39;(5d3/2)&#39; : (2.5, 0.0), &#39;(4f7/2)&#39; : (3.5 , 4.0)}</span>
+<span class="sd">    :params pos: list of tuples of 3, pos=[(0.0, 0.0, 0.0), ...]</span>
+<span class="sd">    :params coreconfig: string, e.g: &quot;[Kr] (5s1/2) (4d3/2) (4d5/2) (4f5/2) (4f7/2)&quot;, default=&#39;same&#39; (same as current in inp.xml)</span>
+<span class="sd">    :params valenceconfig string, e.g.: (5p1/2) (5p3/2) (6s1/2) (5d3/2) (5d5/2)</span>
+
+<span class="sd">    :return: the changes fleurinpData object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="sd">    #     &lt;electronConfig&gt;</span>
+<span class="sd">    #        &lt;coreConfig&gt;[Kr] (5s1/2) (4d3/2) (4d5/2) (4f5/2) (4f7/2)&lt;/coreConfig&gt;</span>
+<span class="sd">    #        &lt;valenceConfig&gt;(5p1/2) (5p3/2) (6s1/2) (5d3/2) (5d5/2)&lt;/valenceConfig&gt;</span>
+<span class="sd">    #        &lt;stateOccupation state=&quot;(5d3/2)&quot; spinUp=&quot;2.00000000&quot; spinDown=&quot;.00000000&quot;/&gt;</span>
+<span class="sd">    #        &lt;stateOccupation state=&quot;(5d5/2)&quot; spinUp=&quot;2.00000000&quot; spinDown=&quot;.00000000&quot;/&gt;</span>
+<span class="sd">    #     &lt;/electronConfig&gt;</span>
+
+<span class="sd">    from aiida_fleur.tools.xml_util import eval_xpath2, get_xml_attribute</span>
+<span class="sd">    #from aiida_fleur.data.fleurinpmodifier import FleurinpModifier</span>
+<span class="sd">    # or from fleurinp?</span>
+
+<span class="sd">    FleurinpData = DataFactory(&#39;fleur.fleurinp&#39;)</span>
+<span class="sd">    ########### all xpath maintain ########### ? needed?</span>
+<span class="sd">    electronConfig_xpath = &#39;/fleurInput/atomSpecies/species/electronConfig&#39;</span>
+<span class="sd">    species_xpath = &#39;/fleurInput/atomSpecies/species&#39;</span>
+<span class="sd">    #####################</span>
+
+<span class="sd">    # test input, if something wrong return/ throw error</span>
+<span class="sd">    # get electronConfig tag from fleurinp</span>
+<span class="sd">    # create new tag from old tag and method input</span>
+<span class="sd">    # return new fleurinp data</span>
+<span class="sd">    # Best use fleurinp functions</span>
+<span class="sd">    # Do it with xml or rather</span>
+
+<span class="sd">    new_core = False</span>
+<span class="sd">    new_valence = False</span>
+
+<span class="sd">    # test input.</span>
+<span class="sd">    if not isinstance(fleurinp, FleurinpData):</span>
+<span class="sd">        print(&#39;No fleurinp Data given to &quot;create_valence_corehole&quot;&#39;)</span>
+<span class="sd">        return None  # TODO throw error?</span>
+
+<span class="sd">    if coreconfig != &#39;same&#39;:</span>
+<span class="sd">        new_core = True</span>
+
+<span class="sd">    if valenceconfig != &#39;same&#39;:</span>
+<span class="sd">        new_valence = True</span>
+<span class="sd">    if pos is None:</span>
+<span class="sd">        pos = []</span>
+<span class="sd">    species_tags = fleurinp.get_tag(species_xpath)</span>
+<span class="sd">    for speci in species_tags:</span>
+<span class="sd">        if get_xml_attribute(speci, &#39;name&#39;) == species:</span>
+<span class="sd">            # change</span>
+<span class="sd">            econfig = eval_xpath2(speci, &#39;electronConfig&#39;)[0]</span>
+<span class="sd">            coreconfig = eval_xpath2(econfig, &#39;coreConfig&#39;)</span>
+<span class="sd">            valenceconfig = eval_xpath2(econfig, &#39;valenceConfig&#39;)</span>
+<span class="sd">            occupations = eval_xpath2(econfig, &#39;stateOccupation&#39;)</span>
+
+<span class="sd">            for key, val in six.iteritems(stateocc):</span>
+<span class="sd">                added = False</span>
+<span class="sd">                for occ in occupations:</span>
+<span class="sd">                    name = get_xml_attribute(occ, &#39;state&#39;)</span>
+<span class="sd">                    if name == key:</span>
+<span class="sd">                        added = True</span>
+<span class="sd">                        # override and break (can occur only once)</span>
+<span class="sd">                        occ.set(&#39;spinUp&#39;, str(val[0]))</span>
+<span class="sd">                        occ.set(&#39;spinDown&#39;, str(val[0]))</span>
+<span class="sd">                        break</span>
+<span class="sd">                if not added:</span>
+<span class="sd">                    pass</span>
+
+<span class="sd">    #st_inpchanges(change_dict)</span>
+
+<span class="sd">    #alternative</span>
+<span class="sd">    change_dict = {&#39;coreConfig&#39;: &#39;&#39;, &#39;valenceConfig&#39;: &#39;&#39;}</span>
+<span class="sd">    change_dict2 = {&#39;state&#39;: &#39;&#39;, &#39;spinUp&#39;: &#39;&#39;, &#39;spinDown&#39;: &#39;&#39;}</span>
+<span class="sd">    change_dict3 = {&#39;valenceElectrons&#39;: &#39;&#39;}</span>
+
+<span class="sd">    return fleurinp</span>
+
+
+<span class="sd">def write_change(xmltree, changelist_xpath):</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    applies the changes from the changelist to the xml tree</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    xmltree_new = xmltree</span>
+<span class="sd">    for element in changelist_xpath:</span>
+<span class="sd">        xpath = element[0]</span>
+<span class="sd">        value = element[1]</span>
+<span class="sd">    return xmltree_new</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

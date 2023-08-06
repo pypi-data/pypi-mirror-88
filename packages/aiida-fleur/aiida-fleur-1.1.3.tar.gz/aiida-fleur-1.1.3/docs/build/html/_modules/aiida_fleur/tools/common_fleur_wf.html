@@ -1,0 +1,867 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.tools.common_fleur_wf &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.tools.common_fleur_wf</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.tools.common_fleur_wf</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">In here we put all things (methods) that are common to workflows AND</span>
+<span class="sd">depend on AiiDA classes, therefore can only be used if the dbenv is loaded.</span>
+<span class="sd">Util that does not depend on AiiDA classes should go somewhere else.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">load_node</span><span class="p">,</span> <span class="n">Bool</span>
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span><span class="p">,</span> <span class="n">CalculationFactory</span>
+
+
+<div class="viewcode-block" id="is_code"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.is_code">[docs]</a><span class="k">def</span> <span class="nf">is_code</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test if the given input is a Code node, by object, id, uuid, or pk</span>
+<span class="sd">    if yes returns a Code node in all cases</span>
+<span class="sd">    if no returns None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span>
+    <span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">NotExistent</span><span class="p">,</span> <span class="n">MultipleObjectsError</span><span class="p">,</span> <span class="n">InputValidationError</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">Code</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">code</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">codestring</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="n">Code</span><span class="o">.</span><span class="n">get_from_string</span><span class="p">(</span><span class="n">codestring</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">codestring</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">InputValidationError</span><span class="p">,</span> <span class="n">MultipleObjectsError</span><span class="p">):</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">Code</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">code</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="get_inputs_fleur"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.get_inputs_fleur">[docs]</a><span class="k">def</span> <span class="nf">get_inputs_fleur</span><span class="p">(</span><span class="n">code</span><span class="p">,</span>
+                     <span class="n">remote</span><span class="p">,</span>
+                     <span class="n">fleurinp</span><span class="p">,</span>
+                     <span class="n">options</span><span class="p">,</span>
+                     <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                     <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">serial</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">only_even_MPI</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Assembles the input dictionary for Fleur Calculation. Does not check if a user gave</span>
+<span class="sd">    correct input types, it is the work of FleurCalculation to check it.</span>
+
+<span class="sd">    :param code: FLEUR code of Code type</span>
+<span class="sd">    :param remote: remote_folder from the previous calculation of RemoteData type</span>
+<span class="sd">    :param fleurinp: FleurinpData object representing input files</span>
+<span class="sd">    :param options: calculation options that will be stored in metadata</span>
+<span class="sd">    :param label: a string setting a label of the CalcJob in the DB</span>
+<span class="sd">    :param description: a string setting a description of the CalcJob in the DB</span>
+<span class="sd">    :param settings: additional settings of Dict type</span>
+<span class="sd">    :param serial: True if run a calculation in a serial mode</span>
+
+<span class="sd">    Example of use::</span>
+
+<span class="sd">        inputs_build = get_inputs_inpgen(structure, inpgencode, options, label,</span>
+<span class="sd">                                         description, params=params)</span>
+<span class="sd">        future = self.submit(inputs_build)</span>
+
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Dict</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">only_even_MPI</span><span class="p">,</span> <span class="n">Bool</span><span class="p">):</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;only_even_MPI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">only_even_MPI</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;only_even_MPI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="n">only_even_MPI</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">remote</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;parent_folder&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">remote</span>
+    <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code</span>
+    <span class="k">if</span> <span class="n">fleurinp</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;fleurinpdata&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fleurinp</span>
+
+    <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="c1"># TODO check  if code is parallel version?</span>
+    <span class="k">if</span> <span class="n">serial</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;withmpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># for now</span>
+        <span class="c1"># TODO not every machine/scheduler type takes number of machines</span>
+        <span class="c1">#  lsf takes number of total_mpi_procs,slurm and psb take num_machines,\</span>
+        <span class="c1"># also a full will run here mpi on that node... also not what we want.ß</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;num_mpiprocs_per_machine&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;withmpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">custom_commands</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">custom_commands</span>
+
+    <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">Dict</span><span class="p">):</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;options&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">inputs</span></div>
+
+
+<div class="viewcode-block" id="get_inputs_inpgen"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.get_inputs_inpgen">[docs]</a><span class="k">def</span> <span class="nf">get_inputs_inpgen</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">inpgencode</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Assembles the input dictionary for Fleur Calculation.</span>
+
+<span class="sd">    :param structure: input structure of StructureData type</span>
+<span class="sd">    :param inpgencode: inpgen code of Code type</span>
+<span class="sd">    :param options: calculation options that will be stored in metadata</span>
+<span class="sd">    :param label: a string setting a label of the CalcJob in the DB</span>
+<span class="sd">    :param description: a string setting a description of the CalcJob in the DB</span>
+<span class="sd">    :param params: input parameters for inpgen code of Dict type</span>
+
+<span class="sd">    Example of use::</span>
+
+<span class="sd">        inputs_build = get_inputs_inpgen(structure, inpgencode, options, label,</span>
+<span class="sd">                                         description, params=params)</span>
+<span class="sd">        future = self.submit(inputs_build)</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">FleurinpProcess</span> <span class="o">=</span> <span class="n">CalculationFactory</span><span class="p">(</span><span class="s1">&#39;fleur.inpgen&#39;</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">FleurinpProcess</span><span class="o">.</span><span class="n">get_builder</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">structure</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure</span>
+    <span class="k">if</span> <span class="n">inpgencode</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">inpgencode</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+    <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># inpgen run always serial</span>
+    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;withmpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;num_mpiprocs_per_machine&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+
+    <span class="c1"># Currently this does not work, find out howto...</span>
+    <span class="c1"># for key, val in kwargs.items():</span>
+    <span class="c1">#    inputs[key] = val</span>
+
+    <span class="k">return</span> <span class="n">inputs</span></div>
+
+
+<div class="viewcode-block" id="test_and_get_codenode"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.test_and_get_codenode">[docs]</a><span class="k">def</span> <span class="nf">test_and_get_codenode</span><span class="p">(</span><span class="n">codenode</span><span class="p">,</span> <span class="n">expected_code_type</span><span class="p">,</span> <span class="n">use_exceptions</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pass a code node and an expected code (plugin) type. Check that the</span>
+<span class="sd">    code exists, is unique, and return the Code object.</span>
+
+<span class="sd">    :param codenode: the name of the code to load (in the form label@machine)</span>
+<span class="sd">    :param expected_code_type: a string with the plugin that is expected to</span>
+<span class="sd">      be loaded. In case no plugins exist with the given name, show all existing</span>
+<span class="sd">      plugins of that type</span>
+<span class="sd">    :param use_exceptions: if True, raise a ValueError exception instead of</span>
+<span class="sd">      calling sys.exit(1)</span>
+<span class="sd">    :return: a Code object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">NotExistent</span>
+    <span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">codenode</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">codenode</span><span class="p">,</span> <span class="n">Code</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">codenode</span>
+        <span class="k">if</span> <span class="n">code</span><span class="o">.</span><span class="n">get_input_plugin_name</span><span class="p">()</span> <span class="o">!=</span> <span class="n">expected_code_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">aiida.orm.querybuilder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
+        <span class="n">qb</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">()</span>
+        <span class="n">qb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Code</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;attributes.input_plugin&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;==&#39;</span><span class="p">:</span> <span class="n">expected_code_type</span><span class="p">}},</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+
+        <span class="n">valid_code_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">@</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">computer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="ow">in</span> <span class="n">qb</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+
+        <span class="k">if</span> <span class="n">valid_code_labels</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Given Code node is not of expected code type.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                   <span class="s1">&#39;Valid labels for a </span><span class="si">{}</span><span class="s1"> executable are:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expected_code_type</span><span class="p">))</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;* </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">valid_code_labels</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">use_exceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>  <span class="c1"># , file=sys.stderr)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Code not valid, and no valid codes for </span><span class="si">{}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                   <span class="s1">&#39;Configure at least one first using</span><span class="se">\n</span><span class="s1">&#39;</span>
+                   <span class="s1">&#39;    verdi code setup&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expected_code_type</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">use_exceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>  <span class="c1"># , file=sys.stderr)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">code</span></div>
+
+
+<div class="viewcode-block" id="get_kpoints_mesh_from_kdensity"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.get_kpoints_mesh_from_kdensity">[docs]</a><span class="k">def</span> <span class="nf">get_kpoints_mesh_from_kdensity</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">kpoint_density</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    params: structuredata, Aiida structuredata</span>
+<span class="sd">    params: kpoint_density</span>
+
+<span class="sd">    returns: tuple (mesh, offset)</span>
+<span class="sd">    returns: kpointsdata node</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">KpointsData</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s1">&#39;array.kpoints&#39;</span><span class="p">)</span>
+    <span class="n">kp</span> <span class="o">=</span> <span class="n">KpointsData</span><span class="p">()</span>
+    <span class="n">kp</span><span class="o">.</span><span class="n">set_cell_from_structure</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">kpoint_density</span>  <span class="c1"># 1/A</span>
+    <span class="n">kp</span><span class="o">.</span><span class="n">set_kpoints_mesh_from_density</span><span class="p">(</span><span class="n">density</span><span class="p">)</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">kp</span><span class="o">.</span><span class="n">get_kpoints_mesh</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">kp</span></div>
+
+
+<span class="c1"># test</span>
+<span class="c1"># print(get_kpoints_mesh_from_kdensity(load_node(structure(120)), 0.1))</span>
+<span class="c1"># (([33, 33, 18], [0.0, 0.0, 0.0]), &lt;KpointsData: uuid: cee9d05f-b31a-44d7-aa72-30a406712fba (unstored)&gt;)</span>
+<span class="c1"># mesh, kp = get_kpoints_mesh_from_kdensity(structuredata, 0.1)</span>
+<span class="c1"># print mesh[0]</span>
+
+<span class="c1"># TODO maybe allow lists of uuids in workchain dict, or write a second funtion for this,...</span>
+<span class="c1"># The question is how do get the &#39;enthalpy for a reaction out of my database?</span>
+<span class="c1"># where I have redundant calculations or calculations with different parameters...</span>
+<span class="c1"># are total energies comparable?</span>
+<span class="c1"># -&gt; as long as the same scheme ist used (all GGA or all GGA+U)</span>
+<span class="c1"># total energies are compareable and the gibs enthalpy is approximately the</span>
+<span class="c1"># total energy difference</span>
+<span class="c1"># there are tricks to also compare mixed energies, with experimental fits</span>
+<span class="c1"># for binary reactions, where both is needed</span>
+
+
+<div class="viewcode-block" id="determine_favorable_reaction"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.determine_favorable_reaction">[docs]</a><span class="k">def</span> <span class="nf">determine_favorable_reaction</span><span class="p">(</span><span class="n">reaction_list</span><span class="p">,</span> <span class="n">workchain_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds out with reaction is more favorable by simple energy standpoints</span>
+
+<span class="sd">    # TODO check physics</span>
+<span class="sd">    reaction list: list of reaction strings</span>
+<span class="sd">    workchain_dict = {&#39;Be12W&#39; : uuid_wc or output, &#39;Be2W&#39; : uuid, ...}</span>
+
+<span class="sd">    return dictionary that ranks the reactions after their enthalpy</span>
+
+<span class="sd">    TODO: refactor aiida part out of this, leaving an aiida independent part and one</span>
+<span class="sd">    more universal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">WorkChain</span>
+    <span class="kn">from</span> <span class="nn">aiida_fleur.tools.common_fleur_wf_util</span> <span class="kn">import</span> <span class="n">get_enhalpy_of_equation</span>
+    <span class="c1"># for each reaction get the total energy sum</span>
+    <span class="c1"># make sure to use the right multipliers...</span>
+    <span class="c1"># then sort the given list from (lowest if negativ energies to highest)</span>
+    <span class="n">energy_sorted_reactions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">formenergy_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">compound</span><span class="p">,</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">workchain_dict</span><span class="p">):</span>
+        <span class="c1"># TODO ggf get formation energy from output node, or extras</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>  <span class="c1"># allow to give values</span>
+            <span class="n">formenergy_dict</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>
+            <span class="k">continue</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="n">extras</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">get_extras</span><span class="p">()</span>  <span class="c1"># sadly there is no get(,) method...</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">formenergy</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;formation_energy&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">formenergy</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">formenergy</span><span class="p">:</span>  <span class="c1"># test if 0 case ok</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">WorkChain</span><span class="p">):</span>  <span class="c1"># TODO: untested for aiida &gt; 1.0</span>
+                <span class="n">plabel</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s1">&#39;_process_label&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">plabel</span> <span class="o">==</span> <span class="s1">&#39;fleur_initial_cls_wc&#39;</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">ouputnode</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">output_initial_cls_wc_para</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+                    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">ouputnode</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">output_inital_cls_wc_para</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+                        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>  <span class="c1"># TODO: Check this</span>
+                            <span class="n">ouputnode</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="n">formenergy</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;WARNING: output node of </span><span class="si">{}</span><span class="s1"> not found. I skip&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+                            <span class="k">continue</span>
+                    <span class="n">formenergy</span> <span class="o">=</span> <span class="n">ouputnode</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;formation_energy&#39;</span><span class="p">)</span>
+                    <span class="c1"># TODO is this value per atom?</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># check if corehole wc?</span>
+                    <span class="k">pass</span>
+
+        <span class="n">formenergy_dict</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span> <span class="o">=</span> <span class="n">formenergy</span>
+
+    <span class="k">for</span> <span class="n">reaction_string</span> <span class="ow">in</span> <span class="n">reaction_list</span><span class="p">:</span>
+        <span class="n">ent_peratom</span> <span class="o">=</span> <span class="n">get_enhalpy_of_equation</span><span class="p">(</span><span class="n">reaction_string</span><span class="p">,</span> <span class="n">formenergy_dict</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ent_peratom</span><span class="p">)</span>
+        <span class="n">energy_sorted_reactions</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">reaction_string</span><span class="p">,</span> <span class="n">ent_peratom</span><span class="p">])</span>
+    <span class="n">energy_sorted_reactions</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">energy_sorted_reactions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ent</span><span class="p">:</span> <span class="n">ent</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">energy_sorted_reactions</span></div>
+
+
+<div class="viewcode-block" id="performance_extract_calcs"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.performance_extract_calcs">[docs]</a><span class="k">def</span> <span class="nf">performance_extract_calcs</span><span class="p">(</span><span class="n">calcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts some runtime and system data from given fleur calculations</span>
+
+<span class="sd">    :params calcs: list of calculation nodes/pks/or uuids. Fleur calc specific</span>
+
+<span class="sd">    :returns data_dict: dictionary, dictionary of arrays with the same length,</span>
+<span class="sd">                        from with a panda frame can be created.</span>
+
+<span class="sd">    Note: Is not the fastest for many calculations &gt; 1000.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sa">u</span><span class="s1">&#39;n_symmetries&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;n_spin_components&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;n_kpoints&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;n_iterations&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;walltime_sec&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;walltime_sec_per_it&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;n_iterations_total&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;density_distance&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;computer&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;n_atoms&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;kmax&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;costkonstant&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;walltime_sec_cor&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;total_cost&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;fermi_energy&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;bandgap&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;force_largest&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;ncores&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;pk&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">}</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">calc</span> <span class="ow">in</span> <span class="n">calcs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">calc</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
+            <span class="n">calc</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">calc</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">pk</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">pk</span>
+        <span class="nb">print</span><span class="p">((</span><span class="n">count</span><span class="p">,</span> <span class="n">pk</span><span class="p">))</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">res</span>
+        <span class="n">res_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">efermi</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">fermi_energy</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;skipping </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">calc</span><span class="o">.</span><span class="n">uuid</span><span class="p">)))</span>
+            <span class="n">efermi</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10000</span>
+            <span class="k">continue</span>  <span class="c1"># we skip these entries</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">gap</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">bandgap</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">gap</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10000</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;skipping 2 </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">calc</span><span class="o">.</span><span class="n">uuid</span><span class="p">)))</span>
+            <span class="k">continue</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">energy</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;skipping 3 </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">calc</span><span class="o">.</span><span class="n">uuid</span><span class="p">)))</span>
+            <span class="k">continue</span>
+
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;bandgap&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gap</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;fermi_energy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">efermi</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;force_largest&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">force_largest</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;pk&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;uuid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;n_symmetries&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">number_of_symmetries</span><span class="p">)</span>
+        <span class="n">nspins</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">number_of_spin_components</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;n_spin_components&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nspins</span><span class="p">)</span>
+        <span class="n">nkpt</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">number_of_kpoints</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;n_kpoints&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nkpt</span><span class="p">)</span>
+        <span class="n">niter</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">number_of_iterations</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;n_iterations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">niter</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;n_iterations_total&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">number_of_iterations_total</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="sa">u</span><span class="s1">&#39;charge_density&#39;</span> <span class="ow">in</span> <span class="n">res_keys</span><span class="p">:</span>
+            <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;density_distance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">charge_density</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># magnetic, old</span>
+            <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;density_distance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">overall_charge_density</span><span class="p">)</span>
+
+        <span class="n">walltime</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">walltime</span>
+        <span class="k">if</span> <span class="n">walltime</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># date was not considert yet, we assume one day...</span>
+            <span class="n">walltime_new</span> <span class="o">=</span> <span class="n">walltime</span> <span class="o">+</span> <span class="mi">86400</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">walltime_new</span> <span class="o">=</span> <span class="n">walltime</span>
+
+        <span class="n">walltime_periteration</span> <span class="o">=</span> <span class="n">walltime_new</span> <span class="o">/</span> <span class="n">niter</span>
+
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;walltime_sec&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">walltime</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;walltime_sec_cor&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">walltime_new</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;walltime_sec_per_it&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">walltime_periteration</span><span class="p">)</span>
+        <span class="n">cname</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">computer</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;computer&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cname</span><span class="p">)</span>
+        <span class="n">natom</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">number_of_atoms</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;n_atoms&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">natom</span><span class="p">)</span>
+
+        <span class="c1"># fleurinp = calc.get_inputs_dict()[&#39;fleurinpdata&#39;]</span>
+        <span class="c1"># kmax = fleurinp.inp_dict[&#39;calculationSetup&#39;][&#39;cutoffs&#39;][&#39;Kmax&#39;]</span>
+        <span class="n">kmax</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">kmax</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;kmax&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kmax</span><span class="p">)</span>
+
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">calc_time_cost_function</span><span class="p">(</span><span class="n">natom</span><span class="p">,</span> <span class="n">nkpt</span><span class="p">,</span> <span class="n">kmax</span><span class="p">,</span> <span class="n">nspins</span><span class="p">)</span>
+        <span class="n">total_cost</span> <span class="o">=</span> <span class="n">cost</span> <span class="o">*</span> <span class="n">niter</span>
+
+        <span class="n">serial</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">calc</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;withmpi&#39;</span><span class="p">]</span>
+        <span class="c1"># codename = calc.get_code().label</span>
+        <span class="c1"># code_col.append(codename)</span>
+
+        <span class="c1"># if &#39;mpi&#39; in codename:</span>
+        <span class="c1">#    serial = False</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#    serial = True</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;serial&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">serial</span><span class="p">)</span>
+
+        <span class="n">resources</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span>
+        <span class="n">mpi_proc</span> <span class="o">=</span> <span class="n">get_mpi_proc</span><span class="p">(</span><span class="n">resources</span><span class="p">)</span>
+
+        <span class="n">c_ratio</span> <span class="o">=</span> <span class="n">cost_ratio</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">walltime_new</span><span class="p">,</span> <span class="n">mpi_proc</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resources</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;costkonstant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_ratio</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;total_cost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">total_cost</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;ncores&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mpi_proc</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data_dict</span></div>
+
+
+<div class="viewcode-block" id="get_mpi_proc"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.get_mpi_proc">[docs]</a><span class="k">def</span> <span class="nf">get_mpi_proc</span><span class="p">(</span><span class="n">resources</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine number of total processes from given resource dict&quot;&quot;&quot;</span>
+    <span class="n">nmachines</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;num_machines&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">total_proc</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tot_num_mpiprocs&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">total_proc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nmachines</span><span class="p">:</span>
+            <span class="n">total_proc</span> <span class="o">=</span> <span class="n">nmachines</span> <span class="o">*</span> <span class="n">resources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;default_mpiprocs_per_machine&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">total_proc</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tot_num_mpiprocs&#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">total_proc</span></div>
+
+
+<div class="viewcode-block" id="calc_time_cost_function"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.calc_time_cost_function">[docs]</a><span class="k">def</span> <span class="nf">calc_time_cost_function</span><span class="p">(</span><span class="n">natom</span><span class="p">,</span> <span class="n">nkpt</span><span class="p">,</span> <span class="n">kmax</span><span class="p">,</span> <span class="n">nspins</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Estimates the cost of simulating a single iteration of a system&quot;&quot;&quot;</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="n">natom</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="n">kmax</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="n">nkpt</span> <span class="o">*</span> <span class="n">nspins</span>
+    <span class="k">return</span> <span class="n">costs</span></div>
+
+
+<div class="viewcode-block" id="calc_time_cost_function_total"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.calc_time_cost_function_total">[docs]</a><span class="k">def</span> <span class="nf">calc_time_cost_function_total</span><span class="p">(</span><span class="n">natom</span><span class="p">,</span> <span class="n">nkpt</span><span class="p">,</span> <span class="n">kmax</span><span class="p">,</span> <span class="n">niter</span><span class="p">,</span> <span class="n">nspins</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Estimates the cost of simulating a all  iteration of a system&quot;&quot;&quot;</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="n">natom</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="n">kmax</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="n">nkpt</span> <span class="o">*</span> <span class="n">nspins</span> <span class="o">*</span> <span class="n">niter</span>
+    <span class="k">return</span> <span class="n">costs</span></div>
+
+
+<div class="viewcode-block" id="cost_ratio"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.cost_ratio">[docs]</a><span class="k">def</span> <span class="nf">cost_ratio</span><span class="p">(</span><span class="n">total_costs</span><span class="p">,</span> <span class="n">walltime_sec</span><span class="p">,</span> <span class="n">ncores</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Estimates if simulation cost matches resources&quot;&quot;&quot;</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">total_costs</span> <span class="o">/</span> <span class="p">(</span><span class="n">walltime_sec</span> <span class="o">*</span> <span class="n">ncores</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ratio</span></div>
+
+
+<div class="viewcode-block" id="optimize_calc_options"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.optimize_calc_options">[docs]</a><span class="k">def</span> <span class="nf">optimize_calc_options</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span>
+                          <span class="n">mpi_per_node</span><span class="p">,</span>
+                          <span class="n">omp_per_mpi</span><span class="p">,</span>
+                          <span class="n">use_omp</span><span class="p">,</span>
+                          <span class="n">mpi_omp_ratio</span><span class="p">,</span>
+                          <span class="n">fleurinpData</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">kpts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">sacrifice_level</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                          <span class="n">only_even_MPI</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes a suggestion on parallelisation setup for a particular fleurinpData.</span>
+<span class="sd">    Only the total number of k-points is analysed: the function suggests ideal k-point</span>
+<span class="sd">    parallelisation + OMP parallelisation (if required). Note: the total number of used CPUs</span>
+<span class="sd">    per node will not exceed mpi_per_node * omp_per_mpi.</span>
+
+<span class="sd">    Sometimes perfect parallelisation is terms of idle CPUs is not what</span>
+<span class="sd">    used wanted because it can harm MPI/OMP ratio. Thus the function first chooses first top</span>
+<span class="sd">    parallelisations in terms of total CPUs used</span>
+<span class="sd">    (bigger than sacrifice_level * maximal_number_CPUs_possible). Then a parallelisation which is</span>
+<span class="sd">    the closest to the MPI/OMP ratio is chosen among them and returned.</span>
+
+<span class="sd">    :param nodes: maximal number of nodes that can be used</span>
+<span class="sd">    :param mpi_per_node: an input suggestion of MPI tasks per node</span>
+<span class="sd">    :param omp_per_mpi: an input suggestion for OMP tasks per MPI process</span>
+<span class="sd">    :param use_omp: False if OMP parallelisation is not needed</span>
+<span class="sd">    :param mpi_omp_ratio: requested MPI/OMP ratio</span>
+<span class="sd">    :param fleurinpData: FleurinpData to extract total number of kpts from</span>
+<span class="sd">    :param kpts: the total number of kpts</span>
+<span class="sd">    :param sacrifice_level: sets a level of performance sacrifice that a user can afford for better</span>
+<span class="sd">                            MPI/OMP ratio.</span>
+<span class="sd">    :parm only_even_MPI: if set to True, the function does not set MPI to an odd number (if possible)</span>
+<span class="sd">    :returns nodes, MPI_tasks, OMP_per_MPI, message: first three are parallelisation info and</span>
+<span class="sd">                                                     the last one is an exit message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">sympy.ntheory.factor_</span> <span class="kn">import</span> <span class="n">divisors</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">cpus_per_node</span> <span class="o">=</span> <span class="n">mpi_per_node</span> <span class="o">*</span> <span class="n">omp_per_mpi</span>
+    <span class="k">if</span> <span class="n">fleurinpData</span><span class="p">:</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="n">fleurinpData</span><span class="o">.</span><span class="n">get_fleur_modes</span><span class="p">()</span>
+        <span class="n">kpts</span> <span class="o">=</span> <span class="n">fleurinpData</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;inp_dict&#39;</span><span class="p">][</span><span class="s1">&#39;calculationSetup&#39;</span><span class="p">][</span><span class="s1">&#39;bzIntegration&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">modes</span><span class="p">[</span><span class="s1">&#39;band&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">modes</span><span class="p">[</span><span class="s1">&#39;gw&#39;</span><span class="p">]:</span>
+            <span class="n">kpts</span> <span class="o">=</span> <span class="n">kpts</span><span class="p">[</span><span class="s1">&#39;altKPointSet&#39;</span><span class="p">][</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;kPointList&#39;</span> <span class="ow">in</span> <span class="n">kpts</span><span class="p">:</span>
+                <span class="n">kpts</span> <span class="o">=</span> <span class="n">kpts</span><span class="p">[</span><span class="s1">&#39;kPointList&#39;</span><span class="p">][</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kpts</span> <span class="o">=</span> <span class="n">kpts</span><span class="p">[</span><span class="s1">&#39;kPointCount&#39;</span><span class="p">][</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+        <span class="n">kpts</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kpts</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">kpts</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You must specify either kpts of fleurinpData&#39;</span><span class="p">)</span>
+    <span class="n">divisors_kpts</span> <span class="o">=</span> <span class="n">divisors</span><span class="p">(</span><span class="n">kpts</span><span class="p">)</span>
+    <span class="n">possible_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">divisors_kpts</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">nodes</span><span class="p">]</span>
+    <span class="n">suggestions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n_n</span> <span class="ow">in</span> <span class="n">possible_nodes</span><span class="p">:</span>
+        <span class="n">advise_cpus</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">divisors</span><span class="p">(</span><span class="n">kpts</span> <span class="o">//</span> <span class="n">n_n</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">cpus_per_node</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">advised_cpu_per_node</span> <span class="ow">in</span> <span class="n">advise_cpus</span><span class="p">:</span>
+            <span class="n">suggestions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_n</span><span class="p">,</span> <span class="n">advised_cpu_per_node</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">add_omp</span><span class="p">(</span><span class="n">suggestions</span><span class="p">,</span> <span class="n">only_even_MPI_1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Also adds possibility of omp parallelisation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">final_suggestion</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">suggestion</span> <span class="ow">in</span> <span class="n">suggestions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">use_omp</span><span class="p">:</span>
+                <span class="n">omp</span> <span class="o">=</span> <span class="n">cpus_per_node</span> <span class="o">//</span> <span class="n">suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">omp</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="c1"># here we drop parallelisations having odd number of MPIs</span>
+            <span class="k">if</span> <span class="n">only_even_MPI_1</span> <span class="ow">and</span> <span class="n">suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">only_even_MPI_1</span><span class="p">:</span>
+                <span class="n">final_suggestion</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">suggestion</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">omp</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">final_suggestion</span>
+
+    <span class="c1"># all possible suggestions taking into account omp</span>
+    <span class="n">suggestions_save</span> <span class="o">=</span> <span class="n">suggestions</span>
+    <span class="n">suggestions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">add_omp</span><span class="p">(</span><span class="n">suggestions</span><span class="p">,</span> <span class="n">only_even_MPI</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">suggestions</span><span class="p">):</span>  <span class="c1"># only odd MPI parallelisations possible, ignore only_even_MPI</span>
+        <span class="n">suggestions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">add_omp</span><span class="p">(</span><span class="n">suggestions_save</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+    <span class="n">best_resources</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">suggestions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">top_suggestions</span> <span class="o">=</span> <span class="n">suggestions</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">suggestions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">sacrifice_level</span> <span class="o">*</span> <span class="n">best_resources</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">best_criterion</span><span class="p">(</span><span class="n">suggestion</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">use_omp</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">suggestion</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">mpi_omp_ratio</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">suggestion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">suggestion</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">best_suggestion</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">top_suggestions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">best_criterion</span><span class="p">)</span>
+
+    <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">best_suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">cpus_per_node</span> <span class="o">&lt;</span> <span class="mf">0.6</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;WARNING: Changed the number of MPIs per node from </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1"> and OMP per MPI &#39;</span>
+                   <span class="s1">&#39;from </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">.&#39;</span>
+                   <span class="s1">&#39;Changed the number of nodes from </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">. &#39;</span>
+                   <span class="s1">&#39;Computational setup, needed for a given number k-points (</span><span class="si">{}</span><span class="s1">)&#39;</span>
+                   <span class="s1">&#39; provides less then 60</span><span class="si">% o</span><span class="s1">f node load.&#39;</span>
+                   <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mpi_per_node</span><span class="p">,</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">omp_per_mpi</span><span class="p">,</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">nodes</span><span class="p">,</span>
+                             <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kpts</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">cpus_per_node</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;WARNING: Changed the number of nodes from </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">&#39;</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Computational setup is perfect! Nodes: </span><span class="si">{}</span><span class="s1">, MPIs per node </span><span class="si">{}</span><span class="s1">, OMP per MPI &#39;</span>
+                       <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">. Number of k-points is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_suggestion</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                                                             <span class="n">kpts</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;WARNING: Changed the number of MPIs per node from </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1"> and OMP from </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">&#39;</span>
+                   <span class="s1">&#39;. Changed the number of nodes from </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">. Number of k-points is </span><span class="si">{}</span><span class="s1">.&#39;</span>
+                   <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mpi_per_node</span><span class="p">,</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">omp_per_mpi</span><span class="p">,</span> <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">nodes</span><span class="p">,</span>
+                             <span class="n">best_suggestion</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kpts</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">best_suggestion</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">best_suggestion</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">best_suggestion</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">message</span></div>
+
+
+<div class="viewcode-block" id="find_last_submitted_calcjob"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.find_last_submitted_calcjob">[docs]</a><span class="k">def</span> <span class="nf">find_last_submitted_calcjob</span><span class="p">(</span><span class="n">restart_wc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the last CalcJob submitted in a higher-level workchain</span>
+<span class="sd">    and returns it&#39;s uuid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">NotExistent</span>
+    <span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">CalcJobNode</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="n">restart_wc</span><span class="o">.</span><span class="n">get_outgoing</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">calls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">links</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="n">CalcJobNode</span><span class="p">)])</span>
+    <span class="k">if</span> <span class="n">calls</span><span class="p">:</span>
+        <span class="n">calls</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">calls</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">calls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NotExistent</span></div>
+
+
+<div class="viewcode-block" id="find_last_submitted_workchain"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.find_last_submitted_workchain">[docs]</a><span class="k">def</span> <span class="nf">find_last_submitted_workchain</span><span class="p">(</span><span class="n">restart_wc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the last WorkChain submitted in a higher-level workchain</span>
+<span class="sd">    and returns it&#39;s uuid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">NotExistent</span>
+    <span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">WorkChainNode</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="n">restart_wc</span><span class="o">.</span><span class="n">get_outgoing</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">calls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">links</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="n">WorkChainNode</span><span class="p">)])</span>
+    <span class="k">if</span> <span class="n">calls</span><span class="p">:</span>
+        <span class="n">calls</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">calls</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">calls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NotExistent</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

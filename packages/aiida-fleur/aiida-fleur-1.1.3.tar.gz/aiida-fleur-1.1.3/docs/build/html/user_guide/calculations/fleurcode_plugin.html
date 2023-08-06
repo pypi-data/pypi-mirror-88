@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>FLEUR code plugin &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AiiDA-FLEUR WorkChains" href="../workflows/wc_index.html" />
+    <link rel="prev" title="Fleur input generator plugin" href="inpgen_plugin.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../ug_index.html">User’s guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/getting_started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="inpgen_plugin.html">Fleur input generator plugin</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">FLEUR code plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inputs">Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#outputs">Outputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#errors">Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#additional-advanced-features">Additional advanced features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../workflows/wc_index.html">AiiDA-FLEUR WorkChains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/hints_faq.html">Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../ug_index.html">User’s guide</a> &raquo;</li>
+        
+          <li><a href="fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a> &raquo;</li>
+        
+      <li>FLEUR code plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fleur-code-plugin">
+<span id="fleurcode-plugin"></span><h1>FLEUR code plugin<a class="headerlink" href="#fleur-code-plugin" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.calculation.fleur.FleurCalculation" title="aiida_fleur.calculation.fleur.FleurCalculation"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurCalculation</span></code></a> runs Fleur executable e.g.
+<code class="docutils literal notranslate"><span class="pre">fleur</span></code> or <code class="docutils literal notranslate"><span class="pre">fleur_MPI</span></code>.</p>
+<a class="reference internal image-reference" href="../../_images/fleur_calc.png"><img alt="../../_images/fleur_calc.png" class="align-center" src="../../_images/fleur_calc.png" style="width: 60%;" /></a>
+</div>
+<div class="section" id="inputs">
+<h2>Inputs<a class="headerlink" href="#inputs" title="Permalink to this headline">¶</a></h2>
+<p>To set up an input dictionary, consider using
+<a class="reference internal" href="../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.get_inputs_fleur" title="aiida_fleur.tools.common_fleur_wf.get_inputs_fleur"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_inputs_fleur()</span></code></a> which assembles input nodes
+in a ready-to-use single dictionary.</p>
+<p>The table below shows all possible inputs for the FleurCalculation:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 18%" />
+<col style="width: 48%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>description</p></th>
+<th class="head"><p>required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>code</p></td>
+<td><p>Code</p></td>
+<td><p>Fleur code</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>fleurinpdata</p></td>
+<td><p>FleurinpData</p></td>
+<td><p>Object representing inp.xml</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>parent_folder</p></td>
+<td><p>RemoteData</p></td>
+<td><p>Remote folder of another calculation</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>settings</p></td>
+<td><p>Dict</p></td>
+<td><p>special settings</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>metadata.options</p></td>
+<td><p>Dict</p></td>
+<td><p>computational resources</p></td>
+<td><p>yes</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><strong>fleurinp</strong>: <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a>, optional -
+Data structure which represents the inp.xml file and everything a Fleur calculation needs.
+For more information see <a class="reference internal" href="../data/fleurinp_data.html#fleurinp-data"><span class="std std-ref">FleurinpData</span></a>.</p></li>
+<li><p><strong>parent_folder</strong>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.RemoteData" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteData</span></code></a>, optional -
+If specified, certain files in the previous Fleur calculation folder are
+copied in the new calculation folder.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>fleurinp</strong> and <strong>parent_folder</strong> are both optional. Depending
+on the setup of the inputs, one of five scenarios will happen:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><strong>fleurinp</strong>: files belonging to <strong>fleurinp</strong> will be used as input for
+FLEUR calculation.</p></li>
+<li><p><strong>fleurinp</strong> + <strong>parent_folder</strong> (FLEUR): files, given in <strong>fleurinp</strong>
+will be used as input for FLEUR calculation. Moreover, initial charge density will be
+copied from the folder of the parent calculation.</p></li>
+<li><p><strong>parent_folder</strong> (FLEUR): Copies inp.xml file and initial
+charge density from the folder of the parent FLEUR calculation.</p></li>
+<li><p><strong>parent_folder</strong> (input generator): Copies inp.xml file
+from the folder of the parent inpgen calculation.</p></li>
+<li><p><strong>parent_folder</strong> (input generator) + <strong>fleurinp</strong>: files belonging to
+<strong>fleurinp</strong> will be used as input for FLEUR calculation. Remote folder is ignored.</p></li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="outputs">
+<h2>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h2>
+<p>The table below shows all the output nodes generated by
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.calculation.fleur.FleurCalculation" title="aiida_fleur.calculation.fleur.FleurCalculation"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurCalculation</span></code></a>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 23%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>comment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>output_parameters</p></td>
+<td><p>Dict</p></td>
+<td><p>contains parsed <cite>out.xml</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p>remote_folder</p></td>
+<td><p>FolderData</p></td>
+<td><p>represents calculation folder</p></td>
+</tr>
+<tr class="row-even"><td><p>retrieved</p></td>
+<td><p>FolderData</p></td>
+<td><p>represents retrieved folder</p></td>
+</tr>
+</tbody>
+</table>
+<p>All the outputs can be found in <code class="docutils literal notranslate"><span class="pre">calculation.outputs</span></code>.</p>
+<ul>
+<li><p><strong>remote_folder</strong>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.RemoteData" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteData</span></code></a> -
+RemoteData which represents the calculation folder on the remote machine.</p></li>
+<li><p><strong>retrieved</strong>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.FolderData" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">FolderData</span></code></a> -
+FolderData which represents the retrieved folder on the remote machine.</p></li>
+<li><p><strong>output_parameters</strong>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> -
+Contains all kinds of information of the calculation
+and some physical quantities of the last iteration.</p>
+<p>An example output node:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="p">(</span><span class="n">aiidapy</span><span class="p">)</span><span class="o">%</span> <span class="n">verdi</span> <span class="n">data</span> <span class="nb">dict</span> <span class="n">show</span> <span class="mi">425</span>
+<span class="p">{</span>
+    <span class="s1">&#39;CalcJob_uuid&#39;</span><span class="p">:</span> <span class="s1">&#39;a6511a00-7759-484a-839d-c100dafd6118&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;bandgap&#39;</span><span class="p">:</span> <span class="mf">0.0029975592</span><span class="p">,</span>
+    <span class="s1">&#39;bandgap_units&#39;</span><span class="p">:</span> <span class="s1">&#39;eV&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;charge_den_xc_den_integral&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3105.2785777045</span><span class="p">,</span>
+    <span class="s1">&#39;charge_density1&#39;</span><span class="p">:</span> <span class="mf">3.55653e-05</span><span class="p">,</span>
+    <span class="s1">&#39;charge_density2&#39;</span><span class="p">:</span> <span class="mf">6.70788e-05</span><span class="p">,</span>
+    <span class="s1">&#39;creator_name&#39;</span><span class="p">:</span> <span class="s1">&#39;fleur 27&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;creator_target_architecture&#39;</span><span class="p">:</span> <span class="s1">&#39;GEN&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;creator_target_structure&#39;</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="p">,</span>
+    <span class="s1">&#39;density_convergence_units&#39;</span><span class="p">:</span> <span class="s1">&#39;me/bohr^3&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="s1">&#39;2019/07/17&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;12:50:27&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4405621.1469633</span><span class="p">,</span>
+    <span class="s1">&#39;energy_core_electrons&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">99592.985569309</span><span class="p">,</span>
+    <span class="s1">&#39;energy_hartree&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">161903.59225823</span><span class="p">,</span>
+    <span class="s1">&#39;energy_hartree_units&#39;</span><span class="p">:</span> <span class="s1">&#39;Htr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;energy_units&#39;</span><span class="p">:</span> <span class="s1">&#39;eV&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;energy_valence_electrons&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">158.7015525598</span><span class="p">,</span>
+    <span class="s1">&#39;fermi_energy&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.2017877885</span><span class="p">,</span>
+    <span class="s1">&#39;fermi_energy_units&#39;</span><span class="p">:</span> <span class="s1">&#39;Htr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;force_largest&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;magnetic_moment_units&#39;</span><span class="p">:</span> <span class="s1">&#39;muBohr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;magnetic_moments&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mf">2.7677822875</span><span class="p">,</span>
+        <span class="mf">2.47601e-05</span><span class="p">,</span>
+        <span class="mf">2.22588e-05</span><span class="p">,</span>
+        <span class="mf">6.05518e-05</span><span class="p">,</span>
+        <span class="mf">0.0001608849</span><span class="p">,</span>
+        <span class="mf">0.0001504687</span><span class="p">,</span>
+        <span class="mf">0.0001321699</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">3.35528e-05</span><span class="p">,</span>
+        <span class="mf">1.87169e-05</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">0.0002957294</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;magnetic_spin_down_charges&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mf">5.8532354421</span><span class="p">,</span>
+        <span class="mf">6.7738647125</span><span class="p">,</span>
+        <span class="mf">6.8081938915</span><span class="p">,</span>
+        <span class="mf">6.8073232631</span><span class="p">,</span>
+        <span class="mf">6.8162583243</span><span class="p">,</span>
+        <span class="mf">6.8156475799</span><span class="p">,</span>
+        <span class="mf">6.8188399492</span><span class="p">,</span>
+        <span class="mf">6.813423175</span><span class="p">,</span>
+        <span class="mf">6.7733972589</span><span class="p">,</span>
+        <span class="mf">6.6797683064</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;magnetic_spin_up_charges&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mf">8.6210177296</span><span class="p">,</span>
+        <span class="mf">6.7738894726</span><span class="p">,</span>
+        <span class="mf">6.8082161503</span><span class="p">,</span>
+        <span class="mf">6.8073838149</span><span class="p">,</span>
+        <span class="mf">6.8164192092</span><span class="p">,</span>
+        <span class="mf">6.8157980486</span><span class="p">,</span>
+        <span class="mf">6.8189721191</span><span class="p">,</span>
+        <span class="mf">6.8133896222</span><span class="p">,</span>
+        <span class="mf">6.7734159758</span><span class="p">,</span>
+        <span class="mf">6.679472577</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;number_of_atom_types&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s1">&#39;number_of_atoms&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s1">&#39;number_of_iterations&#39;</span><span class="p">:</span> <span class="mi">49</span><span class="p">,</span>
+    <span class="s1">&#39;number_of_iterations_total&#39;</span><span class="p">:</span> <span class="mi">49</span><span class="p">,</span>
+    <span class="s1">&#39;number_of_kpoints&#39;</span><span class="p">:</span> <span class="mi">240</span><span class="p">,</span>
+    <span class="s1">&#39;number_of_species&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;number_of_spin_components&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;number_of_symmetries&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;orbital_magnetic_moment_units&#39;</span><span class="p">:</span> <span class="s1">&#39;muBohr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;orbital_magnetic_moments&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;orbital_magnetic_spin_down_charges&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;orbital_magnetic_spin_up_charges&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;output_file_version&#39;</span><span class="p">:</span> <span class="s1">&#39;0.27&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;overall_charge_density&#39;</span><span class="p">:</span> <span class="mf">7.25099e-05</span><span class="p">,</span>
+    <span class="s1">&#39;parser_info&#39;</span><span class="p">:</span> <span class="s1">&#39;AiiDA Fleur Parser v0.2beta&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;parser_warnings&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;spin_density&#39;</span><span class="p">:</span> <span class="mf">7.91911e-05</span><span class="p">,</span>
+    <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="s1">&#39;2019/07/17&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;10:38:24&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;sum_of_eigenvalues&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">99751.687121869</span><span class="p">,</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;A Fleur input generator calulation with aiida&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;unparsed&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;walltime&#39;</span><span class="p">:</span> <span class="mi">7923</span><span class="p">,</span>
+    <span class="s1">&#39;walltime_units&#39;</span><span class="p">:</span> <span class="s1">&#39;seconds&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;warnings&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="errors">
+<h2>Errors<a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h2>
+<p>Errors of the parsing are reported in the log of the calculation (accessible
+with the <code class="docutils literal notranslate"><span class="pre">verdi</span> <span class="pre">process</span> <span class="pre">report</span></code> command).
+Everything that Fleur writes into stderr is also shown here, i.e all JuDFT error messages.
+Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>aiidapy<span class="o">)</span>% verdi process report <span class="m">513</span>
+*** <span class="m">513</span> <span class="o">[</span>scf: fleur run <span class="m">1</span><span class="o">]</span>: None
+*** <span class="o">(</span>empty scheduler output file<span class="o">)</span>
+*** <span class="o">(</span>empty scheduler errors file<span class="o">)</span>
+*** <span class="m">3</span> LOG MESSAGES:
++-&gt; ERROR at <span class="m">2019</span>-07-17 <span class="m">14</span>:57:01.108964+00:00
+<span class="p">|</span> parser returned <span class="nb">exit</span> code&lt;<span class="m">302</span>&gt;: FLEUR calculation failed.
++-&gt; ERROR at <span class="m">2019</span>-07-17 <span class="m">14</span>:57:01.097337+00:00
+<span class="p">|</span> FLEUR calculation did not finishsuccessfully.
++-&gt; WARNING at <span class="m">2019</span>-07-17 <span class="m">14</span>:57:01.056220+00:00
+<span class="p">|</span> The following was written into std error and piped to out.error :
+<span class="p">|</span>  I/O warning : failed to load external entity <span class="s2">&quot;relax.xml&quot;</span>
+<span class="p">|</span> rm: cannot remove ‘cdn_last.hdf’: No such file or directory
+<span class="p">|</span> **************juDFT-Error*****************
+<span class="p">|</span> Error message:e&gt;vz0
+<span class="p">|</span> Error occurred in subroutine:vacuz
+<span class="p">|</span> Hint:Vacuum energy parameter too high
+<span class="p">|</span> Error from PE:0/24
+</pre></div>
+</div>
+<p>Moreover, all warnings and errors written by Fleur in the out.xml file are stored in the
+ParameterData under the key <code class="docutils literal notranslate"><span class="pre">warnings</span></code>, and are accessible with <code class="docutils literal notranslate"><span class="pre">Calculation.res.warnings</span></code>.</p>
+<p>More serious FLEUR calculation failures generate a non-zero <a class="reference internal" href="../hints/exit_codes.html#exit-codes"><span class="std std-ref">exit code</span></a>.
+Each exit code has it’s own reason:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Exit code</p></th>
+<th class="head"><p>Reason</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>300</p></td>
+<td><p>One of output files can not be opened</p></td>
+</tr>
+<tr class="row-odd"><td><p>301</p></td>
+<td><p>No retrieved folder found</p></td>
+</tr>
+<tr class="row-even"><td><p>302</p></td>
+<td><p>FLEUR calculation failed for unknown reason</p></td>
+</tr>
+<tr class="row-odd"><td><p>303</p></td>
+<td><p>XML output file was not found</p></td>
+</tr>
+<tr class="row-even"><td><p>304</p></td>
+<td><p>Parsing of XML output file failed</p></td>
+</tr>
+<tr class="row-odd"><td><p>305</p></td>
+<td><p>Parsing of relax XML output file failed</p></td>
+</tr>
+<tr class="row-even"><td><p>310</p></td>
+<td><p>FLEUR calculation failed due to memory issue</p></td>
+</tr>
+<tr class="row-odd"><td><p>311</p></td>
+<td><p>FLEUR calculation failed because atoms spilled to the vacuum</p></td>
+</tr>
+<tr class="row-even"><td><p>312</p></td>
+<td><p>FLEUR calculation failed due to MT overlap</p></td>
+</tr>
+<tr class="row-odd"><td><p>313</p></td>
+<td><p>FLEUR calculation failed due to MT overlap during relaxation</p></td>
+</tr>
+<tr class="row-even"><td><p>314</p></td>
+<td><p>Problem with cdn is suspected</p></td>
+</tr>
+<tr class="row-odd"><td><p>315</p></td>
+<td><p>Invalid Elements found in the LDA+U density matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p>316</p></td>
+<td><p>Calculation failed due to time limits.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="additional-advanced-features">
+<span id="fleur-settings"></span><h2>Additional advanced features<a class="headerlink" href="#additional-advanced-features" title="Permalink to this headline">¶</a></h2>
+<p>In general see the FLEUR <a class="reference external" href="www.flapw.de">documentation</a>.</p>
+<p>While the input link with name <strong>fleurinpdata</strong> is used for the content of the
+inp.xml, additional parameters for changing the plugin behavior, can be specified in the
+<strong>settings</strong> input, also of type <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>.</p>
+<p>Below we summarise some of the options that you can specify, and their effect.
+In each case, after having defined the content of <code class="docutils literal notranslate"><span class="pre">settings_dict</span></code>, you can use
+it as input of a calculation <code class="docutils literal notranslate"><span class="pre">calc</span></code> by doing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calc</span><span class="o">.</span><span class="n">use_settings</span><span class="p">(</span><span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">settings_dict</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="section" id="adding-command-line-options">
+<h3>Adding command-line options<a class="headerlink" href="#adding-command-line-options" title="Permalink to this headline">¶</a></h3>
+<p>If you want to add command-line options to the executable (particularly
+relevant e.g. ‘-hdf’ use hdf, or ‘-magma’ use different libraries, magma in this case),
+you can pass each option
+as a string in a list, as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">settings_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;cmdline&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-hdf&#39;</span><span class="p">,</span> <span class="s1">&#39;-magma&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The default command-line of a fleur execution of the plugin looks like this for the torque
+scheduler:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;mpirun&#39;</span> <span class="s1">&#39;-np&#39;</span> <span class="s1">&#39;XX&#39;</span> <span class="s1">&#39;path_to_fleur_executable&#39;</span> <span class="s1">&#39;-wtime&#39;</span> <span class="s1">&#39;XXX&#39;</span> <span class="o">&lt;</span> <span class="s1">&#39;inp.xml&#39;</span> <span class="o">&gt;</span> <span class="s1">&#39;shell.out&#39;</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="s1">&#39;out.error&#39;</span>
+</pre></div>
+</div>
+<p>If the code node description contains ‘hdf5’ in some form, the plugin will use per default hdf5,
+it will only copy the last hdf5 density back, not the full cdn.hdf file.
+The Fleur execution line becomes in this case:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;mpirun&#39;</span> <span class="s1">&#39;-np&#39;</span> <span class="s1">&#39;XX&#39;</span> <span class="s1">&#39;path_to_fleur_executable&#39;</span> <span class="s1">&#39;-last_extra&#39;</span> <span class="s1">&#39;-wtime&#39;</span> <span class="s1">&#39;XXX&#39;</span> <span class="o">&lt;</span> <span class="s1">&#39;inp.xml&#39;</span> <span class="o">&gt;</span> <span class="s1">&#39;shell.out&#39;</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="s1">&#39;out.error&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-more-files">
+<h3>Retrieving more files<a class="headerlink" href="#retrieving-more-files" title="Permalink to this headline">¶</a></h3>
+<p>AiiDA-FLEUR does not copy all output files generated by a FLEUR calculation. By default, the plugin
+copies only <code class="docutils literal notranslate"><span class="pre">out.xml</span></code>, <code class="docutils literal notranslate"><span class="pre">cdn1</span></code> and <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code> and other technical files.
+Depending on certain switches in used <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code>, the plugin
+is capable of automatically adding additional files to the copy list:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>if <code class="docutils literal notranslate"><span class="pre">band=T</span></code> : <code class="docutils literal notranslate"><span class="pre">bands.1</span></code>, <code class="docutils literal notranslate"><span class="pre">bands.2</span></code></p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">dos=T</span></code> : <code class="docutils literal notranslate"><span class="pre">DOS.1</span></code>, <code class="docutils literal notranslate"><span class="pre">DOS.2</span></code></p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">pot8=T</span></code> : <code class="docutils literal notranslate"><span class="pre">pot*</span></code></p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">l_f=T</span></code> : <code class="docutils literal notranslate"><span class="pre">relax.xml</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>If you know that your calculation is producing additional files that you want to
+retrieve (and preserve in the AiiDA repository in the long term), you can add
+those files as a list as follows (here in the case of a file named
+<code class="docutils literal notranslate"><span class="pre">testfile.txt</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">settings_dict</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;additional_retrieve_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;testfile.txt&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-less-files">
+<h3>Retrieving less files<a class="headerlink" href="#retrieving-less-files" title="Permalink to this headline">¶</a></h3>
+<p>If you know that you do not want to retrieve certain files(and preserve in the AiiDA repository
+in the long term). i.e. the <code class="docutils literal notranslate"><span class="pre">cdn1</span></code> file is to large and it is stored somewhere else anyway,
+you can add those files as a list as follows (here in the case of a file named
+<code class="docutils literal notranslate"><span class="pre">testfile.txt</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">settings_dict</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;remove_from_retrieve_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;testfile.txt&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="copy-more-files-remotely">
+<h3>Copy more files remotely<a class="headerlink" href="#copy-more-files-remotely" title="Permalink to this headline">¶</a></h3>
+<p>The plugin copies by default the <code class="docutils literal notranslate"><span class="pre">mixing_history*</span></code> files if a parent_folder is given
+in the input.</p>
+<p>If you know that for your calculation you need some other files on the remote machine, you can add
+those files as a list as follows (here in the case of a file named
+<code class="docutils literal notranslate"><span class="pre">testfile.txt</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">settings_dict</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;additional_remotecopy_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;testfile.txt&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="copy-less-files-remotely">
+<h3>Copy less files remotely<a class="headerlink" href="#copy-less-files-remotely" title="Permalink to this headline">¶</a></h3>
+<p>If you know that for your calculation do not need some files which are copied per default by
+the plugin you can add those files as a list as follows (here in the case of a file named
+<code class="docutils literal notranslate"><span class="pre">testfile.txt</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">settings_dict</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;remove_from_remotecopy_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;testfile.txt&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../workflows/wc_index.html" class="btn btn-neutral float-right" title="AiiDA-FLEUR WorkChains" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="inpgen_plugin.html" class="btn btn-neutral float-left" title="Fleur input generator plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

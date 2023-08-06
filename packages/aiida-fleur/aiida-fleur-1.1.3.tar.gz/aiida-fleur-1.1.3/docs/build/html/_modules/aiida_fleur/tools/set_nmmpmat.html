@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.tools.set_nmmpmat &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.tools.set_nmmpmat</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.tools.set_nmmpmat</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains useful methods for initializing or modifying a n_mmp_mat file</span>
+<span class="sd">for LDA+U via the FleurinpModifier</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">eval_xpath</span><span class="p">,</span> <span class="n">eval_xpath2</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">get_xml_attribute</span><span class="p">,</span> <span class="n">convert_to_int</span>
+
+<div class="viewcode-block" id="set_nmmpmat"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.set_nmmpmat.set_nmmpmat">[docs]</a><span class="k">def</span> <span class="nf">set_nmmpmat</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">nmmp_lines_copy</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">orbital</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span>\
+                <span class="n">occStates</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">denmat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Routine sets the block in the n_mmp_mat file specified by species_name, orbital and spin</span>
+<span class="sd">    to the desired density matrix</span>
+
+<span class="sd">    :param fleurinp_tree_copy: an xmltree that represents inp.xml</span>
+<span class="sd">    :param nmmp_lines_copy: list of lines in the n_mmp_mat file</span>
+<span class="sd">    :param species_name: string, name of the species you want to change</span>
+<span class="sd">    :param orbital: integer, orbital quantum number of the LDA+U procedure to be modified</span>
+<span class="sd">    :param spin: integer, specifies which spin block should be modified</span>
+<span class="sd">    :param occStates: list, sets the diagonal elements of the density matrix and everything</span>
+<span class="sd">                      else to zero</span>
+<span class="sd">    :param denmat: matrix, specify the density matrix explicitely</span>
+<span class="sd">    :param phi: float, optional angle (radian), by which to rotate the density matrix before writing it</span>
+<span class="sd">    :param theta: float, optional angle (radian), by which to rotate the density matrix before writing it</span>
+
+<span class="sd">    :raises ValueError: If something in the input is wrong</span>
+<span class="sd">    :raises KeyError: If no LDA+U procedure is found on a species</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#All lda+U procedures have to be considered since we need to keep the order</span>
+    <span class="n">ldau_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/atomSpecies/species/ldaU&#39;</span>
+    <span class="n">magnetism_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/calculationSetup/magnetism&#39;</span>
+
+    <span class="k">if</span> <span class="n">species_name</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+        <span class="n">species_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/atomSpecies/species&#39;</span>
+    <span class="k">elif</span> <span class="n">species_name</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;all-&#39;</span><span class="p">:</span>  <span class="c1">#format all-&lt;string&gt;</span>
+        <span class="n">species_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/atomSpecies/species[contains(@name,&quot;</span><span class="si">{}</span><span class="s1">&quot;)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species_name</span><span class="p">[</span><span class="mi">4</span><span class="p">:])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">species_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/atomSpecies/species[@name = &quot;</span><span class="si">{}</span><span class="s1">&quot;]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species_name</span><span class="p">)</span>
+
+    <span class="n">all_species</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">species_xpath</span><span class="p">)</span>
+
+    <span class="c1">#Get number of spins (TODO for develop version also read l_mtnocoPot)</span>
+    <span class="n">mag_elem</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">magnetism_xpath</span><span class="p">)</span>
+    <span class="n">nspins</span> <span class="o">=</span> <span class="n">convert_to_int</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">mag_elem</span><span class="p">,</span> <span class="s1">&#39;jspins&#39;</span><span class="p">),</span> <span class="n">suc_return</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">spin</span> <span class="o">&gt;</span> <span class="n">nspins</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid input: spin </span><span class="si">{</span><span class="n">spin</span><span class="si">}</span><span class="s1"> requested, but input has only </span><span class="si">{</span><span class="n">nspins</span><span class="si">}</span><span class="s1"> spins&#39;</span><span class="p">)</span>
+
+    <span class="n">all_ldau</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">ldau_xpath</span><span class="p">)</span>
+    <span class="n">numRows</span> <span class="o">=</span> <span class="n">nspins</span> <span class="o">*</span> <span class="mi">14</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_ldau</span><span class="p">)</span>
+
+    <span class="c1">#Check that numRows matches the number of lines in nmmp_lines_copy</span>
+    <span class="c1">#If not either there was an n_mmp_mat file present in Fleurinp before and a lda+u calculation</span>
+    <span class="c1">#was added or removed or the n_mmp_mat file was initialized and after the fact lda+u procedures were added</span>
+    <span class="c1">#or removed. In both cases the resolution of this modification is very involved so we throw an error</span>
+    <span class="k">if</span> <span class="n">nmmp_lines_copy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1">#Remove blank lines</span>
+        <span class="k">while</span> <span class="s1">&#39;&#39;</span> <span class="ow">in</span> <span class="n">nmmp_lines_copy</span><span class="p">:</span>
+            <span class="n">nmmp_lines_copy</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">numRows</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nmmp_lines_copy</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The number of lines in n_mmp_mat does not match the number expected from &#39;</span><span class="o">+</span>\
+                             <span class="s1">&#39;the inp.xml file. Either remove the existing file before making modifications &#39;</span><span class="o">+</span>\
+                             <span class="s1">&#39;and only use set_nmmpmat after all modifications to the inp.xml&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">phi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">theta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">phi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">if</span> <span class="n">theta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">d_wigner</span> <span class="o">=</span> <span class="n">get_wigner_matrix</span><span class="p">(</span><span class="n">orbital</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">all_species</span><span class="p">:</span>
+        <span class="n">current_name</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+
+        <span class="c1">#Determine the place at which the given U procedure occurs</span>
+        <span class="n">ldau_index</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">ldau</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_ldau</span><span class="p">):</span>
+            <span class="n">ldau_species</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">ldau</span><span class="o">.</span><span class="n">getparent</span><span class="p">(),</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+            <span class="n">ldau_orbital</span> <span class="o">=</span> <span class="n">convert_to_int</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">ldau</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">),</span> <span class="n">suc_return</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">current_name</span> <span class="o">==</span> <span class="n">ldau_species</span> <span class="ow">and</span> <span class="n">ldau_orbital</span> <span class="o">==</span> <span class="n">orbital</span><span class="p">:</span>
+                <span class="n">ldau_index</span> <span class="o">=</span> <span class="n">index</span>
+
+        <span class="k">if</span> <span class="n">ldau_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No LDA+U procedure found on species </span><span class="si">{</span><span class="n">current_name</span><span class="si">}</span><span class="s1"> with l=</span><span class="si">{</span><span class="n">orbital</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">occStates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1">#diagonal density matrix</span>
+            <span class="n">denmatpad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+            <span class="c1">#Fill out the outer states with zero</span>
+            <span class="n">occStatespad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="n">occStatespad</span><span class="p">[</span><span class="mi">3</span> <span class="o">-</span> <span class="n">orbital</span><span class="p">:</span><span class="mi">4</span> <span class="o">+</span> <span class="n">orbital</span><span class="p">]</span> <span class="o">=</span> <span class="n">occStates</span><span class="p">[:]</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">occ</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">occStatespad</span><span class="p">):</span>
+                <span class="n">denmatpad</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">occ</span>
+        <span class="k">elif</span> <span class="n">denmat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1">#density matrix is completely specified</span>
+            <span class="n">denmatpad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="n">denmatpad</span><span class="p">[</span><span class="mi">3</span> <span class="o">-</span> <span class="n">orbital</span><span class="p">:</span><span class="mi">4</span> <span class="o">+</span> <span class="n">orbital</span><span class="p">,</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">orbital</span><span class="p">:</span><span class="mi">4</span> <span class="o">+</span> <span class="n">orbital</span><span class="p">]</span> <span class="o">=</span> <span class="n">denmat</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid definition of density matrix. Provide either occStates or denmat&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">phi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">theta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1">#Rotate the density matrix</span>
+            <span class="n">denmatpad</span> <span class="o">=</span> <span class="n">d_wigner</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">denmatpad</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">d_wigner</span><span class="p">))</span>
+
+        <span class="c1">#check if fleurinp has a specified n_mmp_mat file if not initialize it with 0</span>
+        <span class="k">if</span> <span class="n">nmmp_lines_copy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">nmmp_lines_copy</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numRows</span><span class="p">):</span>
+                <span class="n">nmmp_lines_copy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="mf">0.0</span><span class="si">:</span><span class="s1">20.13f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)])))</span>
+
+        <span class="c1">#Select the right block from n_mmp_mat and overwrite it with denmatpad</span>
+        <span class="n">startRow</span> <span class="o">=</span> <span class="p">((</span><span class="n">spin</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_ldau</span><span class="p">)</span> <span class="o">+</span> <span class="n">ldau_index</span><span class="p">)</span> <span class="o">*</span> <span class="mi">14</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">startRow</span><span class="p">,</span> <span class="n">startRow</span> <span class="o">+</span> <span class="mi">14</span><span class="p">):</span>
+            <span class="n">currentLine</span> <span class="o">=</span> <span class="n">index</span> <span class="o">-</span> <span class="n">startRow</span>
+            <span class="n">currentRow</span> <span class="o">=</span> <span class="n">currentLine</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">currentLine</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1">#Line ends with a real part</span>
+                <span class="n">nmmp_lines_copy</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s1">20.13f</span><span class="si">}{</span><span class="n">x</span><span class="o">.</span><span class="n">imag</span><span class="si">:</span><span class="s1">20.13f</span><span class="si">}</span><span class="s1">&#39;</span>\
+                                                           <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">denmatpad</span><span class="p">[</span><span class="n">currentRow</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]]))</span> <span class="o">+</span>\
+                                         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">denmatpad</span><span class="p">[</span><span class="n">currentRow</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s1">20.13f</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1">#Line begins with a imaginary part</span>
+                <span class="n">nmmp_lines_copy</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">denmatpad</span><span class="p">[</span><span class="n">currentRow</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="si">:</span><span class="s1">20.13f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="o">+</span>\
+                                         <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s1">20.13f</span><span class="si">}{</span><span class="n">x</span><span class="o">.</span><span class="n">imag</span><span class="si">:</span><span class="s1">20.13f</span><span class="si">}</span><span class="s1">&#39;</span>\
+                                                           <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">denmatpad</span><span class="p">[</span><span class="n">currentRow</span><span class="p">,</span> <span class="mi">4</span><span class="p">:]]))</span>
+
+    <span class="k">return</span> <span class="n">nmmp_lines_copy</span></div>
+
+
+<div class="viewcode-block" id="validate_nmmpmat"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.set_nmmpmat.validate_nmmpmat">[docs]</a><span class="k">def</span> <span class="nf">validate_nmmpmat</span><span class="p">(</span><span class="n">fleurinp_tree</span><span class="p">,</span> <span class="n">nmmp_lines</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks that the given nmmp_lines is valid with the given fleurinp_tree</span>
+
+<span class="sd">    Checks that the number of blocks is as expected from the inp.xml and each</span>
+<span class="sd">    block does not contain non-zero elements outside their size given by the</span>
+<span class="sd">    orbital quantum number in the inp.xml. Additionally the occupations, i.e.</span>
+<span class="sd">    diagonal elements are checked that they are in between 0 and the maximum</span>
+<span class="sd">    possible occupation</span>
+
+<span class="sd">    :param fleurinp_tree_copy: an xmltree that represents inp.xml</span>
+<span class="sd">    :param nmmp_lines_copy: list of lines in the n_mmp_mat file</span>
+
+<span class="sd">    :raises ValueError: if any of the above checks are violated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#First check the number of ldau procedures</span>
+    <span class="n">ldau_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/atomSpecies/species/ldaU&#39;</span>
+    <span class="n">magnetism_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/calculationSetup/magnetism&#39;</span>
+
+    <span class="c1">#Get number of spins (TODO for develop version also read l_mtnocoPot)</span>
+    <span class="n">mag_elem</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">fleurinp_tree</span><span class="p">,</span> <span class="n">magnetism_xpath</span><span class="p">)</span>
+    <span class="n">nspins</span> <span class="o">=</span> <span class="n">convert_to_int</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">mag_elem</span><span class="p">,</span> <span class="s1">&#39;jspins&#39;</span><span class="p">),</span> <span class="n">suc_return</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">all_ldau</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">fleurinp_tree</span><span class="p">,</span> <span class="n">ldau_xpath</span><span class="p">)</span>
+    <span class="n">numRows</span> <span class="o">=</span> <span class="n">nspins</span> <span class="o">*</span> <span class="mi">14</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_ldau</span><span class="p">)</span>
+
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="k">if</span> <span class="n">nspins</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">maxOcc</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">maxOcc</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+    <span class="c1">#Check that numRows matches the number of lines in nmmp_lines</span>
+    <span class="k">if</span> <span class="n">nmmp_lines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1">#Remove blank lines</span>
+        <span class="k">while</span> <span class="s1">&#39;&#39;</span> <span class="ow">in</span> <span class="n">nmmp_lines</span><span class="p">:</span>
+            <span class="n">nmmp_lines</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">numRows</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nmmp_lines</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The number of lines in n_mmp_mat does not match the number expected from &#39;</span><span class="o">+</span>\
+                             <span class="s1">&#39;the inp.xml file.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1">#Now check for each block if the numbers make sense</span>
+    <span class="c1">#(no numbers outside the valid area and no nonsensical occupations)</span>
+    <span class="k">for</span> <span class="n">ldau_index</span><span class="p">,</span> <span class="n">ldau</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_ldau</span><span class="p">):</span>
+
+        <span class="n">orbital</span> <span class="o">=</span> <span class="n">convert_to_int</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">ldau</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">),</span> <span class="n">suc_return</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">species_name</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">ldau</span><span class="o">.</span><span class="n">getparent</span><span class="p">(),</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">spin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nspins</span><span class="p">):</span>
+            <span class="n">startRow</span> <span class="o">=</span> <span class="p">(</span><span class="n">spin</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_ldau</span><span class="p">)</span> <span class="o">+</span> <span class="n">ldau_index</span><span class="p">)</span> <span class="o">*</span> <span class="mi">14</span>
+
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">startRow</span><span class="p">,</span> <span class="n">startRow</span> <span class="o">+</span> <span class="mi">14</span><span class="p">):</span>
+                <span class="n">currentLine</span> <span class="o">=</span> <span class="n">index</span> <span class="o">-</span> <span class="n">startRow</span>
+                <span class="n">currentRow</span> <span class="o">=</span> <span class="n">currentLine</span> <span class="o">//</span> <span class="mi">2</span>
+
+                <span class="n">line</span> <span class="o">=</span> <span class="n">nmmp_lines</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;    &#39;</span><span class="p">)</span>
+                <span class="k">while</span> <span class="s1">&#39;&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">line</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">nmmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">line</span><span class="p">])</span>
+
+                <span class="n">outside_val</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">currentRow</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">orbital</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">nmmp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-12</span><span class="p">):</span>
+                        <span class="n">outside_val</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="n">currentLine</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1">#m=-3 to m=0 real part</span>
+                    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">nmmp</span><span class="p">[:(</span><span class="mi">3</span> <span class="o">-</span> <span class="n">orbital</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">1e-12</span><span class="p">):</span>
+                        <span class="n">outside_val</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1">#m=0 imag part to m=3</span>
+                    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">nmmp</span><span class="p">[</span><span class="n">orbital</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mf">1e-12</span><span class="p">):</span>
+                        <span class="n">outside_val</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="n">outside_val</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Found value outside of valid range in for species </span><span class="si">{</span><span class="n">species_name</span><span class="si">}</span><span class="s1">, spin </span><span class="si">{</span><span class="n">spin</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span>
+                                     <span class="sa">f</span><span class="s1">&#39; and l=</span><span class="si">{</span><span class="n">orbital</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+                <span class="n">invalid_diag</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">spin</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">currentRow</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">currentLine</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">nmmp</span><span class="p">[</span><span class="n">currentRow</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">tol</span> <span class="ow">or</span> <span class="n">nmmp</span><span class="p">[</span><span class="n">currentRow</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">maxOcc</span> <span class="o">+</span> <span class="n">tol</span><span class="p">:</span>
+                            <span class="n">invalid_diag</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">nmmp</span><span class="p">[(</span><span class="n">currentRow</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">tol</span> <span class="ow">or</span> <span class="n">nmmp</span><span class="p">[(</span><span class="n">currentRow</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">maxOcc</span> <span class="o">+</span> <span class="n">tol</span><span class="p">:</span>
+                            <span class="n">invalid_diag</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="n">invalid_diag</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Found invalid diagonal element for species </span><span class="si">{</span><span class="n">species_name</span><span class="si">}</span><span class="s1">, spin </span><span class="si">{</span><span class="n">spin</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span>
+                                     <span class="sa">f</span><span class="s1">&#39; and l=</span><span class="si">{</span><span class="n">orbital</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_wigner_matrix"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.set_nmmpmat.get_wigner_matrix">[docs]</a><span class="k">def</span> <span class="nf">get_wigner_matrix</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Produces the wigner rotation matrix for the density matrix</span>
+
+<span class="sd">   :param l: int, orbital quantum number</span>
+<span class="sd">   :param phi: float, angle (radian) corresponds to euler angle alpha</span>
+<span class="sd">   :param theta: float, angle (radian) corresponds to euler angle beta</span>
+<span class="sd">   &quot;&quot;&quot;</span>
+    <span class="n">d_wigner</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">mp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fac</span><span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="n">l</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">mp</span><span class="p">)</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="n">l</span> <span class="o">-</span> <span class="n">mp</span><span class="p">))</span>
+            <span class="n">base</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phi</span> <span class="o">*</span> <span class="n">mp</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="n">mp</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">l</span> <span class="o">-</span> <span class="n">mp</span><span class="p">,</span> <span class="n">l</span> <span class="o">+</span> <span class="n">m</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">denom</span> <span class="o">=</span> <span class="n">fac</span><span class="p">(</span><span class="n">l</span> <span class="o">-</span> <span class="n">mp</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">m</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">mp</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span>
+
+                <span class="n">d_wigner</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="n">mp</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="n">base</span><span class="o">/</span><span class="n">denom</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">l</span><span class="o">+</span><span class="n">m</span><span class="o">-</span><span class="n">mp</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> \
+                                          <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">mp</span><span class="o">-</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">d_wigner</span></div>
+
+
+<div class="viewcode-block" id="fac"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.set_nmmpmat.fac">[docs]</a><span class="k">def</span> <span class="nf">fac</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the factorial of n&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

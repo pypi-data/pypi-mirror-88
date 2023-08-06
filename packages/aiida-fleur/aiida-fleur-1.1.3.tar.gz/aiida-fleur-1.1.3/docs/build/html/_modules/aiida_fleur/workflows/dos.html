@@ -1,0 +1,419 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.workflows.dos &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.workflows.dos</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.workflows.dos</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This is the worklfow &#39;dos&#39; for the Fleur code, which calculates a</span>
+<span class="sd">density of states (DOS).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span><span class="p">,</span> <span class="n">StructureData</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">RemoteData</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">WorkChain</span><span class="p">,</span> <span class="n">ToContext</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
+<span class="c1">#from aiida.work.process_registry import ProcessRegistry</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.calculation.fleur</span> <span class="kn">import</span> <span class="n">FleurCalculation</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinpmodifier</span> <span class="kn">import</span> <span class="n">FleurinpModifier</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.common_fleur_wf</span> <span class="kn">import</span> <span class="n">get_inputs_fleur</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.common_fleur_wf</span> <span class="kn">import</span> <span class="n">test_and_get_codenode</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinp</span> <span class="kn">import</span> <span class="n">FleurinpData</span>
+
+
+<div class="viewcode-block" id="fleur_dos_wc"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.dos.fleur_dos_wc">[docs]</a><span class="k">class</span> <span class="nc">fleur_dos_wc</span><span class="p">(</span><span class="n">WorkChain</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This workflow calculated a DOS from a Fleur calculation</span>
+
+<span class="sd">    :Params: a Fleurcalculation node</span>
+<span class="sd">    :returns: Success, last result node, list with convergence behavior</span>
+
+<span class="sd">    wf_parameters: {  &#39;tria&#39;, &#39;nkpts&#39;, &#39;sigma&#39;, &#39;emin&#39;, &#39;emax&#39;}</span>
+<span class="sd">    defaults : tria = True, nkpts = 800, sigma=0.005, emin= -0.3, emax = 0.8</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_workflowversion</span> <span class="o">=</span> <span class="s1">&#39;0.3.3&#39;</span>
+
+    <span class="n">_default_options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span>
+        <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;max_memory_kb&#39; : None,</span>
+        <span class="s1">&#39;import_sys_environment&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;environment_variables&#39;</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+    <span class="n">_default_wf_para</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tria&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;nkpts&#39;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;emin&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.30</span><span class="p">,</span> <span class="s1">&#39;emax&#39;</span><span class="p">:</span> <span class="mf">0.80</span><span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">fleur_dos_wc</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;wf_parameters&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_default_wf_para</span><span class="p">))</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;calc_parameters&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;options&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_default_options</span><span class="p">))</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;fleurinp&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">FleurinpData</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># TODO ggf run convergence first</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;remote_data&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">RemoteData</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1">#spec.input(&quot;inpgen&quot;, valid_type=Code, required=False)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;fleur&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Code</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">outline</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">create_new_fleurinp</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">run_fleur</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">return_results</span><span class="p">)</span>
+        <span class="c1"># spec.dynamic_output()</span>
+
+<div class="viewcode-block" id="fleur_dos_wc.start"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.dos.fleur_dos_wc.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        check parameters, what condictions? complete?</span>
+<span class="sd">        check input nodes</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># input check ### ? or done automaticly, how optional?</span>
+        <span class="c1"># check if fleuinp corresponds to fleur_calc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;Started dos workflow version </span><span class="si">{}</span><span class="s1">&#39;</span>
+                    <span class="c1"># &quot;Workchain node identifiers: &quot;)#{}&quot;</span>
+                    <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_workflowversion</span><span class="p">))</span>  <span class="c1"># ProcessRegistry().current_calc_node))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fleurinp1</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_calc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">wf_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+
+        <span class="c1"># if MPI in code name, execute parallel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">serial</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;serial&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># set values, or defaults</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">max_number_runs</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fleur_runmax&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span>
+        <span class="k">if</span> <span class="s1">&#39;options&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s1">&#39;remote_data&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">remote</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">remote_data</span>
+
+        <span class="k">if</span> <span class="s1">&#39;fleur&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">test_and_get_codenode</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span><span class="p">,</span> <span class="s1">&#39;fleur.fleur&#39;</span><span class="p">,</span> <span class="n">use_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;The code you provided for FLEUR does not use the plugin fleur.fleur&#39;</span><span class="p">)</span>
+                <span class="c1"># self.control_end_wc(error)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="fleur_dos_wc.create_new_fleurinp"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.dos.fleur_dos_wc.create_new_fleurinp">[docs]</a>    <span class="k">def</span> <span class="nf">create_new_fleurinp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        create a new fleurinp from the old with certain parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO allow change of kpoint mesh?, tria?</span>
+        <span class="n">wf_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="n">nkpts</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nkpts&#39;</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
+        <span class="c1"># how can the user say he want to use the given kpoint mesh, ZZ nkpts : False/0</span>
+        <span class="n">tria</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tria&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">)</span>
+        <span class="n">emin</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;emin&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.30</span><span class="p">)</span>
+        <span class="n">emax</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;emax&#39;</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">)</span>
+
+        <span class="n">fleurmode</span> <span class="o">=</span> <span class="n">FleurinpModifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleurinp</span><span class="p">)</span>
+
+        <span class="c1"># change_dict = {&#39;dos&#39;: True, &#39;ndir&#39; : -1, &#39;minEnergy&#39; : self.inputs.wf_parameters.get_dict().get(&#39;minEnergy&#39;, -0.30000000),</span>
+        <span class="c1"># &#39;maxEnergy&#39; :  self.inputs.wf_parameters.get_dict().get(&#39;manEnergy&#39;,&#39;0.80000000&#39;),</span>
+        <span class="c1"># &#39;sigma&#39; :  self.inputs.wf_parameters.get_dict().get(&#39;sigma&#39;, &#39;0.00500000&#39;)}</span>
+        <span class="n">change_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dos&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;ndir&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;minEnergy&#39;</span><span class="p">:</span> <span class="n">emin</span><span class="p">,</span> <span class="s1">&#39;maxEnergy&#39;</span><span class="p">:</span> <span class="n">emax</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">:</span> <span class="n">sigma</span><span class="p">}</span>
+
+        <span class="n">fleurmode</span><span class="o">.</span><span class="n">set_inpchanges</span><span class="p">(</span><span class="n">change_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tria</span><span class="p">:</span>
+            <span class="n">change_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;tria&#39;</span><span class="p">}</span>
+            <span class="n">fleurmode</span><span class="o">.</span><span class="n">set_inpchanges</span><span class="p">(</span><span class="n">change_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nkpts</span><span class="p">:</span>
+            <span class="n">fleurmode</span><span class="o">.</span><span class="n">set_nkpts</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">nkpts</span><span class="p">)</span>
+            <span class="c1"># fleurinp_new.replace_tag()</span>
+        <span class="n">fleurmode</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># needed?</span>
+        <span class="n">fleurinp_new</span> <span class="o">=</span> <span class="n">fleurmode</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fleurinp1</span> <span class="o">=</span> <span class="n">fleurinp_new</span></div>
+        <span class="c1"># print(fleurinp_new)</span>
+        <span class="c1"># print(fleurinp_new.folder.get_subfolder(&#39;path&#39;).get_abs_path(&#39;&#39;))</span>
+
+<div class="viewcode-block" id="fleur_dos_wc.run_fleur"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.dos.fleur_dos_wc.run_fleur">[docs]</a>    <span class="k">def</span> <span class="nf">run_fleur</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        run a FLEUR calculation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fleurin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fleurinp1</span>
+        <span class="n">remote</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">remote_data</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span>
+
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">get_inputs_fleur</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">remote</span><span class="p">,</span> <span class="n">fleurin</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">serial</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">serial</span><span class="p">)</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">FleurCalculation</span><span class="p">,</span> <span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ToContext</span><span class="p">(</span><span class="n">last_calc</span><span class="o">=</span><span class="n">future</span><span class="p">)</span>  <span class="c1"># calcs.append(future),</span></div>
+
+<div class="viewcode-block" id="fleur_dos_wc.return_results"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.dos.fleur_dos_wc.return_results">[docs]</a>    <span class="k">def</span> <span class="nf">return_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        return the results of the calculations</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># TODO more here</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;Dos workflow Done&#39;</span><span class="p">)</span>
+        <span class="c1"># self.report(&#39;A DOS was calculated for calculation {} and is found under pk=, &#39;</span>
+        <span class="c1">#      &#39;calculation {}&#39;)#.format(self.ctx.last_calc, ctx[&#39;last_calc&#39;] )</span>
+
+        <span class="c1"># check if dos file exists: if not succesful = False</span>
+        <span class="c1"># TODO be careful with general DOS.X</span>
+        <span class="n">dosfilename</span> <span class="o">=</span> <span class="s1">&#39;DOS.1&#39;</span>  <span class="c1"># [&#39;DOS.1&#39;, &#39;DOS.2&#39;, ...]</span>
+        <span class="c1"># TODO this should be easier...</span>
+        <span class="n">dosfilepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_calc</span><span class="o">.</span><span class="n">get_outputs_dict</span><span class="p">()[</span><span class="s1">&#39;retrieved&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">folder</span><span class="o">.</span><span class="n">get_subfolder</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_abs_path</span><span class="p">(</span>
+            <span class="n">dosfilename</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">dosfilepath</span><span class="p">)</span>
+        <span class="c1"># dosfilepath = &quot;path to dosfile&quot; # Array?</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dosfilepath</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dosfilepath</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;!NO DOS.1 file was found, something went wrong!&#39;</span><span class="p">)</span>
+
+        <span class="n">outputnode_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;workflow_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;workflow_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workflowversion</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;Warnings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;successful&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span>
+        <span class="c1">#outputnode_dict[&#39;last_calc_pk&#39;] = self.ctx.last_calc.pk</span>
+        <span class="c1">#outputnode_dict[&#39;last_calc_uuid&#39;] = self.ctx.last_calc.uuid</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;dosfile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dosfilepath</span>
+        <span class="c1"># add nkpoints, emin, emax, sigma, tria</span>
+
+        <span class="c1"># print outputnode_dict</span>
+        <span class="n">outputnode</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">outputnode_dict</span><span class="p">)</span>
+        <span class="n">outdict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># TODO parse dos to dosnode</span>
+        <span class="c1">#dosnode = &#39;&#39;</span>
+        <span class="c1">#outdict[&#39;output_band&#39;] = dosnode</span>
+        <span class="c1"># or if spin =2</span>
+        <span class="c1">#outdict[&#39;output_band1&#39;] = dosnode1</span>
+        <span class="c1">#outdict[&#39;output_band2&#39;] = dosnode2</span>
+        <span class="n">outdict</span><span class="p">[</span><span class="s1">&#39;output_dos_wc_para&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outputnode</span>
+        <span class="c1"># print outdict</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">outdict</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

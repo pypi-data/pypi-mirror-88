@@ -1,0 +1,935 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.data.fleurinpmodifier &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.data.fleurinpmodifier</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.data.fleurinpmodifier</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable=inconsistent-return-statements,protected-access,missing-docstring</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">In this module is the FleurinpModifier class, which is used to manipulate</span>
+<span class="sd">FleurinpData objects in a way which keeps the provernance.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">io</span>
+
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span>
+<span class="kn">from</span> <span class="nn">aiida</span> <span class="kn">import</span> <span class="n">orm</span>
+<span class="kn">from</span> <span class="nn">aiida.engine.processes.functions</span> <span class="kn">import</span> <span class="n">calcfunction</span> <span class="k">as</span> <span class="n">cf</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinp</span> <span class="kn">import</span> <span class="n">FleurinpData</span>
+
+
+<div class="viewcode-block" id="FleurinpModifier"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier">[docs]</a><span class="k">class</span> <span class="nc">FleurinpModifier</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class which represents changes to the :class:`~aiida_fleur.data.fleurinp.FleurinpData` object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">original</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initiation of FleurinpModifier.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">FleurinpData</span><span class="p">),</span> <span class="s1">&#39;Wrong AiiDA data type&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original</span> <span class="o">=</span> <span class="n">original</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_other_nodes</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="FleurinpModifier.apply_modifications"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.apply_modifications">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">apply_modifications</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">nmmp_lines_copy</span><span class="p">,</span> <span class="n">modification_tasks</span><span class="p">,</span> <span class="n">schema_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies given modifications to the fleurinp lxml tree.</span>
+<span class="sd">        It also checks if a new lxml tree is validated against schema.</span>
+<span class="sd">        Does not rise an error if inp.xml is not validated, simple prints a message about it.</span>
+
+<span class="sd">        :param fleurinp_tree_copy: a fleurinp lxml tree to be modified</span>
+<span class="sd">        :param n_mmp_lines_copy: a n_mmp_mat file to be modified</span>
+<span class="sd">        :param modification_tasks: a list of modification tuples</span>
+
+<span class="sd">        :returns: a modified fleurinp lxml tree and a modified n_mmp_mat file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">xml_set_attribv_occ</span><span class="p">,</span> <span class="n">xml_set_first_attribv</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">xml_set_all_attribv</span><span class="p">,</span> <span class="n">xml_set_text</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">xml_set_text_occ</span><span class="p">,</span> <span class="n">xml_set_all_text</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">create_tag</span><span class="p">,</span> <span class="n">replace_tag</span><span class="p">,</span> <span class="n">delete_tag</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">delete_att</span><span class="p">,</span> <span class="n">set_species</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">change_atomgr_att</span><span class="p">,</span> <span class="n">add_num_to_att</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">change_atomgr_att_label</span><span class="p">,</span> <span class="n">set_species_label</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">set_inpchanges</span><span class="p">,</span> <span class="n">set_nkpts</span><span class="p">,</span> <span class="n">set_kpath</span><span class="p">,</span> <span class="n">shift_value</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">shift_value_species_label</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">clear_xml</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.set_nmmpmat</span> <span class="kn">import</span> <span class="n">set_nmmpmat</span><span class="p">,</span> <span class="n">validate_nmmpmat</span>
+
+        <span class="k">def</span> <span class="nf">xml_set_attribv_occ1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">occ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">occ</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">xml_set_attribv_occ</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="n">occ</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">xml_set_first_attribv1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">xml_set_first_attribv</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">xml_set_all_attribv1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">xml_set_all_attribv</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">xml_set_text1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">xml_set_text</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">xml_set_text_occ1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">xml_set_text_occ</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="n">occ</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">xml_set_all_text1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">xml_set_all_text</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">create_tag1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">newelement</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">create_tag</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">newelement</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">delete_att1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">attrib</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">delete_att</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">attrib</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">delete_tag1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpath</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">delete_tag</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpath</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">replace_tag1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">newelement</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">replace_tag</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">newelement</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">set_species1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">set_species</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">set_species2</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">at_label</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">set_species_label</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">at_label</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">change_atomgr_att1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">change_atomgr_att</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span>
+                                                   <span class="n">attributedict</span><span class="p">,</span>
+                                                   <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
+                                                   <span class="n">species</span><span class="o">=</span><span class="n">species</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">change_atomgr_att2</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">atom_label</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">change_atomgr_att_label</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">at_label</span><span class="o">=</span><span class="n">atom_label</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">add_num_to_att1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">set_val</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">occ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">occ</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">add_num_to_att</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">set_val</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="n">occ</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">set_inpchanges1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">change_dict</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">set_inpchanges</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">change_dict</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">shift_value1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">change_dict</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">shift_value</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">change_dict</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">shift_value_species_label1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">att_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">shift_value_species_label</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">att_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">set_nkpts1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">set_nkpts</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">set_kpath1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">kpath</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">set_kpath</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">kpath</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">set_kpointsdata1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">kpointsdata_uuid</span><span class="p">):</span>
+            <span class="n">fleurinp_tree_copy</span> <span class="o">=</span> <span class="n">set_kpointsdata_f</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">kpointsdata_uuid</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fleurinp_tree_copy</span>
+
+        <span class="k">def</span> <span class="nf">set_nmmpmat1</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">nmmp_lines_copy</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">orbital</span><span class="p">,</span>\
+                         <span class="n">spin</span><span class="p">,</span> <span class="n">occStates</span><span class="p">,</span> <span class="n">denmat</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+            <span class="n">nmmp_lines_copy</span> <span class="o">=</span> <span class="n">set_nmmpmat</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">nmmp_lines_copy</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">orbital</span><span class="p">,</span>\
+                                          <span class="n">spin</span><span class="p">,</span> <span class="n">occStates</span><span class="p">,</span> <span class="n">denmat</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">nmmp_lines_copy</span>
+
+        <span class="n">actions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;xml_set_attribv_occ&#39;</span><span class="p">:</span> <span class="n">xml_set_attribv_occ1</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_first_attribv&#39;</span><span class="p">:</span> <span class="n">xml_set_first_attribv1</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_all_attribv&#39;</span><span class="p">:</span> <span class="n">xml_set_all_attribv1</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_text&#39;</span><span class="p">:</span> <span class="n">xml_set_text1</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_text_occ&#39;</span><span class="p">:</span> <span class="n">xml_set_text_occ1</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_all_text&#39;</span><span class="p">:</span> <span class="n">xml_set_all_text1</span><span class="p">,</span>
+            <span class="s1">&#39;create_tag&#39;</span><span class="p">:</span> <span class="n">create_tag1</span><span class="p">,</span>
+            <span class="s1">&#39;replace_tag&#39;</span><span class="p">:</span> <span class="n">replace_tag1</span><span class="p">,</span>
+            <span class="s1">&#39;delete_tag&#39;</span><span class="p">:</span> <span class="n">delete_tag1</span><span class="p">,</span>
+            <span class="s1">&#39;delete_att&#39;</span><span class="p">:</span> <span class="n">delete_att1</span><span class="p">,</span>
+            <span class="s1">&#39;set_species&#39;</span><span class="p">:</span> <span class="n">set_species1</span><span class="p">,</span>
+            <span class="s1">&#39;set_species_label&#39;</span><span class="p">:</span> <span class="n">set_species2</span><span class="p">,</span>
+            <span class="s1">&#39;set_atomgr_att&#39;</span><span class="p">:</span> <span class="n">change_atomgr_att1</span><span class="p">,</span>
+            <span class="s1">&#39;set_atomgr_att_label&#39;</span><span class="p">:</span> <span class="n">change_atomgr_att2</span><span class="p">,</span>
+            <span class="s1">&#39;set_inpchanges&#39;</span><span class="p">:</span> <span class="n">set_inpchanges1</span><span class="p">,</span>
+            <span class="s1">&#39;shift_value&#39;</span><span class="p">:</span> <span class="n">shift_value1</span><span class="p">,</span>
+            <span class="s1">&#39;shift_value_species_label&#39;</span><span class="p">:</span> <span class="n">shift_value_species_label1</span><span class="p">,</span>
+            <span class="s1">&#39;set_nkpts&#39;</span><span class="p">:</span> <span class="n">set_nkpts1</span><span class="p">,</span>
+            <span class="s1">&#39;set_kpath&#39;</span><span class="p">:</span> <span class="n">set_kpath1</span><span class="p">,</span>
+            <span class="s1">&#39;set_kpointsdata&#39;</span><span class="p">:</span> <span class="n">set_kpointsdata1</span><span class="p">,</span>
+            <span class="s1">&#39;add_num_to_att&#39;</span><span class="p">:</span> <span class="n">add_num_to_att1</span><span class="p">,</span>
+            <span class="s1">&#39;set_nmmpmat&#39;</span><span class="p">:</span> <span class="n">set_nmmpmat1</span>
+        <span class="p">}</span>
+
+        <span class="n">workingtree</span> <span class="o">=</span> <span class="n">fleurinp_tree_copy</span>
+        <span class="n">workingnmmp</span> <span class="o">=</span> <span class="n">nmmp_lines_copy</span>
+        <span class="k">if</span> <span class="n">schema_tree</span><span class="p">:</span>
+            <span class="c1">#xmlschema_doc = etree.parse(new_fleurinp._schema_file_path)</span>
+            <span class="n">xmlschema</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="n">schema_tree</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">modification_tasks</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[</span><span class="n">task</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown task </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+            <span class="k">if</span> <span class="n">task</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;set_nmmpmat&#39;</span><span class="p">:</span>
+                <span class="n">workingnmmp</span> <span class="o">=</span> <span class="n">action</span><span class="p">(</span><span class="n">workingtree</span><span class="p">,</span> <span class="n">workingnmmp</span><span class="p">,</span> <span class="o">*</span><span class="n">task</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">workingtree</span> <span class="o">=</span> <span class="n">action</span><span class="p">(</span><span class="n">workingtree</span><span class="p">,</span> <span class="o">*</span><span class="n">task</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+        <span class="k">if</span> <span class="n">schema_tree</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">xmlschema</span><span class="o">.</span><span class="n">assertValid</span><span class="p">(</span><span class="n">clear_xml</span><span class="p">(</span><span class="n">workingtree</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">DocumentInvalid</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;changes were not valid: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modification_tasks</span><span class="p">))</span>
+                <span class="k">raise</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">validate_nmmpmat</span><span class="p">(</span><span class="n">workingtree</span><span class="p">,</span> <span class="n">workingnmmp</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;changes were not valid (n_mmp_mat file is not compatible): </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modification_tasks</span><span class="p">))</span>
+                <span class="k">raise</span>
+
+        <span class="k">return</span> <span class="n">workingtree</span><span class="p">,</span> <span class="n">workingnmmp</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.get_avail_actions"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.get_avail_actions">[docs]</a>    <span class="k">def</span> <span class="nf">get_avail_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the allowed functions from FleurinpModifier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">outside_actions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;xml_set_attribv_occ&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_set_attribv_occ</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_first_attribv&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_set_first_attribv</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_all_attribv&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_set_all_attribv</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_text&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_set_text</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_text_occ&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_set_text_occ</span><span class="p">,</span>
+            <span class="s1">&#39;xml_set_all_text&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_set_all_text</span><span class="p">,</span>
+            <span class="s1">&#39;create_tag&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tag</span><span class="p">,</span>
+            <span class="s1">&#39;replace_tag&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_tag</span><span class="p">,</span>
+            <span class="s1">&#39;delete_tag&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_tag</span><span class="p">,</span>
+            <span class="s1">&#39;delete_att&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_att</span><span class="p">,</span>
+            <span class="s1">&#39;set_species&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_species</span><span class="p">,</span>
+            <span class="s1">&#39;set_species_label&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_species_label</span><span class="p">,</span>
+            <span class="s1">&#39;set_atomgr_att&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_atomgr_att</span><span class="p">,</span>
+            <span class="s1">&#39;set_atomgr_att_label&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_atomgr_att_label</span><span class="p">,</span>
+            <span class="s1">&#39;set_inpchanges&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_inpchanges</span><span class="p">,</span>
+            <span class="s1">&#39;shift_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">shift_value</span><span class="p">,</span>
+            <span class="s1">&#39;shift_value_species_label&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">shift_value_species_label</span><span class="p">,</span>
+            <span class="s1">&#39;set_nkpts&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_nkpts</span><span class="p">,</span>
+            <span class="s1">&#39;set_kpath&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_kpath</span><span class="p">,</span>
+            <span class="s1">&#39;set_kpointsdata&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_kpointsdata</span><span class="p">,</span>
+            <span class="s1">&#39;add_num_to_att&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_num_to_att</span><span class="p">,</span>
+            <span class="s1">&#39;set_nmmpmat&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_nmmpmat</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">outside_actions</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.xml_set_attribv_occ"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_attribv_occ">[docs]</a>    <span class="k">def</span> <span class="nf">xml_set_attribv_occ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.xml_set_attribv_occ()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path to the attribute</span>
+<span class="sd">        :param attributename: an attribute name</span>
+<span class="sd">        :param attribv: an attribute value which will be set</span>
+<span class="sd">        :param occ: a list of integers specifying number of occurrence to be set</span>
+<span class="sd">        :param create: if True and there is no given xpath in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">occ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">occ</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;xml_set_attribv_occ&#39;</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">occ</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.xml_set_first_attribv"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_first_attribv">[docs]</a>    <span class="k">def</span> <span class="nf">xml_set_first_attribv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.xml_set_first_attribv()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path to the attribute</span>
+<span class="sd">        :param attributename: an attribute name</span>
+<span class="sd">        :param attribv: an attribute value which will be set</span>
+<span class="sd">        :param create: if True and there is no given xpath in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;xml_set_first_attribv&#39;</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.xml_set_all_attribv"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_all_attribv">[docs]</a>    <span class="k">def</span> <span class="nf">xml_set_all_attribv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.xml_set_all_attribv()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path to the attribute</span>
+<span class="sd">        :param attributename: an attribute name</span>
+<span class="sd">        :param attribv: an attribute value which will be set</span>
+<span class="sd">        :param create: if True and there is no given xpath in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;xml_set_all_attribv&#39;</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">attribv</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.xml_set_text"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_text">[docs]</a>    <span class="k">def</span> <span class="nf">xml_set_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.xml_set_text()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path to the attribute</span>
+<span class="sd">        :param text: text to be set</span>
+<span class="sd">        :param create: if True and there is no given xpath in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;xml_set_text&#39;</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.xml_set_text_occ"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_text_occ">[docs]</a>    <span class="k">def</span> <span class="nf">xml_set_text_occ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.xml_set_text_occ()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path to the attribute</span>
+<span class="sd">        :param text: text to be set</span>
+<span class="sd">        :param create: if True and there is no given xpath in the FleurinpData, creates it</span>
+<span class="sd">        :param occ: an integer specifying number of occurrence to be set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;xml_set_text_occ&#39;</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="p">,</span> <span class="n">occ</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.xml_set_all_text"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_all_text">[docs]</a>    <span class="k">def</span> <span class="nf">xml_set_all_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.xml_set_all_text()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path to the attribute</span>
+<span class="sd">        :param text: text to be set</span>
+<span class="sd">        :param create: if True and there is no given xpath in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;xml_set_all_text&#39;</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.create_tag"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.create_tag">[docs]</a>    <span class="k">def</span> <span class="nf">create_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">newelement</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.create_tag()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path where to place a new tag</span>
+<span class="sd">        :param newelement: a tag name to be created</span>
+<span class="sd">        :param create: if True and there is no given xpath in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;create_tag&#39;</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">newelement</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.delete_att"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.delete_att">[docs]</a>    <span class="k">def</span> <span class="nf">delete_att</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">attrib</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.delete_att()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path to the attribute to be deleted</span>
+<span class="sd">        :param attrib: the name of an attribute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;delete_att&#39;</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">attrib</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.delete_tag"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.delete_tag">[docs]</a>    <span class="k">def</span> <span class="nf">delete_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.delete_tag()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path to the tag to be deleted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;delete_tag&#39;</span><span class="p">,</span> <span class="n">xpath</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.replace_tag"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.replace_tag">[docs]</a>    <span class="k">def</span> <span class="nf">replace_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">newelement</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.replace_tag()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: a path to the tag to be replaced</span>
+<span class="sd">        :param newelement: a new tag</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;replace_tag&#39;</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">newelement</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.set_species"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_species">[docs]</a>    <span class="k">def</span> <span class="nf">set_species</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.set_species()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param species_name: a path to the tag to be replaced</span>
+<span class="sd">        :param attributedict: attribute dictionary to be set into the specie</span>
+<span class="sd">        :param create: if True and there is no given specie in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_species&#39;</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.set_species_label"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_species_label">[docs]</a>    <span class="k">def</span> <span class="nf">set_species_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at_label</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.set_species_label()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param at_label: Atom label which specie will be set</span>
+<span class="sd">        :param attributedict: attribute dictionary to be set into the specie</span>
+<span class="sd">        :param create: if True and there is no given specie in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_species_label&#39;</span><span class="p">,</span> <span class="n">at_label</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.set_atomgr_att"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_atomgr_att">[docs]</a>    <span class="k">def</span> <span class="nf">set_atomgr_att</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.change_atomgr_att()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param species_name: a path to the tag to be replaced</span>
+<span class="sd">        :param attributedict: attribute dictionary to be set into the atom group</span>
+<span class="sd">        :param create: if True and there is no given atom group in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_atomgr_att&#39;</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.set_atomgr_att_label"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_atomgr_att_label">[docs]</a>    <span class="k">def</span> <span class="nf">set_atomgr_att_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">atom_label</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :func:`~aiida_fleur.tools.xml_util.change_atomgr_att_label()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param attributedict: a new tag</span>
+<span class="sd">        :param atom_label: Atom label which atom group will be set</span>
+<span class="sd">        :param create: if True and there is no given atom group in the FleurinpData, creates it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_atomgr_att_label&#39;</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">,</span> <span class="n">atom_label</span><span class="p">,</span> <span class="n">create</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.set_inpchanges"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_inpchanges">[docs]</a>    <span class="k">def</span> <span class="nf">set_inpchanges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :py:func:`~aiida_fleur.tools.xml_util.set_inpchanges()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param change_dict: a dictionary with changes</span>
+
+<span class="sd">        An example of change_dict::</span>
+
+<span class="sd">            change_dict = {&#39;itmax&#39; : 1,</span>
+<span class="sd">                           &#39;l_noco&#39;: True,</span>
+<span class="sd">                           &#39;ctail&#39;: False,</span>
+<span class="sd">                           &#39;l_ss&#39;: True}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_inpchanges&#39;</span><span class="p">,</span> <span class="n">change_dict</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.shift_value"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.shift_value">[docs]</a>    <span class="k">def</span> <span class="nf">shift_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change_dict</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :py:func:`~aiida_fleur.tools.xml_util.shift_value()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param change_dict: a dictionary with changes</span>
+<span class="sd">        :param mode: &#39;abs&#39; if change given is absolute, &#39;rel&#39; if relative</span>
+
+<span class="sd">        An example of change_dict::</span>
+
+<span class="sd">            change_dict = {&#39;itmax&#39; : 1, dVac = -2}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;shift_value&#39;</span><span class="p">,</span> <span class="n">change_dict</span><span class="p">,</span> <span class="n">mode</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.shift_value_species_label"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.shift_value_species_label">[docs]</a>    <span class="k">def</span> <span class="nf">shift_value_species_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">att_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :py:func:`~aiida_fleur.tools.xml_util.shift_value_species_label()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param label: a label of an atom</span>
+<span class="sd">        :param att_name: attrubute name of a specie</span>
+<span class="sd">        :param value: value to set</span>
+<span class="sd">        :param mode: &#39;abs&#39; if change given is absolute, &#39;rel&#39; if relative</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;shift_value_species_label&#39;</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">att_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mode</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.set_nkpts"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nkpts">[docs]</a>    <span class="k">def</span> <span class="nf">set_nkpts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :py:func:`~aiida_fleur.tools.xml_util.set_nkpts()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_nkpts&#39;</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">gamma</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.set_kpath"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_kpath">[docs]</a>    <span class="k">def</span> <span class="nf">set_kpath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kpath</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :py:func:`~aiida_fleur.tools.xml_util.set_kpath()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_kpath&#39;</span><span class="p">,</span> <span class="n">kpath</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">gamma</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.set_kpointsdata"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_kpointsdata">[docs]</a>    <span class="k">def</span> <span class="nf">set_kpointsdata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kpointsdata_uuid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :py:func:`~aiida_fleur.data.fleurinpmodifier.set_kpointsdata_f()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param kpointsdata_uuid: an :class:`aiida.orm.KpointsData` or node uuid, since the node is self cannot be be serialized in tasks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">KpointsData</span><span class="p">,</span> <span class="n">load_node</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kpointsdata_uuid</span><span class="p">,</span> <span class="n">KpointsData</span><span class="p">):</span>
+            <span class="n">kpointsdata_uuid</span> <span class="o">=</span> <span class="n">kpointsdata_uuid</span><span class="o">.</span><span class="n">uuid</span>
+        <span class="c1"># Be more careful? Needs to be stored, otherwise we cannot load it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_other_nodes</span><span class="p">[</span><span class="s1">&#39;kpoints&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">kpointsdata_uuid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_kpointsdata&#39;</span><span class="p">,</span> <span class="n">kpointsdata_uuid</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.add_num_to_att"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.add_num_to_att">[docs]</a>    <span class="k">def</span> <span class="nf">add_num_to_att</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">set_val</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :py:func:`~aiida_fleur.tools.xml_util.add_num_to_att()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param xpathn: an xml path to the attribute to change</span>
+<span class="sd">        :param attributename: a name of the attribute to change</span>
+<span class="sd">        :param set_val: a value to be added/multiplied to the previous value</span>
+<span class="sd">        :param mode: &#39;abs&#39; if to add set_val, &#39;rel&#39; if multiply</span>
+<span class="sd">        :param occ: a list of integers specifying number of occurrence to be set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">occ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">occ</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;add_num_to_att&#39;</span><span class="p">,</span> <span class="n">xpathn</span><span class="p">,</span> <span class="n">attributename</span><span class="p">,</span> <span class="n">set_val</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">occ</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.set_nmmpmat"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nmmpmat">[docs]</a>    <span class="k">def</span> <span class="nf">set_nmmpmat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">orbital</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">occStates</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">denmat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a :py:func:`~aiida_fleur.tools.set_nmmpmat.set_nmmpmat()` to</span>
+<span class="sd">        the list of tasks that will be done on the FleurinpData.</span>
+
+<span class="sd">        :param species_name: species on which the density matrix should be set</span>
+<span class="sd">        :param orbital: orbital on which the density matrix should be set</span>
+<span class="sd">        :param occStates: list which specifies the diagonal elements of the density matrix</span>
+<span class="sd">        :param denmat: matrix, which specifies the density matrix</span>
+<span class="sd">        :param phi: optional angle to rotate density matrix</span>
+<span class="sd">        :param theta: optional angle to rotate density matrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;set_nmmpmat&#39;</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">orbital</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">occStates</span><span class="p">,</span> <span class="n">denmat</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.validate"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracts the schema-file.</span>
+<span class="sd">        Makes a test if all the changes lead to an inp.xml file that is validated against the</span>
+<span class="sd">        schema.</span>
+
+<span class="sd">        :return: a lxml tree representing inp.xml with applied changes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;n_mmp_mat&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">n_mmp_file</span><span class="p">:</span>
+                <span class="n">nmmplines</span> <span class="o">=</span> <span class="n">n_mmp_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="n">nmmplines</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>  <span class="c1"># could be not found or on another computer...</span>
+            <span class="n">xmlschema_tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original</span><span class="o">.</span><span class="n">_schema_file_path</span><span class="p">)</span>
+            <span class="n">with_schema</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+            <span class="n">with_schema</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No schema file found&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">with_schema</span><span class="p">:</span>
+            <span class="n">tree</span><span class="p">,</span> <span class="n">nmmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_modifications</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">nmmplines</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">,</span> <span class="n">schema_tree</span><span class="o">=</span><span class="n">xmlschema_tree</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tree</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.show"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the modifications and displays/prints the resulting ``inp.xml`` file.</span>
+<span class="sd">        Does not generate a new</span>
+<span class="sd">        :class:`~aiida_fleur.data.fleurinp.FleurinpData` object.</span>
+
+<span class="sd">        :param display: a boolean that is True if resulting ``inp.xml`` has to be printed out</span>
+<span class="sd">        :param validate: a boolean that is True if changes have to be validated</span>
+
+<span class="sd">        :return: a lxml tree representing inp.xml with applied changes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+                <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">)</span>
+            <span class="n">tree</span><span class="p">,</span> <span class="n">temp_nmmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_modifications</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">display</span><span class="p">:</span>
+            <span class="n">xmltreestring</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">xml_declaration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">xmltreestring</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tree</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.changes"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.changes">[docs]</a>    <span class="k">def</span> <span class="nf">changes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints out all changes given in a</span>
+<span class="sd">        :class:`~aiida_fleur.data.fleurinpmodifier.FleurinpModifier` instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+        <span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.freeze"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.freeze">[docs]</a>    <span class="k">def</span> <span class="nf">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method applies all the modifications to the input and</span>
+<span class="sd">        returns a new stored fleurinpData object.</span>
+
+<span class="sd">        :return: stored :class:`~aiida_fleur.data.fleurinp.FleurinpData` with applied changes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">modifications</span> <span class="o">=</span> <span class="n">orm</span><span class="o">.</span><span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;tasks&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">})</span>
+        <span class="c1">#print(self._tasks)</span>
+        <span class="n">modifications</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Fleurinpmodifier Tasks and inputs of these.&#39;</span>
+        <span class="n">modifications</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Fleurinpdata modifications&#39;</span>
+        <span class="c1"># This runs in a inline calculation to keep provenance</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original</span><span class="p">)</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">original</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_original</span><span class="p">,</span>
+                      <span class="n">modifications</span><span class="o">=</span><span class="n">modifications</span><span class="p">,</span>
+                      <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+                          <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;fleurinp modifier&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;This calcfunction modified an Fleurinpdataobject&#39;</span>
+                      <span class="p">},</span>
+                      <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_other_nodes</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">modify_fleurinpdata</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+<div class="viewcode-block" id="FleurinpModifier.undo"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.undo">[docs]</a>    <span class="k">def</span> <span class="nf">undo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">revert_all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cancels the last change or all of them</span>
+
+<span class="sd">        :param revert_all: set True if need to cancel all the changes, False if the last one.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">revert_all</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="c1">#TODO delete nodes from other nodes</span>
+                <span class="c1">#del self._tasks[-1]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span></div></div>
+
+
+<div class="viewcode-block" id="modify_fleurinpdata"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.modify_fleurinpdata">[docs]</a><span class="nd">@cf</span>
+<span class="k">def</span> <span class="nf">modify_fleurinpdata</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">modifications</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A CalcFunction that performs the modification of the given FleurinpData and stores</span>
+<span class="sd">    the result in a database.</span>
+
+<span class="sd">    :param original: a FleurinpData to be modified</span>
+<span class="sd">    :param modifications: a python dictionary of modifications in the form of {&#39;task&#39;: ...}</span>
+<span class="sd">    :param kwargs: dict of other aiida nodes to be linked to the modifications</span>
+<span class="sd">    :returns new_fleurinp: a modified FleurinpData that is stored in a database</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># copy</span>
+    <span class="c1"># get schema</span>
+    <span class="c1"># read in inp.xml</span>
+    <span class="c1"># add modifications</span>
+    <span class="c1"># validate</span>
+    <span class="c1"># save inp.xml</span>
+    <span class="c1"># store new fleurinp (copy)</span>
+    <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">clear_xml</span>
+
+    <span class="n">new_fleurinp</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="n">modification_tasks</span> <span class="o">=</span> <span class="n">modifications</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()[</span><span class="s1">&#39;tasks&#39;</span><span class="p">]</span>
+
+    <span class="n">xmlschema_doc</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">new_fleurinp</span><span class="o">.</span><span class="n">_schema_file_path</span><span class="p">)</span>
+    <span class="n">xmlschema</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="n">xmlschema_doc</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">attribute_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">remove_blank_text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">new_fleurinp</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">xmlschema</span><span class="o">.</span><span class="n">assertValid</span><span class="p">(</span><span class="n">clear_xml</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">DocumentInvalid</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Input file is not validated against the schema&#39;</span><span class="p">)</span>
+        <span class="k">raise</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">new_fleurinp</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;n_mmp_mat&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">n_mmp_file</span><span class="p">:</span>
+            <span class="n">nmmplines</span> <span class="o">=</span> <span class="n">n_mmp_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="n">nmmplines</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">new_fleurtree</span><span class="p">,</span> <span class="n">new_nmmplines</span> <span class="o">=</span> <span class="n">FleurinpModifier</span><span class="o">.</span><span class="n">apply_modifications</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="o">=</span><span class="n">tree</span><span class="p">,</span>\
+                                                                        <span class="n">nmmp_lines_copy</span><span class="o">=</span><span class="n">nmmplines</span><span class="p">,</span>\
+                                                                        <span class="n">modification_tasks</span><span class="o">=</span><span class="n">modification_tasks</span><span class="p">)</span>
+
+    <span class="c1"># To include object store storage this prob has to be done differently</span>
+
+    <span class="n">inpxmlfile_new</span> <span class="o">=</span> <span class="n">inpxmlfile</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;temp_inp.xml&#39;</span><span class="p">)</span>
+    <span class="n">inpxmlfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">new_fleurtree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">inpxmlfile_new</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">new_fleurinp</span><span class="o">.</span><span class="n">del_file</span><span class="p">(</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">)</span>
+    <span class="n">new_fleurinp</span><span class="o">.</span><span class="n">_add_path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">inpxmlfile_new</span><span class="p">),</span> <span class="s1">&#39;inp.xml&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">inpxmlfile_new</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">new_nmmplines</span><span class="p">:</span>
+        <span class="n">new_nmmp</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_nmmplines</span><span class="p">),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">new_fleurinp</span><span class="o">.</span><span class="n">_add_path</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">new_nmmp</span><span class="p">),</span> <span class="s1">&#39;n_mmp_mat&#39;</span><span class="p">)</span>
+
+    <span class="c1"># default label and description</span>
+    <span class="n">new_fleurinp</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;mod_fleurinp&#39;</span>
+    <span class="n">new_fleurinp</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Fleurinpdata with modifications (see inputs of modify_fleurinpdata)&#39;</span>
+
+    <span class="k">return</span> <span class="n">new_fleurinp</span></div>
+
+
+<div class="viewcode-block" id="set_kpointsdata_f"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.set_kpointsdata_f">[docs]</a><span class="k">def</span> <span class="nf">set_kpointsdata_f</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">kpointsdata_uuid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This calc function writes all kpoints from a :class:`~aiida.orm.KpointsData` node</span>
+<span class="sd">    in the ``inp.xml`` file as a kpointslist. It replaces kpoints written in the</span>
+<span class="sd">    ``inp.xml`` file. Currently it is the users responsibility to provide a full</span>
+<span class="sd">    :class:`~aiida.orm.KpointsData` node with weights.</span>
+
+<span class="sd">    :param fleurinp_tree_copy: fleurinp_tree_copy</span>
+<span class="sd">    :param kpointsdata_uuid: node identifier or :class:`~aiida.orm.KpointsData` node to be written into ``inp.xml``</span>
+<span class="sd">    :return: modified xml tree</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: check on weights,</span>
+    <span class="c1"># also fleur allows for several kpoint sets, lists, paths and meshes,</span>
+    <span class="c1"># support this.</span>
+    <span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">KpointsData</span><span class="p">,</span> <span class="n">load_node</span>
+    <span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">InputValidationError</span>
+    <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">replace_tag</span>
+
+    <span class="c1"># all hardcoded xpaths used and attributes names:</span>
+    <span class="n">kpointlist_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/calculationSetup/bzIntegration/kPointList&#39;</span>
+
+    <span class="c1"># replace the kpoints tag.(delete old write new)</span>
+    <span class="c1"># &lt;kPointList posScale=&quot;36.00000000&quot; weightScale=&quot;324.00000000&quot; count=&quot;324&quot;&gt;</span>
+    <span class="c1">#    &lt;kPoint weight=&quot;    1.000000&quot;&gt;   17.000000     0.000000     0.000000&lt;/kPoint&gt;</span>
+    <span class="c1"># add new inp.xml to fleurinpdata</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kpointsdata_uuid</span><span class="p">,</span> <span class="n">KpointsData</span><span class="p">):</span>
+        <span class="n">KpointsDataNode</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">kpointsdata_uuid</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">KpointsDataNode</span> <span class="o">=</span> <span class="n">kpointsdata_uuid</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">KpointsDataNode</span><span class="p">,</span> <span class="n">KpointsData</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s1">&#39;The node given is not a valid KpointsData node.&#39;</span><span class="p">)</span>
+
+    <span class="n">kpoint_list</span> <span class="o">=</span> <span class="n">KpointsDataNode</span><span class="o">.</span><span class="n">get_kpoints</span><span class="p">(</span><span class="n">also_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cartesian</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">nkpts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoint_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">totalw</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">kpoint_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">totalw</span> <span class="o">=</span> <span class="n">totalw</span> <span class="o">+</span> <span class="n">weight</span>
+    <span class="c1">#weightscale = totalw</span>
+    <span class="c1"># fleur will re weight? renormalize?</span>
+    <span class="n">new_kpo</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s1">&#39;kPointList&#39;</span><span class="p">,</span> <span class="n">posScale</span><span class="o">=</span><span class="s1">&#39;1.000&#39;</span><span class="p">,</span> <span class="n">weightScale</span><span class="o">=</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nkpts</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">kpos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">kpoint_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">new_k</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s1">&#39;kPoint&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kpoint_list</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">new_k</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kpos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kpos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">kpos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">new_kpo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_k</span><span class="p">)</span>
+    <span class="n">new_tree</span> <span class="o">=</span> <span class="n">replace_tag</span><span class="p">(</span><span class="n">fleurinp_tree_copy</span><span class="p">,</span> <span class="n">kpointlist_xpath</span><span class="p">,</span> <span class="n">new_kpo</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_tree</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

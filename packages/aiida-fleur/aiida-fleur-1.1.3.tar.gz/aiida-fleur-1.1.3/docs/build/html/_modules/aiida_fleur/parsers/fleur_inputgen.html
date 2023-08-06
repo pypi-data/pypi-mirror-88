@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.parsers.fleur_inputgen &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.parsers.fleur_inputgen</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.parsers.fleur_inputgen</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the parser for a inpgen calculation and methods for</span>
+<span class="sd">parsing different files produced by inpgen.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">from</span> <span class="nn">aiida.parsers</span> <span class="kn">import</span> <span class="n">Parser</span>
+<span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">NotExistent</span><span class="p">,</span> <span class="n">InputValidationError</span><span class="p">,</span> <span class="n">ValidationError</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinp</span> <span class="kn">import</span> <span class="n">FleurinpData</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.calculation.fleurinputgen</span> <span class="kn">import</span> <span class="n">FleurinputgenCalculation</span>
+
+
+<div class="viewcode-block" id="Fleur_inputgenParser"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur_inputgen.Fleur_inputgenParser">[docs]</a><span class="k">class</span> <span class="nc">Fleur_inputgenParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is the implementation of the Parser class for the FLEUR inpgen.</span>
+<span class="sd">    It takes the files received from an inpgen calculation and creates AiiDA</span>
+<span class="sd">    nodes for the Database. From the inp.xml file a FleurinpData object is</span>
+<span class="sd">    created, also some information from the out file is stored in a</span>
+<span class="sd">    ParameterData node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_setting_key</span> <span class="o">=</span> <span class="s1">&#39;parser_options&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the instance of Fleur_inputgenParser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Fleur_inputgenParser</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="c1"># these files should be at least present after success of inpgen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_files</span> <span class="o">=</span> <span class="p">{</span><span class="n">FleurinputgenCalculation</span><span class="o">.</span><span class="n">_OUTPUT_FILE_NAME</span><span class="p">,</span> <span class="n">FleurinputgenCalculation</span><span class="o">.</span><span class="n">_INPXML_FILE_NAME</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_other_files</span> <span class="o">=</span> <span class="p">{</span><span class="n">FleurinputgenCalculation</span><span class="o">.</span><span class="n">_SHELLOUT_FILE_NAME</span><span class="p">}</span>
+
+<div class="viewcode-block" id="Fleur_inputgenParser.parse"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur_inputgen.Fleur_inputgenParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes inp.xml generated by inpgen calculation and created an FleurinpData node.</span>
+
+<span class="sd">        :return: a dictionary of AiiDA nodes to be stored in the database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">output_folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieved</span>
+        <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;No retrieved folder found&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_NO_RETRIEVED_FOLDER</span>
+
+        <span class="c1"># check what is inside the folder</span>
+        <span class="n">list_of_files</span> <span class="o">=</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">list_object_names</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;file list </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">list_of_files</span><span class="p">))</span>
+
+        <span class="n">errorfile</span> <span class="o">=</span> <span class="n">FleurinputgenCalculation</span><span class="o">.</span><span class="n">_ERROR_FILE_NAME</span>
+        <span class="k">if</span> <span class="n">errorfile</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">errorfile</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">error_file</span><span class="p">:</span>
+                    <span class="n">error_file_lines</span> <span class="o">=</span> <span class="n">error_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to open error file: </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errorfile</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_OPENING_OUTPUTS</span>
+            <span class="c1"># if not empty, has_error equals True, parse error.</span>
+            <span class="k">if</span> <span class="n">error_file_lines</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;The following was written to the error file </span><span class="si">{}</span><span class="s2"> : </span><span class="se">\n</span><span class="s2"> &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+                                  <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errorfile</span><span class="p">,</span> <span class="n">error_file_lines</span><span class="p">))</span>
+
+        <span class="n">inpxml_file</span> <span class="o">=</span> <span class="n">FleurinputgenCalculation</span><span class="o">.</span><span class="n">_INPXML_FILE_NAME</span>
+        <span class="k">if</span> <span class="n">inpxml_file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;XML inp not found &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inpxml_file</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_NO_INPXML</span>
+
+        <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; file not found in retrived folder, it was probably &quot;</span>
+                                  <span class="s1">&#39;not created by inpgen&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file1</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_MISSING_RETRIEVED_FILES</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fleurinp</span> <span class="o">=</span> <span class="n">FleurinpData</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="p">[</span><span class="n">inpxml_file</span><span class="p">],</span> <span class="n">node</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">InputValidationError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;FleurinpData initialization failed: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_FLEURINPDATA_INPUT_NOT_VALID</span>
+        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;FleurinpData validation failed: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_FLEURINPDATA_NOT_VALID</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;FleurinpData initialized&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="s1">&#39;fleurinpData&#39;</span><span class="p">,</span> <span class="n">fleurinp</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.workflows.initial_cls &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.workflows.initial_cls</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.workflows.initial_cls</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This is the worklfow &#39;initial_cls&#39; using the Fleur code calculating</span>
+<span class="sd">corelevel shifts with different methods.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">#TODO parsing of eigenvalues of LOS!</span>
+<span class="c1">#TODO error handling of scf</span>
+<span class="c1">#TODO Check if calculations failed, and termine the workflow without a raised execption</span>
+<span class="c1"># currently the result extraction part will fail if calculations failed</span>
+<span class="c1">#TODO USE SAME PARAMETERS! (maybe extract method for fleurinp needed)</span>
+<span class="c1"># TODO: Allow for providing referenes as scf_ouputparameter nodes</span>
+<span class="c1"># TODO: maybe launch all scfs at the same time</span>
+<span class="c1"># TODO: gives only a warning currently if ref not found.</span>
+<span class="c1"># but should lead to error if no ref is found for what should be calculated</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">digits</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">ToContext</span><span class="p">,</span> <span class="n">WorkChain</span><span class="p">,</span> <span class="n">if_</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">calcfunction</span> <span class="k">as</span> <span class="n">cf</span>
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span><span class="p">,</span> <span class="n">CalculationFactory</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span><span class="p">,</span> <span class="n">load_node</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">CalcJobNode</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">StructureData</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">RemoteData</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">load_group</span>
+<span class="kn">from</span> <span class="nn">aiida.orm.querybuilder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
+<span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">NotExistent</span><span class="p">,</span> <span class="n">MultipleObjectsError</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.calculation.fleur</span> <span class="kn">import</span> <span class="n">FleurCalculation</span> <span class="k">as</span> <span class="n">FleurCalc</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.workflows.scf</span> <span class="kn">import</span> <span class="n">FleurScfWorkChain</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.common_fleur_wf_util</span> <span class="kn">import</span> <span class="n">get_natoms_element</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinp</span> <span class="kn">import</span> <span class="n">FleurinpData</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+
+<div class="viewcode-block" id="fleur_initial_cls_wc"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc">[docs]</a><span class="k">class</span> <span class="nc">fleur_initial_cls_wc</span><span class="p">(</span><span class="n">WorkChain</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Turn key solution for the calculation of core level shift</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># This block of commented code was removed from the docstring and should be put</span>
+    <span class="c1"># to the other place in the documentation.</span>
+    <span class="c1">#     &#39;method&#39; : [&#39;initial&#39;, &#39;full_valence ch&#39;, &#39;half_valence_ch&#39;, &#39;ch&#39;, ...]</span>
+    <span class="c1">#     &#39;Bes&#39; : [W4f, Be1s]</span>
+    <span class="c1">#     &#39;CLS&#39; : [W4f, Be1s]</span>
+    <span class="c1">#  toms&#39; : [&#39;all&#39;, &#39;postions&#39; : []]</span>
+    <span class="c1">#     #&#39;references&#39; : [&#39;calculate&#39;, and use # calculate : &#39;all&#39; , or &#39;calculate&#39; : [&#39;W&#39;, &#39;Be&#39;]</span>
+    <span class="c1">#     &#39;references&#39; : { &#39;W&#39;: [calc/ouputnode or  fleurinp, or structure data or</span>
+    <span class="c1">#                      structure data + Parameter  ], &#39;Be&#39; : }</span>
+    <span class="c1">#     &#39;scf_para&#39; : {...}, &#39;default&#39;</span>
+    <span class="c1">#     &#39;relax&#39; : True</span>
+    <span class="c1">#     &#39;relax_mode&#39;: [&#39;Fleur&#39;, &#39;QE Fleur&#39;, &#39;QE&#39;]</span>
+    <span class="c1">#     &#39;relax_para&#39; : {...}, &#39;default&#39;</span>
+    <span class="c1">#     &#39;calculate_doses&#39; : False</span>
+    <span class="c1">#     &#39;dos_para&#39; : {...}, &#39;default&#39;</span>
+
+    <span class="c1">#     # defaults</span>
+    <span class="c1">#     default wf_Parameters::</span>
+    <span class="c1">#     &#39;method&#39; : &#39;initial&#39;</span>
+    <span class="c1">#     &#39;atoms&#39; : &#39;all</span>
+    <span class="c1">#     &#39;references&#39; : &#39;calculate&#39;</span>
+    <span class="c1">#     &#39;scf_para&#39; : &#39;default&#39;</span>
+    <span class="c1">#     &#39;relax&#39; : True</span>
+    <span class="c1">#     &#39;relax_mode&#39;: &#39;QE Fleur&#39;</span>
+    <span class="c1">#     &#39;relax_para&#39; : &#39;default&#39;</span>
+    <span class="c1">#     &#39;calculate_doses&#39; : False</span>
+    <span class="c1">#     &#39;dos_para&#39; : &#39;default&#39;</span>
+    <span class="n">_workflowversion</span> <span class="o">=</span> <span class="s1">&#39;0.4.0&#39;</span>
+    <span class="n">_default_wf_para</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;references&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;relax&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;relax_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;Fleur&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;relax_para&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;scf_para&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;same_para&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="kc">False</span>
+    <span class="p">}</span>
+
+    <span class="n">_default_options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;num_mpiprocs_per_machine&#39;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span>
+        <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="c1">#&#39;max_memory_kb&#39; : None,</span>
+        <span class="s1">&#39;import_sys_environment&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;environment_variables&#39;</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+
+    <span class="n">ERROR_INVALID_INPUT_RESOURCES</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ERROR_INVALID_INPUT_RESOURCES_UNDERSPECIFIED</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">ERROR_INVALID_CODE_PROVIDED</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">ERROR_INPGEN_CALCULATION_FAILED</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">ERROR_CHANGING_FLEURINPUT_FAILED</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">ERROR_CALCULATION_INVALID_INPUT_FILE</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">ERROR_FLEUR_CALCULATION_FALIED</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">ERROR_CONVERGENCE_NOT_ARCHIVED</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">ERROR_REFERENCE_MISSING</span> <span class="o">=</span> <span class="mi">9</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">fleur_initial_cls_wc</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;wf_parameters&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_default_wf_para</span><span class="p">))</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;fleurinp&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">FleurinpData</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;fleur&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Code</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;inpgen&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Code</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;structure&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">StructureData</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;calc_parameters&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;options&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1">#, default=Dict(dict=cls._default_options#)</span>
+        <span class="c1">#)</span>
+
+        <span class="n">spec</span><span class="o">.</span><span class="n">outline</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">check_input</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_references</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">run_fleur_scfs</span><span class="p">,</span>
+                     <span class="n">if_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">relaxation_needed</span><span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="n">relax</span><span class="p">),</span> <span class="bp">cls</span><span class="o">.</span><span class="n">find_parameters</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">run_scfs_ref</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">return_results</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;output_initial_cls_wc_para&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">)</span>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.check_input"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.check_input">[docs]</a>    <span class="k">def</span> <span class="nf">check_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Init same context and check what input is given if it makes sence</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">### input check ### ? or done automaticly, how optional?</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s1">&#39;INFO: Started initial_state_CLS workflow version </span><span class="si">{}</span><span class="s1"> &#39;</span>
+            <span class="s1">&#39;Workchain node identifiers: &#39;</span>  <span class="c1">#{}&quot;</span>
+            <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_workflowversion</span><span class="p">))</span>  <span class="c1">#, ProcessRegistry().current_calc_node))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_calc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eximated_jobs</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">run_jobs</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_torun</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">struc_to_relax</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calculate_formation_energy</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1">#Style: {atomtype : listof all corelevel, atomtype_coresetup... }</span>
+        <span class="c1">#ie: { &#39;W-1&#39; : [shift_1s, ... shift 7/2 4f],</span>
+        <span class="c1">#      &#39;W-1_coreconfig&#39; : [&#39;1s&#39;,&#39;2s&#39;,...],</span>
+        <span class="c1">#      &#39;W-2&#39; : [...], &#39;Be-1&#39;: [], ...} #all in eV!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">CLS</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">cl_energies</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># same style as CLS only energy &lt;-&gt; shift</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_cl_energies</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1">#Style: {&#39;Compound&#39; : energy, &#39;ref_x&#39; : energy , ...}</span>
+        <span class="c1">#i.e {&#39;Be12W&#39; : 0.0, &#39;Be&#39; : 0.104*htr_eV , &#39;W&#39; : 0.12*htr_eV} # all in eV!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fermi_energies</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">bandgaps</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">atomtypes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># set values, or defaults for Wf_para</span>
+        <span class="c1"># &#39;wf_parameters&#39; always there</span>
+        <span class="n">wf_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_wf_para</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">serial</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;serial&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;serial&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">same_para</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;same_para&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;same_para&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">scf_para</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scf_para&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scf_para&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">relax</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;relax&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;relax&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">relax_mode</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;relax_mode&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;relax_mode&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">relax_para</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;relax_para&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dos_para&#39;</span><span class="p">))</span>
+
+        <span class="n">defaultoptions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_options</span>
+        <span class="k">if</span> <span class="s1">&#39;options&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="n">defaultoptions</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">defaultoptions</span><span class="p">):</span>
+            <span class="n">options</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+
+        <span class="c1"># check if inputs given make sense # TODO sort this out in common wc</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span>
+        <span class="k">if</span> <span class="s1">&#39;fleurinp&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="c1">#TODO make a check if an extracted structure exists, since get_structuredata is wf</span>
+            <span class="n">structure</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">fleurinp</span><span class="o">.</span><span class="n">get_structuredata</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleurinp</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">get_composition</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_torun</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fleurinp&#39;</span><span class="p">))</span>
+            <span class="c1">#print(&#39;here1&#39;)</span>
+            <span class="k">if</span> <span class="s1">&#39;structure&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">warning</span> <span class="o">=</span> <span class="s1">&#39;WARNING: Ignoring Structure input, because Fleurinp was given&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;calc_parameters&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">warning</span> <span class="o">=</span> <span class="s1">&#39;WARNING: Ignoring parameter input, because Fleurinp was given&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;structure&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_composition</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="c1">#self.ctx.elements = list(s.get_symbols_set())</span>
+            <span class="k">if</span> <span class="s1">&#39;inpgen&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: StructureData was provided, but no inpgen code was provided&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_RESOURCES</span>
+            <span class="k">if</span> <span class="s1">&#39;calc_parameters&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_torun</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;structure&#39;</span><span class="p">),</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;calc_parameters&#39;</span><span class="p">)])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_torun</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;structure&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: No StructureData nor FleurinpData was provided&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_RESOURCES</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: elements in structure: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">elements</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.get_references"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.get_references">[docs]</a>    <span class="k">def</span> <span class="nf">get_references</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        To calculate a CLS in initial state approx, we need reference calculations</span>
+<span class="sd">        to the Elemental crystals. First it is checked if the user has provided them</span>
+<span class="sd">        Second the database is checked, if there are structures with certain extras.</span>
+<span class="sd">        Third the COD database is searched for the elemental Cystal structures.</span>
+<span class="sd">        If some referneces are not found stop here.</span>
+<span class="sd">        Are there already calculation of these &#39;references&#39;, ggf use them.</span>
+<span class="sd">        We do not put these calculation in the calculation queue yet because we</span>
+<span class="sd">        need specific parameters for them</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: In Get_references initial_state_CLS workflow&#39;</span><span class="p">)</span>
+
+        <span class="n">references</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;references&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="c1"># should be of the form of</span>
+        <span class="c1">#&#39;references&#39; : { &#39;W&#39;: calc, outputnode of workflow or fleurinp,</span>
+        <span class="c1">#                 or structure data or (structure data + Parameter),</span>
+        <span class="c1">#                 &#39;Be&#39; : ...}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">abort</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">struc_group</span> <span class="o">=</span> <span class="n">references</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">para_group</span> <span class="o">=</span> <span class="n">references</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;para_group&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1">#TODO better checks if ref makes sense?</span>
+
+        <span class="c1"># get specific element reference if given override</span>
+        <span class="c1">#print(self.ctx.elements)</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">elements</span>  <span class="c1"># ggf copy because ctx.elements will be modified</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="c1">#to_calc[elem] = &#39;find&#39;</span>
+            <span class="n">ref_el</span> <span class="o">=</span> <span class="n">references</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="c1">#print ref_el</span>
+            <span class="k">if</span> <span class="n">ref_el</span><span class="p">:</span>
+                <span class="c1"># loading nodes</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_el</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">ref_el_node</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">ref_el_el</span> <span class="ow">in</span> <span class="n">ref_el</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">ref_el_nodes</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">ref_el_el</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="p">(</span><span class="n">NotExistent</span><span class="p">,</span> <span class="n">MultipleObjectsError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+                            <span class="n">ref_el_node</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;ERROR: The reference node in the list &#39;</span>
+                                        <span class="s1">&#39;(id or uuid) provided: </span><span class="si">{}</span><span class="s1"> for element: &#39;</span>
+                                        <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> could not be loaded with load_node&#39;</span>
+                                        <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ref_el_el</span><span class="p">,</span> <span class="n">elem</span><span class="p">))</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">abort</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">ref_el_node</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_el_nodes</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">ref_el_node</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">ref_el</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="n">NotExistent</span><span class="p">,</span> <span class="n">MultipleObjectsError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+                        <span class="c1"># NotExistent: No node was found</span>
+                        <span class="n">ref_el_node</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;ERROR: The reference node (id or uuid) &#39;</span>
+                                    <span class="s1">&#39;provided: </span><span class="si">{}</span><span class="s1"> for element: </span><span class="si">{}</span><span class="s1"> could&#39;</span>
+                                    <span class="s1">&#39;not be loaded with load_node&#39;</span>
+                                    <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ref_el</span><span class="p">,</span> <span class="n">elem</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">abort</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="c1"># expecting nodes and filling ref_calcs_torun</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>  <span class="c1">#(StructureData, Dict)):</span>
+                    <span class="c1">#enforced parameters, add directly to run queue</span>
+                    <span class="c1"># TODO: if a scf with these parameters was already done link to it</span>
+                    <span class="c1"># and extract the results instead of running the calculation again....</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">StructureData</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Dict</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;WARNING: I did not undestand the list with length 2 &#39;</span>
+                                        <span class="s1">&#39;you gave me as reference input&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;WARNING: I did not undestand the list </span><span class="si">{}</span><span class="s1"> with length </span><span class="si">{}</span><span class="s1"> &#39;</span>
+                                    <span class="s1">&#39;you gave me as reference input&#39;</span>
+                                    <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">)))</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">,</span> <span class="n">CalcJobNode</span><span class="p">):</span>
+                    <span class="c1">#extract from fleur calc TODO</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_cl_energies</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">,</span> <span class="n">Dict</span><span class="p">):</span>
+                    <span class="c1">#extract from workflow output TODO</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_cl_energies</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">,</span> <span class="n">FleurinpData</span><span class="p">):</span>
+                    <span class="c1"># add to calculations</span>
+                    <span class="c1">#enforced parameters, add directly to run queue</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">)</span>
+                    <span class="c1">#self.ctx.ref[elem] = ref_el</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">,</span> <span class="n">StructureData</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_el_node</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_el_node</span><span class="p">)</span>
+                <span class="c1">#elif isinstance(ref_el, initial_state_CLS):</span>
+                <span class="c1">#    extract TODO</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: I do not know what to do with this given &#39;</span>
+                             <span class="s1">&#39;reference </span><span class="si">{}</span><span class="s1"> for element </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ref_el</span><span class="p">,</span> <span class="n">elem</span><span class="p">))</span>
+                    <span class="c1">#print(error)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">abort</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">struc_group</span><span class="p">:</span>
+                <span class="c1">#print(&#39;here, looking in group&#39;)</span>
+                <span class="c1">#print(elem, struc_group)</span>
+                <span class="n">structure</span><span class="p">,</span> <span class="n">report</span> <span class="o">=</span> <span class="n">get_ref_from_group</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">struc_group</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+                <span class="n">parameter</span><span class="p">,</span> <span class="n">report</span> <span class="o">=</span> <span class="n">get_para_from_group</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">para_group</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">structure</span> <span class="ow">and</span> <span class="n">parameter</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="n">structure</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">structure</span><span class="p">,</span> <span class="n">parameter</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">structure</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="n">structure</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">pass</span>  <span class="c1"># report not found?</span>
+
+            <span class="c1">#elif query_for_ref: # no ref given, we have to look for it.</span>
+            <span class="c1">#    structure = querry_for_ref_structure(elem)</span>
+            <span class="c1">#    #TODO: Advance this querry, if a calculation with the given</span>
+            <span class="c1">#    #parameter was already done use these results</span>
+            <span class="c1">#    if structure:</span>
+            <span class="c1">#        self.ctx.ref[elem] = structure</span>
+            <span class="c1">#        self.ctx.ref_calcs_torun.append(structure)# tempoary later check parameters</span>
+            <span class="c1">#    else: #not found</span>
+            <span class="c1">#        error = (&quot;ERROR: Reference structure for element: {} not found.&quot;</span>
+            <span class="c1">#                 &quot;checkout the &#39;querry_for_ref_structure&#39; method.&quot;</span>
+            <span class="c1">#                 &quot;to see what extras are querried for.&quot;.format(elem))</span>
+            <span class="c1">#        #print(error)</span>
+            <span class="c1">#        self.ctx.errors.append(error)</span>
+            <span class="c1">#        self.ctx.abort = True</span>
+            <span class="c1">#        self.report(error)</span>
+
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># no reference for element found</span>
+                <span class="c1"># do we not want to calculate it or is this an error?</span>
+                <span class="n">warning</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;WARNING: I did not find a reference for element </span><span class="si">{}</span><span class="s1">. &#39;</span>
+                           <span class="s1">&#39;If you do not calculate shifts for this element &#39;</span>
+                           <span class="s1">&#39;ignore this warning. If I should calculate this will &#39;</span>
+                           <span class="s1">&#39;lead to an error later. Note: without all references&#39;</span>
+                           <span class="s1">&#39; I cannot calculte the binding energy&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calculate_formation_energy</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="c1"># delete element from element list (no calculations will be launched for it)</span>
+                <span class="n">valid_elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">elements</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">valid_elm</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">valid_elm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">valid_elm</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">abort</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: Something was wrong with the reference input provided. &#39;</span>
+                     <span class="s1">&#39;I cannot calculate from the input, or what I have found &#39;</span>
+                     <span class="s1">&#39;what you want me to do. Please check the workchain report&#39;</span>
+                     <span class="s1">&#39;for details.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ERROR_REFERENCE_MISSING</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO ref_calcs_torun: </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span><span class="p">))</span></div>
+
+        <span class="c1"># check if a structureData for these elements was given</span>
+        <span class="c1">#if yes add to ref_calc to run</span>
+        <span class="c1">#was also a prameter node given for the element?</span>
+        <span class="c1">#yes run with these</span>
+        <span class="c1">#no was on given for the host structure, extract element parameternode</span>
+
+        <span class="c1">#else use parameters extracted from host calculation # TODO</span>
+
+        <span class="c1">#check if there is a structure from this element in the database with extras:</span>
+        <span class="c1"># with extra.type = &#39;bulk&#39;, extra.specific = &#39;reference&#39;,</span>
+        <span class="c1">#&#39;extra.elemental&#39; = True, extra.structure = &#39;W&#39;</span>
+        <span class="c1"># check if input parameter node values for the calculation are the same.</span>
+
+        <span class="c1">#if yes, if a calculation exists use that result</span>
+        <span class="c1">#else do a calculation on that structure as above</span>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.run_fleur_scfs"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.run_fleur_scfs">[docs]</a>    <span class="k">def</span> <span class="nf">run_fleur_scfs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run SCF-cycles for all structures, calculations given in certain workflow arrays.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: In run_fleur_scfs initial_state_CLS workflow&#39;</span><span class="p">)</span>
+
+        <span class="n">para</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">scf_para</span>
+        <span class="k">if</span> <span class="n">para</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
+            <span class="n">wf_parameter</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">wf_parameter</span> <span class="o">=</span> <span class="n">para</span>
+        <span class="n">wf_parameter</span><span class="p">[</span><span class="s1">&#39;serial&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">serial</span>
+        <span class="c1">#wf_parameter[&#39;options&#39;] = self.ctx.options</span>
+        <span class="n">wf_parameters</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">wf_parameter</span><span class="p">)</span>
+        <span class="n">resall</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">calc_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
+        <span class="c1"># for each calulation in self.ctx.calcs_torun #TODO what about wf params?</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">#print(self.ctx.calcs_torun)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_torun</span><span class="p">):</span>
+            <span class="c1">#print node</span>
+            <span class="n">calclabel</span> <span class="o">=</span> <span class="s1">&#39;ori_calc_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">calc_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calclabel</span><span class="p">)</span>
+            <span class="n">scf_label</span> <span class="o">=</span> <span class="s1">&#39;cls|scf_wc main&#39;</span>
+            <span class="n">scf_description</span> <span class="o">=</span> <span class="s1">&#39;cls|scf of the main structure&#39;</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">StructureData</span><span class="p">):</span>
+                <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;wf_parameters&#39;</span><span class="p">:</span> <span class="n">wf_parameters</span><span class="p">,</span>
+                    <span class="s1">&#39;structure&#39;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+                    <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+                    <span class="s1">&#39;inpgen&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">inpgen</span><span class="p">,</span>
+                    <span class="s1">&#39;fleur&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span><span class="p">,</span>
+                    <span class="c1">#&#39;metadata&#39; : {&#39;label&#39; : scf_label,</span>
+                    <span class="c1">#             &#39;description&#39; : scf_description}</span>
+                <span class="p">}</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">FleurScfWorkChain</span><span class="p">,</span> <span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="c1">#elif isinstance(node, FleurinpData):</span>
+            <span class="c1">#    res = fleur_scf_wc.run(wf_parameters=wf_parameters, structure=node,</span>
+            <span class="c1">#                inpgen = self.inputs.inpgen, fleur=self.inputs.fleur)#</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>  <span class="c1">#(StructureData, Dict)):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s1">&#39;wf_parameters&#39;</span><span class="p">:</span> <span class="n">wf_parameters</span><span class="p">,</span>
+                        <span class="s1">&#39;structure&#39;</span><span class="p">:</span> <span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="s1">&#39;calc_parameters&#39;</span><span class="p">:</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+                        <span class="s1">&#39;inpgen&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">inpgen</span><span class="p">,</span>
+                        <span class="s1">&#39;fleur&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span><span class="p">,</span>
+                        <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">scf_label</span><span class="p">,</span>
+                            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">scf_description</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">FleurScfWorkChain</span><span class="p">,</span> <span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;ERROR: something in calcs_torun which I do not&#39;</span>
+                                <span class="s1">&#39;recognize, list has not 2 entries: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;ERROR: something in calcs_torun which I do not &#39;</span> <span class="s1">&#39;recognize: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+                <span class="c1">#self.report(&#39;{}{}&#39;.format(type(node[0], node[1])))</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">continue</span>
+            <span class="n">resall</span><span class="p">[</span><span class="n">calclabel</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span>  <span class="c1">#append(res)</span>
+            <span class="c1">#print res</span>
+            <span class="c1">#calc_node = res[&#39;output_scf_wc_para&#39;].get_inputs()[0]</span>
+            <span class="c1"># if run is used, otherwise use labels</span>
+            <span class="c1">#self.ctx.calcs_res.append(calc_node)</span>
+            <span class="c1">#self.ctx.calcs_torun.remove(node)</span>
+            <span class="c1">#print res</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_torun</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calc_labels</span> <span class="o">=</span> <span class="n">calc_labels</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;res_all&#39;</span><span class="p">,</span> <span class="n">resall</span><span class="p">)</span>
+        <span class="c1">#return ToContext(last_calc=res)</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        inputs = get_inputs_fleur(code, remote, fleurin, options)</span>
+<span class="sd">        future = submit(FleurCalc, **inputs)</span>
+<span class="sd">        self.ctx.loop_count = self.ctx.loop_count + 1</span>
+<span class="sd">        print &#39;run FLEUR number: {}&#39;.format(self.ctx.loop_count)</span>
+<span class="sd">        self.ctx.calcs.append(future)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ToContext</span><span class="p">(</span><span class="o">**</span><span class="n">resall</span><span class="p">)</span>  <span class="c1">#calcs_res=res)  #calcs.append(future</span></div>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.relaxation_needed"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.relaxation_needed">[docs]</a>    <span class="k">def</span> <span class="nf">relaxation_needed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the structures should be relaxed, check if their Forces are below a certain</span>
+<span class="sd">        threshold, otherwise throw them in the relaxation wf.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: In relaxation initial_state_CLS workflow (so far nothing to do)&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">relax</span><span class="p">:</span>
+            <span class="c1"># TODO check all forces of calculations</span>
+            <span class="n">forces_fine</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">forces_fine</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.relax"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.relax">[docs]</a>    <span class="k">def</span> <span class="nf">relax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Do structural relaxation for certain structures.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: In relax initial_state_CLS workflow (so far nothing to do)&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">dos_to_calc</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">calc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">dos_to_calc</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+            <span class="c1"># TODO run relax workflow</span>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.find_parameters"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.find_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">find_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the same parameters shall be used in the calculations you have to</span>
+<span class="sd">        find some that match. For low error on CLS. therefore use the ones enforced</span>
+<span class="sd">        or extract from the previous Fleur calculation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#self.ctx.ref[elem] = ref_el</span>
+        <span class="c1">#self.ctx.ref_calcs_torun.append(ref_el)</span>
+
+        <span class="c1"># for entry in ref[elem] find parameter node</span>
+        <span class="k">for</span> <span class="n">elm</span><span class="p">,</span> <span class="n">struc</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref</span><span class="p">):</span>
+            <span class="c1">#print(elm, struc)</span>
+            <span class="c1">#self.ctx.ref_calcs_torun.append(ref_el)</span>
+            <span class="k">pass</span></div>
+            <span class="c1"># if parameter node given, extract from there,</span>
+            <span class="c1">#parameter_dict</span>
+            <span class="c1"># else</span>
+            <span class="c1">#extract parameter out of previous calculation</span>
+            <span class="c1">#parameter_dict = fleurinp.extract_para(element)</span>
+            <span class="c1"># BE CAREFUL WITH LOs! soc and co</span>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.run_scfs_ref"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.run_scfs_ref">[docs]</a>    <span class="k">def</span> <span class="nf">run_scfs_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run SCF-cycles for ref structures, calculations given in certain workflow arrays.</span>
+<span class="sd">        parameter nodes should be given</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: In run_scfs_ref initial_state_CLS workflow&#39;</span><span class="p">)</span>
+
+        <span class="n">para</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">scf_para</span>
+        <span class="k">if</span> <span class="n">para</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
+            <span class="n">wf_parameter</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">wf_parameter</span> <span class="o">=</span> <span class="n">para</span>
+        <span class="n">wf_parameter</span><span class="p">[</span><span class="s1">&#39;serial&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">serial</span>
+        <span class="c1"># TODO maybe use less resources, or default of one machine</span>
+        <span class="c1">#wf_parameter[&#39;options&#39;] = self.ctx.options</span>
+        <span class="n">wf_parameters</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">wf_parameter</span><span class="p">)</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="n">res_all</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">calcs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># now in parallel</span>
+        <span class="c1">#print self.ctx.ref_calcs_torun</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1">#print(self.ctx.ref_calcs_torun)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span><span class="p">):</span>
+            <span class="n">scf_label</span> <span class="o">=</span> <span class="s1">&#39;cls|scf_wc on ref </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">scf_description</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;cls|scf of the reference structure of element </span><span class="si">{}</span><span class="s1">&#39;</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="c1">#print node</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">StructureData</span><span class="p">):</span>
+                <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;wf_parameters&#39;</span><span class="p">:</span> <span class="n">wf_parameters</span><span class="p">,</span>
+                    <span class="s1">&#39;structure&#39;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+                    <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+                    <span class="s1">&#39;inpgen&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">inpgen</span><span class="p">,</span>
+                    <span class="s1">&#39;fleur&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span><span class="p">,</span>
+                    <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">scf_label</span><span class="p">,</span>
+                        <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">scf_description</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">FleurScfWorkChain</span><span class="p">,</span> <span class="o">**</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1">#</span>
+
+            <span class="c1">#elif isinstance(node, FleurinpData):</span>
+            <span class="c1">#    res = submit(fleur_scf_wc, wf_parameters=wf_parameters, structure=node,</span>
+            <span class="c1">#                inpgen = self.inputs.inpgen, fleur=self.inputs.fleur)#</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>  <span class="c1">#(StructureData, Dict)):</span>
+                <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;wf_parameters&#39;</span><span class="p">:</span> <span class="n">wf_parameters</span><span class="p">,</span>
+                    <span class="s1">&#39;structure&#39;</span><span class="p">:</span> <span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s1">&#39;calc_parameters&#39;</span><span class="p">:</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+                    <span class="s1">&#39;inpgen&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">inpgen</span><span class="p">,</span>
+                    <span class="s1">&#39;fleur&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span><span class="p">,</span>
+                    <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">scf_label</span><span class="p">,</span>
+                        <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">scf_description</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">FleurScfWorkChain</span><span class="p">,</span> <span class="o">**</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1">#</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;WARNING: something in calcs_torun which I do not reconise: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+                <span class="k">continue</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;calc_ref</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="c1">#print(label)</span>
+            <span class="c1">#calc_node = res[&#39;output_scf_wc_para&#39;].get_inputs()[0] # if run is used, otherwise use labels</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">calcs</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span>
+            <span class="n">res_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            <span class="c1">#self.ctx.calcs_torun.remove(node)</span>
+            <span class="c1">#print res</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_calcs_torun</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">ToContext</span><span class="p">(</span><span class="o">**</span><span class="n">calcs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.handle_scf_failure"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.handle_scf_failure">[docs]</a>    <span class="k">def</span> <span class="nf">handle_scf_failure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        In here we handle all failures from the scf workchain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        try:</span>
+<span class="sd">            calculation = self.ctx.calculation</span>
+<span class="sd">        except Exception:</span>
+<span class="sd">            self.abort_nowait(&#39;the first iteration finished without returning a PwCalculation&#39;)</span>
+<span class="sd">            return</span>
+
+<span class="sd">        expected_states = [calc_states.FINISHED, calc_states.FAILED, calc_states.SUBMISSIONFAILED]</span>
+
+<span class="sd">        # Done: successful convergence of last calculation</span>
+<span class="sd">        if calculation.has_finished_ok():</span>
+<span class="sd">            self.report(&#39;converged successfully after {} iterations&#39;.format(self.ctx.iteration))</span>
+<span class="sd">            self.ctx.restart_calc = calculation</span>
+<span class="sd">            self.ctx.is_finished = True</span>
+
+<span class="sd">        # Abort: exceeded maximum number of retries</span>
+<span class="sd">        elif self.ctx.iteration &gt;= self.ctx.max_iterations:</span>
+<span class="sd">            self.report(&#39;reached the max number of iterations {}&#39;.format(self.ctx.max_iterations))</span>
+<span class="sd">            self.abort_nowait(&#39;last ran PwCalculation&lt;{}&gt;&#39;.format(calculation.pk))</span>
+
+<span class="sd">        # Abort: unexpected state of last calculation</span>
+<span class="sd">        elif calculation.get_state() not in expected_states:</span>
+<span class="sd">            self.abort_nowait(&#39;unexpected state ({}) of PwCalculation&lt;{}&gt;&#39;.format(</span>
+<span class="sd">                calculation.get_state(), calculation.pk))</span>
+
+<span class="sd">        # Retry: submission failed, try to restart or abort</span>
+<span class="sd">        elif calculation.get_state() in [calc_states.SUBMISSIONFAILED]:</span>
+<span class="sd">            self._handle_submission_failure(calculation)</span>
+
+<span class="sd">        # Retry: calculation failed, try to salvage or abort</span>
+<span class="sd">        elif calculation.get_state() in [calc_states.FAILED]:</span>
+<span class="sd">            self._handle_calculation_failure(calculation)</span>
+
+<span class="sd">        # Retry: try to convergence restarting from this calculation</span>
+<span class="sd">        else:</span>
+<span class="sd">            self.report(&#39;calculation did not converge after {} iterations, restarting&#39;.format(self.ctx.iteration))</span>
+<span class="sd">            self.ctx.restart_calc = calculation</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">failure</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">failure</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.collect_results"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.collect_results">[docs]</a>    <span class="k">def</span> <span class="nf">collect_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Collect results from certain calculation, check if everything is fine,</span>
+<span class="sd">        calculate the wanted quantities. currently all energies are in hartree</span>
+<span class="sd">        (as provided by Fleur)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.common_fleur_wf_util</span> <span class="kn">import</span> <span class="n">determine_formation_energy</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;INFO: Collecting results of initial_state_CLS workflow&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="c1"># TODO be very careful with core config?</span>
+        <span class="c1">#from pprint import pprint</span>
+
+        <span class="c1">#self.ctx.ref_cl_energies</span>
+        <span class="n">all_CLS</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># get results from calc</span>
+        <span class="n">calcs</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1">#self.ctx.calcs_res</span>
+        <span class="n">ref_calcs</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1">#self.ctx.ref_calcs_res</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_labels</span><span class="p">:</span>
+            <span class="n">calc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+            <span class="n">ref_calcs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calc_labels</span><span class="p">:</span>
+            <span class="n">calc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+            <span class="n">calcs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc</span><span class="p">)</span>
+        <span class="c1"># extract_results need the scf workchain calculation node</span>
+        <span class="n">total_en</span><span class="p">,</span> <span class="n">fermi_energies</span><span class="p">,</span> <span class="n">bandgaps</span><span class="p">,</span> <span class="n">atomtypes</span><span class="p">,</span> <span class="n">all_corelevel</span><span class="p">,</span> <span class="n">log_ref</span> <span class="o">=</span> <span class="n">extract_results</span><span class="p">(</span><span class="n">calcs</span><span class="p">)</span>
+        <span class="n">ref_total_en</span><span class="p">,</span> <span class="n">ref_fermi_energies</span><span class="p">,</span> <span class="n">ref_bandgaps</span><span class="p">,</span> <span class="n">ref_atomtypes</span><span class="p">,</span> <span class="n">ref_all_corelevel</span><span class="p">,</span> <span class="n">log</span> <span class="o">=</span> <span class="n">extract_results</span><span class="p">(</span>
+            <span class="n">ref_calcs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">log_ref</span> <span class="ow">or</span> <span class="n">log</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">log_ref</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+        <span class="c1">#print(all_corelevel)</span>
+        <span class="c1">#print(ref_all_corelevel)</span>
+
+        <span class="n">ref_cl_energies</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">cl_energies</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1">#first substract efermi from corelevel of reference structures</span>
+        <span class="c1"># TODO check if both values, corelevel and efermi are in eV</span>
+        <span class="k">for</span> <span class="n">compound</span><span class="p">,</span> <span class="n">atomtypes_list</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">ref_atomtypes</span><span class="p">):</span>
+            <span class="c1"># atomtype_list contains a list of dicts of all atomtypes from compound x</span>
+            <span class="c1"># get corelevels of compound x</span>
+            <span class="n">cls_all_atomtyps</span> <span class="o">=</span> <span class="n">ref_all_corelevel</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atomtype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atomtypes_list</span><span class="p">):</span>
+                <span class="c1">#atomtype a dict which contains one atomtype</span>
+                <span class="n">elm</span> <span class="o">=</span> <span class="n">atomtype</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;element&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">cls_atomtype</span> <span class="o">=</span> <span class="n">cls_all_atomtyps</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">ref_cl_energies</span><span class="p">[</span><span class="n">elm</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">ref_cls</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">corelevel</span> <span class="ow">in</span> <span class="n">cls_atomtype</span><span class="p">[</span><span class="s1">&#39;corestates&#39;</span><span class="p">]:</span>
+                    <span class="n">ref_cls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corelevel</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ref_fermi_energies</span><span class="p">[</span><span class="n">compound</span><span class="p">])</span>
+                <span class="n">ref_cl_energies</span><span class="p">[</span><span class="n">elm</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_cls</span><span class="p">)</span>
+
+        <span class="c1">#print(&#39;ref_cl energies&#39;)</span>
+        <span class="c1">#print(ref_cl_energies)</span>
+        <span class="c1">#print(all_corelevel)</span>
+
+        <span class="c1">#now substract efermi from corelevel of compound structure</span>
+        <span class="c1">#and calculate core level shifts</span>
+        <span class="k">for</span> <span class="n">compound</span><span class="p">,</span> <span class="n">cls_atomtypes_list</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">all_corelevel</span><span class="p">):</span>
+            <span class="c1">#init, otherwise other types will override</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atomtype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atomtypes</span><span class="p">[</span><span class="n">compound</span><span class="p">]):</span>
+                <span class="n">elm</span> <span class="o">=</span> <span class="n">atomtype</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;element&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">cl_energies</span><span class="p">[</span><span class="n">elm</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">all_CLS</span><span class="p">[</span><span class="n">elm</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1">#now fill</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atomtype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atomtypes</span><span class="p">[</span><span class="n">compound</span><span class="p">]):</span>
+                <span class="n">elm</span> <span class="o">=</span> <span class="n">atomtype</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;element&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="c1">#print elm</span>
+                <span class="n">cls_atomtype</span> <span class="o">=</span> <span class="n">cls_atomtypes_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">corelevels</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">corelevel</span> <span class="ow">in</span> <span class="n">cls_atomtype</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;corestates&#39;</span><span class="p">]:</span>
+                    <span class="n">correct_cl</span> <span class="o">=</span> <span class="n">corelevel</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">fermi_energies</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span>
+                    <span class="n">corelevels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">correct_cl</span><span class="p">)</span>
+                <span class="n">cl_energies</span><span class="p">[</span><span class="n">elm</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corelevels</span><span class="p">)</span>
+
+                <span class="c1">#now calculate CLS</span>
+                <span class="n">ref</span> <span class="o">=</span> <span class="n">ref_cl_energies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elm</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># We just use one (last) atomtype</span>
+                <span class="c1">#of elemental reference (in general might be more complex,</span>
+                <span class="c1">#since certain elemental unit cells could have several atom types (graphene))</span>
+                <span class="n">corelevel_shifts</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="c1">#TODO shall we store just one core-level shift per atomtype?</span>
+                <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">corelevel</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cl_energies</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                    <span class="n">corelevel_shifts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corelevel</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">ref</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+                <span class="n">all_CLS</span><span class="p">[</span><span class="n">elm</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corelevel_shifts</span><span class="p">)</span>
+
+        <span class="c1"># calculate formation energy</span>
+        <span class="c1">#determine_formation_energy({&#39;BeW&#39; : 2, &#39;Be2W&#39; : 2.5}, {&#39;Be&#39; : 1, &#39;W&#39; : 1})</span>
+        <span class="c1"># to normalize ref,</span>
+        <span class="c1"># from.split(012345678910)</span>
+        <span class="c1"># devide total energy by number of atoms</span>
+
+        <span class="c1"># Formation energy calculation is ony possible if all elementals of the structure</span>
+        <span class="c1"># have been calculated.</span>
+        <span class="c1"># convert total_en dict to list, why?</span>
+        <span class="n">total_en_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">total_en</span><span class="p">):</span>
+            <span class="n">total_en_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calculate_formation_energy</span><span class="p">:</span>
+            <span class="c1"># the reference total energy is for the whole structure with several atoms,</span>
+            <span class="c1"># we need it per atom</span>
+            <span class="n">ref_total_en_norm</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">ref_total_en</span><span class="p">):</span>
+                <span class="n">elm_dict</span> <span class="o">=</span> <span class="n">get_natoms_element</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="n">ref_total_en_norm</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">elm_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">val</span> <span class="o">/</span> <span class="nb">list</span><span class="p">(</span><span class="n">elm_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1">#print(ref_total_en_norm)</span>
+            <span class="c1">#print(total_en)</span>
+
+            <span class="n">formation_energy</span><span class="p">,</span> <span class="n">form_dict</span> <span class="o">=</span> <span class="n">determine_formation_energy</span><span class="p">(</span><span class="n">total_en</span><span class="p">,</span> <span class="n">ref_total_en_norm</span><span class="p">)</span>
+            <span class="c1">#print(form_dict)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">formation_energy</span> <span class="o">=</span> <span class="p">[[]]</span>
+
+        <span class="c1"># TODO make simpler format of atomtypes for node</span>
+        <span class="c1"># TODO write corelevel explanation/coresetup in a format like 4f7/2</span>
+        <span class="c1">#TODO ? also get total energies?</span>
+        <span class="k">return</span> <span class="n">cl_energies</span><span class="p">,</span> <span class="n">all_CLS</span><span class="p">,</span> <span class="n">ref_cl_energies</span><span class="p">,</span> <span class="n">fermi_energies</span><span class="p">,</span> <span class="n">bandgaps</span><span class="p">,</span> <span class="n">ref_fermi_energies</span><span class="p">,</span> <span class="n">ref_bandgaps</span><span class="p">,</span> <span class="n">atomtypes</span><span class="p">,</span> <span class="n">ref_atomtypes</span><span class="p">,</span> <span class="n">formation_energy</span><span class="p">,</span> <span class="n">total_en</span><span class="p">,</span> <span class="n">ref_total_en</span></div>
+        <span class="c1">#return cl_energies, all_CLS, ref_cl_energies, fermi_energies, bandgaps, ref_fermi_energies, ref_bandgaps, atomtypes, ref_atomtypes, formation_energy[0], total_en, ref_total_en</span>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.return_results"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.return_results">[docs]</a>    <span class="k">def</span> <span class="nf">return_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return the results of the calculations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO more output, info here</span>
+
+        <span class="c1">#print corelevel shifts were calculated bla bla</span>
+        <span class="n">cl</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">ref_cl</span><span class="p">,</span> <span class="n">efermi</span><span class="p">,</span> <span class="n">gap</span><span class="p">,</span> <span class="n">ref_efermi</span><span class="p">,</span> <span class="n">ref_gap</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">at_ref</span><span class="p">,</span> <span class="n">formE</span><span class="p">,</span> <span class="n">tE</span><span class="p">,</span> <span class="n">tE_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_results</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+
+        <span class="n">material</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">efermi</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">material</span><span class="p">:</span>
+            <span class="n">material</span> <span class="o">=</span> <span class="n">material</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">fermi_energy</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">efermi</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">fermi_energy</span><span class="p">:</span>
+            <span class="n">fermi_energy</span> <span class="o">=</span> <span class="n">fermi_energy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">total_energy</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tE</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">total_energy</span><span class="p">:</span>
+            <span class="n">total_energy</span> <span class="o">=</span> <span class="n">total_energy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">bandgap</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">gap</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">bandgap</span><span class="p">:</span>
+            <span class="n">bandgap</span> <span class="o">=</span> <span class="n">bandgap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">outputnode_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;workflow_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;workflow_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workflowversion</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;warnings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;successful&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;material&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">material</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;corelevel_energies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cl</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;corelevel_energies_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;htr&#39;</span>  <span class="c1">#&#39;eV&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;reference_corelevel_energies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_cl</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;reference_corelevel_energies_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;htr&#39;</span>  <span class="c1">#&#39;eV&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;reference_fermi_energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ref_efermi</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;reference_fermi_energy_des&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ref_efermi</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;fermi_energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">efermi</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;fermi_energy_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;htr&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;corelevelshifts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;corelevelshifts_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;htr&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;binding_energy_convention&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;negativ&#39;</span>
+        <span class="c1">#outputnode_dict[&#39;coresetup&#39;] = []#cls</span>
+        <span class="c1">#outputnode_dict[&#39;reference_coresetup&#39;] = []#cls</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;bandgap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bandgap</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;bandgap_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;htr&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;reference_bandgaps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ref_gap</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;reference_bandgaps_des&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ref_gap</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;atomtypes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;formation_energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formE</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;formation_energy_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;eV/atom&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;total_energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_energy</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;total_energy_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;eV&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;total_energy_ref&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tE_ref</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;total_energy_ref_des&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tE_ref</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="c1">#outputnode = Dict(dict=outputnode_dict)</span>
+
+        <span class="c1"># To have to ouput node linked to the calculation output nodes</span>
+        <span class="n">outnodedict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">outnode</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">outputnode_dict</span><span class="p">)</span>
+        <span class="n">outnodedict</span><span class="p">[</span><span class="s1">&#39;results_node&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outnode</span>
+
+        <span class="c1"># TODO: bad design, put in calcfunction and make bullet proof.</span>
+        <span class="n">calc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calc_labels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">calc_dict</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">get_outgoing</span><span class="p">()</span><span class="o">.</span><span class="n">get_node_by_label</span><span class="p">(</span><span class="s1">&#39;output_scf_wc_para&#39;</span><span class="p">)</span>
+        <span class="n">outnodedict</span><span class="p">[</span><span class="s1">&#39;input_structure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_dict</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ref_labels</span><span class="p">:</span>
+            <span class="n">calc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+            <span class="n">calc_dict</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">get_outgoing</span><span class="p">()</span><span class="o">.</span><span class="n">get_node_by_label</span><span class="p">(</span><span class="s1">&#39;output_scf_wc_para&#39;</span><span class="p">)</span>
+            <span class="n">outnodedict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_dict</span>
+
+        <span class="n">outdict</span> <span class="o">=</span> <span class="n">create_initcls_result_node</span><span class="p">(</span><span class="o">**</span><span class="n">outnodedict</span><span class="p">)</span>
+
+        <span class="c1">#outdict = {}</span>
+        <span class="c1">#outdict[&#39;output_initial_cls_wc_para&#39;] = outputnode</span>
+        <span class="c1">#print outdict</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">outdict</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;INFO: Initial_state_CLS workflow Done&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="fleur_initial_cls_wc.control_end_wc"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_initial_cls_wc.control_end_wc">[docs]</a>    <span class="k">def</span> <span class="nf">control_end_wc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errormsg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Controled way to shutdown the workchain. will initalize the output nodes</span>
+<span class="sd">        The shutdown of the workchain will has to be done afterwards</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">abort</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>  <span class="c1"># because return_results still fails somewhen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_results</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="create_initcls_result_node"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.create_initcls_result_node">[docs]</a><span class="nd">@cf</span>
+<span class="k">def</span> <span class="nf">create_initcls_result_node</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a pseudo wf, to create the rigth graph structure of AiiDA.</span>
+<span class="sd">    This wokfunction will create the output node in the database.</span>
+<span class="sd">    It also connects the output_node to all nodes the information commes from.</span>
+<span class="sd">    So far it is just also parsed in as argument, because so far we are to lazy</span>
+<span class="sd">    to put most of the code overworked from return_results in here.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">outdict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">outpara</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;results_node&#39;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">outdict</span><span class="p">[</span><span class="s1">&#39;output_initial_cls_wc_para&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="c1"># copy, because we rather produce the same node twice then have a circle in the database for now...</span>
+    <span class="c1">#output_para = args[0]</span>
+    <span class="c1">#return {&#39;output_eos_wc_para&#39;}</span>
+    <span class="k">return</span> <span class="n">outdict</span></div>
+
+
+<div class="viewcode-block" id="querry_for_ref_structure"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.querry_for_ref_structure">[docs]</a><span class="k">def</span> <span class="nf">querry_for_ref_structure</span><span class="p">(</span><span class="n">element_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This methods finds StructureData nodes with the following extras:</span>
+<span class="sd">    extra.type = &#39;bulk&#39;, # Should be done by looking at pbc, but I could not</span>
+<span class="sd">    get querry to work.</span>
+<span class="sd">    extra.specific = &#39;reference&#39;,</span>
+<span class="sd">    &#39;extra.elemental&#39; = True,</span>
+<span class="sd">    extra.structure = element_string</span>
+
+<span class="sd">    param: element_string: string of an element</span>
+<span class="sd">    return: the latest StructureData node that was found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#query db</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">()</span>
+    <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">StructureData</span><span class="p">,</span>
+             <span class="n">filters</span><span class="o">=</span><span class="p">{</span>
+                 <span class="s1">&#39;extras.type&#39;</span><span class="p">:</span> <span class="p">{</span>
+                     <span class="s1">&#39;==&#39;</span><span class="p">:</span> <span class="s1">&#39;bulk&#39;</span>
+                 <span class="p">},</span>
+                 <span class="s1">&#39;extras.specification&#39;</span><span class="p">:</span> <span class="p">{</span>
+                     <span class="s1">&#39;==&#39;</span><span class="p">:</span> <span class="s1">&#39;reference&#39;</span>
+                 <span class="p">},</span>
+                 <span class="s1">&#39;extras.elemental&#39;</span><span class="p">:</span> <span class="p">{</span>
+                     <span class="s1">&#39;==&#39;</span><span class="p">:</span> <span class="kc">True</span>
+                 <span class="p">},</span>
+                 <span class="s1">&#39;extras.element&#39;</span><span class="p">:</span> <span class="p">{</span>
+                     <span class="s1">&#39;==&#39;</span><span class="p">:</span> <span class="n">element_string</span>
+                 <span class="p">}</span>
+             <span class="p">})</span>
+    <span class="n">q</span><span class="o">.</span><span class="n">order_by</span><span class="p">({</span><span class="n">StructureData</span><span class="p">:</span> <span class="s1">&#39;ctime&#39;</span><span class="p">})</span>  <span class="c1">#always use the most recent</span>
+    <span class="n">structures</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">structures</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">structures</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="fleur_calc_get_structure"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.fleur_calc_get_structure">[docs]</a><span class="k">def</span> <span class="nf">fleur_calc_get_structure</span><span class="p">(</span><span class="n">calc_node</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the AiiDA data structure from a fleur calculations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#get fleurinp</span>
+    <span class="n">fleurinp</span> <span class="o">=</span> <span class="n">calc_node</span><span class="o">.</span><span class="n">inp</span><span class="o">.</span><span class="n">fleurinpdata</span>
+    <span class="n">structure</span> <span class="o">=</span> <span class="n">fleurinp</span><span class="o">.</span><span class="n">get_structuredata</span><span class="p">(</span><span class="n">fleurinp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">structure</span></div>
+
+
+<div class="viewcode-block" id="extract_results"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.extract_results">[docs]</a><span class="k">def</span> <span class="nf">extract_results</span><span class="p">(</span><span class="n">calcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Collect results from certain calculation, check if everything is fine,</span>
+<span class="sd">    calculate the wanted quantities.</span>
+
+<span class="sd">    params: calcs : list of scf workchains nodes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">aiida_fleur.tools.extract_corelevels</span> <span class="kn">import</span> <span class="n">extract_corelevels</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">calc_uuids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">calc</span> <span class="ow">in</span> <span class="n">calcs</span><span class="p">:</span>
+        <span class="c1">#print(calc)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">calc_uuid</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">get_outgoing</span><span class="p">()</span><span class="o">.</span><span class="n">get_node_by_label</span><span class="p">(</span><span class="s1">&#39;output_scf_wc_para&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()[</span><span class="s1">&#39;last_calc_uuid&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">NotExistent</span><span class="p">,</span> <span class="n">MultipleObjectsError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>  <span class="c1">#TODO which error</span>
+            <span class="n">logmsg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: No output_scf_wc_para node found or no &quot;last_calc_uuid&quot; &#39;</span>
+                      <span class="s1">&#39;key in it for calculation: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">calc</span><span class="p">))</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">logmsg</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">calc_uuid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">calc_uuids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_uuid</span><span class="p">)</span>
+        <span class="c1">#calc_uuids.append(calc[&#39;output_scf_wc_para&#39;].get_dict()[&#39;last_calc_uuid&#39;])</span>
+
+    <span class="n">all_corelevels</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">fermi_energies</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">bandgaps</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">all_atomtypes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">total_energy</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># more structures way: divide into this calc and reference calcs.</span>
+    <span class="c1"># currently the order in calcs is given, but this might change if you submit</span>
+    <span class="c1"># check if calculation pks belong to successful fleur calculations</span>
+    <span class="k">for</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="n">calc_uuids</span><span class="p">:</span>
+        <span class="n">calc</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">calc</span><span class="p">,</span> <span class="n">CalcJobNode</span><span class="p">):</span>
+            <span class="c1">#raise ValueError(&quot;Calculation with pk {} must be a FleurCalculation&quot;.format(pk))</span>
+            <span class="c1"># log and continue</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">calc</span><span class="o">.</span><span class="n">is_finished_ok</span><span class="p">:</span>
+            <span class="c1"># get out.xml file of calculation</span>
+            <span class="c1">#outxml = calc.outputs.retrieved.folder.get_abs_path(&#39;path/out.xml&#39;)</span>
+            <span class="n">outxml</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">retrieved</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;out.xml&#39;</span><span class="p">)</span>
+            <span class="c1">#print outxml</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">corelevels</span><span class="p">,</span> <span class="n">atomtypes</span> <span class="o">=</span> <span class="n">extract_corelevels</span><span class="p">(</span><span class="n">outxml</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="n">outxml</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="c1">#all_corelevels.append(core)</span>
+            <span class="c1">#print(&#39;corelevels: {}&#39;.format(corelevels))</span>
+            <span class="c1">#print(&#39;atomtypes: {}&#39;.format(atomtypes))</span>
+            <span class="c1">#for i in range(0,len(corelevels[0][0][&#39;corestates&#39;])):</span>
+            <span class="c1">#    print corelevels[0][0][&#39;corestates&#39;][i][&#39;energy&#39;]</span>
+
+            <span class="c1">#TODO how to store?</span>
+            <span class="n">efermi</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">res</span><span class="o">.</span><span class="n">fermi_energy</span>
+            <span class="c1">#print efermi</span>
+            <span class="n">bandgap</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">res</span><span class="o">.</span><span class="n">bandgap</span>
+            <span class="n">te</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">res</span><span class="o">.</span><span class="n">energy</span>
+            <span class="c1">#total_energy = calc.res.total_energy</span>
+            <span class="c1">#total_energy_units = calc.res.total_energy_units</span>
+
+            <span class="c1"># TODO: maybe different, because it is prob know from before</span>
+            <span class="c1">#fleurinp = calc.inp.fleurinpdata</span>
+            <span class="c1">#structure = fleurinp.get_structuredata(fleurinp)</span>
+            <span class="c1">#compound = structure.get_formula()</span>
+            <span class="c1">#print compound</span>
+            <span class="c1">#number = &#39;{}&#39;.format(i)</span>
+            <span class="c1">#fermi_energies[number] = efermi</span>
+            <span class="c1">#bandgaps[number] = bandgap</span>
+            <span class="c1">#all_atomtypes[number] = atomtypes</span>
+            <span class="c1">#all_corelevels[number] = corelevels</span>
+            <span class="c1">#all_total_energies[number] = total_energy</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># log and continue</span>
+            <span class="n">te</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+            <span class="n">bandgap</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+            <span class="n">efermi</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+            <span class="n">corelevels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)]</span>
+            <span class="n">atomtypes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)]</span>
+            <span class="n">logmsg</span> <span class="o">=</span> <span class="s1">&#39;ERROR: Fleur Calculation with uuid </span><span class="si">{}</span><span class="s1"> was not in in state FINISHED&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">logmsg</span><span class="p">)</span>
+            <span class="c1">#continue</span>
+            <span class="c1">#raise ValueError(&quot;Calculation with pk {} must be in state FINISHED&quot;.format(pk))</span>
+
+        <span class="c1"># TODO: maybe different, because it is prob know from before</span>
+        <span class="n">fleurinp</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleurinpdata</span>
+        <span class="n">structure</span> <span class="o">=</span> <span class="n">fleurinp</span><span class="o">.</span><span class="n">get_structuredata_ncf</span><span class="p">()</span>
+        <span class="n">compound</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span>
+        <span class="c1">#print compound</span>
+        <span class="n">fermi_energies</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span> <span class="o">=</span> <span class="n">efermi</span>
+        <span class="n">bandgaps</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span> <span class="o">=</span> <span class="n">bandgap</span>
+        <span class="n">all_atomtypes</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span> <span class="o">=</span> <span class="n">atomtypes</span>
+        <span class="n">all_corelevels</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span> <span class="o">=</span> <span class="n">corelevels</span>
+        <span class="n">total_energy</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span> <span class="o">=</span> <span class="n">te</span>
+        <span class="c1">#fermi_energies = efermi</span>
+        <span class="c1">#bandgaps = bandgap</span>
+        <span class="c1">#all_atomtypes = atomtypes</span>
+        <span class="c1">#all_corelevels = corelevels</span>
+
+    <span class="k">return</span> <span class="n">total_energy</span><span class="p">,</span> <span class="n">fermi_energies</span><span class="p">,</span> <span class="n">bandgaps</span><span class="p">,</span> <span class="n">all_atomtypes</span><span class="p">,</span> <span class="n">all_corelevels</span><span class="p">,</span> <span class="n">log</span></div>
+    <span class="c1">#TODO validate results and give some warnings</span>
+
+    <span class="c1"># check bandgaps, if not all metals, throw warnings:</span>
+    <span class="c1"># bandgap and efermi prob wrong, which makes some results meaningless</span>
+
+    <span class="c1"># check fermi energy differences, correct results for fermi energy diff</span>
+    <span class="c1"># ggf TODO make a raw core-level and core-level to fermi energy variable</span>
+    <span class="c1">#TODO to what reference energy? or better not to fermi, but first unocc? (add bandgap)</span>
+
+    <span class="c1">#Style: {atomtype : listof all corelevel, atomtype_coresetup... }</span>
+    <span class="c1">#ie: { &#39;W-1&#39; : [shift_1s, ... shift 7/2 4f],</span>
+    <span class="c1">#      &#39;W-1_coreconfig&#39; : [&#39;1s&#39;,&#39;2s&#39;,...],</span>
+    <span class="c1">#      &#39;W-2&#39; : [...], &#39;Be-1&#39;: [], ...} #all in eV!</span>
+    <span class="c1">#self.ctx.CLS = {}</span>
+    <span class="c1">#self.ctx.cl_energies = {}# same style as CLS only energy &lt;-&gt; shift</span>
+
+    <span class="c1">#Style: {&#39;Compound&#39; : energy, &#39;ref_x&#39; : energy , ...}</span>
+    <span class="c1">#i.e {&#39;Be12W&#39; : 0.0, &#39;Be&#39; : 0.104*htr_eV , &#39;W&#39; : 0.12*htr_eV} # all in eV!</span>
+    <span class="c1">#self.ctx.fermi_energies = {}</span>
+
+
+<div class="viewcode-block" id="get_ref_from_group"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.get_ref_from_group">[docs]</a><span class="k">def</span> <span class="nf">get_ref_from_group</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a structure data node from a given group for a given element.</span>
+<span class="sd">    (quit creedy, done straighforward)</span>
+
+<span class="sd">    params: group: group name or pk</span>
+<span class="sd">    params: element: string with the element i.e &#39;Si&#39;</span>
+
+<span class="sd">    returns: AiiDA StructureData node</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">report</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">group_pk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">group_pk</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">group_name</span> <span class="o">=</span> <span class="n">group</span>
+
+    <span class="k">if</span> <span class="n">group_pk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">str_group</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">dbgroup</span><span class="o">=</span><span class="n">group_pk</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+            <span class="n">str_group</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;You have to provide a valid pk for a Group of&#39;</span>
+                       <span class="s1">&#39;structures or a Group name. Reference key: &quot;group&quot;.&#39;</span>
+                       <span class="s1">&#39;given pk= </span><span class="si">{}</span><span class="s1"> is not a valid group&#39;</span>
+                       <span class="s1">&#39;(or is your group name integer?)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">group_pk</span><span class="p">))</span>
+            <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">str_group</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">get_from_string</span><span class="p">(</span><span class="n">group_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+            <span class="n">str_group</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;You have to provide a valid pk for a Group of&#39;</span>
+                       <span class="s1">&#39;structures or a Group name. Wf_para key: &quot;struc_group&quot;.&#39;</span>
+                       <span class="s1">&#39;given group name= </span><span class="si">{}</span><span class="s1"> is not a valid group&#39;</span>
+                       <span class="s1">&#39;(or is your group name integer?)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">group_name</span><span class="p">))</span>
+            <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="c1">#abort_nowait(&#39;I abort, because I have no structures to calculate ...&#39;)</span>
+
+    <span class="n">stru_nodes</span> <span class="o">=</span> <span class="n">str_group</span><span class="o">.</span><span class="n">nodes</span>
+    <span class="c1">#n_stru = len(stru_nodes)</span>
+
+    <span class="n">structure</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">struc</span> <span class="ow">in</span> <span class="n">stru_nodes</span><span class="p">:</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">struc</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span>
+        <span class="n">eformula</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">digits</span><span class="p">)</span>  <span class="c1"># remove digits, !python3 differs</span>
+        <span class="k">if</span> <span class="n">eformula</span> <span class="o">==</span> <span class="n">element</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">struc</span><span class="p">,</span> <span class="n">report</span>
+
+    <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Structure node for element </span><span class="si">{}</span><span class="s1"> not found in group </span><span class="si">{}</span><span class="s1">&#39;</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">group</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">structure</span><span class="p">,</span> <span class="n">report</span></div>
+
+
+<div class="viewcode-block" id="get_para_from_group"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.get_para_from_group">[docs]</a><span class="k">def</span> <span class="nf">get_para_from_group</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get structure node for a given element from a given group of structures</span>
+<span class="sd">    (quit creedy, done straighforward)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">report</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">group_pk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">group_pk</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">group_name</span> <span class="o">=</span> <span class="n">group</span>
+
+    <span class="k">if</span> <span class="n">group_pk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">para_group</span> <span class="o">=</span> <span class="n">load_group</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">group_pk</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+            <span class="n">para_group</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;You have to provide a valid pk for a Group of &#39;</span>
+                       <span class="s1">&#39;parameters or a Group name. Reference key: &quot;group&quot;.&#39;</span>
+                       <span class="s1">&#39;given pk= </span><span class="si">{}</span><span class="s1"> is not a valid group&#39;</span>
+                       <span class="s1">&#39;(or is your group name integer?)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">group_pk</span><span class="p">))</span>
+            <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">para_group</span> <span class="o">=</span> <span class="n">load_group</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">group_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+            <span class="n">para_group</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;You have to provide a valid label for a Group of &#39;</span>
+                       <span class="s1">&#39;parameters or a Group name. Wf_para key: &quot;para_group&quot;.&#39;</span>
+                       <span class="s1">&#39;given group name= </span><span class="si">{}</span><span class="s1"> is not a valid group&#39;</span>
+                       <span class="s1">&#39;(or is your group name integer?)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">group_name</span><span class="p">))</span>
+            <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="c1">#abort_nowait(&#39;I abort, because I have no structures to calculate ...&#39;)</span>
+
+    <span class="n">para_nodes</span> <span class="o">=</span> <span class="n">para_group</span><span class="o">.</span><span class="n">nodes</span>
+    <span class="c1">#n_stru = len(para_nodes)</span>
+
+    <span class="n">parameter</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">para_nodes</span><span class="p">:</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">para</span><span class="o">.</span><span class="n">get_extras</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;element&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1">#eformula = formula.translate(None, digits) # remove digits, !python3 differs</span>
+        <span class="k">if</span> <span class="n">formula</span> <span class="o">==</span> <span class="n">element</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">para</span><span class="p">,</span> <span class="n">report</span>
+
+    <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Parameter node for element </span><span class="si">{}</span><span class="s1"> not found in group </span><span class="si">{}</span><span class="s1">&#39;</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">group</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">report</span></div>
+
+
+<div class="viewcode-block" id="clshifts_to_be"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.initial_cls.clshifts_to_be">[docs]</a><span class="k">def</span> <span class="nf">clshifts_to_be</span><span class="p">(</span><span class="n">coreleveldict</span><span class="p">,</span> <span class="n">reference_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This methods converts corelevel shifts to binding energies,</span>
+<span class="sd">    if a reference is given.</span>
+<span class="sd">    These can than be used for plotting.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">            reference = {&#39;W&#39; : {&#39;4f7/2&#39; : [124],</span>
+<span class="sd">                               &#39;4f5/2&#39; : [102]},</span>
+<span class="sd">                         &#39;Be&#39; : {&#39;1s&#39;: [117]}}</span>
+<span class="sd">            corelevels = {&#39;W&#39; : {&#39;4f7/2&#39; : [0.4, 0.3, 0.4 ,0.1],</span>
+<span class="sd">                                 &#39;4f5/2&#39; : [0, 0.3, 0.4, 0.1]},</span>
+<span class="sd">                          &#39;Be&#39; : {&#39;1s&#39;: [0, 0.2, 0.4, 0.1, 0.3]}}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">return_corelevel_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">elem</span><span class="p">,</span> <span class="n">corelevel_dict</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">coreleveldict</span><span class="p">):</span>
+        <span class="n">ref_el</span> <span class="o">=</span> <span class="n">reference_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">return_corelevel_dict</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">corelevel_name</span><span class="p">,</span> <span class="n">corelevel_list</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">corelevel_dict</span><span class="p">):</span>
+            <span class="n">ref_cl</span> <span class="o">=</span> <span class="n">ref_el</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">corelevel_name</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">be_all</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">nref</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_cl</span><span class="p">)</span>
+            <span class="n">ncl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">corelevel_list</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">nref</span> <span class="o">==</span> <span class="n">ncl</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">corelevel</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">corelevel_list</span><span class="p">):</span>
+                    <span class="n">be</span> <span class="o">=</span> <span class="n">corelevel</span> <span class="o">+</span> <span class="n">ref_cl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">be_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">be</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">corelevel</span> <span class="ow">in</span> <span class="n">corelevel_list</span><span class="p">:</span>
+                    <span class="n">be</span> <span class="o">=</span> <span class="n">corelevel</span> <span class="o">+</span> <span class="n">ref_cl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">be_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">be</span><span class="p">)</span>
+            <span class="n">return_corelevel_dict</span><span class="p">[</span><span class="n">elem</span><span class="p">][</span><span class="n">corelevel_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">be_all</span>
+
+    <span class="k">return</span> <span class="n">return_corelevel_dict</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

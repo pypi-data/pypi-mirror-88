@@ -1,0 +1,825 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.workflows.delta &mdash; AiiDA-FLEUR 1.1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.1 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.workflows.delta</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.workflows.delta</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">In this module you find the worklfow &#39;fleur_delta_wc&#39; which is a turnkey solution to calculate a delta for a given code with AiiDA.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">#TODO: calculation of delta value from the files</span>
+<span class="c1"># submit everything if subworkchaining works in Aiida</span>
+<span class="c1"># parameter node finding is not optimal.</span>
+
+<span class="c1"># TODO several eos starts wich only 20 structures to limit jobs throughput</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">digits</span>
+<span class="c1">#from pprint import pprint</span>
+
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">RemoteData</span><span class="p">,</span> <span class="n">StructureData</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">SinglefileData</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">WorkChain</span><span class="p">,</span> <span class="n">ToContext</span>  <span class="c1">#, while_</span>
+<span class="c1">#from aiida.work.process_registry import ProcessRegistry</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">calcfunction</span> <span class="k">as</span> <span class="n">cf</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
+<span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">NotExistent</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.workflows.eos</span> <span class="kn">import</span> <span class="n">FleurEosWorkChain</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinp</span> <span class="kn">import</span> <span class="n">FleurinpData</span>
+
+
+<div class="viewcode-block" id="fleur_delta_wc"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.fleur_delta_wc">[docs]</a><span class="k">class</span> <span class="nc">fleur_delta_wc</span><span class="p">(</span><span class="n">WorkChain</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This workflow calculates a equation of states and from a given</span>
+<span class="sd">    group of structures in the database using a group of given parameter nodes in the database</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_workflowversion</span> <span class="o">=</span> <span class="s1">&#39;0.3.2&#39;</span>
+    <span class="n">_wf_default</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">fleur_delta_wc</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span>
+            <span class="s1">&#39;wf_parameters&#39;</span><span class="p">,</span>
+            <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span>
+            <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+                <span class="nb">dict</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s1">&#39;struc_group&#39;</span><span class="p">:</span> <span class="s1">&#39;delta&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;para_group&#39;</span><span class="p">:</span> <span class="s1">&#39;delta&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;add_extra&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;delta run&#39;</span>
+                    <span class="p">},</span>
+                    <span class="c1">#&#39;group_label&#39; : &#39;delta_eos&#39;,</span>
+                    <span class="s1">&#39;joblimit&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                    <span class="s1">&#39;part&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                    <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+                    <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="mf">0.02</span>
+                <span class="p">}))</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;options&#39;</span><span class="p">,</span>
+                   <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span>
+                   <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">default</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+                       <span class="nb">dict</span><span class="o">=</span><span class="p">{</span>
+                           <span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span>
+                               <span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">1</span>
+                           <span class="p">},</span>
+                           <span class="s1">&#39;walltime_sec&#39;</span><span class="p">:</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span>
+                           <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;import_sys_environment&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                           <span class="s1">&#39;environment_variables&#39;</span><span class="p">:</span> <span class="p">{}</span>
+                       <span class="p">}))</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;inpgen&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Code</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;fleur&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Code</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">outline</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">start_up</span><span class="p">,</span>
+            <span class="c1">#while_(cls.calculations_left_torun)(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">run_eos</span><span class="p">,</span>  <span class="c1">#),</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">extract_results_eos</span><span class="p">,</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">calculate_delta</span><span class="p">,</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">return_results</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1">#spec.dynamic_output()</span>
+
+<div class="viewcode-block" id="fleur_delta_wc.start_up"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.fleur_delta_wc.start_up">[docs]</a>    <span class="k">def</span> <span class="nf">start_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        init context and some parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">#print(&#39;started delta workflow version {}&#39;.format(self._workflowversion))</span>
+        <span class="c1">#print(&quot;Workchain node identifiers: {}&quot;.format(ProcessRegistry().current_calc_node))</span>
+        <span class="c1">#identifier =  0#ProcessRegistry().current_calc_node</span>
+        <span class="c1">#self.ctx.own_uuid = identifier.uuid</span>
+        <span class="c1">#self.ctx.own_pk = identifier.pk</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;started delta workflow version </span><span class="si">{}</span><span class="s1"> with identifier: &#39;</span>  <span class="c1">#{}&#39;</span>
+                    <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_workflowversion</span><span class="p">))</span>  <span class="c1">#, identifier))</span>
+
+        <span class="c1"># init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_to_run</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># input  check</span>
+
+        <span class="c1"># check if right codes</span>
+        <span class="n">wf_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="n">options_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;options&#39;</span><span class="p">,</span>
+                                       <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span>
+                                           <span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                               <span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">1</span>
+                                           <span class="p">},</span>
+                                           <span class="s1">&#39;walltime_sec&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="mf">5.5</span> <span class="o">*</span> <span class="mi">3600</span><span class="p">)</span>
+                                       <span class="p">}))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">inputs_eos</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;fleur&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span><span class="p">,</span>
+            <span class="s1">&#39;inpgen&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">inpgen</span><span class="p">,</span>
+            <span class="s1">&#39;wf_parameters&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;points&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+                <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">),</span>
+                <span class="s1">&#39;guess&#39;</span><span class="p">:</span> <span class="mf">1.0</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options_dict</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wc_eos_para</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">inputs_eos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;wf_parameters&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ncalc</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_calcs_from_groups</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1">#self.ctx.calcs_to_run = calcs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ncalcs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_to_run</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ncalcs</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ncalc</span><span class="p">))</span>
+        <span class="n">estimated_jobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ncalc</span> <span class="o">*</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;points&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">joblimit</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;joblimit&#39;</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_run_steps</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_steps_done</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">minindex</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">maxindex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ncalc</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_max_perstep</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># init</span>
+
+        <span class="k">if</span> <span class="n">estimated_jobs</span> <span class="o">&gt;=</span> <span class="n">joblimit</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_run_steps</span> <span class="o">=</span> <span class="n">estimated_jobs</span> <span class="o">/</span> <span class="n">joblimit</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_max_perstep</span> <span class="o">=</span> <span class="n">joblimit</span> <span class="o">/</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;points&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+            <span class="c1"># TODO be carefull if is not a divisor... of joblimit</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">maxindex</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># will be set later self.ctx.eos_max_perstep</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ncalc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_max_perstep</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;Estimated fleur scfs to run </span><span class="si">{}</span><span class="s1">, running in </span><span class="si">{}</span><span class="s1"> steps.&#39;</span>
+                    <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">estimated_jobs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_run_steps</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="fleur_delta_wc.get_calcs_from_groups"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.fleur_delta_wc.get_calcs_from_groups">[docs]</a>    <span class="k">def</span> <span class="nf">get_calcs_from_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract the crystal structures and parameter data nodes from the given</span>
+<span class="sd">        groups and create calculation &#39;pairs&#39; (stru, para).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wf_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="c1">#get all delta structure</span>
+        <span class="n">str_gr</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;struc_group&#39;</span><span class="p">,</span> <span class="s1">&#39;delta&#39;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">group_pk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">str_gr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">group_pk</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">group_name</span> <span class="o">=</span> <span class="n">str_gr</span>
+
+        <span class="k">if</span> <span class="n">group_pk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">str_group</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">group_pk</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+                <span class="n">str_group</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;You have to provide a valid pk for a Group of&#39;</span>
+                           <span class="s1">&#39;structures or a Group name. Wf_para key: &quot;struc_group&quot;.&#39;</span>
+                           <span class="s1">&#39;given pk= </span><span class="si">{}</span><span class="s1"> is not a valid group&#39;</span>
+                           <span class="s1">&#39;(or is your group name integer?)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">group_pk</span><span class="p">))</span>
+                <span class="c1">#print(message)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">abort_nowait</span><span class="p">(</span><span class="s1">&#39;I abort, because I have no structures to calculate ...&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">str_group</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">get_from_string</span><span class="p">(</span><span class="n">group_name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+                <span class="n">str_group</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;You have to provide a valid pk for a Group of&#39;</span>
+                           <span class="s1">&#39;structures or a Group name. Wf_para key: &quot;struc_group&quot;.&#39;</span>
+                           <span class="s1">&#39;given group name= </span><span class="si">{}</span><span class="s1"> is not a valid group&#39;</span>
+                           <span class="s1">&#39;(or is your group name integer?)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">group_name</span><span class="p">))</span>
+                <span class="c1">#print(message)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">abort_nowait</span><span class="p">(</span><span class="s1">&#39;I abort, because I have no structures to calculate ...&#39;</span><span class="p">)</span>
+
+        <span class="c1">#get all delta parameters</span>
+        <span class="n">para_gr</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;para_group&#39;</span><span class="p">,</span> <span class="s1">&#39;delta&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">para_gr</span><span class="p">:</span>
+            <span class="c1">#waring use defauls</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;COMMENT: I did recieve &quot;para_group=None&quot; as input. I will use inpgen defaults&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">group_pk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">para_gr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">group_pk</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">group_name</span> <span class="o">=</span> <span class="n">para_gr</span>
+
+        <span class="k">if</span> <span class="n">group_pk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">para_group</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">group_pk</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+                <span class="n">para_group</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: You have to provide a valid pk for a Group of&#39;</span>
+                           <span class="s1">&#39;parameters or a Group name (or use None for inpgen defaults). Wf_para key: &quot;para_group&quot;.&#39;</span>
+                           <span class="s1">&#39;given pk= </span><span class="si">{}</span><span class="s1"> is not a valid group&#39;</span>
+                           <span class="s1">&#39;(or is your group name integer?)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">group_pk</span><span class="p">))</span>
+                <span class="c1">#print(message)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">abort_nowait</span><span class="p">(</span><span class="s1">&#39;ERROR: I abort, because I have no paremeters to calculate and &#39;</span>
+                                  <span class="s1">&#39;I guess you did not want to use the inpgen default...&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">para_group</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">get_from_string</span><span class="p">(</span><span class="n">group_name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+                <span class="n">para_group</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: You have to provide a valid pk for a Group of&#39;</span>
+                           <span class="s1">&#39;parameters or a Group name (or use None for inpgen defaults). Wf_para key: &quot;struc_group&quot;.&#39;</span>
+                           <span class="s1">&#39;given group name= </span><span class="si">{}</span><span class="s1"> is not a valid group&#39;</span>
+                           <span class="s1">&#39;(or is your group name integer?)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">group_name</span><span class="p">))</span>
+                <span class="c1">#print(message)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">abort_nowait</span><span class="p">(</span><span class="s1">&#39;ERROR: I abort, because I have no paremeters to calculate and &#39;</span>
+                                  <span class="s1">&#39;I guess you did not want to use the inpgen default...&#39;</span><span class="p">)</span>
+
+        <span class="c1"># creating calculation pairs (structure, parameters)</span>
+
+        <span class="n">para_nodesi</span> <span class="o">=</span> <span class="n">para_group</span><span class="o">.</span><span class="n">nodes</span>
+        <span class="n">para_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">para_nodesi</span><span class="p">:</span>
+            <span class="n">para_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">para</span><span class="p">)</span>
+        <span class="c1">#print para_nodes</span>
+        <span class="n">n_para</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">para_nodes</span><span class="p">)</span>
+        <span class="n">stru_nodes</span> <span class="o">=</span> <span class="n">str_group</span><span class="o">.</span><span class="n">nodes</span>
+        <span class="n">n_stru</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stru_nodes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_para</span> <span class="o">!=</span> <span class="n">n_stru</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;COMMENT: You did not provide the same number of parameter&#39;</span>
+                       <span class="s1">&#39;nodes as structure nodes. Is this wanted? npara=</span><span class="si">{}</span><span class="s1"> nstru=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_para</span><span class="p">,</span> <span class="n">n_stru</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">calcs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">struc</span> <span class="ow">in</span> <span class="n">stru_nodes</span><span class="p">:</span>
+            <span class="n">para</span> <span class="o">=</span> <span class="n">get_paranode</span><span class="p">(</span><span class="n">struc</span><span class="p">,</span> <span class="n">para_nodes</span><span class="p">)</span>
+            <span class="c1">#if para:</span>
+            <span class="n">calcs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">struc</span><span class="p">,</span> <span class="n">para</span><span class="p">))</span>
+            <span class="c1">#else:</span>
+            <span class="c1">#    calcs.append((struc))</span>
+        <span class="c1">#pprint(calcs[:20])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_to_run</span> <span class="o">=</span> <span class="n">calcs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">ncalc</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">calcs</span><span class="p">)</span></div>
+
+    <span class="c1">#def calculations_left_torun(self):</span>
+    <span class="c1">#    &quot;&quot;&quot;</span>
+    <span class="c1">#    Checks if there are still some equations of states to run</span>
+    <span class="c1">#    &quot;&quot;&quot;</span>
+    <span class="c1">#    calculations_left = True</span>
+    <span class="c1">#    self.ctx.last_step = False</span>
+    <span class="c1">#</span>
+    <span class="c1">#    if self.ctx.eos_steps_done == self.ctx.eos_run_steps:</span>
+    <span class="c1">#        calculations_left = False</span>
+    <span class="c1">#    if (self.ctx.eos_steps_done + 1) == self.ctx.eos_run_steps:</span>
+    <span class="c1">#        self.ctx.last_step = True</span>
+    <span class="c1">#</span>
+    <span class="c1">#    return calculations_left</span>
+
+<div class="viewcode-block" id="fleur_delta_wc.run_eos"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.fleur_delta_wc.run_eos">[docs]</a>    <span class="k">def</span> <span class="nf">run_eos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the equation of states for all delta structures with their parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#if self.ctx.last_step:</span>
+        <span class="c1">#    self.ctx.maxindex = None</span>
+        <span class="c1">#else:</span>
+        <span class="c1">#    self.ctx.maxindex = self.ctx.maxindex + self.ctx.eos_max_perstep</span>
+
+        <span class="c1">#self.report(&#39;Submitting eqaution of states part {} out of {}, from {} to {}&#39;</span>
+        <span class="c1">#            &#39;&#39;.format(self.ctx.eos_steps_done, self.ctx.eos_run_steps,</span>
+        <span class="c1">#                      self.ctx.minindex, self.ctx.maxindex))</span>
+
+        <span class="n">eos_results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_inputs_eos</span><span class="p">()</span>
+
+        <span class="c1">#print(self.ctx.minindex)</span>
+        <span class="c1">#print(self.ctx.maxindex)</span>
+
+        <span class="k">for</span> <span class="n">struc</span><span class="p">,</span> <span class="n">para</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs_to_run</span><span class="p">:</span>  <span class="c1">#[:4]self.ctx.minindex:self.ctx.maxindex]:#0:0]:#</span>
+            <span class="c1">#print para</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">struc</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;|delta_wc|eos|</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;|delta| fleur_eos_wc on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">para</span><span class="p">:</span>
+                <span class="n">eos_future</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">FleurEosWorkChain</span><span class="p">,</span>
+                                    <span class="n">wf_parameters</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;wc_eos_para&#39;</span><span class="p">],</span>
+                                    <span class="n">structure</span><span class="o">=</span><span class="n">struc</span><span class="p">,</span>
+                                    <span class="n">options</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;options&#39;</span><span class="p">],</span>
+                                    <span class="n">calc_parameters</span><span class="o">=</span><span class="n">para</span><span class="p">,</span>
+                                    <span class="n">inpgen</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;inpgen&#39;</span><span class="p">],</span>
+                                    <span class="n">fleur</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;fleur&#39;</span><span class="p">],</span>
+                                    <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                                    <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># TODO: run eos_wc_simple</span>
+                <span class="n">eos_future</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">FleurEosWorkChain</span><span class="p">,</span>
+                                    <span class="n">wf_parameters</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;wc_eos_para&#39;</span><span class="p">],</span>
+                                    <span class="n">structure</span><span class="o">=</span><span class="n">struc</span><span class="p">,</span>
+                                    <span class="n">options</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;options&#39;</span><span class="p">],</span>
+                                    <span class="n">inpgen</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;inpgen&#39;</span><span class="p">],</span>
+                                    <span class="n">fleur</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;fleur&#39;</span><span class="p">],</span>
+                                    <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                                    <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;launching fleur_eos_wc&lt;</span><span class="si">{}</span><span class="s1">&gt; on structure </span><span class="si">{}</span><span class="s1"> with parameter </span><span class="si">{}</span><span class="s1">&#39;</span>
+                        <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">eos_future</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">struc</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">para</span><span class="o">.</span><span class="n">pk</span><span class="p">))</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">formula</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">eos_results</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">eos_future</span>
+
+        <span class="c1">#self.ctx.eos_steps_done = self.ctx.eos_steps_done + 1</span>
+        <span class="c1">#self.ctx.minindex = self.ctx.maxindex</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        # with run</span>
+<span class="sd">        eos_results = {}</span>
+<span class="sd">        inputs = self.get_inputs_eos()</span>
+
+
+<span class="sd">        for struc, para in self.ctx.calcs_to_run[:]:</span>
+<span class="sd">            print para</span>
+<span class="sd">            formula = struc.get_formula()</span>
+<span class="sd">            if para:</span>
+<span class="sd">                #print(&#39;here&#39;)</span>
+<span class="sd">                eos_future = fleur_eos_wc.run(</span>
+<span class="sd">                                wf_parameters=inputs[&#39;wc_eos_para&#39;], structure=struc,</span>
+<span class="sd">                                calc_parameters=para, inpgen=inputs[&#39;inpgen&#39;], fleur=inputs[&#39;fleur&#39;])</span>
+<span class="sd">                #fleur_eos_wc.run(#</span>
+<span class="sd">            else:</span>
+<span class="sd">                self.report(&#39;INFO: default parameters for structure {}&#39;.format(formula))</span>
+<span class="sd">                eos_future = fleur_eos_wc.run(</span>
+<span class="sd">                                wf_parameters=inputs[&#39;wc_eos_para&#39;], structure=struc,</span>
+<span class="sd">                                inpgen=inputs[&#39;inpgen&#39;], fleur=inputs[&#39;fleur&#39;])</span>
+<span class="sd">                #fleur_eos_wc.run(#a</span>
+<span class="sd">            #self.report(&#39;launching fleur_eos_wc&lt;{}&gt; on structure {} with parameter {}&#39;</span>
+<span class="sd">            #            &#39;&#39;.format(eos_future.pid, struc.pk, para.pk))</span>
+<span class="sd">            label = formula</span>
+<span class="sd">            self.ctx.labels.append(label)</span>
+<span class="sd">            eos_results[label] = eos_future</span>
+
+<span class="sd">        return ToContext(**eos_results)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ToContext</span><span class="p">(</span><span class="o">**</span><span class="n">eos_results</span><span class="p">)</span></div>
+
+    <span class="c1"># To limit the troughput of 100 jobs, we create several run eos steps</span>
+<div class="viewcode-block" id="fleur_delta_wc.get_inputs_eos"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.fleur_delta_wc.get_inputs_eos">[docs]</a>    <span class="k">def</span> <span class="nf">get_inputs_eos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the inputs for a scf-cycle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># produce the inputs for a eos worklfow (collect here...)</span>
+
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;wc_eos_para&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wc_eos_para</span>
+        <span class="c1">#inputs[&#39;calc_parameters&#39;] = self.inputs.calc_parameters</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;inpgen&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">inputs_eos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inpgen&#39;</span><span class="p">)</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;fleur&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">inputs_eos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fleur&#39;</span><span class="p">)</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;options&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">inputs_eos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;options&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inputs</span></div>
+
+<div class="viewcode-block" id="fleur_delta_wc.extract_results_eos"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.fleur_delta_wc.extract_results_eos">[docs]</a>    <span class="k">def</span> <span class="nf">extract_results_eos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        extract information out of the result nodes of the the eos workchains</span>
+<span class="sd">        ran in the step before</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_succ</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_uuids</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">outstr</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span><span class="se">\</span>
+<span class="s1">             Delta calculation FLEUR </span><span class="si">{}</span><span class="s1"> (AiiDA wc).</span>
+
+<span class="s1">             Crystal </span><span class="se">\t</span><span class="s1"> V0 </span><span class="se">\t</span><span class="s1"> </span><span class="se">\t</span><span class="s1">  B0 </span><span class="se">\t</span><span class="s1"> </span><span class="se">\t</span><span class="s1">  BP [A^3/at] </span><span class="se">\t</span><span class="s1"> [GPa] </span><span class="se">\t</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> [--] </span><span class="se">\n</span><span class="s1"></span>
+<span class="s1">             &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">inputs_eos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fleur&#39;</span><span class="p">)))</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;delta_wc_</span><span class="si">{}</span><span class="s1">.out&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">own_pk</span><span class="p">)</span>
+        <span class="n">outfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">outstr</span><span class="p">)</span>
+        <span class="n">outfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">outstr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="n">eos_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+            <span class="c1">#print(calc)</span>
+            <span class="n">outpara1</span> <span class="o">=</span> <span class="n">eos_res</span><span class="o">.</span><span class="n">get_outputs_dict</span><span class="p">()</span>
+            <span class="c1">#print outpara1</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">outpara</span> <span class="o">=</span> <span class="n">outpara1</span><span class="p">[</span><span class="s1">&#39;output_eos_wc_para&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;ERROR: Eos wc for element: </span><span class="si">{}</span><span class="s1"> failed. I retrieved </span><span class="si">{}</span><span class="s1"> &#39;</span>
+                            <span class="s1">&#39;I skip the results retrieval for that element.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">eos_res</span><span class="p">))</span>
+                <span class="k">continue</span>
+            <span class="n">eos_succ</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;successful&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">eos_succ</span><span class="p">:</span>
+                <span class="c1">#maybe do something else here (exclude point and write a warning or so, or error treatment)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="n">natoms</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;natoms&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">gs_vol</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;volume_gs&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">bm</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bulk_modulus&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="c1">#bm_u = outpara.get(&#39;bulk_modulus_units&#39;, &#39;GPa&#39;)</span>
+            <span class="n">dbm</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bulk_deriv&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">natoms</span><span class="p">:</span>
+                <span class="n">gs_vol_pera</span> <span class="o">=</span> <span class="n">gs_vol</span> <span class="o">/</span> <span class="n">natoms</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">gs_vol_pera</span> <span class="o">=</span> <span class="n">gs_vol</span>
+
+            <span class="n">element</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">digits</span><span class="p">)</span>  <span class="c1"># remove all numbers from string</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_results</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">gs_vol_pera</span><span class="p">,</span> <span class="n">bm</span><span class="p">,</span> <span class="n">dbm</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_succ</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">eos_succ</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_uuids</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">eos_res</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">uuid</span>
+
+            <span class="n">outstr</span> <span class="o">=</span> <span class="n">outstr</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:.5f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:.5f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:.5f}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">gs_vol_pera</span><span class="p">,</span> <span class="n">bm</span><span class="p">,</span> <span class="n">dbm</span><span class="p">)</span>
+            <span class="c1">#write inside the loop to have at least partially results...</span>
+            <span class="c1">#outfile = open(&#39;delta_wc.out&#39;, &#39;a&#39;)</span>
+            <span class="c1">#outstr = &#39;{} \t {:.5f} \t {:.5f} \t {:.5f} \n&#39;.format(element, gs_vol_pera, bm, dbm)</span>
+            <span class="c1">#outfile.write(outstr)</span>
+            <span class="c1">#outfile.close()</span>
+        <span class="c1"># produce a single file</span>
+        <span class="c1"># maybe put in try(or write in a certain place where is sure that you have the permissions)</span>
+        <span class="c1">#outfile = open(&#39;delta_wc.out&#39;, &#39;w&#39;)</span>
+        <span class="n">outfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>  <span class="c1"># for testing purposes</span>
+        <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">outstr</span><span class="p">)</span>
+
+        <span class="n">outfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">outfilepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">outfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="fleur_delta_wc.calculate_delta"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.fleur_delta_wc.calculate_delta">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute here the script to calculate a delta factor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="fleur_delta_wc.return_results"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.fleur_delta_wc.return_results">[docs]</a>    <span class="k">def</span> <span class="nf">return_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return the results of the calculations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># log some stuff in report</span>
+
+        <span class="c1"># a text file should be written and stored as single file data and</span>
+        <span class="c1">#parameter data node in the database</span>
+
+        <span class="c1">#produce a single file data with all the numbers</span>
+
+        <span class="n">all_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_results</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;all_res : </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">all_res</span><span class="p">))</span>
+        <span class="c1">#print all_res</span>
+        <span class="n">bm_dic</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">bmd_dic</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">vol_dic</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">elem</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">all_res</span><span class="p">):</span>
+            <span class="c1">#print elem</span>
+            <span class="n">vol_dic</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">bm_dic</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">bmd_dic</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">outputnode_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;workflow_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;warnings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;successful&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;eos_uuids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">eos_uuids</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;eos_success&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_succ</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;bulk_modulus&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bm_dic</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;bulk_modulus_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;GPa&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;bulk_modulus_dev&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bmd_dic</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;volumes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vol_dic</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;volumes_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;A^3/per atom&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;delta_factor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Wien2K&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Fleur_026&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+
+        <span class="c1">#outputnode = Dict(dict=outputnode_dict)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: Done, delta worklfow complete&#39;</span><span class="p">)</span>
+            <span class="c1">#print &#39;Done, delta worklfow complete&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: Done, but something went wrong.... Properly some &#39;</span>
+                        <span class="s1">&#39;individual eos workchain failed. Check the log.&#39;</span><span class="p">)</span>
+            <span class="c1">#print(&#39;Done, but something went wrong.... Properly some &#39;</span>
+            <span class="c1">#            &#39;individual eos workchain failed. Check the log.&#39;)</span>
+
+        <span class="n">delta_file</span> <span class="o">=</span> <span class="n">SinglefileData</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">outfilepath</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">delta_file</span><span class="p">)</span>
+
+        <span class="c1"># output must be aiida Data types.</span>
+        <span class="n">outnodedict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">outnode</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">outputnode_dict</span><span class="p">)</span>
+        <span class="n">outnodedict</span><span class="p">[</span><span class="s1">&#39;results_node&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outnode</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="n">eos_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+            <span class="c1">#print(calc)</span>
+            <span class="n">outpara1</span> <span class="o">=</span> <span class="n">eos_res</span><span class="o">.</span><span class="n">get_outputs_dict</span><span class="p">()</span>
+            <span class="c1">#print outpara1</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">outpara</span> <span class="o">=</span> <span class="n">outpara1</span><span class="p">[</span><span class="s1">&#39;output_eos_wc_para&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="c1">#self.report(&#39;ERROR: Eos wc for element: {} failed. I retrieved {} &#39;</span>
+                <span class="c1">#            &#39;I skip the results retrieval for that element.&#39;.format(label, eos_res))</span>
+                <span class="k">continue</span>
+            <span class="n">outnodedict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">outpara</span>
+
+        <span class="n">outputnode</span> <span class="o">=</span> <span class="n">create_delta_result_node</span><span class="p">(</span><span class="o">**</span><span class="n">outnodedict</span><span class="p">)</span>
+
+        <span class="n">outdict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">outdict</span><span class="p">[</span><span class="s1">&#39;output_delta_wc_para&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outputnode</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;output_delta_wc_para&#39;</span><span class="p">)</span>
+        <span class="c1">#outdict[&#39;delta_file&#39;] = delta_file</span>
+        <span class="c1">#print outdict</span>
+        <span class="k">for</span> <span class="n">link_name</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">outdict</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="n">link_name</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span></div></div>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">if __name__ == &quot;__main__&quot;:</span>
+<span class="sd">    import argparse</span>
+
+<span class="sd">    parser = argparse.ArgumentParser(description=&#39;SCF with FLEUR. workflow to&#39;</span>
+<span class="sd">                 &#39; converge the chargedensity and optional the total energy.&#39;)</span>
+<span class="sd">    parser.add_argument(&#39;--wf_para&#39;, type=Dict, dest=&#39;wf_parameters&#39;,</span>
+<span class="sd">                        help=&#39;The pseudopotential family&#39;, required=False)</span>
+<span class="sd">    parser.add_argument(&#39;--structure&#39;, type=StructureData, dest=&#39;structure&#39;,</span>
+<span class="sd">                        help=&#39;The crystal structure node&#39;, required=False)</span>
+<span class="sd">    parser.add_argument(&#39;--calc_para&#39;, type=Dict, dest=&#39;calc_parameters&#39;,</span>
+<span class="sd">                        help=&#39;Parameters for the FLEUR calculation&#39;, required=False)</span>
+<span class="sd">    parser.add_argument(&#39;--fleurinp&#39;, type=FleurinpData, dest=&#39;fleurinp&#39;,</span>
+<span class="sd">                        help=&#39;FleurinpData from which to run the FLEUR calculation&#39;, required=False)</span>
+<span class="sd">    parser.add_argument(&#39;--remote&#39;, type=RemoteData, dest=&#39;remote_data&#39;,</span>
+<span class="sd">                        help=(&#39;Remote Data of older FLEUR calculation, &#39;</span>
+<span class="sd">                        &#39;from which files will be copied (mixing_history ...)&#39;), required=False)</span>
+<span class="sd">    parser.add_argument(&#39;--inpgen&#39;, type=Code, dest=&#39;inpgen&#39;,</span>
+<span class="sd">                        help=&#39;The inpgen code node to use&#39;, required=False)</span>
+<span class="sd">    parser.add_argument(&#39;--fleur&#39;, type=Code, dest=&#39;fleur&#39;,</span>
+<span class="sd">                        help=&#39;The FLEUR code node to use&#39;, required=True)</span>
+
+<span class="sd">    args = parser.parse_args()</span>
+<span class="sd">    res = fleur_scf_wc.run(wf_parameters=args.wf_parameters,</span>
+<span class="sd">                                structure=args.structure,</span>
+<span class="sd">                                calc_parameters=args.calc_parameters,</span>
+<span class="sd">                                fleurinp=args.fleurinp,</span>
+<span class="sd">                                remote_data=args.remote_data,</span>
+<span class="sd">                                inpgen = args.inpgen,</span>
+<span class="sd">                                fleur=args.fleur)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="create_delta_result_node"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.create_delta_result_node">[docs]</a><span class="nd">@cf</span>
+<span class="k">def</span> <span class="nf">create_delta_result_node</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1">#*args):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a pseudo wf, to create the rigth graph structure of AiiDA.</span>
+<span class="sd">    This wokfunction will create the output node in the database.</span>
+<span class="sd">    It also connects the output_node to all nodes the information commes from.</span>
+<span class="sd">    So far it is just also parsed in as argument, because so far we are to lazy</span>
+<span class="sd">    to put most of the code overworked from return_results in here.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">outdict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">outpara</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;results_node&#39;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">outdict</span><span class="p">[</span><span class="s1">&#39;output_delta_wc_para&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="c1"># copy, because we rather produce the same node twice then have a circle in the database for now...</span>
+    <span class="c1">#output_para = args[0]</span>
+    <span class="c1">#return {&#39;output_eos_wc_para&#39;}</span>
+    <span class="k">return</span> <span class="n">outdict</span></div>
+
+
+<div class="viewcode-block" id="get_paranode"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.delta.get_paranode">[docs]</a><span class="k">def</span> <span class="nf">get_paranode</span><span class="p">(</span><span class="n">struc</span><span class="p">,</span> <span class="n">para_nodes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    find out if a parameter node for a structure is in para_nodes</span>
+<span class="sd">    (currently very creedy, but lists are small (100x100) but maybe reduce database accesses)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">suuid</span> <span class="o">=</span> <span class="n">struc</span><span class="o">.</span><span class="n">uuid</span>
+    <span class="n">formula</span> <span class="o">=</span> <span class="n">struc</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">digits</span><span class="p">)</span>
+    <span class="c1">#print para_nodes</span>
+    <span class="k">for</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">para_nodes</span><span class="p">:</span>
+        <span class="n">struc_uuid</span> <span class="o">=</span> <span class="n">para</span><span class="o">.</span><span class="n">get_extra</span><span class="p">(</span><span class="s1">&#39;struc_uuid&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">para_form</span> <span class="o">=</span> <span class="n">para</span><span class="o">.</span><span class="n">get_extra</span><span class="p">(</span><span class="s1">&#39;formula&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">para_ele</span> <span class="o">=</span> <span class="n">para</span><span class="o">.</span><span class="n">get_extra</span><span class="p">(</span><span class="s1">&#39;element&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">suuid</span> <span class="o">==</span> <span class="n">struc_uuid</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">para</span>
+        <span class="k">elif</span> <span class="n">formula</span> <span class="o">==</span> <span class="n">para_form</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">para</span>
+        <span class="k">elif</span> <span class="n">element</span> <span class="o">==</span> <span class="n">para_ele</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">para</span>
+        <span class="k">elif</span> <span class="n">element</span> <span class="o">==</span> <span class="n">para_form</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">para</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+            <span class="c1">#Do something else (test if parameters for a certain element are there)</span>
+            <span class="c1">#....</span>
+    <span class="c1"># we found no parameter node for the given structure therefore return none</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="k">def</span> <span class="nf">write_delta_file</span><span class="p">(</span><span class="n">result_dict</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fleur base restart workchain &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Fleur self-consistency field workflow" href="scf_wc.html" />
+    <link rel="prev" title="AiiDA-FLEUR WorkChains" href="wc_index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../ug_index.html">User’s guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/getting_started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="wc_index.html">AiiDA-FLEUR WorkChains</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="wc_index.html#general-design">General design</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="wc_index.html#workchain-classification">Workchain classification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="wc_index.html#basic-technical-workchains">Basic (Technical) Workchains</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wc_index.html#more-advanced-scientific-workchains">More advanced (Scientific) Workchains</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/hints_faq.html">Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../ug_index.html">User’s guide</a> &raquo;</li>
+        
+          <li><a href="wc_index.html">AiiDA-FLEUR WorkChains</a> &raquo;</li>
+        
+      <li>Fleur base restart workchain</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fleur-base-restart-workchain">
+<span id="base-wc"></span><h1><a class="toc-backref" href="#id1">Fleur base restart workchain</a><a class="headerlink" href="#fleur-base-restart-workchain" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><strong>Current version</strong>: 0.1.1</p></li>
+<li><p><strong>Class</strong>: <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurBaseWorkChain</span></code></a></p></li>
+<li><p><strong>String to pass to the</strong> <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.plugins.html#aiida.plugins.WorkflowFactory" title="(in AiiDA v1.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">WorkflowFactory()</span></code></a>: <code class="docutils literal notranslate"><span class="pre">fleur.base</span></code></p></li>
+<li><p><strong>Workflow type</strong>: Technical</p></li>
+<li><p><strong>Aim</strong>: Automatically resubmits a FleurCalculation in case of failure</p></li>
+<li><p><strong>Computational demand</strong>: Corresponding to a single <code class="docutils literal notranslate"><span class="pre">FleurCalculation</span></code></p></li>
+<li><p><strong>Database footprint</strong>: Links to the FleurCalculation output nodes and full provenance</p></li>
+<li><p><strong>File repository footprint</strong>: no addition to the <code class="docutils literal notranslate"><span class="pre">CalcJob</span></code> run</p></li>
+</ul>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#fleur-base-restart-workchain" id="id1">Fleur base restart workchain</a></p>
+<ul>
+<li><p><a class="reference internal" href="#description-purpose" id="id2">Description/Purpose</a></p></li>
+<li><p><a class="reference internal" href="#check-kpts-method" id="id3"><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_kpts()</span></code></a> method</a></p></li>
+<li><p><a class="reference internal" href="#errors" id="id4">Errors</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Import Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.workflows.base_fleur</span> <span class="kn">import</span> <span class="n">FleurBaseWorkChain</span>
+<span class="c1">#or</span>
+<span class="n">WorkflowFactory</span><span class="p">(</span><span class="s1">&#39;fleur.base&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="description-purpose">
+<h2><a class="toc-backref" href="#id2">Description/Purpose</a><a class="headerlink" href="#description-purpose" title="Permalink to this headline">¶</a></h2>
+<p>This workchain wraps <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.calculation.fleur.FleurCalculation" title="aiida_fleur.calculation.fleur.FleurCalculation"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurCalculation</span></code></a>
+into BaseRestartWorkChain
+workchain, which is a plain copy of a BaseRestartWorkChain originally implemented in
+AiiDA-QE. The workchain  automatically
+tracks and fixes crashes of the <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.calculation.fleur.FleurCalculation" title="aiida_fleur.calculation.fleur.FleurCalculation"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurCalculation</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This workchain accepts all of the inputs that is needed for the FleurCalculation. It also
+contains all the links of the outputs generated by the FleurCalculation. It most of the cases,
+a user does not feel the difference in the front-end behaviour between FleurCalculation and
+FleurBaseWorkChain.</p>
+</div>
+<p>The workchain works as follows:</p>
+<a class="reference internal image-reference" href="../../_images/base_restart_scheme.png"><img alt="../../_images/base_restart_scheme.png" class="align-center" src="../../_images/base_restart_scheme.png" style="width: 100%;" /></a>
+<p>For now only problems with memory can be fixed in
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurBaseWorkChain</span></code></a>
+:if a FleurCalculation finishes with exit status 310
+the FleurBaseWorkChain will resubmit it setting twice larger number of computational nodes.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The exit status 310 can be thrown only in a few tested cases. Different machines and different compilers can
+report the memory issue in various ways. Now only a few kinds of reports are supported:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>‘Out Of Memory’ or ‘cgroup out-of-memory handler’ string found in <cite>out.error</cite> file.</p></li>
+<li><p>If memory consumption, which is printed out in <cite>out.error</cite> as ‘used’ or in <cite>usage.json</cite> as ‘VmPeak’, is
+larger than 93% of memory available (printed out into <cite>out.xml</cite> as <cite>memoryPerNode</cite>).</p></li>
+</ol>
+</div></blockquote>
+<p>All other possible memory issue reports are not implemented - please contact to the AiiDA-Fleur developers to add
+new report message.</p>
+</div>
+</div>
+<div class="section" id="check-kpts-method">
+<h2><a class="toc-backref" href="#id3"><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_kpts()</span></code></a> method</a><a class="headerlink" href="#check-kpts-method" title="Permalink to this headline">¶</a></h2>
+<p>Fixing failed calculations is not the only task of
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurBaseWorkChain</span></code></a>. It also implements automatic
+parallelisation routine called
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_kpts()</span></code></a>. The task of this
+method is to ensure the perfect k-point parallelisation of the FLEUR code.
+It tries to set up the number of nodes and mpi tasks in a way that the total number of used MPI
+tasks is
+a factor of the total number of k-points. Therefore a user actually specifies not the actual
+resources to be used in a calculation but their maximum possible values.</p>
+<p>The <a class="reference internal" href="../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.optimize_calc_options" title="aiida_fleur.tools.common_fleur_wf.optimize_calc_options"><code class="xref py py-func docutils literal notranslate"><span class="pre">optimize_calc_options()</span></code></a>, which is used by
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_kpts()</span></code></a>, has five main inputs:
+maximal number of nodes, first guess for a number of MPI tasks per node, first guess for a number
+of OMP threads per MPI task, required MPI_per_node / OMP_per_MPI ratio and finally, a
+switch that sets up if OMP parallelisation is needed. A user does not have to use
+the <a class="reference internal" href="../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf.optimize_calc_options" title="aiida_fleur.tools.common_fleur_wf.optimize_calc_options"><code class="xref py py-func docutils literal notranslate"><span class="pre">optimize_calc_options()</span></code></a> explicitly, it will
+be run automatically taking <code class="docutils literal notranslate"><span class="pre">options['resources']</span></code>  specified by user. <code class="docutils literal notranslate"><span class="pre">nodes</span></code> input
+(maximal number of nodes that can be used) is taken from <code class="docutils literal notranslate"><span class="pre">&quot;num_machines&quot;</span></code>.
+<code class="docutils literal notranslate"><span class="pre">mpi_per_node</span></code> is copied
+from <code class="docutils literal notranslate"><span class="pre">&quot;num_mpiprocs_per_machine&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">omp_per_mpi</span></code> is taken from <code class="docutils literal notranslate"><span class="pre">&quot;num_cores_per_mpiproc&quot;</span></code>
+if the latter is given. In this case <code class="docutils literal notranslate"><span class="pre">use_omp</span></code> is set to <strong>True</strong>
+(calculation will use OMP threading),
+<code class="docutils literal notranslate"><span class="pre">mpi_omp_ratio</span></code> will be set to <code class="docutils literal notranslate"><span class="pre">&quot;num_mpiprocs_per_machine&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;num_cores_per_mpiproc&quot;</span></code>
+and number of
+available CPUs per node is calculated as <code class="docutils literal notranslate"><span class="pre">&quot;num_mpiprocs_per_machine&quot;</span></code> * <code class="docutils literal notranslate"><span class="pre">&quot;num_cores_per_mpiproc&quot;</span></code>.
+In other case, when <code class="docutils literal notranslate"><span class="pre">&quot;num_cores_per_mpiproc&quot;</span></code> is not given, <code class="docutils literal notranslate"><span class="pre">use_omp</span></code> is set to <strong>False</strong> and
+the number of available CPUs per node is assumed to be equal to <code class="docutils literal notranslate"><span class="pre">&quot;num_mpiprocs_per_machine&quot;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">mpi_omp_ratio</span></code> will be ignored.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The error handler, which is responsible for dealing with memory issues, tries to decrease the
+MPI_per_node / OMP_per_MPI ratio and additionally decreases the value passed to
+<code class="docutils literal notranslate"><span class="pre">mpi_omp_ratio</span></code> by the factor of 0.5.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before setting the actual resources to the calculation,
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_kpts()</span></code></a> can throw an
+exit code if the suggested load of each node is smaller than 60% of what specified by user.
+For example, if user specifies:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;resources&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s2">&quot;num_machines&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;num_mpiprocs_per_machine&quot;</span> <span class="p">:</span> <span class="mi">24</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>and <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_kpts()</span></code></a> suggested to
+use 4 <code class="docutils literal notranslate"><span class="pre">num_machines</span></code> and 13 <code class="docutils literal notranslate"><span class="pre">num_mpiprocs_per_machine</span></code> the exit code will be thrown and
+calculation will not be submitted.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method works with <a class="reference external" href="https://aiida.readthedocs.io/projects/aiida-core/en/latest/scheduler/index.html?highlight=schedulers#supported-schedulers">PBS-like</a> schedulers only and if <code class="docutils literal notranslate"><span class="pre">num_machines</span></code> and
+<code class="docutils literal notranslate"><span class="pre">num_mpiprocs_per_machine</span></code> are specified. Thus it method can be updated/deprecated for
+other schedulers and situations. Please feel free to write an issue on this arguable
+function.</p>
+</div>
+</div>
+<div class="section" id="errors">
+<h2><a class="toc-backref" href="#id4">Errors</a><a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="../hints/exit_codes.html#exit-codes"><span class="std std-ref">Exit codes</span></a>.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 89%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Exit code</p></th>
+<th class="head"><p>Reason</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>101</p></td>
+<td><p>Maximum number of fixing an error is exceeded</p></td>
+</tr>
+<tr class="row-odd"><td><p>102</p></td>
+<td><p>The calculation failed for an unknown reason, twice in a row
+This should probably never happen since there is a 399 exit code</p></td>
+</tr>
+<tr class="row-even"><td><p>360</p></td>
+<td><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts" title="aiida_fleur.workflows.base_fleur.FleurBaseWorkChain.check_kpts"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_kpts()</span></code></a>
+suggests less than 60% of node load</p></td>
+</tr>
+<tr class="row-odd"><td><p>389</p></td>
+<td><p>FLEUR calculation failed due to memory issue and it can not be solved for this scheduler</p></td>
+</tr>
+</tbody>
+</table>
+<p>Exit codes duplicating FleurCalculation exit codes:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Exit code</p></th>
+<th class="head"><p>Reason</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>311</p></td>
+<td><p>FleurCalculation failed because an atom spilled to the vacuum during
+relaxation.</p></td>
+</tr>
+<tr class="row-odd"><td><p>312</p></td>
+<td><p>FleurCalculation failed due to MT overlap.</p></td>
+</tr>
+<tr class="row-even"><td><p>399</p></td>
+<td><p>FleurCalculation failed and FleurBaseWorkChain
+has no strategy to resolve this</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="scf_wc.html" class="btn btn-neutral float-right" title="Fleur self-consistency field workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="wc_index.html" class="btn btn-neutral float-left" title="AiiDA-FLEUR WorkChains" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,790 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.calculation.fleur &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.calculation.fleur</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.calculation.fleur</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This file contains a CalcJob that represents FLEUR calculation.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">CalcJob</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">RemoteData</span>
+<span class="kn">from</span> <span class="nn">aiida.common.datastructures</span> <span class="kn">import</span> <span class="n">CalcInfo</span><span class="p">,</span> <span class="n">CodeInfo</span>
+<span class="kn">from</span> <span class="nn">aiida.common.utils</span> <span class="kn">import</span> <span class="n">classproperty</span>
+<span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">InputValidationError</span>
+<span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">UniquenessError</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinp</span> <span class="kn">import</span> <span class="n">FleurinpData</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.calculation.fleurinputgen</span> <span class="kn">import</span> <span class="n">FleurinputgenCalculation</span>
+
+
+<div class="viewcode-block" id="FleurCalculation"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.calculation.fleur.FleurCalculation">[docs]</a><span class="k">class</span> <span class="nc">FleurCalculation</span><span class="p">(</span><span class="n">CalcJob</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A CalcJob class that represents FLEUR DFT calculation.</span>
+<span class="sd">    For more information about the FLEUR-code family go to http://www.flapw.de/</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">######### Only this should be to be maintained! #########</span>
+
+    <span class="c1"># should a kpt node be used or fleur generate the mesh?</span>
+    <span class="n">_use_kpoints</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">_INPXML_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;inp.xml&#39;</span>
+
+    <span class="c1"># Default input and output files</span>
+    <span class="n">_INPUT_FILE</span> <span class="o">=</span> <span class="s1">&#39;inp.xml&#39;</span>
+    <span class="n">_OUTPUT_FILE</span> <span class="o">=</span> <span class="s1">&#39;out.xml&#39;</span>
+
+    <span class="c1"># these will be shown in AiiDA</span>
+    <span class="n">_OUTPUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;aiida.out&#39;</span>  <span class="c1"># Shell output</span>
+    <span class="n">_INPUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;inp.xml&#39;</span>
+
+    <span class="c1"># needed for calc</span>
+    <span class="n">_OUTXML_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;out.xml&#39;</span>
+    <span class="n">_INP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;inp&#39;</span>
+    <span class="n">_ENPARA_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;enpara&#39;</span>
+    <span class="n">_SYMOUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;sym.out&#39;</span>
+    <span class="n">_CDN1_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;cdn1&#39;</span>
+    <span class="n">_SHELLOUTPUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;shell.out&#39;</span>
+    <span class="n">_ERROR_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;out.error&#39;</span>
+    <span class="c1"># other</span>
+    <span class="n">_OUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;out&#39;</span>
+    <span class="n">_CDNC_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;cdnc&#39;</span>  <span class="c1"># core charge density</span>
+    <span class="n">_TIME_INFO_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;time.info&#39;</span>
+    <span class="n">_KPTS_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;kpts&#39;</span>
+    <span class="n">_QPTS_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;qpts&#39;</span>
+    <span class="n">_PLOT_INP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;plot_inp&#39;</span>
+    <span class="n">_MIX_HISTORY_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;mixing_history*&#39;</span>
+    <span class="n">_POT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;pot*&#39;</span>
+    <span class="n">_POT1_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;pottot&#39;</span>
+    <span class="n">_POT2_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;potcoul&#39;</span>
+    <span class="n">_STRUCTURE_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;struct.xcf&#39;</span>
+    <span class="n">_STARS_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;stars&#39;</span>
+    <span class="n">_WKF2_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;wkf2&#39;</span>
+    <span class="n">_CDN_HDF5_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;cdn.hdf&#39;</span>
+    <span class="n">_CDN_LAST_HDF5_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;cdn_last.hdf&#39;</span>
+
+    <span class="c1"># special out files</span>
+    <span class="n">_DOS_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;DOS.*&#39;</span>
+    <span class="n">_DOSINP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;dosinp&#39;</span>
+    <span class="n">_BAND_GNU_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;band.gnu&#39;</span>
+    <span class="n">_BAND_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;bands.*&#39;</span>
+
+    <span class="c1"># helper files</span>
+    <span class="n">_FLEUR_WARN_ONLY_INFO_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;FLEUR_WARN_ONLY&#39;</span>
+    <span class="n">_JUDFT_WARN_ONLY_INFO_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;JUDFT_WARN_ONLY&#39;</span>
+    <span class="n">_QFIX_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;qfix&#39;</span>
+    <span class="n">_USAGE_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;usage.json&#39;</span>
+
+    <span class="c1"># relax (geometry optimization) files</span>
+    <span class="n">_RELAX_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;relax.xml&#39;</span>
+
+    <span class="c1"># jij files</span>
+    <span class="n">_JENERG_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;jenerg&#39;</span>
+    <span class="n">_MCINP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;MCinp&#39;</span>
+    <span class="n">_QPTSINFO_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;qptsinfo&#39;</span>
+    <span class="n">_SHELL_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;shells&#39;</span>
+    <span class="n">_JCONST_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;jconst&#39;</span>
+
+    <span class="c1"># files for lda+U</span>
+    <span class="n">_NMMPMAT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;n_mmp_mat&#39;</span>
+    <span class="n">_NMMPMAT_HDF5_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;n_mmp_mat_out&#39;</span>
+
+    <span class="c1"># files for hybrid functionals</span>
+    <span class="n">_COULOMB1_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;coulomb1&#39;</span>
+    <span class="n">_MIXBAS_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;mixbas&#39;</span>
+    <span class="n">_CMT_FIlE_NAME</span> <span class="o">=</span> <span class="s1">&#39;cmt&#39;</span>
+    <span class="n">_CZ_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;cz&#39;</span>
+    <span class="n">_OLAP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;olap&#39;</span>
+    <span class="n">_VR0_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;vr0&#39;</span>
+
+    <span class="c1"># files non-collinear calculation</span>
+    <span class="n">_RHOMAT_INP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;rhomat_inp&#39;</span>
+    <span class="n">_RHOMAT_OUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;rhomat_out&#39;</span>
+    <span class="n">_CDN_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;cdn&#39;</span>
+    <span class="n">_DIROFMAG_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;dirofmag&#39;</span>
+
+    <span class="c1"># files for Wannier 90</span>
+    <span class="n">_W90KPTS_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;w90kpts&#39;</span>
+    <span class="n">_PROJ_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;proj&#39;</span>
+    <span class="n">_WANN_INP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;wann_inp&#39;</span>
+    <span class="n">_BKPTS_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;bkpts&#39;</span>
+    <span class="n">_WFMMN_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;WF*.mmn&#39;</span>
+    <span class="n">_WFAMN_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;WF*.amn&#39;</span>
+    <span class="n">_WFWIN_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;WF*.win&#39;</span>
+    <span class="n">_WFWOUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;WF*.wout&#39;</span>
+    <span class="n">_UNK_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;UNK*&#39;</span>
+    <span class="n">_KPTSMAP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;kptsmap&#39;</span>
+    <span class="n">_PROJGEN_INP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;projgen_inp&#39;</span>
+    <span class="n">_IONS_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;IONS&#39;</span>
+    <span class="n">_POLARIZATION_OUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;polarization_out&#39;</span>
+    <span class="n">_HOPPING_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;hopping.*&#39;</span>
+    <span class="n">_WF1HSOMTX_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;WF1.hsomtx&#39;</span>
+    <span class="n">_RSSOCMAT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;rssocmat.1&#39;</span>
+    <span class="n">_RSNABLA_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;rsnabla.*&#39;</span>
+    <span class="n">_WFNABL_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;WF*.nabl&#39;</span>
+
+    <span class="c1"># copy file lists. I rather don not like this.</span>
+    <span class="c1"># Might gives rise to a lot of possible errors, if files or not there,</span>
+    <span class="c1"># or Fleur did not created same, or at some point they will not be</span>
+    <span class="c1"># deleted remotely.</span>
+
+    <span class="c1"># Policy</span>
+    <span class="c1"># we store everything needed for a further run in the local repository</span>
+    <span class="c1"># (inp.xml, cdn1), also all important results files.</span>
+    <span class="c1"># these will ALWAYS be copied from the local repository to the maschine</span>
+    <span class="c1"># If a parent calculation exists, other files will be copied remotely</span>
+    <span class="c1">#######</span>
+
+    <span class="c1"># all possible files first chargedensity</span>
+    <span class="n">_copy_filelist1</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">_INP_FILE_NAME</span><span class="p">,</span> <span class="n">_ENPARA_FILE_NAME</span><span class="p">,</span> <span class="n">_SYMOUT_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN1_FILE_NAME</span><span class="p">,</span> <span class="n">_KPTS_FILE_NAME</span><span class="p">,</span> <span class="n">_STARS_FILE_NAME</span><span class="p">,</span>
+        <span class="n">_WKF2_FILE_NAME</span>
+    <span class="p">]</span>
+
+    <span class="c1"># after inpgen, before first chargedensity</span>
+    <span class="n">_copy_filelist_inpgen</span> <span class="o">=</span> <span class="p">[</span><span class="n">_INPXML_FILE_NAME</span><span class="p">]</span>
+
+    <span class="c1"># for after fleur SCF [name, destination_name]</span>
+    <span class="n">_copy_scf_noinp</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_CDN1_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN1_FILE_NAME</span><span class="p">]]</span>
+
+    <span class="n">_copy_scf_noinp_hdf</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_CDN_LAST_HDF5_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN_HDF5_FILE_NAME</span><span class="p">]]</span>
+
+    <span class="n">_copy_scf</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_CDN1_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN1_FILE_NAME</span><span class="p">],</span> <span class="p">[</span><span class="n">_INPXML_FILE_NAME</span><span class="p">,</span> <span class="n">_INPXML_FILE_NAME</span><span class="p">]]</span>
+
+    <span class="n">_copy_scf_hdf</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_CDN_LAST_HDF5_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN_HDF5_FILE_NAME</span><span class="p">],</span> <span class="p">[</span><span class="n">_INPXML_FILE_NAME</span><span class="p">,</span> <span class="n">_INPXML_FILE_NAME</span><span class="p">]]</span>
+
+    <span class="n">_copy_filelist_scf_remote</span> <span class="o">=</span> <span class="p">[</span><span class="n">_MIX_HISTORY_FILE_NAME</span><span class="p">]</span>
+
+    <span class="n">_copy_filelist3</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">_INP_FILE_NAME</span><span class="p">,</span> <span class="n">_ENPARA_FILE_NAME</span><span class="p">,</span> <span class="n">_SYMOUT_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN1_FILE_NAME</span><span class="p">,</span> <span class="n">_KPTS_FILE_NAME</span><span class="p">,</span> <span class="n">_STARS_FILE_NAME</span><span class="p">,</span>
+        <span class="n">_WKF2_FILE_NAME</span><span class="p">,</span> <span class="n">_MIX_HISTORY_FILE_NAME</span><span class="p">,</span> <span class="n">_OUT_FILE_NAME</span><span class="p">,</span> <span class="n">_POT_FILE_NAME</span>
+    <span class="p">]</span>
+
+    <span class="n">_copy_scf_ldau_nohdf</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_CDN1_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN1_FILE_NAME</span><span class="p">],</span> <span class="p">[</span><span class="n">_INPXML_FILE_NAME</span><span class="p">,</span> <span class="n">_INPXML_FILE_NAME</span><span class="p">],</span>
+                            <span class="p">[</span><span class="n">_NMMPMAT_FILE_NAME</span><span class="p">,</span> <span class="n">_NMMPMAT_FILE_NAME</span><span class="p">]]</span>
+
+    <span class="n">_copy_scf_ldau_noinp_nohdf</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_CDN1_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN1_FILE_NAME</span><span class="p">],</span> <span class="p">[</span><span class="n">_NMMPMAT_FILE_NAME</span><span class="p">,</span> <span class="n">_NMMPMAT_FILE_NAME</span><span class="p">]]</span>
+
+    <span class="c1"># files need for rerun</span>
+    <span class="n">_copy_filelist_dos</span> <span class="o">=</span> <span class="p">[</span><span class="n">_INPXML_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN1_FILE_NAME</span><span class="p">]</span>
+
+    <span class="n">_copy_filelist_band</span> <span class="o">=</span> <span class="p">[</span><span class="n">_INPXML_FILE_NAME</span><span class="p">,</span> <span class="n">_POT_FILE_NAME</span><span class="p">,</span> <span class="n">_CDN1_FILE_NAME</span><span class="p">]</span>
+
+    <span class="n">_copy_filelist_hybrid</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">_copy_filelist_jij</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># possible settings_dict keys</span>
+    <span class="n">_settings_keys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;additional_retrieve_list&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_from_retrieve_list&#39;</span><span class="p">,</span> <span class="s1">&#39;additional_remotecopy_list&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;remove_from_remotecopy_list&#39;</span><span class="p">,</span> <span class="s1">&#39;cmdline&#39;</span>
+    <span class="p">]</span>
+    <span class="c1"># possible modes?</span>
+    <span class="n">_fleur_modes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;band&#39;</span><span class="p">,</span> <span class="s1">&#39;dos&#39;</span><span class="p">,</span> <span class="s1">&#39;forces&#39;</span><span class="p">,</span> <span class="s1">&#39;chargeDen&#39;</span><span class="p">,</span> <span class="s1">&#39;latticeCo&#39;</span><span class="p">,</span> <span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="s1">&#39;force_theorem&#39;</span><span class="p">,</span> <span class="s1">&#39;gw&#39;</span><span class="p">,</span> <span class="s1">&#39;ldau&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="FleurCalculation.define"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.calculation.fleur.FleurCalculation.define">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FleurCalculation</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+
+        <span class="c1"># spec.input(&#39;metadata.options.input_filename&#39;, valid_type=six.string_types,</span>
+        <span class="c1">#            default=cls._INPXML_FILE_NAME)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;metadata.options.output_filename&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_OUTXML_FILE_NAME</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;metadata.options.use_kpoints&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_use_kpoints</span><span class="p">)</span>
+
+        <span class="c1"># inputs</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;fleurinpdata&#39;</span><span class="p">,</span>
+                   <span class="n">valid_type</span><span class="o">=</span><span class="n">FleurinpData</span><span class="p">,</span>
+                   <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Use a FleruinpData node that specifies the input parameters&#39;</span>
+                   <span class="s1">&#39;usually copy from the parent calculation, basically makes&#39;</span>
+                   <span class="s1">&#39;the inp.xml file visible in the db and makes sure it has &#39;</span>
+                   <span class="s1">&#39;the files needed.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;parent_folder&#39;</span><span class="p">,</span>
+                   <span class="n">valid_type</span><span class="o">=</span><span class="n">RemoteData</span><span class="p">,</span>
+                   <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Use a remote or local repository folder as parent folder &#39;</span>
+                   <span class="s1">&#39;(also for restarts and similar). It should contain all the &#39;</span>
+                   <span class="s1">&#39;needed files for a Fleur calc, only edited files should be &#39;</span>
+                   <span class="s1">&#39;uploaded from the repository.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">,</span>
+                   <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span>
+                   <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;This parameter data node is used to specify for some &#39;</span>
+                   <span class="s1">&#39;advanced features how the plugin behaves. You can add files&#39;</span>
+                   <span class="s1">&#39;the retrieve list, or add command line switches, &#39;</span>
+                   <span class="s1">&#39;for all available features here check the documentation.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># parser</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;metadata.options.parser_name&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;fleur.fleurparser&#39;</span><span class="p">)</span>
+
+        <span class="c1"># declare outputs of the calculation</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;output_parameters&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;output_params_complex&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;relax_parameters&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;error_params&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">default_output_node</span> <span class="o">=</span> <span class="s1">&#39;output_parameters&#39;</span>
+
+        <span class="c1"># exit codes</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="s1">&#39;ERROR_NO_RETRIEVED_FOLDER&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;No retrieved folder found.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">301</span><span class="p">,</span> <span class="s1">&#39;ERROR_OPENING_OUTPUTS&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;One of the output files can not be opened.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">302</span><span class="p">,</span> <span class="s1">&#39;ERROR_FLEUR_CALC_FAILED&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;FLEUR calculation failed for unknown reason.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">303</span><span class="p">,</span> <span class="s1">&#39;ERROR_NO_OUTXML&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;XML output file was not found.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">304</span><span class="p">,</span> <span class="s1">&#39;ERROR_XMLOUT_PARSING_FAILED&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Parsing of XML output file failed.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">305</span><span class="p">,</span> <span class="s1">&#39;ERROR_RELAX_PARSING_FAILED&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Parsing of relax XML output file failed.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">310</span><span class="p">,</span> <span class="s1">&#39;ERROR_NOT_ENOUGH_MEMORY&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;FLEUR calculation failed due to lack of memory.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">311</span><span class="p">,</span>
+                       <span class="s1">&#39;ERROR_VACUUM_SPILL_RELAX&#39;</span><span class="p">,</span>
+                       <span class="n">message</span><span class="o">=</span><span class="s1">&#39;FLEUR calculation failed because an atom spilled to the&#39;</span>
+                       <span class="s1">&#39;vacuum during relaxation&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">312</span><span class="p">,</span> <span class="s1">&#39;ERROR_MT_RADII&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;FLEUR calculation failed due to MT overlap.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">313</span><span class="p">,</span> <span class="s1">&#39;ERROR_MT_RADII_RELAX&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Overlapping MT-spheres during relaxation.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">314</span><span class="p">,</span> <span class="s1">&#39;ERROR_DROP_CDN&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Problem with cdn is suspected. Consider removing cdn&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">315</span><span class="p">,</span>
+                       <span class="s1">&#39;ERROR_INVALID_ELEMENTS_MMPMAT&#39;</span><span class="p">,</span>
+                       <span class="n">message</span><span class="o">=</span><span class="s1">&#39;The LDA+U density matrix contains invalid elements.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">316</span><span class="p">,</span> <span class="s1">&#39;ERROR_TIME_LIMIT&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Calculation failed due to time limits.&#39;</span><span class="p">)</span></div>
+
+    <span class="nd">@classproperty</span>
+    <span class="k">def</span> <span class="nf">_get_output_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;./&#39;</span>
+
+<div class="viewcode-block" id="FleurCalculation.prepare_for_submission"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.calculation.fleur.FleurCalculation.prepare_for_submission">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_for_submission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the routine to be called when you make a FLEUR calculation.</span>
+<span class="sd">        This routine checks the inputs and modifies copy lists accordingly.</span>
+<span class="sd">        The standard files to be copied are given here.</span>
+
+<span class="sd">        :param folder: a aiida.common.folders.Folder subclass where</span>
+<span class="sd">                           the plugin should put all its files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">local_copy_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">remote_copy_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">remote_symlink_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">mode_retrieved_filelist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">filelist_tocopy_remote</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">settings_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">has_fleurinp</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">has_parent</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">fleurinpgen</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">copy_remotely</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">with_hdf5</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">code</span>
+
+        <span class="n">codesdesc</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">description</span>
+        <span class="c1"># TODO: ggf also check settings</span>
+        <span class="c1"># In code description we write with what libs the code was compiled</span>
+        <span class="c1"># we look for certain keywords in the description</span>
+        <span class="c1"># also ggf, to be back comportable, the plugin should know the version number</span>
+        <span class="k">if</span> <span class="n">codesdesc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;hdf5&#39;</span> <span class="ow">in</span> <span class="n">codesdesc</span><span class="p">:</span>
+                <span class="n">with_hdf5</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="s1">&#39;Hdf5&#39;</span> <span class="ow">in</span> <span class="n">codesdesc</span><span class="p">:</span>
+                <span class="n">with_hdf5</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="s1">&#39;HDF5&#39;</span> <span class="ow">in</span> <span class="n">codesdesc</span><span class="p">:</span>
+                <span class="n">with_hdf5</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">with_hdf5</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># a Fleur calc can be created from a fleurinpData alone</span>
+        <span class="c1"># (then no parent is needed) all files are in the repo, but usually it is</span>
+        <span class="c1"># a child of a inpgen calc or an other fleur calc (some or all files are</span>
+        <span class="c1"># in a remote source). if the User has not changed something, the</span>
+        <span class="c1"># calculation does not need theoretical a new FleurinpData it could use</span>
+        <span class="c1"># the one from the parent, but the plug-in desgin is in a way that it has</span>
+        <span class="c1"># to be there and it just copies files if changes occurred..</span>
+
+        <span class="k">if</span> <span class="s1">&#39;fleurinpdata&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">fleurinp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleurinpdata</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fleurinp</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">fleurinp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">has_fleurinp</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">has_fleurinp</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="s1">&#39;parent_folder&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">parent_calc_folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parent_folder</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent_calc_folder</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">parent_calc_folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">has_parent</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">has_fleurinp</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s1">&#39;No parent calculation found and no fleurinp data &#39;</span>
+                                           <span class="s1">&#39;given, need either one or both for a &#39;</span>
+                                           <span class="s2">&quot;&#39;fleurcalculation&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># extract parent calculation</span>
+            <span class="n">parent_calcs</span> <span class="o">=</span> <span class="n">parent_calc_folder</span><span class="o">.</span><span class="n">get_incoming</span><span class="p">(</span><span class="n">node_class</span><span class="o">=</span><span class="n">CalcJob</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="n">n_parents</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parent_calcs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_parents</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UniquenessError</span><span class="p">(</span><span class="s1">&#39;Input RemoteData is child of </span><span class="si">{}</span><span class="s1"> &#39;</span>
+                                      <span class="s1">&#39;calculation</span><span class="si">{}</span><span class="s1">, while it should have a single parent&#39;</span>
+                                      <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_parents</span><span class="p">,</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">n_parents</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;s&#39;</span><span class="p">))</span>
+            <span class="n">parent_calc</span> <span class="o">=</span> <span class="n">parent_calcs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">node</span>
+            <span class="n">parent_calc_class</span> <span class="o">=</span> <span class="n">parent_calc</span><span class="o">.</span><span class="n">process_class</span>
+            <span class="n">has_parent</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># check that it is a valid parent</span>
+            <span class="c1"># self._check_valid_parent(parent_calc)</span>
+
+            <span class="c1"># if inpgen calc do</span>
+            <span class="c1"># check if folder from db given, or get folder from rep.</span>
+            <span class="c1"># Parent calc does not has to be on the same computer.</span>
+
+            <span class="k">if</span> <span class="n">parent_calc_class</span> <span class="ow">is</span> <span class="n">FleurCalculation</span><span class="p">:</span>
+                <span class="n">new_comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">computer</span>
+                <span class="n">old_comp</span> <span class="o">=</span> <span class="n">parent_calc</span><span class="o">.</span><span class="n">computer</span>
+                <span class="k">if</span> <span class="n">new_comp</span><span class="o">.</span><span class="n">uuid</span> <span class="o">!=</span> <span class="n">old_comp</span><span class="o">.</span><span class="n">uuid</span><span class="p">:</span>
+                    <span class="c1"># don&#39;t copy files, copy files locally</span>
+                    <span class="n">copy_remotely</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">parent_calc_class</span> <span class="ow">is</span> <span class="n">FleurinputgenCalculation</span><span class="p">:</span>
+                <span class="n">fleurinpgen</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">new_comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">computer</span>
+                <span class="n">old_comp</span> <span class="o">=</span> <span class="n">parent_calc</span><span class="o">.</span><span class="n">computer</span>
+                <span class="k">if</span> <span class="n">new_comp</span><span class="o">.</span><span class="n">uuid</span> <span class="o">!=</span> <span class="n">old_comp</span><span class="o">.</span><span class="n">uuid</span><span class="p">:</span>
+                    <span class="c1"># don&#39;t copy files, copy files locally</span>
+                    <span class="n">copy_remotely</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s2">&quot;parent_calc, must be either an &#39;inpgen calculation&#39; or&quot;</span>
+                                           <span class="s2">&quot; a &#39;fleur calculation&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># check existence of settings (optional)</span>
+        <span class="k">if</span> <span class="s1">&#39;settings&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">settings</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">settings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">settings_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">settings_dict</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+
+        <span class="c1"># check for for allowed keys, ignore unknown keys but warn.</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings_keys</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s1">&#39;settings dict key </span><span class="si">%s</span><span class="s1"> for Fleur calculation&#39;</span>
+                    <span class="s1">&#39;not recognized, only </span><span class="si">%s</span><span class="s1"> are allowed.&#39;</span>
+                    <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings_keys</span><span class="p">))</span>
+
+        <span class="c1"># TODO: Detailed check of FleurinpData</span>
+        <span class="c1"># if certain files are there in fleurinpData</span>
+        <span class="c1"># from where to copy</span>
+
+        <span class="c1"># file copy stuff TODO check in fleur input</span>
+        <span class="k">if</span> <span class="n">has_fleurinp</span><span class="p">:</span>
+            <span class="c1"># add files belonging to fleurinp into local_copy_list</span>
+            <span class="n">allfiles</span> <span class="o">=</span> <span class="n">fleurinp</span><span class="o">.</span><span class="n">files</span>
+            <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">allfiles</span><span class="p">:</span>
+                <span class="n">local_copy_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">fleurinp</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="n">file1</span><span class="p">,</span> <span class="n">file1</span><span class="p">))</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="n">fleurinp</span><span class="o">.</span><span class="n">get_fleur_modes</span><span class="p">()</span>
+
+            <span class="c1"># add files to mode_retrieved_filelist</span>
+            <span class="k">if</span> <span class="n">modes</span><span class="p">[</span><span class="s1">&#39;band&#39;</span><span class="p">]:</span>
+                <span class="n">mode_retrieved_filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_BAND_FILE_NAME</span><span class="p">)</span>
+                <span class="n">mode_retrieved_filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_BAND_GNU_FILE_NAME</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">modes</span><span class="p">[</span><span class="s1">&#39;dos&#39;</span><span class="p">]:</span>
+                <span class="n">mode_retrieved_filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_DOS_FILE_NAME</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">modes</span><span class="p">[</span><span class="s1">&#39;forces&#39;</span><span class="p">]:</span>
+                <span class="c1"># if l_f=&quot;T&quot; retrieve relax.xml</span>
+                <span class="n">mode_retrieved_filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_RELAX_FILE_NAME</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">modes</span><span class="p">[</span><span class="s1">&#39;ldau&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">with_hdf5</span><span class="p">:</span>
+                    <span class="n">mode_retrieved_filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_NMMPMAT_HDF5_FILE_NAME</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">mode_retrieved_filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_NMMPMAT_FILE_NAME</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">modes</span><span class="p">[</span><span class="s1">&#39;force_theorem&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="s1">&#39;remove_from_retrieve_list&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">settings_dict</span><span class="p">:</span>
+                    <span class="n">settings_dict</span><span class="p">[</span><span class="s1">&#39;remove_from_retrieve_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="n">with_hdf5</span><span class="p">:</span>
+                    <span class="n">settings_dict</span><span class="p">[</span><span class="s1">&#39;remove_from_retrieve_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_CDN_LAST_HDF5_FILE_NAME</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">settings_dict</span><span class="p">[</span><span class="s1">&#39;remove_from_retrieve_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_CDN1_FILE_NAME</span><span class="p">)</span>
+
+            <span class="c1"># if noco, ldau, gw...</span>
+            <span class="c1"># TODO: check from where it was copied, and copy files of its parent</span>
+            <span class="c1"># if needed</span>
+
+        <span class="k">if</span> <span class="n">has_parent</span><span class="p">:</span>
+            <span class="c1"># copy necessary files</span>
+            <span class="c1"># TODO: check first if file exist and throw a warning if not</span>
+            <span class="n">outfolder_uuid</span> <span class="o">=</span> <span class="n">parent_calc</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">retrieved</span><span class="o">.</span><span class="n">uuid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;out folder path </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">outfolder_uuid</span><span class="p">)</span>
+
+            <span class="n">outfolder_filenames</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parent_calc</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">retrieved</span><span class="o">.</span><span class="n">list_objects</span><span class="p">()]</span>
+            <span class="n">has_nmmpmat_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NMMPMAT_FILE_NAME</span> <span class="ow">in</span> <span class="n">outfolder_filenames</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_NMMPMAT_FILE_NAME</span> <span class="ow">in</span> <span class="n">outfolder_filenames</span> <span class="ow">or</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_NMMPMAT_HDF5_FILE_NAME</span> <span class="ow">in</span> <span class="n">outfolder_filenames</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">has_fleurinp</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;n_mmp_mat&#39;</span> <span class="ow">in</span> <span class="n">fleurinp</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Ingnoring n_mmp_mat from fleurinp. &#39;</span>
+                                            <span class="s1">&#39;There is already an n_mmp_mat file &#39;</span>
+                                            <span class="s1">&#39;for the parent calculation&#39;</span><span class="p">)</span>
+                        <span class="n">local_copy_list</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">fleurinp</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="s1">&#39;n_mmp_mat&#39;</span><span class="p">,</span> <span class="s1">&#39;n_mmp_mat&#39;</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">fleurinpgen</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">has_fleurinp</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy_filelist_inpgen</span><span class="p">:</span>
+                    <span class="n">local_copy_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">outfolder_uuid</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file1</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file1</span><span class="p">)))</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">fleurinpgen</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">has_fleurinp</span><span class="p">):</span>  <span class="c1"># fleurCalc</span>
+                <span class="c1"># need to copy inp.xml from the parent calc</span>
+                <span class="k">if</span> <span class="n">with_hdf5</span><span class="p">:</span>
+                    <span class="n">copylist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy_scf_hdf</span>
+                <span class="k">elif</span> <span class="n">has_nmmpmat_file</span><span class="p">:</span>
+                    <span class="n">copylist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy_scf_ldau_nohdf</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">copylist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy_scf</span>
+                <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">copylist</span><span class="p">:</span>
+                    <span class="n">local_copy_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">outfolder_uuid</span><span class="p">,</span> <span class="n">file1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">file1</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="c1"># TODO: get inp.xml from parent fleurinpdata; otherwise it will be doubled in rep</span>
+            <span class="k">elif</span> <span class="n">fleurinpgen</span> <span class="ow">and</span> <span class="n">has_fleurinp</span><span class="p">:</span>
+                <span class="c1"># everything is taken care of</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">fleurinpgen</span> <span class="ow">and</span> <span class="n">has_fleurinp</span><span class="p">:</span>
+                <span class="c1"># inp.xml will be copied from fleurinp</span>
+                <span class="k">if</span> <span class="n">with_hdf5</span><span class="p">:</span>
+                    <span class="n">copylist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy_scf_noinp_hdf</span>
+                <span class="k">elif</span> <span class="n">has_nmmpmat_file</span><span class="p">:</span>
+                    <span class="n">copylist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy_scf_ldau_noinp_nohdf</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">copylist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy_scf_noinp</span>
+                <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">copylist</span><span class="p">:</span>
+                    <span class="n">local_copy_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">outfolder_uuid</span><span class="p">,</span> <span class="n">file1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">file1</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+            <span class="c1"># TODO: not on same computer -&gt; copy needed files from repository</span>
+            <span class="c1"># if they are not there throw an error</span>
+            <span class="k">if</span> <span class="n">copy_remotely</span><span class="p">:</span>  <span class="c1"># on same computer.</span>
+                <span class="c1"># from fleurmodes</span>
+                <span class="k">if</span> <span class="n">modes</span><span class="p">[</span><span class="s1">&#39;dos&#39;</span><span class="p">]:</span>
+                    <span class="k">pass</span>
+                <span class="k">elif</span> <span class="n">modes</span><span class="p">[</span><span class="s1">&#39;band&#39;</span><span class="p">]:</span>
+                    <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">filelist_tocopy_remote</span> <span class="o">=</span> <span class="n">filelist_tocopy_remote</span> <span class="o">+</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_copy_filelist_scf_remote</span>
+                <span class="c1"># from settings, user specified</span>
+                <span class="c1"># TODO: check if list?</span>
+                <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;additional_remotecopy_list&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+                    <span class="n">filelist_tocopy_remote</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;remove_from_remotecopy_list&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+                    <span class="k">if</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">filelist_tocopy_remote</span><span class="p">:</span>
+                        <span class="n">filelist_tocopy_remote</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">filelist_tocopy_remote</span><span class="p">:</span>
+                    <span class="n">remote_copy_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">parent_calc_folder</span><span class="o">.</span><span class="n">computer</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_calc_folder</span><span class="o">.</span><span class="n">get_remote_path</span><span class="p">(),</span>
+                                                                        <span class="n">file1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_output_folder</span><span class="p">))</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;remote copy file list </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">remote_copy_list</span><span class="p">))</span>
+
+        <span class="c1"># create a JUDFT_WARN_ONLY file in the calculation folder</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;/n&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="n">warn_only_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_JUDFT_WARN_ONLY_INFO_FILE_NAME</span>
+            <span class="n">folder</span><span class="o">.</span><span class="n">create_file_from_filelike</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">warn_only_filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+        <span class="c1">########## MAKE CALCINFO ###########</span>
+
+        <span class="n">calcinfo</span> <span class="o">=</span> <span class="n">CalcInfo</span><span class="p">()</span>
+
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span>
+        <span class="c1"># Empty command line by default</span>
+        <span class="c1">#cmdline_params = settings_dict.pop(&#39;CMDLINE&#39;, [])</span>
+        <span class="c1"># calcinfo.cmdline_params = (list(cmdline_params)</span>
+        <span class="c1">#                           + [&quot;-in&quot;, self._INPUT_FILE_NAME])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;local copy file list </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">local_copy_list</span><span class="p">))</span>
+
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">local_copy_list</span> <span class="o">=</span> <span class="n">local_copy_list</span>
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">remote_copy_list</span> <span class="o">=</span> <span class="n">remote_copy_list</span>
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">remote_symlink_list</span> <span class="o">=</span> <span class="n">remote_symlink_list</span>
+
+        <span class="c1"># Retrieve by default the output file and the xml file</span>
+        <span class="n">retrieve_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_OUTXML_FILE_NAME</span><span class="p">)</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_INPXML_FILE_NAME</span><span class="p">)</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SHELLOUTPUT_FILE_NAME</span><span class="p">)</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ERROR_FILE_NAME</span><span class="p">)</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_USAGE_FILE_NAME</span><span class="p">)</span>
+        <span class="c1"># retrieve_list.append(self._TIME_INFO_FILE_NAME)</span>
+        <span class="c1"># retrieve_list.append(self._OUT_FILE_NAME)</span>
+        <span class="k">if</span> <span class="n">with_hdf5</span><span class="p">:</span>
+            <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_CDN_LAST_HDF5_FILE_NAME</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_CDN1_FILE_NAME</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">mode_file</span> <span class="ow">in</span> <span class="n">mode_retrieved_filelist</span><span class="p">:</span>
+            <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;retrieve_list: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">retrieve_list</span><span class="p">))</span>
+
+        <span class="c1"># user specific retrieve</span>
+        <span class="n">add_retrieve</span> <span class="o">=</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;additional_retrieve_list&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;add_retrieve: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">add_retrieve</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">add_retrieve</span><span class="p">:</span>
+            <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+
+        <span class="n">remove_retrieve</span> <span class="o">=</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;remove_from_retrieve_list&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">remove_retrieve</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">retrieve_list</span><span class="p">:</span>
+                <span class="n">retrieve_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">retrieve_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">retrieve_list</span><span class="p">:</span>
+            <span class="n">calcinfo</span><span class="o">.</span><span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+
+        <span class="n">codeinfo</span> <span class="o">=</span> <span class="n">CodeInfo</span><span class="p">()</span>
+        <span class="c1"># should look like: codepath -xmlInput &lt; inp.xml &gt; shell.out 2&gt;&amp;1</span>
+        <span class="n">walltime_sec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">)</span>
+        <span class="n">cmdline_params</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># , &quot;-wtime&quot;, &quot;{}&quot;.format(walltime_sec)]&quot;-xml&quot;</span>
+
+        <span class="n">cmdline_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;-minimalOutput&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">with_hdf5</span><span class="p">:</span>
+            <span class="n">cmdline_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;-last_extra&#39;</span><span class="p">)</span>
+            <span class="n">cmdline_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;-no_send&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">walltime_sec</span><span class="p">:</span>
+            <span class="n">walltime_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">walltime_sec</span> <span class="o">/</span> <span class="mi">60</span><span class="p">))</span>
+            <span class="n">cmdline_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;-wtime&#39;</span><span class="p">)</span>
+            <span class="n">cmdline_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">walltime_min</span><span class="p">)))</span>
+
+        <span class="c1"># user specific commandline_options</span>
+        <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cmdline&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">cmdline_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">cmdline_params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cmdline_params</span><span class="p">)</span>
+        <span class="c1"># + [&quot;&lt;&quot;, self._INPXML_FILE_NAME,</span>
+        <span class="c1"># &quot;&gt;&quot;, self._SHELLOUTPUT_FILE_NAME, &quot;2&gt;&amp;1&quot;]</span>
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">code_uuid</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">uuid</span>
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">withmpi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">)</span>
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">stdin_name</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># self._INPUT_FILE_NAME</span>
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">stdout_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SHELLOUTPUT_FILE_NAME</span>
+        <span class="c1">#codeinfo.join_files = True</span>
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">stderr_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ERROR_FILE_NAME</span>
+
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">codes_info</span> <span class="o">=</span> <span class="p">[</span><span class="n">codeinfo</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">calcinfo</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

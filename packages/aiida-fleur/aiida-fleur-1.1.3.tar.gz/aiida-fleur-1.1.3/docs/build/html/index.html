@@ -1,0 +1,551 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to the AiiDA-FLEUR’s documentation! &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User’s guide" href="user_guide/ug_index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Welcome to the AiiDA-FLEUR’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-the-aiida-fleur-s-documentation">
+<h1>Welcome to the <a class="reference external" href="https://github.com/broeder-j/aiida-fleur">AiiDA-FLEUR</a>’s documentation!<a class="headerlink" href="#welcome-to-the-aiida-fleur-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/fleur.png"><img alt="_images/fleur.png" src="_images/fleur.png" style="width: 25%;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/MAX-orizz.eps"><img alt="_images/MAX-orizz.eps" src="_images/MAX-orizz.eps" style="width: 50%;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/AiiDA_transparent_logo.png"><img alt="_images/AiiDA_transparent_logo.png" src="_images/AiiDA_transparent_logo.png" style="width: 50%;" /></a>
+</div>
+<p>The AiiDA-FLEUR python package enables the use of the all-electron Density Functional Theory (DFT)
+code FLEUR (<a class="reference external" href="http://www.flapw.de">http://www.flapw.de</a>) with the <a class="reference external" href="http://www.aiida.net">AiiDA</a> framework (<a class="reference external" href="http://www.aiida.net">http://www.aiida.net</a>).</p>
+<p>It is open source under the MIT license and is available under
+(<a class="reference external" href="https://github.com/JuDFTteam/aiida-fleur">https://github.com/JuDFTteam/aiida-fleur</a>).
+The package is developed within the MaX EU Center of Excellence (www.max-center.eu) at
+Forschungszentrum Jülich GmbH (<a class="reference external" href="http://www.fz-juelich.de/pgi/pgi-1/DE/Home/home_node.html">http://www.fz-juelich.de/pgi/pgi-1/DE/Home/home_node.html</a>),
+(IAS-1/PGI-1), Germany.
+Check out the AiiDA <a class="reference external" href="https://aiidateam.github.io/aiida-registry">registry</a> to find out more about what other packages for AiiDA exists,
+that might be helpful for you.</p>
+<p>If you use this package please cite:</p>
+<ul>
+<li><p>The plugin and workflows:</p>
+<p>J. Broeder, D. Wortmann, and S. Blügel,
+Using the AiiDA-FLEUR package for all-electron ab initio electronic structure
+data generation and processing in materials science,
+In Extreme Data Workshop 2018 Proceedings, 2019, vol 40, p 43-48</p>
+</li>
+<li><p>The FLEUR code: <a class="reference external" href="http:/www.flapw.de">http:/www.flapw.de</a></p></li>
+</ul>
+<div class="section" id="features-illustrations-usage-examples">
+<h2>Features, Illustrations, Usage examples:<a class="headerlink" href="#features-illustrations-usage-examples" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title">Example 1, Full Provenance tracking trough AiiDA:</p>
+<p>AiiDA graph visualization of a small database containing about 130 000 nodes
+from Fleur calculations. (Visualized with Gephi)</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/aiida_work2_ed.png"><img alt="_images/aiida_work2_ed.png" src="_images/aiida_work2_ed.png" style="width: 100%;" /></a>
+</div>
+</div>
+<div class="topic">
+<p class="topic-title">Example 2, Material screening:</p>
+<p>Fleur SCF convergence of 1362 different screened Binary systems managed by the scf workchain</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/convergence_all_MP_metals.png"><img alt="_images/convergence_all_MP_metals.png" src="_images/convergence_all_MP_metals.png" style="width: 100%;" /></a>
+</div>
+</div>
+<div class="topic">
+<p class="topic-title">Example 3 Method robustness, tuning:</p>
+<p>FLAPW muffin tin radii for all materials (&gt;820000) in the <a class="reference external" href="http://oqmd.org">OQMD</a> .</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/all_rmts_oqmd.png"><img alt="_images/all_rmts_oqmd.png" src="_images/all_rmts_oqmd.png" style="width: 100%;" /></a>
+</div>
+</div>
+<div class="topic">
+<p class="topic-title">Example 4, DFT Code Interoperability:</p>
+<p>If an DFT code has an AiiDA plugin,
+one can run successive calculations using different codes.
+For example, it is possible to perform a structure relaxation with VASP or Quantum Espresso and
+run an all-electron FLEUR workflow for the output structure.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/plot_fleur_capabilities.png"><img alt="_images/plot_fleur_capabilities.png" src="_images/plot_fleur_capabilities.png" style="width: 100%;" /></a>
+</div>
+</div>
+<div class="topic">
+<p class="topic-title">Example 5, Quick Visualizations:</p>
+<p>AiiDA-FLEUR contains a function (‘plot_fleur’) to get a quick visualization of some database node(s).
+For example, to make a convergence plot of one or several SCF runs in your scripts, or notebook.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_fleur</span><span class="p">(</span><span class="n">scf_node</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/plot_fleur_scf1.png"><img alt="_images/plot_fleur_scf1.png" src="_images/plot_fleur_scf1.png" style="width: 80%;" /></a>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_fleur</span><span class="p">(</span><span class="n">scf_node_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/plot_fleur_scf_m1.png"><img alt="_images/plot_fleur_scf_m1.png" src="_images/plot_fleur_scf_m1.png" style="width: 80%;" /></a>
+</div>
+</div>
+</div>
+<div class="section" id="basic-overview">
+<h2>Basic overview<a class="headerlink" href="#basic-overview" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="requirements-to-use-this-code">
+<h3>Requirements to use this code:<a class="headerlink" href="#requirements-to-use-this-code" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>A running AiiDA version (and postgresql database)</p></li>
+<li><p>Executables of the Fleur code</p></li>
+</ul>
+<p>Other packages (in addition to all requirements of AiiDA):</p>
+<ul class="simple">
+<li><p>lxml</p></li>
+<li><p>ase</p></li>
+<li><p>masci-tools</p></li>
+</ul>
+</div>
+<div class="section" id="aiida-package-layout">
+<h3>AiiDA-package Layout:<a class="headerlink" href="#aiida-package-layout" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="user_guide/calculations/inpgen_plugin.html#inpgen-plugin"><span class="std std-ref">Fleur input generator</span></a></p></li>
+<li><p><a class="reference internal" href="user_guide/data/fleurinp_data.html#fleurinp-data"><span class="std std-ref">FleurinpData structure</span></a></p></li>
+<li><p><a class="reference internal" href="user_guide/calculations/fleurcode_plugin.html#fleurcode-plugin"><span class="std std-ref">Fleur code</span></a></p></li>
+</ol>
+<p>The overall plugin for Fleur consists out of three AiiDA plugins. One for the Fleur input generator
+(inpgen), one data structure (fleurinpData) representing the inp.xml file and a plugin for
+the Fleur code (fleur, fleur_MPI).
+Other codes from the Fleur family (GFleur) or which build on top (Spex) are
+not supported.</p>
+<p>The package also contains workflows</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="user_guide/workflows/base_wc.html#base-wc"><span class="std std-ref">Fleur base workchain</span></a></p></li>
+<li><p><a class="reference internal" href="user_guide/workflows/scf_wc.html#scf-wc"><span class="std std-ref">Self-Consistent Field</span></a> (Scf)</p></li>
+<li><p><a class="reference internal" href="user_guide/workflows/dos_band_wc.html#dos-band-wc"><span class="std std-ref">Density Of States</span></a> (DOS)</p></li>
+<li><p><a class="reference internal" href="user_guide/workflows/relax_wc.html#relax-wc"><span class="std std-ref">Structure optimization</span></a> (relax)</p></li>
+<li><p><a class="reference internal" href="user_guide/workflows/dos_band_wc.html#dos-band-wc"><span class="std std-ref">Band structure</span></a></p></li>
+<li><p><a class="reference internal" href="user_guide/workflows/eos_wc.html#eos-wc"><span class="std std-ref">Equation of States</span></a> (EOS)</p></li>
+<li><p><a class="reference internal" href="user_guide/workflows/initial_cls_wc.html#init-cl-wc"><span class="std std-ref">Initial corelevel shifts</span></a></p></li>
+<li><p><a class="reference internal" href="user_guide/workflows/corehole_wc.html#corehole-wc"><span class="std std-ref">Corehole</span></a></p></li>
+<li><p>Force-theorem <a class="reference internal" href="user_guide/workflows/mae_wc.html#mae-wc"><span class="std std-ref">Magnetic Anisotropy Energy</span></a></p></li>
+<li><p>Force-theorem <a class="reference internal" href="user_guide/workflows/ssdisp_wc.html#ssdisp-wc"><span class="std std-ref">Spin Spiral Dispersion</span></a></p></li>
+<li><p>Force-theorem <a class="reference internal" href="user_guide/workflows/dmi_wc.html#dmi-wc"><span class="std std-ref">Dzjaloshinskii-Moriya Interaction energy dispersion</span></a></p></li>
+<li><p>Scf <a class="reference internal" href="user_guide/workflows/mae_conv_wc.html#mae-conv-wc"><span class="std std-ref">Magnetic Anisotropy Energy</span></a></p></li>
+<li><p>Scf <a class="reference internal" href="user_guide/workflows/ssdisp_conv_wc.html#ssdisp-conv-wc"><span class="std std-ref">Spin Spiral Dispersion</span></a></p></li>
+</ol>
+<p>The package also contains AiiDA dependent tools around the workflows and plugins.
+All tools independent on aiida-core are moved to the masci-tools repository,
+to be available to other non AiiDA related projects and tools.</p>
+</div>
+<div class="section" id="acknowledgments">
+<h3>Acknowledgments:<a class="headerlink" href="#acknowledgments" title="Permalink to this headline">¶</a></h3>
+<p>We acknowledge partial support from the EU Centre of Excellence “MaX – Materials Design at the
+Exascale” (<a class="reference external" href="http://www.max-centre.eu">http://www.max-centre.eu</a>). (Horizon 2020 EINFRA-5, Grant No. 676598).
+We thank the AiiDA team for their help and work. Also the vial exchange with developers of AiiDA
+packages for other codes was inspiring.</p>
+</div>
+</div>
+<div class="section" id="user-s-guide">
+<h2>User’s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
+<p>Everything you need for using AiiDA-FLEUR</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/ug_index.html">User’s guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/getting_started/getting_started.html">Getting started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/getting_started/getting_started.html#installation-of-aiida-fleur">Installation of AiiDA-FLEUR</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/getting_started/getting_started.html#installation-of-python-packages">Installation of python packages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/getting_started/getting_started.html#aiida-setup">AiiDA setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/getting_started/getting_started.html#profile-setup">Profile setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/getting_started/getting_started.html#computers-setup">Computers setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/getting_started/getting_started.html#fleur-and-inpgen-setup">FLEUR and inpgen setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/getting_started/getting_started.html#installation-test">Installation test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/data/fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/data/fleurinp_data.html">FleurinpData</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/data/fleurinp_data.html#description-features">Description/Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/data/fleurinp_data.html#properties">Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/data/fleurinp_data.html#user-methods">User Methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/data/fleurinp_data.html#setting-up-atom-labels">Setting up atom labels</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/data/fleurinp_modifier.html">FleurinpModifier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/data/fleurinp_modifier.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/data/fleurinp_modifier.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/data/fleurinp_modifier.html#user-methods">User Methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/data/fleurinp_modifier.html#modifying-the-density-matrix-for-lda-u-calculations">Modifying the density matrix for LDA+U calculations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/calculations/fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/calculations/inpgen_plugin.html">Fleur input generator plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/inpgen_plugin.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/inpgen_plugin.html#inputs">Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/inpgen_plugin.html#outputs">Outputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/inpgen_plugin.html#errors">Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/inpgen_plugin.html#additional-advanced-features">Additional advanced features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/calculations/fleurcode_plugin.html">FLEUR code plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/fleurcode_plugin.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/fleurcode_plugin.html#inputs">Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/fleurcode_plugin.html#outputs">Outputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/fleurcode_plugin.html#errors">Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/calculations/fleurcode_plugin.html#additional-advanced-features">Additional advanced features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/workflows/wc_index.html">AiiDA-FLEUR WorkChains</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/workflows/wc_index.html#general-design">General design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/workflows/wc_index.html#inputs">Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/workflows/wc_index.html#outputs">Outputs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/workflows/wc_index.html#workchain-classification">Workchain classification</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/workflows/wc_index.html#basic-technical-workchains">Basic (Technical) Workchains</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/workflows/wc_index.html#more-advanced-scientific-workchains">More advanced (Scientific) Workchains</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/tutorials/tutorials.html">Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/tutorials/tutorials.html#basic-aiida-tutorials">Basic AiiDA tutorials:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/tutorials/tutorials.html#how-calculation-plugins-work">How calculation plugins work:</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/tutorials/tutorials.html#run-inpgen-calculation-tutorial">Run inpgen calculation tutorial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/tutorials/tutorials.html#run-fleur-calculation-tutorial">Run fleur calculation tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/tutorials/tutorials.html#running-workflows">Running workflows:</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/tutorials/tutorials.html#run-fleur-scf-tutorial">Run fleur SCF tutorial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/tutorials/tutorials.html#run-fleur-eos-tutorial">Run fleur eos tutorial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/tutorials/tutorials.html#run-fleur-bandstructure-dos-tutorial">Run fleur bandstructure/dos tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/tutorials/tutorials.html#data-extraction-and-evaluation">Data extraction and evaluation:</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/tutorials/tutorials.html#general-calculation-workflow">General calculation, workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/tutorials/tutorials.html#total-database">Total database</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/hints/hints_faq.html">Hints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/hints/hints_faq.html#for-users">For Users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/hints/hints_faq.html#faq">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="developer-s-guide">
+<h2>Developer’s Guide<a class="headerlink" href="#developer-s-guide" title="Permalink to this headline">¶</a></h2>
+<p>Some things to notice for AiiDA-FLEUR developers.
+Conventions, programming style, Integrated testing, things that should not be forgotten</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="devel_guide/dg_index.html">Developer’s guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="devel_guide/dg_index.html#package-layout">Package layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devel_guide/dg_index.html#automated-tests">Automated tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devel_guide/dg_index.html#plugin-development">Plugin development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devel_guide/dg_index.html#workflow-chain-development">Workflow/chain development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="devel_guide/dg_index.html#general-workflow-development-guidelines">General Workflow development guidelines:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devel_guide/dg_index.html#fleur-specific-desgin-suggestions-conventions">FLEUR specific desgin suggestions, conventions:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="devel_guide/dg_index.html#entrypoints">Entrypoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devel_guide/dg_index.html#other-information">Other information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="devel_guide/dg_index.html#useful-to-know">Useful to know</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-reference-api">
+<h2>Module reference (API)<a class="headerlink" href="#module-reference-api" title="Permalink to this headline">¶</a></h2>
+<p>Automatic generated documentation for all modules, classes and functions with
+reference to the source code. The search is your friend.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="module_guide/mg_index.html">Source code Documentation (API reference)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_guide/code.html">Fleur input generator plug-in</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.calculation.fleurinputgen">Fleurinputgen Calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.parsers.fleur_inputgen">Fleurinputgen Parser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="module_guide/code.html#fleur-code-plugin">Fleur-code plugin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.calculation.fleur">Fleur Calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.parsers.fleur">Fleur Parser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="module_guide/code.html#fleur-input-data-structure">Fleur input Data structure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#id1">Fleur input Data structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.data.fleurinpmodifier">Fleurinp modifier</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="module_guide/code.html#workflows-workchains">Workflows/Workchains</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.base_fleur">Base: Fleur-Base WorkChain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.scf">SCF: Fleur-Scf WorkChain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.banddos">BandDos: Bandstructure WorkChain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.dos">DOS: Density of states WorkChain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.eos">EOS: Calculate a lattice constant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.relax">Relax: Relaxation of a Cystalstructure WorkChain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.initial_cls">initial_cls: Caluclation of inital corelevel shifts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.corehole">corehole: Performance of coreholes calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.mae">MAE: Force-theorem calculation of magnetic anisotropy energies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.mae_conv">MAE Conv: Self-consistent calculation of magnetic anisotropy energies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.ssdisp">SSDisp: Force-theorem calculation of spin spiral dispersion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.ssdisp_conv">SSDisp Conv: Self-consistent calculation of spin spiral dispersion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/code.html#module-aiida_fleur.workflows.dmi">DMI: Force-theorem calculation of Dzjaloshinskii-Moriya interaction energy dispersion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="module_guide/tools.html">Fleur tools/utility</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.fleur_schema.schemafile_index">Dealing with XML Schema files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.StructureData_util">Structure Data util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.xml_util">XML utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.set_nmmpmat">Utility for LDA+U density matrix files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#parameter-utility">Parameter utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.dict_util">General Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.merge_parameter">Merge Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.create_corehole">Corehole/level utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.common_aiida">Common aiida utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.read_cif_folder">Reading in Cif files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.io_routines">IO routines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module_guide/tools.html#module-aiida_fleur.tools.common_fleur_wf">Common utitlity for fleur workchains</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="user_guide/ug_index.html" class="btn btn-neutral float-right" title="User’s guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

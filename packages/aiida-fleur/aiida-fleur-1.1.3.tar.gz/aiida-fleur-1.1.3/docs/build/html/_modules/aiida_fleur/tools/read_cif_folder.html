@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.tools.read_cif_folder &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.tools.read_cif_folder</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.tools.read_cif_folder</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">In this module you find a method (read_cif_folder) to read in all .cif files</span>
+<span class="sd">from a folder and store the structures in the database.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># TODO: links to the structures created in the db from the cif files have to be</span>
+<span class="c1"># set. Might make a difference for</span>
+<span class="c1"># structure visualization, because cif file has more information</span>
+<span class="c1"># also keep connection to ICSD id number</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">calcfunction</span> <span class="k">as</span> <span class="n">cf</span>
+
+
+<div class="viewcode-block" id="read_cif_folder"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.read_cif_folder.read_cif_folder">[docs]</a><span class="k">def</span> <span class="nf">read_cif_folder</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
+                    <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">store</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">comments</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                    <span class="n">extras</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                    <span class="n">logfile_name</span><span class="o">=</span><span class="s1">&#39;read_cif_folder_logfile&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Method to read in cif files from a folder and its subfolders.</span>
+<span class="sd">    It can convert them into AiiDA structures and store them.</span>
+
+<span class="sd">    defaults input parameter values are:</span>
+<span class="sd">    path=&quot;.&quot;, recursive=True, store=False, log=False, comments=&#39;&#39;, extras=&#39;&#39;</span>
+
+<span class="sd">    :params: path: Path to the dictionary with the files (default, where this method is called)</span>
+<span class="sd">    :params: recursive: bool, If True: looks aso in subfolders, if False: just given dir</span>
+<span class="sd">    :params: store: bool, if True: stores structures in database</span>
+<span class="sd">    :params: log: bool, if True, writes a logfile with information (pks, and co)</span>
+<span class="sd">    :params: comments: string: comment to add to the structures</span>
+<span class="sd">    :params: extras: dir/string/arb: extras added to the structures stored in the db</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO check for duplicates in the database, so that reruning the functions</span>
+    <span class="c1"># won&#39;t import anything else in the database</span>
+    <span class="n">cifdata</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s1">&#39;cif&#39;</span><span class="p">)</span>
+    <span class="c1">############ parameters for the user to set ########</span>
+
+    <span class="n">parent_cif_folder</span> <span class="o">=</span> <span class="n">path</span>  <span class="c1"># folder path</span>
+    <span class="n">store_db</span> <span class="o">=</span> <span class="n">store</span>  <span class="c1"># True # store stuff in database?</span>
+    <span class="n">write_log</span> <span class="o">=</span> <span class="n">log</span>  <span class="c1"># write a logfiles on what was saved</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="n">comments</span>  <span class="c1"># comments and extras to add to the structure nodes.</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="n">extras</span>  <span class="c1"># helpfull for finding them again in the db</span>
+    <span class="n">rek</span> <span class="o">=</span> <span class="n">recursive</span>  <span class="c1"># search also in subfolders or only given folder</span>
+
+    <span class="c1">#####################</span>
+    <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">filepaths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">infofilestring</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Structure Formula, Structuredata pk, Structure Data uuid, cif-file-path, comment, extras </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1">#1. get all the files</span>
+    <span class="k">if</span> <span class="n">rek</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">parent_cif_folder</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">file1</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.cif&#39;</span><span class="p">):</span>
+                    <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+                    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file1</span><span class="p">)</span>
+                    <span class="n">filepaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dir_list</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">parent_cif_folder</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">dir_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.cif&#39;</span><span class="p">):</span>
+                <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_cif_folder</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="n">filepaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+    <span class="n">nfiles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> cif-files found in folder &quot;</span><span class="si">{}</span><span class="s1">&quot; &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nfiles</span><span class="p">,</span> <span class="n">parent_cif_folder</span><span class="p">))</span>
+
+    <span class="n">structuredatas</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">#2. read all the files and store stuff.</span>
+    <span class="n">saved_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">saved_count_cif</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">filenames2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">structuredatas2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfiles</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_cif</span> <span class="o">=</span> <span class="n">cifdata</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">store_cif</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">)</span> <span class="k">as</span> <span class="n">emessage</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;invalid cif file: </span><span class="si">{}</span><span class="s1">, the error message was </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">emessage</span><span class="p">)))</span>
+            <span class="k">continue</span>
+        <span class="c1">#print new_cif</span>
+        <span class="k">if</span> <span class="n">new_cif</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">saved_count_cif</span> <span class="o">=</span> <span class="n">saved_count_cif</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># do we want to save the structures again, or do we also continue</span>
+        <span class="c1">#else:</span>
+        <span class="c1">#    continue</span>
+        <span class="c1">#asecell = new_cif[0].get_ase()</span>
+        <span class="c1">#structuredatas.append(DataFactory(&#39;structure&#39;))</span>
+        <span class="n">filenames2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filenames</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="c1">#struc = structuredatas[-1](ase=asecell)</span>
+        <span class="c1">#formula = struc.get_formula()</span>
+        <span class="k">if</span> <span class="n">store_db</span><span class="p">:</span>
+            <span class="n">struc</span> <span class="o">=</span> <span class="n">wf_struc_from_cif</span><span class="p">(</span><span class="n">new_cif</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">struc</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span>
+            <span class="c1">#new_cif.store()</span>
+            <span class="c1">#struc.store()</span>
+            <span class="n">saved_count</span> <span class="o">=</span> <span class="n">saved_count</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># add comment or extras, only possible after storing</span>
+            <span class="k">if</span> <span class="n">comment</span><span class="p">:</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">struc</span><span class="o">.</span><span class="n">user</span>  <span class="c1"># we are the creator</span>
+                <span class="n">struc</span><span class="o">.</span><span class="n">add_comment</span><span class="p">(</span><span class="n">comment</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">extra</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">extra</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">struc</span><span class="o">.</span><span class="n">set_extra_many</span><span class="p">(</span><span class="n">extra</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">struc</span><span class="o">.</span><span class="n">set_extra</span><span class="p">(</span><span class="s1">&#39;specification&#39;</span><span class="p">,</span> <span class="n">extra</span><span class="p">)</span>
+            <span class="n">struc</span><span class="o">.</span><span class="n">set_extra</span><span class="p">(</span><span class="s1">&#39;formula&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="p">)</span>
+            <span class="n">structuredatas2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">struc</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">struc</span> <span class="o">=</span> <span class="n">struc_from_cif</span><span class="p">(</span><span class="n">new_cif</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">structuredatas2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">struc</span><span class="p">)</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">struc</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">write_log</span><span class="p">:</span>
+            <span class="c1"># This file is a logfile/info file created by &#39;read_cif_folder&#39;</span>
+            <span class="c1"># Structure Formula, structuredata pk, Structure Data uuid,</span>
+            <span class="c1">#&#39;cif-file-path&#39;, comment, extras</span>
+            <span class="c1"># TODO? if not stored write not stored</span>
+            <span class="k">if</span> <span class="n">store_db</span><span class="p">:</span>
+                <span class="n">infofilestring</span> <span class="o">=</span> <span class="n">infofilestring</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">formula</span><span class="p">,</span> <span class="n">struc</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">struc</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="n">filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">struc</span><span class="o">.</span><span class="n">get_comments</span><span class="p">(),</span> <span class="n">struc</span><span class="o">.</span><span class="n">extras</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">infofilestring</span> <span class="o">=</span> <span class="p">(</span><span class="n">infofilestring</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> notstored notstored </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                  <span class="s1">&#39;notstored notstored </span><span class="se">\n</span><span class="s1">&#39;</span>
+                                  <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+    <span class="c1"># write a logfile</span>
+    <span class="k">if</span> <span class="n">write_log</span><span class="p">:</span>
+        <span class="n">file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">logfile_name</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">O_RDWR</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">O_CREAT</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">infofilestring</span><span class="p">,</span> <span class="s1">&#39;UTF8&#39;</span><span class="p">))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> cif-files and </span><span class="si">{}</span><span class="s1"> structures were saved in the database&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">saved_count_cif</span><span class="p">,</span> <span class="n">saved_count</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">structuredatas2</span><span class="p">,</span> <span class="n">filenames2</span></div>
+
+
+<span class="nd">@cf</span>
+<span class="k">def</span> <span class="nf">wf_struc_from_cif</span><span class="p">(</span><span class="n">cif</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">struc_from_cif</span><span class="p">(</span><span class="n">cif</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">struc_from_cif</span><span class="p">(</span><span class="n">cif</span><span class="p">):</span>
+    <span class="n">asecell</span> <span class="o">=</span> <span class="n">cif</span><span class="o">.</span><span class="n">get_ase</span><span class="p">()</span>
+    <span class="n">struc</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s1">&#39;structure&#39;</span><span class="p">)(</span><span class="n">ase</span><span class="o">=</span><span class="n">asecell</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">struc</span>
+
+
+<span class="c1"># TODO add this to command line, or better move to aiida-jutools</span>
+<span class="c1"># ggf add what Roman has done there.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">if __name__ == &#39;__main__&#39;:</span>
+<span class="sd">    import argparse</span>
+<span class="sd">    import json</span>
+<span class="sd">    #  maybe change names?</span>
+<span class="sd">    parser = argparse.ArgumentParser(description=&quot;Read &#39;.cif&#39; files from the current&quot;</span>
+<span class="sd">                                     &#39; folder and store in AiiDA database. If no&#39;</span>
+<span class="sd">                                     &#39; arguements are given, read_cif_folder is&#39;</span>
+<span class="sd">                                     &#39; using default arguments&#39;)</span>
+
+<span class="sd">    parser.add_argument(&#39;-p&#39;,</span>
+<span class="sd">                        metavar=&#39;path&#39;,</span>
+<span class="sd">                        type=str,</span>
+<span class="sd">                        required=False,</span>
+<span class="sd">                        action=&#39;store&#39;,</span>
+<span class="sd">                        help=&#39;specify path as string, if not current folder&#39;)</span>
+
+<span class="sd">    parser.add_argument(&#39;-r&#39;,</span>
+<span class="sd">                        required=False,</span>
+<span class="sd">                        action=&#39;store_true&#39;,</span>
+<span class="sd">                        help=&#39;if given, search also in subfolders for .cif files. (os.walk subfolders&#39;)</span>
+
+<span class="sd">    parser.add_argument(&#39;-s&#39;, required=False, action=&#39;store_true&#39;, help=&#39;if given, store all structures in database.&#39;)</span>
+
+<span class="sd">    parser.add_argument(&#39;-l&#39;, required=False, action=&#39;store_true&#39;, help=&#39;if given, write a logfile&#39;)</span>
+
+<span class="sd">    parser.add_argument(&#39;-c&#39;,</span>
+<span class="sd">                        metavar=&#39;comments&#39;,</span>
+<span class="sd">                        type=str,</span>
+<span class="sd">                        required=False,</span>
+<span class="sd">                        default=&#39;&#39;,</span>
+<span class="sd">                        action=&#39;store&#39;,</span>
+<span class="sd">                        help=&#39;string, add a comment to the node(s) if stored. &#39;</span>
+<span class="sd">                        &#39;exp: -c crystal data for my project&#39;)</span>
+
+<span class="sd">    parser.add_argument(&#39;-e&#39;,</span>
+<span class="sd">                        metavar=&#39;extras&#39;,</span>
+<span class="sd">                        required=False,</span>
+<span class="sd">                        type=json.loads,</span>
+<span class="sd">                        action=&#39;store&#39;,</span>
+<span class="sd">                        help=&#39;string, or dictionary to add to the node(s) extras&#39;</span>
+<span class="sd">                        &#39; if stored. exp: -e {&quot;project&quot; : &quot;myproject&quot;, &quot;type&quot; : &quot;simple metal&quot;}&#39;)</span>
+
+<span class="sd">    args = parser.parse_args()</span>
+<span class="sd">    if args.p:</span>
+<span class="sd">        read_cif_folder(path=args.p, recursive=args.r, store=args.s, log=args.l, comments=args.c, extras=args.e)</span>
+<span class="sd">    else:</span>
+<span class="sd">        read_cif_folder(recursive=args.r, store=args.s, log=args.l, comments=args.c, extras=args.e)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

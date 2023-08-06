@@ -1,0 +1,831 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.calculation.fleurinputgen &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.calculation.fleurinputgen</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.calculation.fleurinputgen</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Input plug-in for the FLEUR input generator &#39;inpgen&#39;.</span>
+<span class="sd">The input generator for the Fleur code is a preprocessor</span>
+<span class="sd">and should be run locally (with the direct scheduler) or inline,</span>
+<span class="sd">because it does not take many resources.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="nb">zip</span> <span class="k">as</span> <span class="n">zip_six</span>
+
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">CalcJob</span>
+<span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">InputValidationError</span>
+<span class="kn">from</span> <span class="nn">aiida.common.datastructures</span> <span class="kn">import</span> <span class="n">CalcInfo</span><span class="p">,</span> <span class="n">CodeInfo</span>
+<span class="kn">from</span> <span class="nn">aiida.common.constants</span> <span class="kn">import</span> <span class="n">elements</span> <span class="k">as</span> <span class="n">PeriodicTableElements</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">StructureData</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinp</span> <span class="kn">import</span> <span class="n">FleurinpData</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.StructureData_util</span> <span class="kn">import</span> <span class="n">abs_to_rel_f</span><span class="p">,</span> <span class="n">abs_to_rel</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">convert_to_fortran_bool</span><span class="p">,</span> <span class="n">convert_to_fortran_string</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.common.constants</span> <span class="kn">import</span> <span class="n">BOHR_A</span>
+
+
+<div class="viewcode-block" id="FleurinputgenCalculation"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.calculation.fleurinputgen.FleurinputgenCalculation">[docs]</a><span class="k">class</span> <span class="nc">FleurinputgenCalculation</span><span class="p">(</span><span class="n">CalcJob</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    JobCalculationClass for the inpgen, which is a preprocessor for a FLEUR calculation.</span>
+<span class="sd">    For more information about produced files and the FLEUR-code family, go to http://www.flapw.de/.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.2.2&#39;</span>
+
+    <span class="c1"># Default input and output files</span>
+    <span class="n">_INPUT_FILE</span> <span class="o">=</span> <span class="s1">&#39;aiida.in&#39;</span>  <span class="c1"># will be shown with inputcat</span>
+    <span class="n">_OUTPUT_FILE</span> <span class="o">=</span> <span class="s1">&#39;out&#39;</span>  <span class="c1"># &#39;shell.out&#39; #will be shown with outputcat</span>
+
+    <span class="c1"># created file names, some needed for Fleur calc</span>
+    <span class="n">_INPXML_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;inp.xml&#39;</span>
+    <span class="n">_INPUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;aiida.in&#39;</span>
+    <span class="n">_SHELLOUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;shell.out&#39;</span>
+    <span class="n">_OUTPUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;out&#39;</span>
+    <span class="n">_ERROR_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;out.error&#39;</span>
+    <span class="n">_STRUCT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;struct.xsf&#39;</span>
+
+    <span class="n">_settings_keys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;additional_retrieve_list&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_from_retrieve_list&#39;</span><span class="p">,</span> <span class="s1">&#39;cmdline&#39;</span><span class="p">,</span> <span class="s1">&#39;significant_figures_cell&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;significant_figures_positions&#39;</span>
+    <span class="p">]</span>
+    <span class="c1"># TODO switch all these to init_internal_params?</span>
+    <span class="n">_OUTPUT_SUBFOLDER</span> <span class="o">=</span> <span class="s1">&#39;./fleur_inp_out/&#39;</span>
+    <span class="n">_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;aiida&#39;</span>
+
+    <span class="c1"># Additional files that should always be retrieved for the specific plugin</span>
+    <span class="n">_internal_retrieve_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">_automatic_namelists</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Specify here what namelist and parameters the inpgen takes</span>
+    <span class="n">_possible_namelists</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="s1">&#39;lattice&#39;</span><span class="p">,</span> <span class="s1">&#39;gen&#39;</span><span class="p">,</span> <span class="s1">&#39;shift&#39;</span><span class="p">,</span> <span class="s1">&#39;factor&#39;</span><span class="p">,</span> <span class="s1">&#39;qss&#39;</span><span class="p">,</span> <span class="s1">&#39;soc&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">,</span> <span class="s1">&#39;comp&#39;</span><span class="p">,</span> <span class="s1">&#39;exco&#39;</span><span class="p">,</span> <span class="s1">&#39;film&#39;</span><span class="p">,</span> <span class="s1">&#39;kpt&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;end&#39;</span>
+    <span class="p">]</span>
+    <span class="c1"># this order is important!</span>
+    <span class="n">_possible_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;film&#39;</span><span class="p">,</span> <span class="s1">&#39;cartesian&#39;</span><span class="p">,</span> <span class="s1">&#39;cal_symm&#39;</span><span class="p">,</span> <span class="s1">&#39;checkinp&#39;</span><span class="p">,</span> <span class="s1">&#39;symor&#39;</span><span class="p">,</span> <span class="s1">&#39;oldfleur&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;lattice&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;latsys&#39;</span><span class="p">,</span> <span class="s1">&#39;a0&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;atom&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;rmt&#39;</span><span class="p">,</span> <span class="s1">&#39;dx&#39;</span><span class="p">,</span> <span class="s1">&#39;jri&#39;</span><span class="p">,</span> <span class="s1">&#39;lmax&#39;</span><span class="p">,</span> <span class="s1">&#39;lnonsph&#39;</span><span class="p">,</span> <span class="s1">&#39;ncst&#39;</span><span class="p">,</span> <span class="s1">&#39;econfig&#39;</span><span class="p">,</span> <span class="s1">&#39;bmu&#39;</span><span class="p">,</span> <span class="s1">&#39;lo&#39;</span><span class="p">,</span> <span class="s1">&#39;element&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;comp&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;jspins&#39;</span><span class="p">,</span> <span class="s1">&#39;frcor&#39;</span><span class="p">,</span> <span class="s1">&#39;ctail&#39;</span><span class="p">,</span> <span class="s1">&#39;kcrel&#39;</span><span class="p">,</span> <span class="s1">&#39;gmax&#39;</span><span class="p">,</span> <span class="s1">&#39;gmaxxc&#39;</span><span class="p">,</span> <span class="s1">&#39;kmax&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;exco&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;xctyp&#39;</span><span class="p">,</span> <span class="s1">&#39;relxc&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;film&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;dvac&#39;</span><span class="p">,</span> <span class="s1">&#39;dtild&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;soc&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="s1">&#39;phi&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;qss&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;kpt&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;nkpt&#39;</span><span class="p">,</span> <span class="s1">&#39;kpts&#39;</span><span class="p">,</span> <span class="s1">&#39;div1&#39;</span><span class="p">,</span> <span class="s1">&#39;div2&#39;</span><span class="p">,</span> <span class="s1">&#39;div3&#39;</span><span class="p">,</span> <span class="s1">&#39;tkb&#39;</span><span class="p">,</span> <span class="s1">&#39;tria&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Keywords that cannot be set</span>
+    <span class="c1"># TODO: To specify what combinations are not allowed together,</span>
+    <span class="c1"># or not at all (lattice ?, shift, scale)</span>
+    <span class="n">_blocked_keywords</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># TODO different kpt mods? (use kpointNode)? FleurinpdData can do it.</span>
+    <span class="n">_use_kpoints</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># If two lattices are given, via the input &amp;lattice</span>
+    <span class="c1"># and the aiida structure prefare the aiida structure?</span>
+    <span class="c1"># currently is not allow the use of &amp;lattice</span>
+    <span class="n">_use_aiida_structure</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Default title</span>
+    <span class="n">_inp_title</span> <span class="o">=</span> <span class="s1">&#39;A Fleur input generator calculation with aiida&#39;</span>
+
+<div class="viewcode-block" id="FleurinputgenCalculation.define"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.calculation.fleurinputgen.FleurinputgenCalculation.define">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FleurinputgenCalculation</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;metadata.options.input_filename&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_INPUT_FILE</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;metadata.options.output_filename&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_INPXML_FILE_NAME</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;structure&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">StructureData</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Choose the input structure to use&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;parameters&#39;</span><span class="p">,</span>
+                   <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span>
+                   <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Use a node that specifies the input parameters &#39;</span>
+                   <span class="s1">&#39;for the namelists&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">,</span>
+                   <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span>
+                   <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;This parameter data node is used to specify for some &#39;</span>
+                   <span class="s1">&#39;advanced features how the plugin behaves. You can add files&#39;</span>
+                   <span class="s1">&#39;the retrieve list, or add command line switches, &#39;</span>
+                   <span class="s1">&#39;for all available features here check the documentation.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># parser</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;metadata.options.parser_name&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;fleur.fleurinpgenparser&#39;</span><span class="p">)</span>
+
+        <span class="c1"># declaration of outputs of the calclation</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;fleurinpData&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">FleurinpData</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># exit codes</span>
+        <span class="c1"># spec.exit_code(251, &#39;ERROR_WRONG_INPUT_PARAMS&#39;,</span>
+        <span class="c1">#                message=&#39;Input parameters for inpgen contain unknown keys.&#39;)</span>
+        <span class="c1"># spec.exit_code(253, &#39;ERROR_ATOM_POSITION_NEEDED&#39;,</span>
+        <span class="c1">#                message=&#39;Fleur lattice needs atom positions as input.&#39;)</span>
+        <span class="c1"># spec.exit_code(254, &#39;ERROR_INPUT_PARAMS_LEFTOVER&#39;,</span>
+        <span class="c1">#                message=&#39;Excessive input parameters were specified.&#39;)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="s1">&#39;ERROR_NO_RETRIEVED_FOLDER&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;No retrieved folder found.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">301</span><span class="p">,</span> <span class="s1">&#39;ERROR_OPENING_OUTPUTS&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;One of the output files can not be opened.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">306</span><span class="p">,</span> <span class="s1">&#39;ERROR_NO_INPXML&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;XML input file was not found.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">307</span><span class="p">,</span> <span class="s1">&#39;ERROR_MISSING_RETRIEVED_FILES&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Some required files were not retrieved.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">308</span><span class="p">,</span>
+                       <span class="s1">&#39;ERROR_FLEURINPDATA_INPUT_NOT_VALID&#39;</span><span class="p">,</span>
+                       <span class="n">message</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;During parsing: FleurinpData could not be initialized, see log. &#39;</span>
+                                <span class="s1">&#39;Maybe no Schemafile was found or the Fleurinput is not valid.&#39;</span><span class="p">))</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">309</span><span class="p">,</span> <span class="s1">&#39;ERROR_FLEURINPDATA_NOT_VALID&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;During parsing: FleurinpData failed validation.&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FleurinputgenCalculation.prepare_for_submission"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.calculation.fleurinputgen.FleurinputgenCalculation.prepare_for_submission">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_for_submission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the routine to be called when you want to create</span>
+<span class="sd">        the input files for the inpgen with the plug-in.</span>
+
+<span class="sd">        :param folder: a aiida.common.folders.Folder subclass where</span>
+<span class="sd">                           the plugin should put all its files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get the connection between coordination number and element symbol</span>
+        <span class="n">_atomic_numbers</span> <span class="o">=</span> <span class="p">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]:</span> <span class="n">num</span> <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">PeriodicTableElements</span><span class="p">)}</span>
+
+        <span class="n">possible_namelists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_possible_namelists</span>
+        <span class="n">possible_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_possible_params</span>
+        <span class="n">local_copy_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">remote_copy_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">remote_symlink_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">bulk</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">film</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># convert these &#39;booleans&#39; to the inpgen format.</span>
+        <span class="n">replacer_values_bool</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;False&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">]</span>
+        <span class="c1"># some keywords require a string &quot; around them in the input file.</span>
+        <span class="n">string_replace</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;econfig&#39;</span><span class="p">,</span> <span class="s1">&#39;lo&#39;</span><span class="p">,</span> <span class="s1">&#39;element&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;xctyp&#39;</span><span class="p">]</span>
+
+        <span class="c1"># of some keys only the values are written to the file, specify them here.</span>
+        <span class="n">val_only_namelist</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;soc&#39;</span><span class="p">,</span> <span class="s1">&#39;qss&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Scaling comes from the Structure</span>
+        <span class="c1"># but we have to convert from Angstrom to a.u (bohr radii)</span>
+        <span class="n">scaling_factors</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+        <span class="n">scaling_lat</span> <span class="o">=</span> <span class="mf">1.</span>  <span class="c1"># /bohr_to_ang = 0.52917720859</span>
+        <span class="n">scaling_pos</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">BOHR_A</span>  <span class="c1"># Angstrom to atomic</span>
+        <span class="n">own_lattice</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># not self._use_aiida_structure</span>
+
+        <span class="c1">##########################################</span>
+        <span class="c1">############# INPUT CHECK ################</span>
+        <span class="c1">##########################################</span>
+
+        <span class="c1"># first check existence of structure and if 1D, 2D, 3D</span>
+        <span class="n">structure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">structure</span>
+
+        <span class="n">pbc</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">pbc</span>
+        <span class="k">if</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">pbc</span><span class="p">:</span>
+            <span class="n">bulk</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">film</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># check existence of parameters (optional)</span>
+        <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># use default</span>
+            <span class="n">parameters_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parameters_dict</span> <span class="o">=</span> <span class="n">_lowercase_dict</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">(),</span> <span class="n">dict_name</span><span class="o">=</span><span class="s1">&#39;parameters&#39;</span><span class="p">)</span>
+
+        <span class="c1"># we write always out rel coordinates, because thats the way FLEUR uses</span>
+        <span class="c1"># them best. we have to convert them from abs, because thats how they</span>
+        <span class="c1"># are stored in a Structure node. cartesian=F is default</span>
+        <span class="k">if</span> <span class="s1">&#39;input&#39;</span> <span class="ow">in</span> <span class="n">parameters_dict</span><span class="p">:</span>
+            <span class="n">parameters_dict</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">][</span><span class="s1">&#39;cartesian&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">film</span><span class="p">:</span>
+                <span class="n">parameters_dict</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">][</span><span class="s1">&#39;film&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">bulk</span><span class="p">:</span>
+                <span class="n">parameters_dict</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;cartesian&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+            <span class="k">elif</span> <span class="n">film</span><span class="p">:</span>
+                <span class="n">parameters_dict</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;cartesian&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;film&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+
+        <span class="n">namelists_toprint</span> <span class="o">=</span> <span class="n">possible_namelists</span>
+
+        <span class="n">input_params</span> <span class="o">=</span> <span class="n">parameters_dict</span>
+
+        <span class="k">if</span> <span class="s1">&#39;title&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">input_params</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inp_title</span> <span class="o">=</span> <span class="n">input_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span>
+        <span class="c1"># TODO validate type of values of the input parameter keys ?</span>
+
+        <span class="c1"># check input_parameters</span>
+        <span class="k">for</span> <span class="n">namelist</span><span class="p">,</span> <span class="n">paramdic</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">input_params</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s1">&#39;atom&#39;</span> <span class="ow">in</span> <span class="n">namelist</span><span class="p">:</span>  <span class="c1"># this namelist can be specified more often</span>
+                <span class="c1"># special atom namelist needs to be set for writing,</span>
+                <span class="c1">#  but insert it in the right spot!</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">namelists_toprint</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;atom&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">namelists_toprint</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">namelist</span><span class="p">)</span>
+                <span class="n">namelist</span> <span class="o">=</span> <span class="s1">&#39;atom&#39;</span>
+            <span class="k">if</span> <span class="n">namelist</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">possible_namelists</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s2">&quot;The namelist &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not supported by the fleur&quot;</span>
+                                           <span class="s2">&quot; inputgenerator. Check on the fleur website or add &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span>
+                                           <span class="s1">&#39;to _possible_namelists.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">namelist</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">paramdic</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">para</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">possible_params</span><span class="p">[</span><span class="n">namelist</span><span class="p">]:</span>
+                    <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s2">&quot;The property &#39;</span><span class="si">{}</span><span class="s2">&#39; is not supported by the &quot;</span>
+                                               <span class="s2">&quot;namelist &#39;</span><span class="si">{}</span><span class="s2">&#39;. &quot;</span>
+                                               <span class="s1">&#39;Check the fleur website, or if it really is,&#39;</span>
+                                               <span class="s1">&#39; update _possible_params. &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">para</span><span class="p">,</span> <span class="n">namelist</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">string_replace</span><span class="p">:</span>
+                    <span class="c1"># TODO check if its in the parameter dict</span>
+                    <span class="n">paramdic</span><span class="p">[</span><span class="n">para</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_to_fortran_string</span><span class="p">(</span><span class="n">paramdic</span><span class="p">[</span><span class="n">para</span><span class="p">])</span>
+                <span class="c1"># things that are in string replace can never be a bool</span>
+                <span class="c1"># Otherwise input where someone given the title &#39;F&#39; would fail...</span>
+                <span class="k">elif</span> <span class="n">paramdic</span><span class="p">[</span><span class="n">para</span><span class="p">]</span> <span class="ow">in</span> <span class="n">replacer_values_bool</span><span class="p">:</span>
+                    <span class="c1"># because 1/1.0 == True, and 0/0.0 == False</span>
+                    <span class="c1"># maybe change in convert_to_fortran that no error occurs</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">paramdic</span><span class="p">[</span><span class="n">para</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">paramdic</span><span class="p">[</span><span class="n">para</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                            <span class="n">paramdic</span><span class="p">[</span><span class="n">para</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_to_fortran_bool</span><span class="p">(</span><span class="n">paramdic</span><span class="p">[</span><span class="n">para</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">paramdic</span><span class="p">[</span><span class="n">para</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_to_fortran_bool</span><span class="p">(</span><span class="n">paramdic</span><span class="p">[</span><span class="n">para</span><span class="p">])</span>
+
+            <span class="c1"># in fleur it is possible to give a lattice namelist</span>
+            <span class="k">if</span> <span class="s1">&#39;lattice&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">input_params</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">own_lattice</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">structure</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>  <span class="c1"># two structures given?</span>
+                    <span class="c1"># which one should be prepared? TODO: log warning or even error</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_aiida_structure</span><span class="p">:</span>
+                        <span class="n">input_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;lattice&#39;</span><span class="p">,</span> <span class="p">{})</span>
+                        <span class="n">own_lattice</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1">#TODO check if input parameter dict is consistent to given structure.</span>
+        <span class="c1"># if not issue warnings.</span>
+        <span class="c1"># TODO allow only usual kpt meshes and use therefore Aiida kpointData</span>
+        <span class="c1"># if self._use_kpoints:</span>
+        <span class="c1">#     try:</span>
+        <span class="c1">#         kpoints = inputdict.pop(self.get_linkname(&#39;kpoints&#39;))</span>
+        <span class="c1">#     except KeyError:</span>
+        <span class="c1">#         raise InputValidationError(&quot;No kpoints specified for this&quot;</span>
+        <span class="c1">#                                    &quot; calculation&quot;)</span>
+        <span class="c1">#     if not isinstance(kpoints, KpointsData):</span>
+        <span class="c1">#         raise InputValidationError(&quot;kpoints is not of type KpointsData&quot;)</span>
+
+        <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">code</span>
+
+        <span class="c1"># check existence of settings (optional)</span>
+        <span class="k">if</span> <span class="s1">&#39;settings&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">settings</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">settings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">settings_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">settings_dict</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+
+        <span class="c1"># check for for allowed keys, ignore unknown keys but warn.</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings_keys</span><span class="p">:</span>
+                <span class="c1"># TODO warning</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;settings dict key </span><span class="si">%s</span><span class="s1"> for Fleur calculation&#39;</span>
+                                 <span class="s1">&#39;not recognized, only </span><span class="si">%s</span><span class="s1"> are allowed.&#39;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings_keys</span><span class="p">))</span>
+
+        <span class="c1">##############################</span>
+        <span class="c1"># END OF INITIAL INPUT CHECK #</span>
+        <span class="c1">##############################</span>
+
+        <span class="c1">#######################################################</span>
+        <span class="c1">######### PREPARE PARAMETERS FOR INPUT FILE ###########</span>
+        <span class="c1">#######################################################</span>
+
+        <span class="c1">#### STRUCTURE_PARAMETERS ####</span>
+
+        <span class="n">scaling_factor_card</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">cell_parameters_card</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="c1"># We allow to set the significant figures format, because sometimes</span>
+        <span class="c1"># inpgen has numerical problems which are not there with less precise formatting</span>
+        <span class="n">sf_c</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;significant_figures_cell&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+        <span class="n">sf_p</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;significant_figure_positions&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">own_lattice</span><span class="p">:</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">cell</span>
+            <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">:</span>
+                <span class="n">scaled</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">*</span> <span class="n">scaling_pos</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">]</span>  <span class="c1"># scaling_pos=1./bohr_to_ang</span>
+                <span class="n">reg_string</span> <span class="o">=</span> <span class="s1">&#39;{0:18.&#39;</span> <span class="o">+</span> <span class="n">sf_c</span> <span class="o">+</span> <span class="s1">&#39;f} {1:18.&#39;</span> <span class="o">+</span> <span class="n">sf_c</span> <span class="o">+</span> <span class="s1">&#39;f} {2:18.&#39;</span> <span class="o">+</span> <span class="n">sf_c</span> <span class="o">+</span> <span class="s1">&#39;f}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">cell_parameters_card</span> <span class="o">+=</span> <span class="p">(</span><span class="n">reg_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scaled</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">scaled</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">scaled</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="n">reg_string</span> <span class="o">=</span> <span class="s1">&#39;{0:18.&#39;</span> <span class="o">+</span> <span class="n">sf_c</span> <span class="o">+</span> <span class="s1">&#39;f} {1:18.&#39;</span> <span class="o">+</span> <span class="n">sf_c</span> <span class="o">+</span> <span class="s1">&#39;f} {2:18.&#39;</span> <span class="o">+</span> <span class="n">sf_c</span> <span class="o">+</span> <span class="s1">&#39;f}</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">scaling_factor_card</span> <span class="o">+=</span> <span class="p">(</span><span class="n">reg_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scaling_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">scaling_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">scaling_factors</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+
+        <span class="c1">#### ATOMIC_POSITIONS ####</span>
+
+        <span class="c1"># TODO: be careful with units</span>
+        <span class="n">atomic_positions_card_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+        <span class="n">atomic_positions_card_listtmp</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">own_lattice</span><span class="p">:</span>
+            <span class="n">natoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
+
+            <span class="c1"># for FLEUR true, general not, because you could put several</span>
+            <span class="c1"># atoms on a site</span>
+            <span class="c1"># TODO: test that only one atom at site?</span>
+
+            <span class="c1"># TODO this feature might change in Fleur, do different. that in inpgen kind gets a name, which will also be the name in fleur inp.xml.</span>
+            <span class="c1"># now user has to make kind_name = atom id.</span>
+            <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">structure</span><span class="o">.</span><span class="n">sites</span><span class="p">:</span>
+                <span class="n">kind_name</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">kind_name</span>
+                <span class="n">kind</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">get_kind</span><span class="p">(</span><span class="n">kind_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">kind</span><span class="o">.</span><span class="n">has_vacancies</span><span class="p">:</span>
+                    <span class="c1"># then we do not at atoms with weights smaller one</span>
+                    <span class="k">if</span> <span class="n">kind</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">:</span>
+                        <span class="n">natoms</span> <span class="o">=</span> <span class="n">natoms</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="c1"># Log message?</span>
+                        <span class="k">continue</span>
+                <span class="c1"># TODO: list I assume atoms therefore I just get the first one...</span>
+                <span class="n">site_symbol</span> <span class="o">=</span> <span class="n">kind</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">atomic_number</span> <span class="o">=</span> <span class="n">_atomic_numbers</span><span class="p">[</span><span class="n">site_symbol</span><span class="p">]</span>
+                <span class="n">atomic_number_name</span> <span class="o">=</span> <span class="n">atomic_number</span>
+
+                <span class="c1"># per default we use relative coordinates in Fleur</span>
+                <span class="c1"># we have to scale back to atomic units from angstrom</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">position</span>
+                <span class="k">if</span> <span class="n">bulk</span><span class="p">:</span>
+                    <span class="n">vector_rel</span> <span class="o">=</span> <span class="n">abs_to_rel</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">film</span><span class="p">:</span>
+                    <span class="n">vector_rel</span> <span class="o">=</span> <span class="n">abs_to_rel_f</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">structure</span><span class="o">.</span><span class="n">pbc</span><span class="p">)</span>
+                    <span class="n">vector_rel</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector_rel</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">scaling_pos</span>
+
+                <span class="k">if</span> <span class="n">site_symbol</span> <span class="o">!=</span> <span class="n">kind_name</span><span class="p">:</span>  <span class="c1"># This is an important fact, if user renames it becomes a new atomtype or species!</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="c1"># Kind names can be more then numbers now, this might need to be reworked</span>
+                        <span class="n">head</span> <span class="o">=</span> <span class="n">kind_name</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;0123456789&#39;</span><span class="p">)</span>
+                        <span class="n">kind_namet</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kind_name</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">head</span><span class="p">):])</span>
+                        <span class="c1">#if int(kind_name[len(head)]) &gt; 4:</span>
+                        <span class="c1">#    raise InputValidationError(&#39;New specie name/label should start with a digit smaller than 4&#39;)</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span>
+                            <span class="s1">&#39;Warning: Kind name </span><span class="si">{}</span><span class="s1"> will be ignored by the FleurinputgenCalculation and not set a charge number.&#39;</span>
+                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kind_name</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">atomic_number_name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atomic_number</span><span class="p">,</span> <span class="n">kind_namet</span><span class="p">)</span>
+                    <span class="c1"># append a label to the detached atom</span>
+                    <span class="n">reg_string</span> <span class="o">=</span> <span class="s1">&#39;    </span><span class="si">{0:7}</span><span class="s1"> {1:18.&#39;</span> <span class="o">+</span> <span class="n">sf_p</span> <span class="o">+</span> <span class="s1">&#39;f} {2:18.&#39;</span> <span class="o">+</span> <span class="n">sf_p</span> <span class="o">+</span> <span class="s1">&#39;f} {3:18.&#39;</span> <span class="o">+</span> <span class="n">sf_p</span> <span class="o">+</span> <span class="s1">&#39;f} </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="n">atomic_positions_card_listtmp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">reg_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atomic_number_name</span><span class="p">,</span> <span class="n">vector_rel</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vector_rel</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">vector_rel</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">kind_namet</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">reg_string</span> <span class="o">=</span> <span class="s1">&#39;    </span><span class="si">{0:7}</span><span class="s1"> {1:18.&#39;</span> <span class="o">+</span> <span class="n">sf_p</span> <span class="o">+</span> <span class="s1">&#39;f} {2:18.&#39;</span> <span class="o">+</span> <span class="n">sf_p</span> <span class="o">+</span> <span class="s1">&#39;f} {3:18.&#39;</span> <span class="o">+</span> <span class="n">sf_p</span> <span class="o">+</span> <span class="s1">&#39;f}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="n">atomic_positions_card_listtmp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">reg_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atomic_number_name</span><span class="p">,</span> <span class="n">vector_rel</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vector_rel</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">vector_rel</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="c1"># TODO check format</span>
+            <span class="c1"># we write it later, since we do not know what natoms is before the loop...</span>
+            <span class="n">atomic_positions_card_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;    </span><span class="si">{0:3}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">natoms</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">atomic_positions_card_listtmp</span><span class="p">:</span>
+                <span class="n">atomic_positions_card_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">card</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># TODO with own lattice atomic positions have to come from somewhere</span>
+            <span class="c1"># else.... User input?</span>
+            <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s1">&#39;fleur lattice needs also the atom &#39;</span>
+                                       <span class="s1">&#39; position as input,&#39;</span>
+                                       <span class="s1">&#39; not implemented yet, sorry!&#39;</span><span class="p">)</span>
+        <span class="n">atomic_positions_card</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">atomic_positions_card_list</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">atomic_positions_card_list</span>  <span class="c1"># Free memory</span>
+
+        <span class="c1">#### Kpts ####</span>
+
+        <span class="c1"># TODO: kpts</span>
+        <span class="c1"># kpoints_card = &quot;&quot;#.join(kpoints_card_list)</span>
+        <span class="c1">#del kpoints_card_list</span>
+
+        <span class="c1">#######################################</span>
+        <span class="c1">#### WRITE ALL CARDS IN INPUT FILE ####</span>
+
+        <span class="n">input_filename</span> <span class="o">=</span> <span class="n">folder</span><span class="o">.</span><span class="n">get_abs_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_INPUT_FILE_NAME</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+
+            <span class="c1"># first write title</span>
+            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inp_title</span><span class="p">))</span>
+
+            <span class="c1"># then write &amp;input namelist</span>
+            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&amp;</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">))</span>
+
+            <span class="c1"># namelist content; set to {} if not present, so that we leave an</span>
+            <span class="c1"># empty namelist</span>
+            <span class="n">namelist</span> <span class="o">=</span> <span class="n">input_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">namelist</span><span class="p">)):</span>
+                <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">get_input_data_text</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;/</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Write lattice information now</span>
+            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cell_parameters_card</span><span class="p">)</span>
+            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0:18.10f}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scaling_lat</span><span class="p">))</span>
+            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">scaling_factor_card</span><span class="p">)</span>
+            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Write Atomic positons</span>
+            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">atomic_positions_card</span><span class="p">)</span>
+
+            <span class="c1"># Write namelists after atomic positions</span>
+            <span class="k">for</span> <span class="n">namels_name</span> <span class="ow">in</span> <span class="n">namelists_toprint</span><span class="p">:</span>
+                <span class="n">namelist</span> <span class="o">=</span> <span class="n">input_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">namels_name</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="k">if</span> <span class="n">namelist</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;atom&#39;</span> <span class="ow">in</span> <span class="n">namels_name</span><span class="p">:</span>
+                        <span class="n">namels_name</span> <span class="o">=</span> <span class="s1">&#39;atom&#39;</span>
+                    <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&amp;</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">namels_name</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">namels_name</span> <span class="ow">in</span> <span class="n">val_only_namelist</span><span class="p">:</span>
+                        <span class="n">make_reversed</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">if</span> <span class="n">namels_name</span> <span class="o">==</span> <span class="s1">&#39;soc&#39;</span><span class="p">:</span>
+                            <span class="n">make_reversed</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">namelist</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="n">make_reversed</span><span class="p">):</span>
+                            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">get_input_data_text</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">namelist</span><span class="p">)):</span>
+                            <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">get_input_data_text</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+                    <span class="n">infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;/</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="c1"># infile.write(kpoints_card)</span>
+
+        <span class="k">if</span> <span class="n">input_params</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s1">&#39;input_params leftover: The following namelists are specified&#39;</span>
+                                       <span class="s1">&#39; in input_params, but are &#39;</span>
+                                       <span class="s1">&#39;not valid namelists for the current type of calculation: &#39;</span>
+                                       <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">input_params</span><span class="o">.</span><span class="n">keys</span><span class="p">()))))</span>
+
+        <span class="n">calcinfo</span> <span class="o">=</span> <span class="n">CalcInfo</span><span class="p">()</span>
+
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span>
+
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">local_copy_list</span> <span class="o">=</span> <span class="n">local_copy_list</span>
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">remote_copy_list</span> <span class="o">=</span> <span class="n">remote_copy_list</span>
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">remote_symlink_list</span> <span class="o">=</span> <span class="n">remote_symlink_list</span>
+
+        <span class="c1"># Retrieve per default only out file and inp.xml file?</span>
+        <span class="n">retrieve_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_INPXML_FILE_NAME</span><span class="p">)</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_OUTPUT_FILE_NAME</span><span class="p">)</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SHELLOUT_FILE_NAME</span><span class="p">)</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ERROR_FILE_NAME</span><span class="p">)</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_STRUCT_FILE_NAME</span><span class="p">)</span>
+        <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_INPUT_FILE_NAME</span><span class="p">)</span>
+
+        <span class="c1"># user specific retrieve</span>
+        <span class="n">add_retrieve</span> <span class="o">=</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;additional_retrieve_list&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">add_retrieve</span><span class="p">:</span>
+            <span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+
+        <span class="n">remove_retrieve</span> <span class="o">=</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;remove_from_retrieve_list&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">remove_retrieve</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">retrieve_list</span><span class="p">:</span>
+                <span class="n">retrieve_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">retrieve_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">retrieve_list</span><span class="p">:</span>
+            <span class="n">calcinfo</span><span class="o">.</span><span class="n">retrieve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+
+        <span class="n">codeinfo</span> <span class="o">=</span> <span class="n">CodeInfo</span><span class="p">()</span>
+        <span class="c1"># , &quot;-electronConfig&quot;] # TODO? let the user decide -electronconfig?</span>
+        <span class="c1">#cmdline_params = [&#39;-explicit&#39;, &#39;-inc&#39;, &#39;+all&#39;, &#39;-f&#39;, &#39;{}&#39;.format(self._INPUT_FILE_NAME)]</span>
+        <span class="n">cmdline_params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-explicit&#39;</span><span class="p">]</span>
+
+        <span class="c1"># user specific commandline_options</span>
+        <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cmdline&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">cmdline_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">cmdline_params</span> <span class="o">=</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">cmdline_params</span><span class="p">))</span>
+
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">code_uuid</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">uuid</span>
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">stdin_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_INPUT_FILE_NAME</span>
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">stdout_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SHELLOUT_FILE_NAME</span>  <span class="c1"># shell output will be piped in file</span>
+        <span class="n">codeinfo</span><span class="o">.</span><span class="n">stderr_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ERROR_FILE_NAME</span>  <span class="c1"># std error too</span>
+
+        <span class="n">calcinfo</span><span class="o">.</span><span class="n">codes_info</span> <span class="o">=</span> <span class="p">[</span><span class="n">codeinfo</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">calcinfo</span></div></div>
+
+
+<div class="viewcode-block" id="conv_to_fortran"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.calculation.fleurinputgen.conv_to_fortran">[docs]</a><span class="k">def</span> <span class="nf">conv_to_fortran</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">quote_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param val: the value to be read and converted to a Fortran-friendly string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Note that bool should come before integer, because a boolean matches also</span>
+    <span class="c1"># isinstance(...,int)</span>
+    <span class="kn">import</span> <span class="nn">numpy</span>
+    <span class="kn">import</span> <span class="nn">numbers</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">bool_</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">val</span><span class="p">:</span>
+            <span class="n">val_str</span> <span class="o">=</span> <span class="s1">&#39;.true.&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">val_str</span> <span class="o">=</span> <span class="s1">&#39;.false.&#39;</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">):</span>
+        <span class="n">val_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Real</span><span class="p">):</span>
+        <span class="n">val_str</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">{:18.10e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">quote_strings</span><span class="p">:</span>
+            <span class="n">val_str</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{!s}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">val_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{!s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid value &#39;</span><span class="si">{}</span><span class="s2">&#39; of type &#39;</span><span class="si">{}</span><span class="s2">&#39; passed, accepts only booleans, ints, &quot;</span>
+                         <span class="s1">&#39;floats and strings&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">val_str</span></div>
+
+
+<span class="c1"># TODO rewrite for fleur/ delete unnecessary parts</span>
+<div class="viewcode-block" id="get_input_data_text"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.calculation.fleurinputgen.get_input_data_text">[docs]</a><span class="k">def</span> <span class="nf">get_input_data_text</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">value_only</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a key and a value, return a string (possibly multiline for arrays)</span>
+<span class="sd">    with the text to be added to the input file.</span>
+
+<span class="sd">    :param key: the flag name</span>
+<span class="sd">    :param val: the flag value. If it is an array, a line for each element</span>
+<span class="sd">            is produced, with variable indexing starting from 1.</span>
+<span class="sd">            Each value is formatted using the conv_to_fortran function.</span>
+<span class="sd">    :param mapping: Optional parameter, must be provided if val is a dictionary.</span>
+<span class="sd">            It maps each key of the &#39;val&#39; dictionary to the corresponding</span>
+<span class="sd">            list index. For instance, if ``key=&#39;magn&#39;``,</span>
+<span class="sd">            ``val = {&#39;Fe&#39;: 0.1, &#39;O&#39;: 0.2}`` and ``mapping = {&#39;Fe&#39;: 2, &#39;O&#39;: 1}``,</span>
+<span class="sd">            this function will return the two lines ``magn(1) = 0.2`` and</span>
+<span class="sd">            ``magn(2) = 0.1``. This parameter is ignored if &#39;val&#39;</span>
+<span class="sd">            is not a dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#from aiida.common.utils import conv_to_fortran</span>
+    <span class="c1"># I don&#39;t try to do iterator=iter(val) and catch TypeError because</span>
+    <span class="c1"># it would also match strings</span>
+    <span class="c1"># I check first the dictionary, because it would also matc</span>
+    <span class="c1"># hasattr(__iter__)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mapping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If &#39;val&#39; is a dictionary, you must provide also &quot;</span> <span class="s2">&quot;the &#39;mapping&#39; parameter&quot;</span><span class="p">)</span>
+
+        <span class="c1"># At difference with the case of a list, at the beginning</span>
+        <span class="c1"># list_of_strings</span>
+        <span class="c1"># is a list of 2-tuples where the first element is the idx, and the</span>
+        <span class="c1"># second is the actual line. This is used at the end to</span>
+        <span class="c1"># resort everything.</span>
+        <span class="n">list_of_strings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">elemk</span><span class="p">,</span> <span class="n">itemval</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">elemk</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unable to find the key &#39;</span><span class="si">{}</span><span class="s2">&#39; in the mapping &quot;</span> <span class="s1">&#39;dictionary&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elemk</span><span class="p">))</span>
+
+            <span class="n">list_of_strings</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;  </span><span class="si">{0}</span><span class="s1">(</span><span class="si">{2}</span><span class="s1">)=</span><span class="si">{1}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">conv_to_fortran</span><span class="p">(</span><span class="n">itemval</span><span class="p">),</span> <span class="n">idx</span><span class="p">)))</span>
+            <span class="c1"># changed {0}({2}) = {1}\n&quot;.format</span>
+
+        <span class="c1"># I first have to resort, then to remove the index from the first</span>
+        <span class="c1"># column, finally to join the strings</span>
+        <span class="n">list_of_strings</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">zip_six</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">list_of_strings</span><span class="p">)))[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_of_strings</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value_only</span><span class="p">:</span>
+            <span class="n">list_of_strings</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s1">&#39;  (</span><span class="si">{1}</span><span class="s1">)</span><span class="si">{0}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">conv_to_fortran</span><span class="p">(</span><span class="n">itemval</span><span class="p">),</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">itemval</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># a list/array/tuple of values</span>
+            <span class="n">list_of_strings</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s1">&#39;  </span><span class="si">{0}</span><span class="s1">(</span><span class="si">{2}</span><span class="s1">)=</span><span class="si">{1}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">conv_to_fortran</span><span class="p">(</span><span class="n">itemval</span><span class="p">),</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">itemval</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_of_strings</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># single value</span>
+        <span class="c1"># return &quot;  {0}={1} &quot;.format(key, conv_to_fortran(val))</span>
+        <span class="k">if</span> <span class="n">value_only</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39; </span><span class="si">{0}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;  </span><span class="si">{0}</span><span class="s1">=</span><span class="si">{1}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_lowercase_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">,</span> <span class="n">dict_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts every entry in a dictionary to lowercase</span>
+
+<span class="sd">    :param dic: parameters dictionary</span>
+<span class="sd">    :param dict_name: dictionary name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dic</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">new_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">dic</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_dict</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">):</span>
+            <span class="n">num_items</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dic</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">double_keys</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">num_items</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s2">&quot;Inside the dictionary &#39;</span><span class="si">{}</span><span class="s2">&#39; there are the following keys that &quot;</span>
+                                       <span class="s1">&#39;are repeated more than once when compared case-insensitively:&#39;</span>
+                                       <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.This is not allowed.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dict_name</span><span class="p">,</span> <span class="n">double_keys</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">new_dict</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;_lowercase_dict accepts only dictionaries as argument&#39;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

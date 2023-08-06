@@ -1,0 +1,614 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fleur Magnetic Anisotropy Energy workflow &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Fleur Spin-Spiral Dispersion Converge workchain" href="ssdisp_conv_wc.html" />
+    <link rel="prev" title="Fleur Dzyaloshinskii–Moriya Interaction energy workchain" href="dmi_wc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../ug_index.html">User’s guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/getting_started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="wc_index.html">AiiDA-FLEUR WorkChains</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="wc_index.html#general-design">General design</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="wc_index.html#workchain-classification">Workchain classification</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="wc_index.html#basic-technical-workchains">Basic (Technical) Workchains</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="wc_index.html#more-advanced-scientific-workchains">More advanced (Scientific) Workchains</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/hints_faq.html">Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../ug_index.html">User’s guide</a> &raquo;</li>
+        
+          <li><a href="wc_index.html">AiiDA-FLEUR WorkChains</a> &raquo;</li>
+        
+      <li>Fleur Magnetic Anisotropy Energy workflow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fleur-magnetic-anisotropy-energy-workflow">
+<span id="mae-wc"></span><h1><a class="toc-backref" href="#id1">Fleur Magnetic Anisotropy Energy workflow</a><a class="headerlink" href="#fleur-magnetic-anisotropy-energy-workflow" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><strong>Current version</strong>: 0.2.0</p></li>
+<li><p><strong>Class</strong>: <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.mae.FleurMaeWorkChain" title="aiida_fleur.workflows.mae.FleurMaeWorkChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurMaeWorkChain</span></code></a></p></li>
+<li><p><strong>String to pass to the</strong> <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.plugins.html#aiida.plugins.WorkflowFactory" title="(in AiiDA v1.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">WorkflowFactory()</span></code></a>: <code class="docutils literal notranslate"><span class="pre">fleur.mae</span></code></p></li>
+<li><p><strong>Workflow type</strong>: Scientific workchain, force-theorem subgroup</p></li>
+<li><p><strong>Aim</strong>: Calculate Magnetic Anisotropy Energies along given spin quantization axes</p></li>
+</ul>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#fleur-magnetic-anisotropy-energy-workflow" id="id1">Fleur Magnetic Anisotropy Energy workflow</a></p>
+<ul>
+<li><p><a class="reference internal" href="#description-purpose" id="id2">Description/Purpose</a></p></li>
+<li><p><a class="reference internal" href="#input-nodes" id="id3">Input nodes</a></p></li>
+<li><p><a class="reference internal" href="#output-nodes" id="id4">Output nodes</a></p></li>
+<li><p><a class="reference internal" href="#supported-input-configurations" id="id5">Supported input configurations</a></p></li>
+<li><p><a class="reference internal" href="#error-handling" id="id6">Error handling</a></p></li>
+<li><p><a class="reference internal" href="#example-usage" id="id7">Example usage</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Import Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.workflows.mae</span> <span class="kn">import</span> <span class="n">FleurMaeWorkChain</span>
+<span class="c1">#or</span>
+<span class="n">WorkflowFactory</span><span class="p">(</span><span class="s1">&#39;fleur.mae&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="description-purpose">
+<h2><a class="toc-backref" href="#id2">Description/Purpose</a><a class="headerlink" href="#description-purpose" title="Permalink to this headline">¶</a></h2>
+<p>This workchain calculates Magnetic Anisotropy Energy over a given set of spin-quantization axes.
+The force-theorem is employed which means the workchain converges a reference charge density first
+then it submits a single FleurCalculation with a <cite>&lt;forceTheorem&gt;</cite> tag.</p>
+<p>The task of the workchain us to calculate the energy difference between two or several structures
+having a different magnetisation profile:</p>
+<a class="reference internal image-reference" href="../../_images/mae_energies.png"><img alt="../../_images/mae_energies.png" class="align-center" src="../../_images/mae_energies.png" style="width: 60%;" /></a>
+<p>To do this, the workchain employs the force theorem approach:</p>
+<a class="reference internal image-reference" href="../../_images/mae_force.png"><img alt="../../_images/mae_force.png" class="align-center" src="../../_images/mae_force.png" style="width: 110%;" /></a>
+<p>It is not always necessary to start with a structure. Setting up input
+parameters correctly (see <a class="reference internal" href="ssdisp_wc.html#layout-ssdisp"><span class="std std-ref">Supported input configurations</span></a>) one can start from a given FleuinpData, inp.xml
+or converged/not-fully-converged reference charge density.</p>
+</div>
+<div class="section" id="input-nodes">
+<h2><a class="toc-backref" href="#id3">Input nodes</a><a class="headerlink" href="#input-nodes" title="Permalink to this headline">¶</a></h2>
+<p>The FleurMaeWorkChain employs
+<a class="reference external" href="https://aiida.readthedocs.io/projects/aiida-core/en/latest/working/workflows.html#working-workchains-expose-inputs-outputs">exposed</a> feature of the AiiDA, thus inputs for the nested
+<a class="reference internal" href="scf_wc.html#scf-wc"><span class="std std-ref">SCF</span></a> workchain should be passed in the namespace
+<code class="docutils literal notranslate"><span class="pre">scf</span></code>.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 43%" />
+<col style="width: 34%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>description</p></th>
+<th class="head"><p>required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>scf</p></td>
+<td><p>namespace</p></td>
+<td><p>inputs for nested SCF WorkChain</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>fleur</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Code" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Code</span></code></a></p></td>
+<td><p>Fleur code</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>wf_parameters</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a></p></td>
+<td><p>Settings of the workchain</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>fleurinp</p></td>
+<td><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a></p></td>
+<td><p><a class="reference internal" href="../data/fleurinp_data.html#fleurinp-data"><span class="std std-ref">FLEUR input</span></a></p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>remote</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.RemoteData" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteData</span></code></a></p></td>
+<td><p>Remote folder of another calculation</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>options</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a></p></td>
+<td><p>AiiDA options (computational resources)</p></td>
+<td><p>no</p></td>
+</tr>
+</tbody>
+</table>
+<p>Only <strong>fleur</strong> input is required. However, it does not mean that it is enough to specify <strong>fleur</strong>
+only. One <em>must</em> keep one of the supported input configurations described in the
+<a class="reference internal" href="#layout-mae"><span class="std std-ref">Supported input configurations</span></a> section.</p>
+<div class="section" id="workchain-parameters-and-its-defaults">
+<h3>Workchain parameters and its defaults<a class="headerlink" href="#workchain-parameters-and-its-defaults" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="wf-parameters">
+<h4><code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code><a class="headerlink" href="#wf-parameters" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> - Settings of the workflow behavior. All possible
+keys and their defaults are listed below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="s1">&#39;sqa_ref&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>                  <span class="c1"># sets theta and phi for the reference calc</span>
+<span class="s1">&#39;use_soc_ref&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>                   <span class="c1"># True if reference calc should use SOC terms</span>
+<span class="s1">&#39;sqas_theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.57079</span><span class="p">,</span> <span class="mf">1.57079</span><span class="p">],</span>  <span class="c1"># a list of theta values for the FT</span>
+<span class="s1">&#39;sqas_phi&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.57079</span><span class="p">],</span>        <span class="c1"># a list of phi values for the FT</span>
+<span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>                        <span class="c1"># False if use MPI version for the FT calc</span>
+<span class="s1">&#39;only_even_MPI&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>                 <span class="c1"># True if suppress parallelisation having odd number of MPI</span>
+<span class="s1">&#39;soc_off&#39;</span><span class="p">:</span> <span class="p">[],</span>                          <span class="c1"># a list of atom labels to switch off SOC term</span>
+<span class="s1">&#39;inpxml_changes&#39;</span><span class="p">:</span> <span class="p">[]</span>                    <span class="c1"># additional changes before the FT step</span>
+</pre></div>
+</div>
+<p><strong>soc_off</strong> is a python list containing atoms labels. SOC is switched off for species,
+corresponding to the atom with a given label.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It can be that the specie correspond to several atoms and <strong>soc_off</strong> switches off SOC for atoms
+that was not intended to change. You must be careful and make sure that several atoms do not
+correspond to a given specie.</p>
+</div>
+<p>An example of <strong>soc_off</strong> work:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;soc_off&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;458&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>changes</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">species</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Ir-2&quot;</span> <span class="na">element</span><span class="o">=</span><span class="s">&quot;Ir&quot;</span> <span class="na">atomicNumber</span><span class="o">=</span><span class="s">&quot;77&quot;</span> <span class="na">coreStates</span><span class="o">=</span><span class="s">&quot;17&quot;</span> <span class="na">magMom</span><span class="o">=</span><span class="s">&quot;.00000000&quot;</span> <span class="na">flipSpin</span><span class="o">=</span><span class="s">&quot;T&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">mtSphere</span> <span class="na">radius</span><span class="o">=</span><span class="s">&quot;2.52000000&quot;</span> <span class="na">gridPoints</span><span class="o">=</span><span class="s">&quot;747&quot;</span> <span class="na">logIncrement</span><span class="o">=</span><span class="s">&quot;.01800000&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">atomicCutoffs</span> <span class="na">lmax</span><span class="o">=</span><span class="s">&quot;8&quot;</span> <span class="na">lnonsphr</span><span class="o">=</span><span class="s">&quot;6&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">energyParameters</span> <span class="na">s</span><span class="o">=</span><span class="s">&quot;6&quot;</span> <span class="na">p</span><span class="o">=</span><span class="s">&quot;6&quot;</span> <span class="na">d</span><span class="o">=</span><span class="s">&quot;5&quot;</span> <span class="na">f</span><span class="o">=</span><span class="s">&quot;5&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">prodBasis</span> <span class="na">lcutm</span><span class="o">=</span><span class="s">&quot;4&quot;</span> <span class="na">lcutwf</span><span class="o">=</span><span class="s">&quot;8&quot;</span> <span class="na">select</span><span class="o">=</span><span class="s">&quot;4 0 4 2&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">lo</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;SCLO&quot;</span> <span class="na">l</span><span class="o">=</span><span class="s">&quot;1&quot;</span> <span class="na">n</span><span class="o">=</span><span class="s">&quot;5&quot;</span> <span class="na">eDeriv</span><span class="o">=</span><span class="s">&quot;0&quot;</span><span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">species</span><span class="p">&gt;</span>
+-----
+<span class="p">&lt;</span><span class="nt">atomGroup</span> <span class="na">species</span><span class="o">=</span><span class="s">&quot;Ir-2&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">filmPos</span> <span class="na">label</span><span class="o">=</span><span class="s">&quot;                 458&quot;</span><span class="p">&gt;</span>1.000/4.000 1.000/2.000 11.4074000502<span class="p">&lt;/</span><span class="nt">filmPos</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">force</span> <span class="na">calculate</span><span class="o">=</span><span class="s">&quot;T&quot;</span> <span class="na">relaxXYZ</span><span class="o">=</span><span class="s">&quot;TTT&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">nocoParams</span> <span class="na">l_relax</span><span class="o">=</span><span class="s">&quot;F&quot;</span> <span class="na">alpha</span><span class="o">=</span><span class="s">&quot;.00000000&quot;</span> <span class="na">beta</span><span class="o">=</span><span class="s">&quot;.00000000&quot;</span> <span class="na">b_cons_x</span><span class="o">=</span><span class="s">&quot;.00000000&quot;</span> <span class="na">b_cons_y</span><span class="o">=</span><span class="s">&quot;.00000000&quot;</span><span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">atomGroup</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>to:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">species</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Ir-2&quot;</span> <span class="na">element</span><span class="o">=</span><span class="s">&quot;Ir&quot;</span> <span class="na">atomicNumber</span><span class="o">=</span><span class="s">&quot;77&quot;</span> <span class="na">coreStates</span><span class="o">=</span><span class="s">&quot;17&quot;</span> <span class="na">magMom</span><span class="o">=</span><span class="s">&quot;.00000000&quot;</span> <span class="na">flipSpin</span><span class="o">=</span><span class="s">&quot;T&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">mtSphere</span> <span class="na">radius</span><span class="o">=</span><span class="s">&quot;2.52000000&quot;</span> <span class="na">gridPoints</span><span class="o">=</span><span class="s">&quot;747&quot;</span> <span class="na">logIncrement</span><span class="o">=</span><span class="s">&quot;.01800000&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">atomicCutoffs</span> <span class="na">lmax</span><span class="o">=</span><span class="s">&quot;8&quot;</span> <span class="na">lnonsphr</span><span class="o">=</span><span class="s">&quot;6&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">energyParameters</span> <span class="na">s</span><span class="o">=</span><span class="s">&quot;6&quot;</span> <span class="na">p</span><span class="o">=</span><span class="s">&quot;6&quot;</span> <span class="na">d</span><span class="o">=</span><span class="s">&quot;5&quot;</span> <span class="na">f</span><span class="o">=</span><span class="s">&quot;5&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">prodBasis</span> <span class="na">lcutm</span><span class="o">=</span><span class="s">&quot;4&quot;</span> <span class="na">lcutwf</span><span class="o">=</span><span class="s">&quot;8&quot;</span> <span class="na">select</span><span class="o">=</span><span class="s">&quot;4 0 4 2&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">special</span> <span class="na">socscale</span><span class="o">=</span><span class="s">&quot;0.0&quot;</span><span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">lo</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;SCLO&quot;</span> <span class="na">l</span><span class="o">=</span><span class="s">&quot;1&quot;</span> <span class="na">n</span><span class="o">=</span><span class="s">&quot;5&quot;</span> <span class="na">eDeriv</span><span class="o">=</span><span class="s">&quot;0&quot;</span><span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">species</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>As you can see, I was careful about “Ir-2” specie  and it contained a single atom with a
+label 458. Please also refer to <a class="reference internal" href="../data/fleurinp_data.html#setting-labels"><span class="std std-ref">Setting up atom labels</span></a> section to learn how to set labels up.</p>
+<p><strong>sqas_theta</strong> and <strong>sqas_phi</strong> are python lists that set SOC theta and phi values.</p>
+<p><strong>sqa_ref</strong> sets a spin quantization axis [theta, phi] for the reference calculation if SOC terms
+are switched on by <strong>use_soc_ref</strong>.</p>
+</div>
+<div class="section" id="options">
+<h4><code class="docutils literal notranslate"><span class="pre">options</span></code><a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">options</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> - AiiDA options (computational resources).
+Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;num_machines&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;num_mpiprocs_per_machine&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span>
+<span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="s1">&#39;import_sys_environment&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="s1">&#39;environment_variables&#39;</span><span class="p">:</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="output-nodes">
+<h2><a class="toc-backref" href="#id4">Output nodes</a><a class="headerlink" href="#output-nodes" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">out</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> -  Information of
+workflow results like success, last result node, list with convergence behavior</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[],</span>
+<span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">[],</span>
+<span class="s2">&quot;initial_structure&quot;</span><span class="p">:</span> <span class="s2">&quot;ac274613-27f5-4c0b-9d42-bae340007ab1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;is_it_force_theorem&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+<span class="s2">&quot;mae_units&quot;</span><span class="p">:</span> <span class="s2">&quot;eV&quot;</span><span class="p">,</span>
+<span class="s2">&quot;maes&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="mf">0.0006585155416697</span><span class="p">,</span>
+    <span class="mf">0.0048545112659747</span><span class="p">,</span>
+    <span class="mf">0.0</span>
+<span class="p">],</span>
+<span class="s2">&quot;phi&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="mf">0.0</span><span class="p">,</span>
+    <span class="mf">0.0</span><span class="p">,</span>
+    <span class="mf">1.57079</span>
+<span class="p">],</span>
+<span class="s2">&quot;theta&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="mf">0.0</span><span class="p">,</span>
+    <span class="mf">1.57079</span><span class="p">,</span>
+    <span class="mf">1.57079</span>
+<span class="p">],</span>
+<span class="s2">&quot;warnings&quot;</span><span class="p">:</span> <span class="p">[],</span>
+<span class="s2">&quot;workflow_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FleurMaeWorkChain&quot;</span><span class="p">,</span>
+<span class="s2">&quot;workflow_version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.1.0&quot;</span>
+</pre></div>
+</div>
+<p>Resulting Magnetic Anisotropy Directions are sorted according to theirs theta and phi values
+i.e. <code class="docutils literal notranslate"><span class="pre">maes[N]</span></code> corresponds to <code class="docutils literal notranslate"><span class="pre">theta[N]</span></code> and <code class="docutils literal notranslate"><span class="pre">phi[N]</span></code>.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="supported-input-configurations">
+<span id="layout-mae"></span><h2><a class="toc-backref" href="#id5">Supported input configurations</a><a class="headerlink" href="#supported-input-configurations" title="Permalink to this headline">¶</a></h2>
+<p>MAE workchain has several
+input combinations that implicitly define the workchain layout. Only <strong>scf</strong>, <strong>fleurinp</strong> and
+<strong>remote</strong> nodes control the behaviour, other input nodes are truly optional.
+Depending on the setup of the inputs, one of several supported scenarios will happen:</p>
+<ol class="arabic">
+<li><p><strong>scf</strong>:</p>
+<blockquote>
+<div><p>SCF workchain will be submitted to converge the reference charge density which will
+be followed be the force theorem calculation. Depending on the inputs given in the SCF
+namespace, SCF will start from the structure or FleurinpData or will continue
+converging from the given remote_data (see details in <a class="reference internal" href="scf_wc.html#scf-wc"><span class="std std-ref">SCF WorkChain</span></a>).</p>
+</div></blockquote>
+</li>
+<li><p><strong>remote</strong>:</p>
+<blockquote>
+<div><p>Files which belong to the <strong>remote</strong> will be used for the direct submission of the force
+theorem calculation. <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code> file will be converted to FleurinpData and charge density
+will be used as a reference charge density.</p>
+</div></blockquote>
+</li>
+<li><p><strong>remote</strong> + <strong>fleurinp</strong>:</p>
+<blockquote>
+<div><p>Charge density which belongs to <strong>remote</strong> will be used as a reference charge density, however
+<code class="docutils literal notranslate"><span class="pre">inp.xml</span></code> from the <strong>remote</strong> will be ignored. Instead, the given <strong>fleurinp</strong> will be used.
+The aforementioned input files will be used for direct submission of the force theorem
+calculation.</p>
+</div></blockquote>
+</li>
+</ol>
+<p>Other combinations of the input nodes <strong>scf</strong>, <strong>fleurinp</strong> and <strong>remote</strong> are forbidden.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>One <em>must</em> follow one of the supported input configurations. To protect a user from the
+workchain misbehaviour, an error will be thrown if one specifies e.g. both <strong>scf</strong> and <strong>remote</strong>
+inputs because in this case the intention of the user is not clear either he/she wants to
+converge a new charge density or use the given one.</p>
+</div>
+</div>
+<div class="section" id="error-handling">
+<h2><a class="toc-backref" href="#id6">Error handling</a><a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<p>A list of implemented <a class="reference internal" href="../hints/exit_codes.html#exit-codes"><span class="std std-ref">exit codes</span></a>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 94%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>230</p></td>
+<td><p>Invalid workchain parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p>231</p></td>
+<td><p>Invalid input configuration</p></td>
+</tr>
+<tr class="row-even"><td><p>233</p></td>
+<td><p>Input codes do not correspond to fleur or inpgen codes respectively.</p></td>
+</tr>
+<tr class="row-odd"><td><p>235</p></td>
+<td><p>Input file modification failed.</p></td>
+</tr>
+<tr class="row-even"><td><p>236</p></td>
+<td><p>Input file was corrupted after modifications</p></td>
+</tr>
+<tr class="row-odd"><td><p>334</p></td>
+<td><p>Reference calculation failed.</p></td>
+</tr>
+<tr class="row-even"><td><p>335</p></td>
+<td><p>Found no reference calculation remote repository.</p></td>
+</tr>
+<tr class="row-odd"><td><p>336</p></td>
+<td><p>Force theorem calculation failed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="example-usage">
+<h2><a class="toc-backref" href="#id7">Example usage</a><a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">load_node</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.workflows.mae</span> <span class="kn">import</span> <span class="n">FleurMaeWorkChain</span>
+
+<span class="n">structure</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">STRUCTURE_PK</span><span class="p">)</span>
+<span class="n">fleur_code</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">FLEUR_PK</span><span class="p">)</span>
+<span class="n">inpgen_code</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">INPGEN_PK</span><span class="p">)</span>
+
+<span class="n">wf_para</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sqa_ref&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
+                     <span class="s1">&#39;use_soc_ref&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                     <span class="s1">&#39;sqas_theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.57079</span><span class="p">,</span> <span class="mf">1.57079</span><span class="p">],</span>
+                     <span class="s1">&#39;sqas_phi&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.57079</span><span class="p">],</span>
+                     <span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                     <span class="s1">&#39;only_even_MPI&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                     <span class="s1">&#39;soc_off&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                     <span class="s1">&#39;inpxml_changes&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                     <span class="p">})</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;num_mpiprocs_per_machine&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">},</span>
+                     <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;devel&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span>  <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">})</span>
+
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;atom&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="s1">&#39;Pt&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;lmax&#39;</span><span class="p">:</span> <span class="mi">8</span>
+                                 <span class="p">},</span>
+                        <span class="s1">&#39;atom2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="s1">&#39;Fe&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;lmax&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                                  <span class="p">},</span>
+                        <span class="s1">&#39;comp&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;kmax&#39;</span><span class="p">:</span> <span class="mf">3.8</span><span class="p">,</span>
+                                 <span class="p">},</span>
+                        <span class="s1">&#39;kpt&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;div1&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                                <span class="s1">&#39;div2&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+                                <span class="s1">&#39;div3&#39;</span><span class="p">:</span> <span class="mi">1</span>
+                                <span class="p">}})</span>
+
+<span class="n">wf_para_scf</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fleur_runmax&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+               <span class="s1">&#39;itmax_per_run&#39;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
+               <span class="s1">&#39;density_converged&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+               <span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+               <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;density&#39;</span>
+               <span class="p">}</span>
+
+<span class="n">wf_para_scf</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">wf_para_scf</span><span class="p">)</span>
+
+<span class="n">options_scf</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;num_mpiprocs_per_machine&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">},</span>
+                         <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;devel&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span>  <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">})</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;scf&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;wf_parameters&#39;</span><span class="p">:</span> <span class="n">wf_para_scf</span><span class="p">,</span>
+                  <span class="s1">&#39;structure&#39;</span><span class="p">:</span> <span class="n">structure</span><span class="p">,</span>
+                  <span class="s1">&#39;calc_parameters&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">,</span>
+                  <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options_scf</span><span class="p">,</span>
+                  <span class="s1">&#39;inpgen&#39;</span><span class="p">:</span> <span class="n">inpgen_code</span><span class="p">,</span>
+                  <span class="s1">&#39;fleur&#39;</span><span class="p">:</span> <span class="n">fleur_code</span>
+                  <span class="p">},</span>
+          <span class="s1">&#39;wf_parameters&#39;</span><span class="p">:</span> <span class="n">wf_para</span><span class="p">,</span>
+          <span class="s1">&#39;fleur&#39;</span><span class="p">:</span> <span class="n">fleur_code</span><span class="p">,</span>
+          <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span>
+          <span class="p">}</span>
+
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">FleurMaeWorkChain</span><span class="p">,</span> <span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ssdisp_conv_wc.html" class="btn btn-neutral float-right" title="Fleur Spin-Spiral Dispersion Converge workchain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dmi_wc.html" class="btn btn-neutral float-left" title="Fleur Dzyaloshinskii–Moriya Interaction energy workchain" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

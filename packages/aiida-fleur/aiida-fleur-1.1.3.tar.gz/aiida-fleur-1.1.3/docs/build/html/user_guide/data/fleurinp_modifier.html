@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>FleurinpModifier &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AiiDA-FLEUR Calculations" href="../calculations/fleur_calculation_plugins.html" />
+    <link rel="prev" title="FleurinpData" href="fleurinp_data.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../ug_index.html">User’s guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/getting_started.html">Getting started</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="fleurinp_data.html">FleurinpData</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">FleurinpModifier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-methods">User Methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modifying-the-density-matrix-for-lda-u-calculations">Modifying the density matrix for LDA+U calculations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workflows/wc_index.html">AiiDA-FLEUR WorkChains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/hints_faq.html">Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../ug_index.html">User’s guide</a> &raquo;</li>
+        
+          <li><a href="fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a> &raquo;</li>
+        
+      <li>FleurinpModifier</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fleurinpmodifier">
+<span id="fleurinp-mod"></span><h1>FleurinpModifier<a class="headerlink" href="#fleurinpmodifier" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpModifier</span></code></a> class has
+to be used if you want to change anything in a stored
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a>.
+It will store and validate all the changes you wish to do and produce a new
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a> node
+after you are done making changes and apply them.</p>
+<p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpModifier</span></code></a> provides a
+user with methods to change the Fleur input.
+In principle a user can do everything, since he could prepare a FLEUR input himself and create a
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a> object from that input.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the open provenance model nodes stored in the database
+cannot be changed (except extras and comments). Therefore, to modify something in a stored
+<cite>inp.xml</cite> file one has to create a new <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a>
+which is not stored, modify it and store it
+again. However, this node would pop into existence unlinked in the database and this would mean
+we loose the origin from what data it comes from and what was done to it. This is the task of
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpModifier</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>To modify an existing <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a>, a
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpModifier</span></code></a> instance
+has to be initialised staring from the
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a> instance.
+After that, a user should register
+certain modifications which will be cached and can be previewed. They will be applied on
+a new <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a>
+object when the freeze method is executed. A code example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinpmodifier</span> <span class="kn">import</span>  <span class="n">FleurinpModifier</span>
+
+<span class="n">F</span> <span class="o">=</span> <span class="n">FleurinpData</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">])</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">FleurinpModifier</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>                                <span class="c1"># Initialise FleurinpModifier class</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">set_inpchanges</span><span class="p">({</span><span class="s1">&#39;dos&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Kmax&#39;</span><span class="p">:</span> <span class="mf">3.9</span> <span class="p">})</span>         <span class="c1"># Add changes</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>                                               <span class="c1"># Preview</span>
+<span class="n">new_fleurinpdata</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>                          <span class="c1"># Apply</span>
+</pre></div>
+</div>
+<p>The figure below illustrates the work of the
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpModifier</span></code></a> class.</p>
+<a class="reference internal image-reference" href="../../_images/fleurinpmodifier.png"><img alt="../../_images/fleurinpmodifier.png" class="align-center" src="../../_images/fleurinpmodifier.png" style="width: 100%;" /></a>
+</div>
+<div class="section" id="user-methods">
+<h2>User Methods<a class="headerlink" href="#user-methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="general-methods">
+<h3>General methods<a class="headerlink" href="#general-methods" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.validate" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.validate"><code class="xref py py-func docutils literal notranslate"><span class="pre">validate()</span></code></a>: Tests if
+the changes in the given list are validated.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.freeze" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.freeze"><code class="xref py py-func docutils literal notranslate"><span class="pre">freeze()</span></code></a>: Applies all the
+changes in the list, calls
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.modify_fleurinpdata" title="aiida_fleur.data.fleurinpmodifier.modify_fleurinpdata"><code class="xref py py-func docutils literal notranslate"><span class="pre">modify_fleurinpdata()</span></code></a> and
+returns a new <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a> object.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.changes" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.changes"><code class="xref py py-func docutils literal notranslate"><span class="pre">changes()</span></code></a>: Displays the
+current list of changes.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.show" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.show"><code class="xref py py-func docutils literal notranslate"><span class="pre">show()</span></code></a>:  Applies
+the modifications and displays/prints the resulting <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code> file. Does not generate a new
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a> object.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="modification-registration-methods">
+<span id="modify-methods"></span><h3>Modification registration methods<a class="headerlink" href="#modification-registration-methods" title="Permalink to this headline">¶</a></h3>
+<p>The registration methods can be separated into two groups. First of all,
+there are XML methods that require deeper knowledge about the structure of an <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code> file.
+All of them require an xpath input:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_attribv_occ" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_attribv_occ"><code class="xref py py-func docutils literal notranslate"><span class="pre">xml_set_attribv_occ()</span></code></a>: Set an
+attribute of a specific occurrence of xml elements</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_first_attribv" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_first_attribv"><code class="xref py py-func docutils literal notranslate"><span class="pre">xml_set_first_attribv()</span></code></a>: Set
+an attribute of first occurrence of xml element</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_all_attribv" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_all_attribv"><code class="xref py py-func docutils literal notranslate"><span class="pre">xml_set_all_attribv()</span></code></a>: Set
+attributes of all occurrences of the xml element</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_text" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">xml_set_text()</span></code></a>: Set the text
+of first occurrence of xml element</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_text_occ" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_text_occ"><code class="xref py py-func docutils literal notranslate"><span class="pre">xml_set_text_occ()</span></code></a>: Set
+an attribute of a specific occurrence of xml elements</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_all_text" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.xml_set_all_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">xml_set_all_text()</span></code></a>: Set
+the text of all occurrences of the xml element</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.create_tag" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.create_tag"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_tag()</span></code></a>: Insert
+an xml element in the xml tree.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.delete_att" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.delete_att"><code class="xref py py-func docutils literal notranslate"><span class="pre">delete_att()</span></code></a>: Delete
+an attribute for xml elements from the xpath evaluation.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.delete_tag" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.delete_tag"><code class="xref py py-func docutils literal notranslate"><span class="pre">delete_tag()</span></code></a>: Delete
+an xml element.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.replace_tag" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.replace_tag"><code class="xref py py-func docutils literal notranslate"><span class="pre">replace_tag()</span></code></a>: Replace
+an xml element.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.add_num_to_att" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.add_num_to_att"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_num_to_att()</span></code></a>: Adds
+a value or multiplies on it given attribute.</p></li>
+</ul>
+</div></blockquote>
+<p>On the other hand, there are shortcut methods that already know some paths:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_species" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_species"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_species()</span></code></a>: Specific
+user-friendly method to change species parameters.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_atomgr_att" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_atomgr_att"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_atomgr_att()</span></code></a>:  Specific
+method to change atom group parameters.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_species_label" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_species_label"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_species_label()</span></code></a>: Specific
+user-friendly method to change a specie of an atom with a certain label.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_atomgr_att_label" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_atomgr_att_label"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_atomgr_att_label()</span></code></a>:  Specific
+method to change atom group parameters of an atom with a certain label.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_inpchanges" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_inpchanges"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_inpchanges()</span></code></a>: Specific
+user-friendly method for easy changes of attribute key value type.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.shift_value" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.shift_value"><code class="xref py py-func docutils literal notranslate"><span class="pre">shift_value()</span></code></a>: Specific
+user-friendly method to shift value of an attribute.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.shift_value_species_label" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.shift_value_species_label"><code class="xref py py-func docutils literal notranslate"><span class="pre">shift_value_species_label()</span></code></a>: Specific
+user-friendly method to shift value of an attribute of an atom with a certain label.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nkpts" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nkpts"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_nkpts()</span></code></a>: Specific
+method to set the number of kpoints.</p></li>
+<li><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nmmpmat" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nmmpmat"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_nmmpmat()</span></code></a>: Specific
+method for initializing or modifying the density matrix file for a LDA+U calculation (details see below)</p></li>
+</ul>
+</div></blockquote>
+<p>The figure below shows a comparison between the use of XML and shortcut methods.</p>
+<a class="reference internal image-reference" href="../../_images/registration_methods.png"><img alt="../../_images/registration_methods.png" class="align-center" src="../../_images/registration_methods.png" style="width: 100%;" /></a>
+</div>
+</div>
+<div class="section" id="modifying-the-density-matrix-for-lda-u-calculations">
+<h2>Modifying the density matrix for LDA+U calculations<a class="headerlink" href="#modifying-the-density-matrix-for-lda-u-calculations" title="Permalink to this headline">¶</a></h2>
+<p>The above mentioned <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nmmpmat" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nmmpmat"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_nmmpmat()</span></code></a> takes a special
+role in the modification registration methods, as the modifications are not done on the <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code> file but the
+density matrix file <code class="docutils literal notranslate"><span class="pre">n_mmp_mat</span></code> used by Fleur for LDA+U calculations. The resulting density matrix file is stored
+next to the <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code> in the new <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a> instance produced by calling
+the <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.freeze" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.freeze"><code class="xref py py-func docutils literal notranslate"><span class="pre">freeze()</span></code></a> method and will be used as the initial
+density matrix if a calculation is started from this <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a> instance.</p>
+<p>The code example below shows how to use this method to add a LDA+U procedure to an atom species and provide
+an initial guess for the density matrix.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinpmodifier</span> <span class="kn">import</span>  <span class="n">FleurinpModifier</span>
+
+<span class="n">F</span> <span class="o">=</span> <span class="n">FleurinpData</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">])</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">FleurinpModifier</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>                                             <span class="c1"># Initialise FleurinpModifier class</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">set_species</span><span class="p">(</span><span class="s1">&#39;Nd-1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ldaU&#39;</span><span class="p">:</span>                                      <span class="c1"># Add LDA+U procedure</span>
+                       <span class="p">{</span><span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="mf">6.76</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">:</span> <span class="mf">0.76</span><span class="p">,</span> <span class="s1">&#39;l_amf&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span><span class="p">}})</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">set_nmmpmat</span><span class="p">(</span><span class="s1">&#39;Nd-1&#39;</span><span class="p">,</span> <span class="n">orbital</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">occStates</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># Initialize n_mmp_mat file with the states</span>
+                                                                     <span class="c1"># m = -3 to m = 0 occupied for spin up</span>
+                                                                     <span class="c1"># spin down is initialized with 0 by default</span>
+<span class="n">new_fleurinpdata</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>                                       <span class="c1"># Apply</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">n_mmp_mat</span></code> file is a simple text file with no knowledge of which density matrix block corresponds to which
+LDA+U procedure. They are read in the same order as they appear in the <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code>. For this reason the <code class="docutils literal notranslate"><span class="pre">n_mmp_mat</span></code>
+file can become invalid if one adds/removes a LDA+U procedure to the <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code> after the <code class="docutils literal notranslate"><span class="pre">n_mmp_mat</span></code> file was
+initialized. To circumvent these problems always remove any existing <code class="docutils literal notranslate"><span class="pre">n_mmp_mat</span></code> file from the
+<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a> instance, before adding/removing or modifying the LDA+U configuration.
+Furthermore the <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nmmpmat" title="aiida_fleur.data.fleurinpmodifier.FleurinpModifier.set_nmmpmat"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_nmmpmat()</span></code></a> should always be called
+after any modifications to the LDA+U configuration.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../calculations/fleur_calculation_plugins.html" class="btn btn-neutral float-right" title="AiiDA-FLEUR Calculations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fleurinp_data.html" class="btn btn-neutral float-left" title="FleurinpData" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

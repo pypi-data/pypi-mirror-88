@@ -1,0 +1,1195 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.data.fleurinp &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.data.fleurinp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.data.fleurinp</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">In this module is the :class:`~aiida_fleur.data.fleurinp.FleurinpData` class, and methods for FLEUR</span>
+<span class="sd">input manipulation plus methods for extration of AiiDA data structures.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># TODO: maybe add a modify method which returns a fleurinpmodifier class</span>
+<span class="c1"># TODO: inpxml to dict: maybe kpts should not be written to the dict? same with symmetry</span>
+<span class="c1"># TODO: test for large input files, I believe the recursion is still quite slow..</span>
+<span class="c1"># TODO: 2D cell get kpoints and get structure also be carefull with tria = T!!!</span>
+<span class="c1"># TODO : maybe save when get_structure or get_kpoints was executed on fleurinp,</span>
+<span class="c1"># because otherwise return this node instead of creating a new one!</span>
+<span class="c1"># TODO: get rid of duplicate code for parsing the inp.xml to an etree</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Data</span><span class="p">,</span> <span class="n">Node</span><span class="p">,</span> <span class="n">load_node</span>
+<span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">InputValidationError</span><span class="p">,</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">aiida.engine.processes.functions</span> <span class="kn">import</span> <span class="n">calcfunction</span> <span class="k">as</span> <span class="n">cf</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">replace_tag</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.fleur_schema.schemafile_index</span> <span class="kn">import</span> <span class="n">get_internal_search_paths</span><span class="p">,</span> <span class="n">get_schema_paths</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.common.constants</span> <span class="kn">import</span> <span class="n">BOHR_A</span>
+
+
+<div class="viewcode-block" id="FleurinpData"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData">[docs]</a><span class="k">class</span> <span class="nc">FleurinpData</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    AiiDA data object representing everything a FLEUR calculation needs.</span>
+
+<span class="sd">    It is initialized with an absolute path to an ``inp.xml`` file or a</span>
+<span class="sd">    FolderData node containing ``inp.xml``.</span>
+<span class="sd">    Other files can also be added that will be copied to the remote machine, where the</span>
+<span class="sd">    calculation takes place.</span>
+
+<span class="sd">    It stores the files in the repository and stores the input parameters of the</span>
+<span class="sd">    ``inp.xml`` file of FLEUR in the database as a python dictionary (as internal attributes).</span>
+<span class="sd">    When an ``inp.xml`` (name important!) file is added to files, FleurinpData searches</span>
+<span class="sd">    for a corresponding xml schema file in the PYTHONPATH environment variable.</span>
+<span class="sd">    Therefore, it is recommend to have the plug-in source code directory in the python environment.</span>
+<span class="sd">    If no corresponding schema file is found an error is raised.</span>
+
+<span class="sd">    FleurinpData also provides the user with</span>
+<span class="sd">    methods to extract AiiDA StructureData and</span>
+<span class="sd">    KpointsData nodes.</span>
+
+<span class="sd">    Remember that most attributes of AiiDA nodes can not be changed after they</span>
+<span class="sd">    have been stored in the database! Therefore, you have to use the FleurinpModifier class and its</span>
+<span class="sd">    methods if you want to change somthing in the ``inp.xml`` file. You will retrieve a new</span>
+<span class="sd">    FleurinpData that way and start a new calculation from it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># search in current folder and search in aiida source code</span>
+    <span class="c1"># we want to search in the Aiida source directory, get it from python path,</span>
+    <span class="c1"># maybe better from somewhere else.</span>
+    <span class="c1"># TODO: don not walk the whole python path, test if dir below is aiida?</span>
+    <span class="c1"># needs to be improved, schema file is often after new installation not found...</span>
+    <span class="c1"># installation with pip should always lead to a schema file in the python path, or even specific place</span>
+
+<div class="viewcode-block" id="FleurinpData.__init__"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a FleurinpData object set the files given</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;inp.xml&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">files</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FleurinpData</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">search_paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ifolders</span> <span class="o">=</span> <span class="n">get_internal_search_paths</span><span class="p">()</span>
+        <span class="n">ischemas</span> <span class="o">=</span> <span class="n">get_schema_paths</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">ischemas</span><span class="p">:</span>
+            <span class="n">search_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">ifolders</span><span class="p">:</span>
+            <span class="n">search_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">search_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Now add also python path maybe will be decaptivated</span>
+        <span class="c1"># if pythonpath is non existent catch error</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pythonpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">pythonpath</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">pythonpath</span><span class="p">[:]:</span>
+            <span class="n">search_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;_has_schema&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;_schema_file_path&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;_search_paths&#39;</span><span class="p">,</span> <span class="n">search_paths</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_files</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_files</span><span class="p">(</span><span class="n">files</span><span class="p">)</span></div>
+
+    <span class="c1"># ignore machine dependent attributes in hash</span>
+    <span class="n">_hash_ignored_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_schema_file_path&#39;</span><span class="p">,</span> <span class="s1">&#39;_search_paths&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_has_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Boolean property, which stores if a schema file is already known</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;_has_schema&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_schema_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A string, which stores the absolute path to the schemafile found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;_schema_file_path&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_search_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A string, which stores the paths to search for  schemafiles</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;_search_paths&#39;</span><span class="p">)</span>
+
+    <span class="nd">@_has_schema</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_has_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boolean</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for has_schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;_has_schema&#39;</span><span class="p">,</span> <span class="n">boolean</span><span class="p">)</span>
+
+    <span class="nd">@_schema_file_path</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_schema_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schemapath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the schema file path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;_schema_file_path&#39;</span><span class="p">,</span> <span class="n">schemapath</span><span class="p">)</span>
+
+    <span class="c1"># files</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of the names of the files stored</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="nd">@files</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filelist</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a list of files to FleurinpData.</span>
+<span class="sd">        Alternative use setter method.</span>
+
+<span class="sd">        :param files: list of filepaths or filenames of node is specified</span>
+<span class="sd">        :param node: a Folder node containing files from the filelist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">filelist</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_file</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FleurinpData.set_files"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.set_files">[docs]</a>    <span class="k">def</span> <span class="nf">set_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add the list of files to the :class:`~aiida_fleur.data.fleurinp.FleurinpData` instance.</span>
+<span class="sd">        Can by used as an alternative to the setter.</span>
+
+<span class="sd">        :param files: list of abolute filepaths or filenames of node is specified</span>
+<span class="sd">        :param node: a :class:`~aiida.orm.FolderData` node containing files from the filelist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_file</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FleurinpData.set_file"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.set_file">[docs]</a>    <span class="k">def</span> <span class="nf">set_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">dst_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a file to the :class:`~aiida_fleur.data.fleurinp.FleurinpData` instance.</span>
+
+<span class="sd">        :param filename: absolute path to the file or a filename of node is specified</span>
+<span class="sd">        :param node: a :class:`~aiida.orm.FolderData` node containing the file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_path</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dst_filename</span><span class="o">=</span><span class="n">dst_filename</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FleurinpData.open"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an open file handle to the content of this data node.</span>
+
+<span class="sd">        :param key: name of the file to be opened</span>
+<span class="sd">        :param mode: the mode with which to open the file handle</span>
+<span class="sd">        :returns: A file handle in read mode</span>
+<span class="sd">         &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">key</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repository</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FleurinpData.get_content"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.get_content">[docs]</a>    <span class="k">def</span> <span class="nf">get_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the content of the single file stored for this data node.</span>
+
+<span class="sd">        :returns: A string of the file content</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FleurinpData.del_file"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.del_file">[docs]</a>    <span class="k">def</span> <span class="nf">del_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a file from FleurinpData instancefind</span>
+
+<span class="sd">        :param filename: name of the file to be removed from FleurinpData instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># remove from files attr list</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="c1"># self._del_attribute(‘filename&#39;)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1"># There was no file set</span>
+                <span class="k">pass</span>
+        <span class="c1"># remove from sandbox folder</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_object_names</span><span class="p">():</span>  <span class="c1"># get_folder_list():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_object</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FleurinpData.find_schema"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.find_schema">[docs]</a>    <span class="k">def</span> <span class="nf">find_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp_version_number</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method which searches for a schema files (.xsd) which correspond</span>
+<span class="sd">        to the input xml file. (compares the version numbers)</span>
+
+<span class="sd">        :param inp_version_number: a version of ``inp.xml`` file schema to be found</span>
+
+<span class="sd">        :return: A two-element tuple:</span>
+
+<span class="sd">                     1. A list of paths where schema files are located</span>
+<span class="sd">                     2. A boolen which shows if the required version schema file was found</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># user changed version number, or no file yet known.</span>
+        <span class="c1"># TODO test if this still does the right thing if user adds one</span>
+        <span class="c1"># inp.xml and then an inp.xml with different version.</span>
+        <span class="c1"># or after copying and read</span>
+        <span class="n">schemafile_paths</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_paths</span><span class="p">:</span>  <span class="c1"># paths:</span>
+            <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">file1</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xsd&#39;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;Fleur&#39;</span> <span class="ow">in</span> <span class="n">file1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;fleur&#39;</span> <span class="ow">in</span> <span class="n">file1</span><span class="p">):</span>
+                            <span class="n">schemafile_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file1</span><span class="p">)</span>
+                            <span class="n">schemafile_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">schemafile_path</span><span class="p">)</span>
+                            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="n">imin</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="n">imax</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="n">schemafile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">schemafile_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">schemafile</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                                <span class="c1"># This kind of hardcoded</span>
+                                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;name=&quot;FleurVersionType&quot;&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+                                    <span class="n">imax</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">10</span>  <span class="c1"># maybe make larger or different</span>
+                                    <span class="n">imin</span> <span class="o">=</span> <span class="n">i</span>
+                                    <span class="n">schema_version_numbers</span> <span class="o">=</span> <span class="p">[]</span>
+                                <span class="k">if</span> <span class="n">imin</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">imax</span><span class="p">:</span>
+                                    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;enumeration value&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+                                        <span class="n">schema_version_number</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d+.\d+&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                                    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;simpleType&gt;&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+                                        <span class="k">break</span>
+                            <span class="n">schema_version_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">schema_version_number</span><span class="p">)</span>
+                            <span class="n">schemafile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                            <span class="c1"># test if schemafiles works with multiple fleur versions</span>
+                            <span class="k">for</span> <span class="n">version_number</span> <span class="ow">in</span> <span class="n">schema_version_numbers</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">version_number</span> <span class="o">==</span> <span class="n">inp_version_number</span><span class="p">:</span>
+                                    <span class="c1"># we found the right schemafile for the current inp.xml</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;_schema_file_path&#39;</span><span class="p">,</span> <span class="n">schemafile_path</span><span class="p">)</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;_has_schema&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                                    <span class="k">return</span> <span class="n">schemafile_paths</span><span class="p">,</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">schemafile_paths</span><span class="p">,</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">_add_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file1</span><span class="p">,</span> <span class="n">dst_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a single file to the FleurinpData folder.</span>
+<span class="sd">        The destination name can be different. ``inp.xml`` is a special case.</span>
+<span class="sd">        file names are stored in the db, the whole file in the reporsitory.</span>
+
+<span class="sd">        :param file1: the file to be added, either string, absolute path, or filelike object whose contents to copy</span>
+<span class="sd">            Hint: Pass io.BytesIO(b&quot;my string&quot;) to construct the file directly from a string.</span>
+<span class="sd">        :param dst_filename: string, new filename for given file in repo and db</span>
+<span class="sd">        :param node: aiida.orm.Node, usually FolderData if node is given get the &#39;file1&#39; from the node</span>
+
+<span class="sd">        :raise: ValueError, InputValidationError</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO? Maybe only certain files should be allowed to be added</span>
+        <span class="c1"># contra: has to be maintained, also these files can be inputed from byte strings...</span>
+        <span class="c1">#_list_of_allowed_files = [&#39;inp.xml&#39;, &#39;enpara&#39;, &#39;cdn1&#39;, &#39;sym.out&#39;, &#39;kpts&#39;]</span>
+
+        <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>  <span class="c1"># if this fails it will raise</span>
+            <span class="k">if</span> <span class="n">file1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">list_object_names</span><span class="p">():</span>
+                <span class="c1"># throw error, you try to add something that is not there</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;file1 has to be in the specified node&#39;</span><span class="p">)</span>
+
+            <span class="n">is_filelike</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">dst_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">final_filename</span> <span class="o">=</span> <span class="n">file1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">final_filename</span> <span class="o">=</span> <span class="n">dst_filename</span>
+            <span class="c1"># Override file1 with bytestring of file</span>
+            <span class="c1"># since we have to use &#39;with&#39;, and node has no method to copy files</span>
+            <span class="c1"># we read the whole file and write it again later</span>
+            <span class="c1"># this is not so nice, but we assume that input files are rather small...</span>
+            <span class="k">with</span> <span class="n">node</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file2</span><span class="p">:</span>
+                <span class="n">file1</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">file2</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">is_filelike</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">file1</span><span class="p">):</span>
+                <span class="n">file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+                <span class="c1">#raise ValueError(&quot;Pass an absolute path for file1: {}&quot;.format(file1))</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file1</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;file1 must exist and must be a single file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file1</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">dst_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">final_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">file1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">final_filename</span> <span class="o">=</span> <span class="n">dst_filename</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">is_filelike</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">dst_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">final_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file1</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># Not sure if this still works for aiida&gt;2.0</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="n">final_filename</span> <span class="o">=</span> <span class="s1">&#39;inp.xml&#39;</span>  <span class="c1"># fall back to default</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">final_filename</span> <span class="o">=</span> <span class="n">dst_filename</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="n">final_filename</span>
+
+        <span class="n">old_file_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_object_names</span><span class="p">()</span>
+        <span class="n">old_files_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="c1"># remove file from folder first if it exists</span>
+        <span class="k">if</span> <span class="n">final_filename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">old_file_list</span><span class="p">:</span>
+            <span class="n">old_files_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">old_file_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">final_filename</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="n">is_filelike</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">put_object_from_filelike</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">put_object_from_file</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="n">old_files_list</span><span class="p">)</span>  <span class="c1"># We want to keep the other files</span>
+
+        <span class="c1">### Special case: &#39;inp.xml&#39; ###</span>
+        <span class="c1"># here this is hardcoded, might want to change? get filename from elsewhere</span>
+
+        <span class="k">if</span> <span class="n">final_filename</span> <span class="o">==</span> <span class="s1">&#39;inp.xml&#39;</span><span class="p">:</span>
+            <span class="c1"># get input file version number</span>
+            <span class="n">inp_version_number</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_content</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">final_filename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;fleurInputVersion&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)):</span>
+                    <span class="n">inp_version_number</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d+.\d+&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">inp_version_number</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s1">&#39;No fleurInputVersion number found &#39;</span>
+                                           <span class="s1">&#39;in given input file: </span><span class="si">{}</span><span class="s1">. </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                           <span class="s1">&#39;Please check if this is a valid fleur input file. &#39;</span>
+                                           <span class="s1">&#39;It can not be validated and I can not use it. &#39;</span>
+                                           <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="n">lines</span><span class="p">))</span>
+            <span class="c1"># search for Schema file with same version number</span>
+            <span class="n">schemafile_paths</span><span class="p">,</span> <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_schema</span><span class="p">(</span><span class="n">inp_version_number</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_schema</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">err_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;No XML schema file (.xsd) with matching version number </span><span class="si">{}</span><span class="s1"> &#39;</span>
+                           <span class="s1">&#39;to the inp.xml file was found. I have looked here: </span><span class="si">{}</span><span class="s1"> &#39;</span>
+                           <span class="s1">&#39;and have found only these schema files for Fleur: </span><span class="si">{}</span><span class="s1">. &#39;</span>
+                           <span class="s1">&#39;I need this file to validate your input and to know the structure &#39;</span>
+                           <span class="s1">&#39;of the current inp.xml file, sorry.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inp_version_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_paths</span><span class="p">,</span>
+                                                                        <span class="n">schemafile_paths</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">schemafile_paths</span><span class="p">,</span> <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_schema</span><span class="p">(</span><span class="n">inp_version_number</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                    <span class="n">err_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;No XML schema file (.xsd) with matching version number </span><span class="si">{}</span><span class="s1"> &#39;</span>
+                               <span class="s1">&#39;to the inp.xml file was found. I have looked here: </span><span class="si">{}</span><span class="s1"> &#39;</span>
+                               <span class="s1">&#39;and have found only these schema files for Fleur: </span><span class="si">{}</span><span class="s1">. &#39;</span>
+                               <span class="s1">&#39;I need this file to validate your input and to know the structure &#39;</span>
+                               <span class="s1">&#39;of the current inp.xml file, sorry.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inp_version_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_paths</span><span class="p">,</span>
+                                                                            <span class="n">schemafile_paths</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+
+            <span class="c1"># finally set inp dict of Fleurinpdata</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_inp_dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_set_inp_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the inputxml_dict from the ``inp.xml`` file attached to FleurinpData</span>
+
+<span class="sd">        1. get ``inp.xml`` structure/layout</span>
+<span class="sd">        2. load ``inp.xml`` file</span>
+<span class="sd">        3. call inpxml_to_dict</span>
+<span class="sd">        4. set inputxml_dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">get_inpxml_file_structure</span><span class="p">,</span> <span class="n">inpxml_todict</span><span class="p">,</span> <span class="n">clear_xml</span>
+        <span class="kn">import</span> <span class="nn">tempfile</span>
+        <span class="c1"># get inpxml structure</span>
+        <span class="n">inpxmlstructure</span> <span class="o">=</span> <span class="n">get_inpxml_file_structure</span><span class="p">()</span>
+
+        <span class="c1"># read xmlinp file into an etree with autocomplition from schema</span>
+        <span class="c1"># we do not validate here because we want this to always succeed</span>
+
+        <span class="n">xmlschema_doc</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_file_path</span><span class="p">)</span>
+        <span class="n">xmlschema</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="n">xmlschema_doc</span><span class="p">)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">attribute_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="c1"># dtd_validation=True</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">tree_x</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSyntaxError</span><span class="p">:</span>
+                <span class="c1"># prob inp.xml file broken</span>
+                <span class="n">err_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;The inp.xml file is probably broken, could not parse it to an xml etree.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+        <span class="c1"># relax.xml should be available to be used in xinclude</span>
+        <span class="c1"># hence copy relax.xml from the retrieved node into the temp file</span>
+        <span class="n">fo</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;relax.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">relax_file</span><span class="p">:</span>
+                <span class="n">relax_content</span> <span class="o">=</span> <span class="n">relax_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="n">relax_content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">relax_content</span><span class="p">)</span>
+        <span class="n">tempfile_name</span> <span class="o">=</span> <span class="n">fo</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">fo</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># replace relax.xml by the temp file path</span>
+        <span class="n">tree_x_string</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">tree_x</span><span class="p">)</span>
+        <span class="n">tree_x_string</span> <span class="o">=</span> <span class="n">tree_x_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="s1">&#39;relax.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">),</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">tempfile_name</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="n">tree_x</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">tree_x_string</span><span class="p">)</span><span class="o">.</span><span class="n">getroottree</span><span class="p">()</span>
+
+        <span class="c1"># replace XInclude parts to validate against schema</span>
+        <span class="n">tree_x</span> <span class="o">=</span> <span class="n">clear_xml</span><span class="p">(</span><span class="n">tree_x</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tempfile_name</span><span class="p">)</span>
+
+        <span class="c1"># check if it validates against the schema</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">xmlschema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">tree_x</span><span class="p">):</span>
+            <span class="c1"># get a more information on what does not validate</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">parser_on_fly</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">attribute_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">xmlschema</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="n">inpxmlfile</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">tree_x</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">tree_x</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">,</span> <span class="n">parser_on_fly</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSyntaxError</span> <span class="k">as</span> <span class="n">msg</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">msg</span>
+                <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s1">&#39;Input file does not validate against the schema: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
+
+            <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s1">&#39;Input file is not validated against the schema.&#39;</span> <span class="s1">&#39;Reason is unknown&#39;</span><span class="p">)</span>
+
+        <span class="c1"># convert etree into python dictionary</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree_x</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="n">inpxml_dict</span> <span class="o">=</span> <span class="n">inpxml_todict</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">inpxmlstructure</span><span class="p">)</span>
+        <span class="c1"># set inpxml_dict attribute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;inp_dict&#39;</span><span class="p">,</span> <span class="n">inpxml_dict</span><span class="p">)</span>
+
+    <span class="c1"># dict with inp paramters parsed from inp.xml</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inp_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the inp_dict (the representation of the ``inp.xml`` file) as it will</span>
+<span class="sd">        or is stored in the database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;inp_dict&#39;</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="c1"># TODO better validation? other files, if has a schema</span>
+
+    <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A validation method. Checks if an ``inp.xml`` file is in the FleurinpData.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#from aiida.common.exceptions import ValidationError</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">FleurinpData</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s1">&#39;inp.xml&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="c1"># has_inpxml = True # does nothing so far</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;inp.xml file not in attribute &quot;files&quot;. &#39;</span>
+                                  <span class="s1">&#39;FleurinpData needs to have and inp.xml file!&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FleurinpData.get_fleur_modes"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.get_fleur_modes">[docs]</a>    <span class="k">def</span> <span class="nf">get_fleur_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Analyses ``inp.xml`` file to set up a calculation mode. &#39;Modes&#39; are paths a FLEUR</span>
+<span class="sd">        calculation can take, resulting in different output files.</span>
+<span class="sd">        This files can be automatically addded to the retrieve_list of the calculation.</span>
+
+<span class="sd">        Common modes are: scf, jspin2, dos, band, pot8, lda+U, eels, ...</span>
+
+<span class="sd">        :return: a dictionary containing all possible modes. A mode is activated assigning a</span>
+<span class="sd">                 non-empty string to the corresponding key.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># TODO these should be retrieved by looking at the inpfile structure and</span>
+        <span class="c1"># then setting the paths.</span>
+        <span class="c1"># use methods from fleur parser...</span>
+        <span class="c1"># For now they are hardcoded.</span>
+        <span class="c1">#    &#39;dos&#39;: &#39;/fleurInput/output&#39;,</span>
+        <span class="c1">#    &#39;band&#39;: &#39;/fleurInput/output&#39;,</span>
+        <span class="c1">#    &#39;jspins&#39;: &#39;/fleurInput/calculationSetup/magnetism&#39;,</span>
+        <span class="n">fleur_modes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jspins&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;dos&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;band&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ldau&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;forces&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;force_theorem&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;gw&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+        <span class="k">if</span> <span class="s1">&#39;inp.xml&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="n">fleur_modes</span><span class="p">[</span><span class="s1">&#39;jspins&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inp_dict</span><span class="p">[</span><span class="s1">&#39;calculationSetup&#39;</span><span class="p">][</span><span class="s1">&#39;magnetism&#39;</span><span class="p">][</span><span class="s1">&#39;jspins&#39;</span><span class="p">]</span>
+            <span class="n">fleur_modes</span><span class="p">[</span><span class="s1">&#39;dos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inp_dict</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">][</span><span class="s1">&#39;dos&#39;</span><span class="p">]</span>  <span class="c1"># &#39;fleurInput&#39;]</span>
+            <span class="n">fleur_modes</span><span class="p">[</span><span class="s1">&#39;band&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inp_dict</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">][</span><span class="s1">&#39;band&#39;</span><span class="p">]</span>
+            <span class="n">fleur_modes</span><span class="p">[</span><span class="s1">&#39;forces&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inp_dict</span><span class="p">[</span><span class="s1">&#39;calculationSetup&#39;</span><span class="p">][</span><span class="s1">&#39;geometryOptimization&#39;</span><span class="p">][</span><span class="s1">&#39;l_f&#39;</span><span class="p">]</span>
+            <span class="n">fleur_modes</span><span class="p">[</span><span class="s1">&#39;force_theorem&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;forceTheorem&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inp_dict</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fleur_modes</span><span class="p">[</span><span class="s1">&#39;gw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inp_dict</span><span class="p">[</span><span class="s1">&#39;calculationSetup&#39;</span><span class="p">][</span><span class="s1">&#39;expertModes&#39;</span><span class="p">][</span><span class="s1">&#39;gw&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">fleur_modes</span><span class="p">[</span><span class="s1">&#39;gw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">fleur_modes</span><span class="p">[</span><span class="s1">&#39;ldau&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inp_dict</span><span class="p">[</span><span class="s1">&#39;atomSpecies&#39;</span><span class="p">][</span><span class="s1">&#39;species&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="s1">&#39;ldaU&#39;</span> <span class="ow">in</span> <span class="n">species</span><span class="p">:</span>
+                    <span class="n">fleur_modes</span><span class="p">[</span><span class="s1">&#39;ldau&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">fleur_modes</span></div>
+
+<div class="viewcode-block" id="FleurinpData.get_structuredata_ncf"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.get_structuredata_ncf">[docs]</a>    <span class="k">def</span> <span class="nf">get_structuredata_ncf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This routine returns an AiiDA Structure Data type produced from the ``inp.xml``</span>
+<span class="sd">        file. not a calcfunction</span>
+
+<span class="sd">        :param self: a FleurinpData instance to be parsed into a StructureData</span>
+<span class="sd">        :returns: StructureData node, or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">StructureData</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.StructureData_util</span> <span class="kn">import</span> <span class="n">rel_to_abs</span><span class="p">,</span> <span class="n">rel_to_abs_f</span>
+
+        <span class="c1"># StructureData = DataFactory(‘structure’)</span>
+        <span class="c1"># Disclaimer: this routine needs some xpath expressions. these are hardcoded here,</span>
+        <span class="c1"># therefore maintainance might be needed, if you want to circumvent this, you have</span>
+        <span class="c1"># to get all the paths from somewhere.</span>
+
+        <span class="c1">#######</span>
+        <span class="c1"># all hardcoded xpaths used and attributes names:</span>
+        <span class="n">bravaismatrix_bulk_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/cell/bulkLattice/bravaisMatrix/&#39;</span>
+        <span class="n">bravaismatrix_film_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/cell/filmLattice/bravaisMatrix/&#39;</span>
+        <span class="n">species_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/atomSpecies/species&#39;</span>
+        <span class="n">all_atom_groups_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/atomGroups/atomGroup&#39;</span>
+
+        <span class="n">species_attrib_name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+        <span class="n">species_attrib_element</span> <span class="o">=</span> <span class="s1">&#39;element&#39;</span>
+
+        <span class="n">row1_tag_name</span> <span class="o">=</span> <span class="s1">&#39;row-1&#39;</span>
+        <span class="n">row2_tag_name</span> <span class="o">=</span> <span class="s1">&#39;row-2&#39;</span>
+        <span class="n">row3_tag_name</span> <span class="o">=</span> <span class="s1">&#39;row-3&#39;</span>
+
+        <span class="n">atom_group_attrib_species</span> <span class="o">=</span> <span class="s1">&#39;species&#39;</span>
+        <span class="n">atom_group_tag_abspos</span> <span class="o">=</span> <span class="s1">&#39;absPos&#39;</span>
+        <span class="n">atom_group_tag_relpos</span> <span class="o">=</span> <span class="s1">&#39;relPos&#39;</span>
+        <span class="n">atom_group_tag_filmpos</span> <span class="o">=</span> <span class="s1">&#39;filmPos&#39;</span>
+        <span class="c1">########</span>
+
+        <span class="k">if</span> <span class="s1">&#39;inp.xml&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;cannot get a StructureData because fleurinpdata has no inp.xml file yet&#39;</span><span class="p">)</span>
+            <span class="c1"># TODO what to do in this case?</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># read in inpxml</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_file_path</span><span class="p">:</span>  <span class="c1"># Schema there, parse with schema</span>
+            <span class="n">xmlschema_doc</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_file_path</span><span class="p">)</span>
+            <span class="n">xmlschema</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="n">xmlschema_doc</span><span class="p">)</span>
+            <span class="n">parser</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">attribute_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+                <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">xinclude</span><span class="p">()</span>
+            <span class="c1"># remove comments from inp.xml</span>
+            <span class="n">comments</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//comment()&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">comments</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">xmlschema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input file is not validated against the schema.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># schema not there, parse without</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;parsing inp.xml without XMLSchema&#39;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+                <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">)</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">xinclude</span><span class="p">()</span>
+            <span class="c1"># remove comments from inp.xml</span>
+            <span class="n">comments</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//comment()&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">comments</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+        <span class="c1"># Fleur uses atomic units, convert to Angstrom</span>
+        <span class="c1"># get cell matrix from inp.xml</span>
+        <span class="n">row1</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_bulk_xpath</span> <span class="o">+</span> <span class="n">row1_tag_name</span><span class="p">)</span>  <span class="c1"># [0].text.split()</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">row1</span><span class="p">:</span>  <span class="c1"># bulk calculation</span>
+            <span class="n">row1</span> <span class="o">=</span> <span class="n">row1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">row2</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_bulk_xpath</span> <span class="o">+</span> <span class="n">row2_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">row3</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_bulk_xpath</span> <span class="o">+</span> <span class="n">row3_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="c1"># TODO? allow math?</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row1</span><span class="p">):</span>
+                <span class="n">row1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row2</span><span class="p">):</span>
+                <span class="n">row2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row3</span><span class="p">):</span>
+                <span class="n">row3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+
+            <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="n">row2</span><span class="p">,</span> <span class="n">row3</span><span class="p">]</span>
+            <span class="c1"># create new structure Node</span>
+            <span class="n">struc</span> <span class="o">=</span> <span class="n">StructureData</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
+            <span class="n">struc</span><span class="o">.</span><span class="n">pbc</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_film_xpath</span> <span class="o">+</span> <span class="n">row1_tag_name</span><span class="p">):</span>
+            <span class="c1"># film calculation</span>
+            <span class="n">row1</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_film_xpath</span> <span class="o">+</span> <span class="n">row1_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">row2</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_film_xpath</span> <span class="o">+</span> <span class="n">row2_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">row3</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_film_xpath</span> <span class="o">+</span> <span class="n">row3_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row1</span><span class="p">):</span>
+                <span class="n">row1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row2</span><span class="p">):</span>
+                <span class="n">row2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row3</span><span class="p">):</span>
+                <span class="n">row3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="c1"># row3 = [0, 0, 0]#? TODO:what has it to be in this case?</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="n">row2</span><span class="p">,</span> <span class="n">row3</span><span class="p">]</span>
+            <span class="n">struc</span> <span class="o">=</span> <span class="n">StructureData</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
+            <span class="n">struc</span><span class="o">.</span><span class="n">pbc</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Could not extract Bravias matrix out of inp.xml. Is the &#39;</span>
+                  <span class="s1">&#39;Bravias matrix explicitly given? i.e Latnam definition &#39;</span>
+                  <span class="s1">&#39;not supported.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># get species for atom kinds</span>
+        <span class="c1">#species = root.xpath(species_xpath)</span>
+        <span class="n">species_name</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">species_xpath</span> <span class="o">+</span> <span class="s1">&#39;/@&#39;</span> <span class="o">+</span> <span class="n">species_attrib_name</span><span class="p">)</span>
+        <span class="n">species_element</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">species_xpath</span> <span class="o">+</span> <span class="s1">&#39;/@&#39;</span> <span class="o">+</span> <span class="n">species_attrib_element</span><span class="p">)</span>
+        <span class="c1"># alternativ: loop over species and species.get(species_attrib_name)</span>
+
+        <span class="c1"># save species info in a dict</span>
+        <span class="n">species_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">species_name</span><span class="p">):</span>
+            <span class="n">species_dict</span><span class="p">[</span><span class="n">spec</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">species_attrib_element</span><span class="p">:</span> <span class="n">species_element</span><span class="p">[</span><span class="n">i</span><span class="p">]}</span>
+
+        <span class="c1"># Now we have to get all atomgroups, look what their species is and</span>
+        <span class="c1"># their positions are.</span>
+        <span class="c1"># Then we append them to the new structureData</span>
+
+        <span class="n">all_atom_groups</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">all_atom_groups_xpath</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">atom_group</span> <span class="ow">in</span> <span class="n">all_atom_groups</span><span class="p">:</span>
+            <span class="n">current_species</span> <span class="o">=</span> <span class="n">atom_group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atom_group_attrib_species</span><span class="p">)</span>
+
+            <span class="n">group_atom_positions_abs</span> <span class="o">=</span> <span class="n">atom_group</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">atom_group_tag_abspos</span><span class="p">)</span>
+            <span class="n">group_atom_positions_rel</span> <span class="o">=</span> <span class="n">atom_group</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">atom_group_tag_relpos</span><span class="p">)</span>
+            <span class="n">group_atom_positions_film</span> <span class="o">=</span> <span class="n">atom_group</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">atom_group_tag_filmpos</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">group_atom_positions_abs</span><span class="p">:</span>  <span class="c1"># we have absolute positions</span>
+                <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">group_atom_positions_abs</span><span class="p">:</span>
+                    <span class="n">postion_a</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="c1"># allow for math *, /</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">postion_a</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+                            <span class="n">temppos</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+                            <span class="n">postion_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+                            <span class="n">temppos</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+                            <span class="n">postion_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">postion_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+                        <span class="n">postion_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">postion_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+                    <span class="c1"># append atom to StructureData</span>
+                    <span class="n">struc</span><span class="o">.</span><span class="n">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">postion_a</span><span class="p">,</span> <span class="n">symbols</span><span class="o">=</span><span class="n">species_dict</span><span class="p">[</span><span class="n">current_species</span><span class="p">][</span><span class="n">species_attrib_element</span><span class="p">])</span>
+
+            <span class="k">elif</span> <span class="n">group_atom_positions_rel</span><span class="p">:</span>  <span class="c1"># we have relative positions</span>
+                <span class="c1"># TODO: check if film or 1D calc, because this is not allowed! I guess</span>
+                <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">group_atom_positions_rel</span><span class="p">:</span>
+                    <span class="n">postion_r</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="c1"># allow for math * /</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">postion_r</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+                            <span class="n">temppos</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+                            <span class="n">postion_r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+                            <span class="n">temppos</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+                            <span class="n">postion_r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">postion_r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+                    <span class="c1"># now transform to absolute Positions</span>
+                    <span class="n">new_abs_pos</span> <span class="o">=</span> <span class="n">rel_to_abs</span><span class="p">(</span><span class="n">postion_r</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span>
+
+                    <span class="c1"># append atom to StructureData</span>
+                    <span class="n">struc</span><span class="o">.</span><span class="n">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">new_abs_pos</span><span class="p">,</span>
+                                      <span class="n">symbols</span><span class="o">=</span><span class="n">species_dict</span><span class="p">[</span><span class="n">current_species</span><span class="p">][</span><span class="n">species_attrib_element</span><span class="p">])</span>
+
+            <span class="k">elif</span> <span class="n">group_atom_positions_film</span><span class="p">:</span>  <span class="c1"># Do we support mixture always, or only in film case?</span>
+                <span class="c1"># either support or throw error</span>
+                <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">group_atom_positions_film</span><span class="p">:</span>
+                    <span class="c1"># film pos are rel rel abs, therefore only transform first two coordinates</span>
+                    <span class="n">postion_f</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="c1"># allow for math * /</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">postion_f</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+                            <span class="n">temppos</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+                            <span class="n">postion_f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">postion_f</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                            <span class="n">temppos</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+                            <span class="n">postion_f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">temppos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">postion_f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+                    <span class="c1"># now transform to absolute Positions</span>
+                    <span class="n">postion_f</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">postion_f</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+                    <span class="n">new_abs_pos</span> <span class="o">=</span> <span class="n">rel_to_abs_f</span><span class="p">(</span><span class="n">postion_f</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span>
+                    <span class="c1"># append atom to StructureData</span>
+                    <span class="n">struc</span><span class="o">.</span><span class="n">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">new_abs_pos</span><span class="p">,</span>
+                                      <span class="n">symbols</span><span class="o">=</span><span class="n">species_dict</span><span class="p">[</span><span class="n">current_species</span><span class="p">][</span><span class="n">species_attrib_element</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># TODO throw error</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;I should never get here, 1D not supported yet, &#39;</span> <span class="s1">&#39;I only know relPos, absPos, filmPos&#39;</span><span class="p">)</span>
+                <span class="c1"># TODO throw error</span>
+        <span class="c1"># TODO DATA-DATA links are not wanted, you might want to use a cf instead</span>
+        <span class="c1">#struc.add_link_from(self, label=&#39;self.structure&#39;, link_type=LinkType.CREATE)</span>
+        <span class="c1"># label=&#39;self.structure&#39;</span>
+        <span class="c1"># return {label : struc}</span>
+        <span class="k">return</span> <span class="n">struc</span></div>
+
+<div class="viewcode-block" id="FleurinpData.get_structuredata"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.get_structuredata">[docs]</a>    <span class="nd">@cf</span>
+    <span class="k">def</span> <span class="nf">get_structuredata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This routine return an AiiDA Structure Data type produced from the ``inp.xml``</span>
+<span class="sd">        file. If this was done before, it returns the existing structure data node.</span>
+<span class="sd">        This is a calcfunction and therefore keeps the provenance.</span>
+
+<span class="sd">        :param fleurinp: a FleurinpData instance to be parsed into a StructureData</span>
+<span class="sd">        :returns: StructureData node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_structuredata_ncf</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FleurinpData.get_kpointsdata_ncf"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.get_kpointsdata_ncf">[docs]</a>    <span class="k">def</span> <span class="nf">get_kpointsdata_ncf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This routine returns an AiiDA :class:`~aiida.orm.KpointsData` type produced from the</span>
+<span class="sd">        ``inp.xml`` file. This only works if the kpoints are listed in the in inpxml.</span>
+<span class="sd">        This is NOT a calcfunction and does not keep the provenance!</span>
+
+<span class="sd">        :returns: :class:`~aiida.orm.KpointsData` node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">KpointsData</span>
+
+        <span class="c1"># HINT, TODO:? in this routine, the &#39;cell&#39; you might get in an other way</span>
+        <span class="c1"># exp: StructureData.cell, but for this you have to make a structureData Node,</span>
+        <span class="c1"># which might take more time for structures with lots of atoms.</span>
+        <span class="c1"># then just parsing the cell from the inp.xml</span>
+        <span class="c1"># as in the routine get_structureData</span>
+
+        <span class="c1"># Disclaimer: this routine needs some xpath expressions.</span>
+        <span class="c1"># these are hardcoded here, therefore maintainance might be needed,</span>
+        <span class="c1"># if you want to circumvent this, you have</span>
+        <span class="c1"># to get all the paths from somewhere.</span>
+
+        <span class="c1">#######</span>
+        <span class="c1"># all hardcoded xpaths used and attributes names:</span>
+        <span class="n">bravaismatrix_bulk_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/cell/bulkLattice/bravaisMatrix/&#39;</span>
+        <span class="n">bravaismatrix_film_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/cell/filmLattice/bravaisMatrix/&#39;</span>
+        <span class="n">kpointlist_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurInput/calculationSetup/bzIntegration/kPointList/&#39;</span>
+
+        <span class="n">kpoint_tag</span> <span class="o">=</span> <span class="s1">&#39;kPoint&#39;</span>
+        <span class="n">kpointlist_attrib_posscale</span> <span class="o">=</span> <span class="s1">&#39;posScale&#39;</span>
+        <span class="n">kpointlist_attrib_weightscale</span> <span class="o">=</span> <span class="s1">&#39;weightScale&#39;</span>
+        <span class="c1">#kpointlist_attrib_count = &#39;count&#39;</span>
+        <span class="n">kpoint_attrib_weight</span> <span class="o">=</span> <span class="s1">&#39;weight&#39;</span>
+        <span class="n">row1_tag_name</span> <span class="o">=</span> <span class="s1">&#39;row-1&#39;</span>
+        <span class="n">row2_tag_name</span> <span class="o">=</span> <span class="s1">&#39;row-2&#39;</span>
+        <span class="n">row3_tag_name</span> <span class="o">=</span> <span class="s1">&#39;row-3&#39;</span>
+        <span class="c1">########</span>
+
+        <span class="k">if</span> <span class="s1">&#39;inp.xml&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;cannot get a KpointsData because fleurinpdata has no inp.xml file yet&#39;</span><span class="p">)</span>
+            <span class="c1"># TODO what to do in this case?</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># else read in inpxml</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_file_path</span><span class="p">:</span>  <span class="c1"># Schema there, parse with schema</span>
+            <span class="n">xmlschema_doc</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_file_path</span><span class="p">)</span>
+            <span class="n">xmlschema</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="n">xmlschema_doc</span><span class="p">)</span>
+            <span class="n">parser</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">attribute_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+                <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">xinclude</span><span class="p">()</span>
+            <span class="c1"># remove comments from inp.xml</span>
+            <span class="n">comments</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//comment()&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">comments</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">xmlschema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input file is not validated against the schema.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># schema not there, parse without</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;parsing inp.xml without XMLSchema&#39;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+                <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">)</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">xinclude</span><span class="p">()</span>
+            <span class="c1"># remove comments from inp.xml</span>
+            <span class="n">comments</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//comment()&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">comments</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+        <span class="c1"># get cell matrix from inp.xml</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">row1</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_bulk_xpath</span> <span class="o">+</span> <span class="n">row1_tag_name</span><span class="p">)</span>  <span class="c1"># [0].text.split()</span>
+
+        <span class="k">if</span> <span class="n">row1</span><span class="p">:</span>  <span class="c1"># bulk calculation</span>
+            <span class="n">row1</span> <span class="o">=</span> <span class="n">row1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">row2</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_bulk_xpath</span> <span class="o">+</span> <span class="n">row2_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">row3</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_bulk_xpath</span> <span class="o">+</span> <span class="n">row3_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="c1"># TODO? allow math?</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row1</span><span class="p">):</span>
+                <span class="n">row1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row2</span><span class="p">):</span>
+                <span class="n">row2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row3</span><span class="p">):</span>
+                <span class="n">row3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+
+            <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="n">row2</span><span class="p">,</span> <span class="n">row3</span><span class="p">]</span>
+            <span class="c1"># set boundary conditions</span>
+            <span class="n">pbc1</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_film_xpath</span> <span class="o">+</span> <span class="n">row1_tag_name</span><span class="p">):</span>
+            <span class="c1"># film calculation</span>
+            <span class="n">row1</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_film_xpath</span> <span class="o">+</span> <span class="n">row1_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">row2</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_film_xpath</span> <span class="o">+</span> <span class="n">row2_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">row3</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">bravaismatrix_film_xpath</span> <span class="o">+</span> <span class="n">row3_tag_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row1</span><span class="p">):</span>
+                <span class="n">row1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row2</span><span class="p">):</span>
+                <span class="n">row2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row3</span><span class="p">):</span>
+                <span class="n">row3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span> <span class="o">*</span> <span class="n">BOHR_A</span>
+            <span class="c1"># row3 = [0, 0, 0]#? TODO:what has it to be in this case?</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="n">row2</span><span class="p">,</span> <span class="n">row3</span><span class="p">]</span>
+            <span class="n">pbc1</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Could not extract Bravias matrix out of inp.xml. Is the &#39;</span>
+                  <span class="s1">&#39;Bravias matrix explicitly given? i.e Latnam definition &#39;</span>
+                  <span class="s1">&#39;not supported.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="c1"># get kpoints only works if kpointlist in inp.xml</span>
+        <span class="n">kpoints</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">kpointlist_xpath</span> <span class="o">+</span> <span class="n">kpoint_tag</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kpoints</span><span class="p">:</span>
+            <span class="n">posscale</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">kpointlist_xpath</span> <span class="o">+</span> <span class="s1">&#39;@&#39;</span> <span class="o">+</span> <span class="n">kpointlist_attrib_posscale</span><span class="p">)</span>
+            <span class="n">weightscale</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">kpointlist_xpath</span> <span class="o">+</span> <span class="s1">&#39;@&#39;</span> <span class="o">+</span> <span class="n">kpointlist_attrib_weightscale</span><span class="p">)</span>
+            <span class="c1">#count = root.xpath(kpointlist_xpath + &#39;@&#39; + kpointlist_attrib_count)</span>
+
+            <span class="n">kpoints_pos</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">kpoints_weight</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">kpoint</span> <span class="ow">in</span> <span class="n">kpoints</span><span class="p">:</span>
+                <span class="n">kpoint_pos</span> <span class="o">=</span> <span class="n">kpoint</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">kval</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">kpoint_pos</span><span class="p">):</span>
+                    <span class="n">kpoint_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">kval</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">posscale</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">kpoint_weight</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">kpoint</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">kpoint_attrib_weight</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">weightscale</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">kpoints_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kpoint_pos</span><span class="p">)</span>
+                <span class="n">kpoints_weight</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kpoint_weight</span><span class="p">)</span>
+            <span class="n">totalw</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">kpoints_weight</span><span class="p">:</span>
+                <span class="n">totalw</span> <span class="o">=</span> <span class="n">totalw</span> <span class="o">+</span> <span class="n">weight</span>
+            <span class="n">kps</span> <span class="o">=</span> <span class="n">KpointsData</span><span class="p">()</span>
+            <span class="n">kps</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+            <span class="n">kps</span><span class="o">.</span><span class="n">pbc</span> <span class="o">=</span> <span class="n">pbc1</span>
+
+            <span class="n">kps</span><span class="o">.</span><span class="n">set_kpoints</span><span class="p">(</span><span class="n">kpoints_pos</span><span class="p">,</span> <span class="n">cartesian</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">kpoints_weight</span><span class="p">)</span>
+            <span class="c1">#kps.add_link_from(self, label=&#39;fleurinp.kpts&#39;, link_type=LinkType.CREATE)</span>
+            <span class="n">kps</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;fleurinp.kpts&#39;</span>
+            <span class="c1"># return {label: kps}</span>
+            <span class="k">return</span> <span class="n">kps</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># TODO parser other kpoints formats, if they fit in an AiiDA node</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No kpoint list in inp.xml&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="FleurinpData.get_kpointsdata"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.get_kpointsdata">[docs]</a>    <span class="nd">@cf</span>
+    <span class="k">def</span> <span class="nf">get_kpointsdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This routine returns an AiiDA :class:`~aiida.orm.KpointsData` type produced from the</span>
+<span class="sd">        ``inp.xml`` file. This only works if the kpoints are listed in the in inpxml.</span>
+<span class="sd">        This is a calcfunction and keeps the provenance!</span>
+
+<span class="sd">        :returns: :class:`~aiida.orm.KpointsData` node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_kpointsdata_ncf</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FleurinpData.get_parameterdata_ncf"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.get_parameterdata_ncf">[docs]</a>    <span class="k">def</span> <span class="nf">get_parameterdata_ncf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This routine returns an AiiDA :class:`~aiida.orm.Dict` type produced from the ``inp.xml``</span>
+<span class="sd">        file. This node can be used for inpgen as `calc_parameters`.</span>
+<span class="sd">        This is NOT a calcfunction and does NOT keep the provenance!</span>
+
+<span class="sd">        :returns: :class:`~aiida.orm.Dict` node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">get_inpgen_paranode_from_xml</span>
+        <span class="k">if</span> <span class="s1">&#39;inp.xml&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;cannot get a StructureData because fleurinpdata has no inp.xml file yet&#39;</span><span class="p">)</span>
+            <span class="c1"># TODO what to do in this case?</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># read in inpxml</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+            <span class="n">new_parameters</span> <span class="o">=</span> <span class="n">get_inpgen_paranode_from_xml</span><span class="p">(</span><span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">new_parameters</span></div>
+
+    <span class="c1"># Is there a way to give self to calcfunctions?</span>
+<div class="viewcode-block" id="FleurinpData.get_parameterdata"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.get_parameterdata">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@cf</span>
+    <span class="k">def</span> <span class="nf">get_parameterdata</span><span class="p">(</span><span class="n">fleurinp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This routine returns an AiiDA :class:`~aiida.orm.Dict` type produced from the ``inp.xml``</span>
+<span class="sd">        file. The returned node can be used for inpgen as `calc_parameters`.</span>
+<span class="sd">        This is a calcfunction and keeps the provenance!</span>
+
+<span class="sd">        :returns: :class:`~aiida.orm.Dict` node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">fleurinp</span><span class="o">.</span><span class="n">get_parameterdata_ncf</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FleurinpData.get_tag"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData.get_tag">[docs]</a>    <span class="k">def</span> <span class="nf">get_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tries to evaluate an xpath expression for ``inp.xml`` file. If it fails it logs it.</span>
+
+<span class="sd">        :param xpath: an xpath expression</span>
+<span class="sd">        :returns: A node list retrived using given xpath</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="s1">&#39;inp.xml&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="c1"># read in inpxml</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_file_path</span><span class="p">:</span>  <span class="c1"># Schema there, parse with schema</span>
+                <span class="c1">#xmlschema_doc = etree.parse(self._schema_file_path)</span>
+                <span class="c1">#xmlschema = etree.XMLSchema(xmlschema_doc)</span>
+                <span class="c1">#parser = etree.XMLParser(schema=xmlschema, attribute_defaults=True)</span>
+                <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+                    <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">)</span>  <span class="c1"># , parser)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># schema not there, parse without</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;parsing inp.xml without XMLSchema&#39;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpxmlfile</span><span class="p">:</span>
+                    <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inpxmlfile</span><span class="p">)</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s1">&#39;No inp.xml file yet specified, to get a tag from&#39;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">return_value</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XPathEvalError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputValidationError</span><span class="p">(</span><span class="s1">&#39;There was a XpathEvalError on the xpath: </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> Either it does &#39;</span>
+                                       <span class="s1">&#39;not exist, or something is wrong with the expression.&#39;</span>
+                                       <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xpath</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">return_value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">return_value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">return_value</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

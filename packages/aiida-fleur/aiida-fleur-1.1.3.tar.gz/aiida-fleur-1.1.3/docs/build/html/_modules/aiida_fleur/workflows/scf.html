@@ -1,0 +1,1026 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.workflows.scf &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.workflows.scf</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.workflows.scf</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">In this module you find the workchain &#39;FleurScfWorkChain&#39; for the self-consistency</span>
+<span class="sd">cycle management of a FLEUR calculation with AiiDA.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># TODO: more info in output, log warnings</span>
+<span class="c1"># TODO: make smarter, ggf delete mixing_history or restart with more or less iterations</span>
+<span class="c1"># you can use the pattern of the density convergence for this</span>
+<span class="c1"># TODO: maybe write dict schema for wf_parameter inputs, how?</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span><span class="p">,</span> <span class="n">load_node</span><span class="p">,</span> <span class="n">CalcJobNode</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">StructureData</span><span class="p">,</span> <span class="n">RemoteData</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Float</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">WorkChain</span><span class="p">,</span> <span class="n">while_</span><span class="p">,</span> <span class="n">if_</span><span class="p">,</span> <span class="n">ToContext</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">calcfunction</span> <span class="k">as</span> <span class="n">cf</span>
+<span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">NotExistent</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinpmodifier</span> <span class="kn">import</span> <span class="n">FleurinpModifier</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.common_fleur_wf</span> <span class="kn">import</span> <span class="n">get_inputs_fleur</span><span class="p">,</span> <span class="n">get_inputs_inpgen</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.common_fleur_wf</span> <span class="kn">import</span> <span class="n">test_and_get_codenode</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">eval_xpath2</span><span class="p">,</span> <span class="n">get_xml_attribute</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.common_fleur_wf</span> <span class="kn">import</span> <span class="n">find_last_submitted_calcjob</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.create_kpoints_from_distance</span> <span class="kn">import</span> <span class="n">create_kpoints_from_distance_parameter</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.workflows.base_fleur</span> <span class="kn">import</span> <span class="n">FleurBaseWorkChain</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.data.fleurinp</span> <span class="kn">import</span> <span class="n">FleurinpData</span>
+
+
+<div class="viewcode-block" id="FleurScfWorkChain"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain">[docs]</a><span class="k">class</span> <span class="nc">FleurScfWorkChain</span><span class="p">(</span><span class="n">WorkChain</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Workchain for converging a FLEUR calculation (SCF).</span>
+
+<span class="sd">    It converges the charge density, total energy or the largest force.</span>
+<span class="sd">    Two paths are possible:</span>
+
+<span class="sd">    (1) Start from a structure and run the inpgen first optional with calc_parameters</span>
+<span class="sd">    (2) Start from a Fleur calculation, with optional remoteData</span>
+
+<span class="sd">    :param wf_parameters: (Dict), Workchain Specifications</span>
+<span class="sd">    :param structure: (StructureData), Crystal structure</span>
+<span class="sd">    :param calc_parameters: (Dict), Inpgen Parameters</span>
+<span class="sd">    :param fleurinp: (FleurinpData), to start with a Fleur calculation</span>
+<span class="sd">    :param remote_data: (RemoteData), from a Fleur calculation</span>
+<span class="sd">    :param inpgen: (Code)</span>
+<span class="sd">    :param fleur: (Code)</span>
+
+<span class="sd">    :return: output_scf_wc_para (Dict), Information of workflow results</span>
+<span class="sd">        like Success, last result node, list with convergence behavior</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_workflowversion</span> <span class="o">=</span> <span class="s1">&#39;0.4.3&#39;</span>
+    <span class="n">_default_wf_para</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;fleur_runmax&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;density_converged&#39;</span><span class="p">:</span> <span class="mf">0.00002</span><span class="p">,</span>
+        <span class="s1">&#39;energy_converged&#39;</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">,</span>
+        <span class="s1">&#39;force_converged&#39;</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">,</span>
+        <span class="s1">&#39;kpoints_distance&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># in 1/A, usually 0.1</span>
+        <span class="s1">&#39;kpoints_force_parity&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;kpoints_force_odd&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;kpoints_force_false&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;density&#39;</span><span class="p">,</span>  <span class="c1"># &#39;density&#39;, &#39;energy&#39; or &#39;force&#39;</span>
+        <span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;only_even_MPI&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;itmax_per_run&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="s1">&#39;force_dict&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;qfix&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s1">&#39;forcealpha&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;forcemix&#39;</span><span class="p">:</span> <span class="s1">&#39;straight&#39;</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;use_relax_xml&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;inpxml_changes&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">}</span>
+
+    <span class="n">_default_options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;num_mpiprocs_per_machine&#39;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span>
+        <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;import_sys_environment&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;environment_variables&#39;</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FleurScfWorkChain</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;fleur&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Code</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;inpgen&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Code</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;wf_parameters&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;structure&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">StructureData</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;calc_parameters&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;fleurinp&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">FleurinpData</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;remote_data&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">RemoteData</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;options&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;settings_inpgen&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">outline</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">validate_input</span><span class="p">,</span>
+                     <span class="n">if_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">fleurinpgen_needed</span><span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="n">run_fleurinpgen</span><span class="p">),</span> <span class="bp">cls</span><span class="o">.</span><span class="n">run_fleur</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">inspect_fleur</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_res</span><span class="p">,</span>
+                     <span class="n">while_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">condition</span><span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="n">run_fleur</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">inspect_fleur</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_res</span><span class="p">),</span> <span class="bp">cls</span><span class="o">.</span><span class="n">return_results</span><span class="p">)</span>
+
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;fleurinp&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">FleurinpData</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;output_scf_wc_para&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;last_fleur_calc_output&#39;</span><span class="p">,</span> <span class="n">valid_type</span><span class="o">=</span><span class="n">Dict</span><span class="p">)</span>
+
+        <span class="c1"># exit codes</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">230</span><span class="p">,</span> <span class="s1">&#39;ERROR_INVALID_INPUT_PARAM&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Invalid workchain parameters.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">231</span><span class="p">,</span> <span class="s1">&#39;ERROR_INVALID_INPUT_CONFIG&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Invalid input configuration.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">233</span><span class="p">,</span>
+                       <span class="s1">&#39;ERROR_INVALID_CODE_PROVIDED&#39;</span><span class="p">,</span>
+                       <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Input codes do not correspond to fleur or inpgen respectively.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">235</span><span class="p">,</span> <span class="s1">&#39;ERROR_CHANGING_FLEURINPUT_FAILED&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Input file modification failed.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">236</span><span class="p">,</span> <span class="s1">&#39;ERROR_INVALID_INPUT_FILE&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Input file was corrupted after user&#39;s modifications.&quot;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="s1">&#39;ERROR_INPGEN_CALCULATION_FAILED&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Inpgen calculation failed.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">361</span><span class="p">,</span> <span class="s1">&#39;ERROR_FLEUR_CALCULATION_FAILED&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Fleur calculation failed.&#39;</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">exit_code</span><span class="p">(</span><span class="mi">362</span><span class="p">,</span> <span class="s1">&#39;ERROR_DID_NOT_CONVERGE&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;SCF cycle did not lead to convergence.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FleurScfWorkChain.start"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        init context and some parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: started convergence workflow version </span><span class="si">{}</span><span class="s1">&#39;</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_workflowversion</span><span class="p">))</span>
+
+        <span class="c1">####### init    #######</span>
+
+        <span class="c1"># internal para /control para</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_base_wc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">relax_generated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">abort</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">reached_conv</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">wf_default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_wf_para</span>
+        <span class="k">if</span> <span class="s1">&#39;wf_parameters&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">wf_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">wf_parameters</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">wf_dict</span> <span class="o">=</span> <span class="n">wf_default</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">wf_default</span><span class="p">):</span>
+            <span class="n">wf_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span> <span class="o">=</span> <span class="n">wf_dict</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">serial</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;serial&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">fleur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span>
+        <span class="n">fleur_extras</span> <span class="o">=</span> <span class="n">fleur</span><span class="o">.</span><span class="n">extras</span>
+        <span class="n">inpgen_extras</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s1">&#39;inpgen&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">inpgen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">inpgen</span>
+            <span class="n">inpgen_extras</span> <span class="o">=</span> <span class="n">inpgen</span><span class="o">.</span><span class="n">extras</span>
+
+        <span class="n">defaultoptions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_options</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">user_options</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="s1">&#39;options&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">user_options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+
+        <span class="c1"># extend options by code defaults given in code extras</span>
+        <span class="c1"># Maybe do full recursive merge</span>
+        <span class="k">if</span> <span class="s1">&#39;queue_defaults&#39;</span> <span class="ow">in</span> <span class="n">fleur_extras</span><span class="p">:</span>
+            <span class="n">qd</span> <span class="o">=</span> <span class="n">fleur_extras</span><span class="p">[</span><span class="s1">&#39;queue_defaults&#39;</span><span class="p">]</span>
+            <span class="n">queue</span> <span class="o">=</span> <span class="n">user_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;queue&#39;</span><span class="p">,</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span>
+            <span class="n">defaults_queue</span> <span class="o">=</span> <span class="n">qd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">defaultoptions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">defaultoptions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaults_queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;options&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="n">user_options</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="n">defaultoptions</span>
+        <span class="c1"># we use the same options for both codes, inpgen resources get overridden</span>
+        <span class="c1"># and queue does not matter in case of direct scheduler</span>
+
+        <span class="c1"># extend options given by user using defaults</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">defaultoptions</span><span class="p">):</span>
+            <span class="n">options</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">max_number_runs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fleur_runmax&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">description_wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;|fleur_scf_wc|&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">label_wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;fleur_scf_wc&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">default_itmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;itmax_per_run&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+
+        <span class="c1"># return para/vars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">parse_last</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_forces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_energy</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energydiff</span> <span class="o">=</span> <span class="mi">10000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">forcediff</span> <span class="o">=</span> <span class="mi">10000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_charge_density</span> <span class="o">=</span> <span class="mi">10000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># &quot;debug&quot;: {},</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">possible_info</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;Consider providing more resources&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Consider providing a lot more resources&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Consider changing the mixing scheme&#39;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fleurinp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">formula</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_wall_time</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.validate_input"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.validate_input">[docs]</a>    <span class="k">def</span> <span class="nf">validate_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # validate input and find out which path (1, or 2) to take</span>
+<span class="sd">        # return True means run inpgen if false run fleur directly</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">extra_keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_wf_para</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">extra_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extra_keys</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: input wf_parameters for SCF contains extra keys: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extra_keys</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_PARAM</span>
+
+        <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span>
+        <span class="k">if</span> <span class="s1">&#39;fleurinp&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">run_inpgen</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="s1">&#39;structure&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: structure input is not needed because Fleurinp was given&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_CONFIG</span>
+            <span class="k">if</span> <span class="s1">&#39;inpgen&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: inpgen code is not needed input because Fleurinp was given&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_CONFIG</span>
+            <span class="k">if</span> <span class="s1">&#39;calc_parameters&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: calc_parameters input is not needed because Fleurinp was given&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_CONFIG</span>
+            <span class="k">if</span> <span class="s1">&#39;remote_data&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">warning</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;WARNING: Only initial charge density will be copied from the&#39;</span>
+                           <span class="s1">&#39;given remote folder because fleurinp is given.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;structure&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">run_inpgen</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;inpgen&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: StructureData was provided, but no inpgen code was provided&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_CONFIG</span>
+            <span class="k">if</span> <span class="s1">&#39;remote_data&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">warning</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;WARNING: Only initial charge density will be copied from the&#39;</span>
+                           <span class="s1">&#39;given remote folder because fleurinp is given.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;remote_data&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">run_inpgen</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: No StructureData nor FleurinpData nor RemoteData was provided&#39;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_CONFIG</span>
+
+        <span class="k">if</span> <span class="s1">&#39;inpgen&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">test_and_get_codenode</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">inpgen</span><span class="p">,</span> <span class="s1">&#39;fleur.inpgen&#39;</span><span class="p">,</span> <span class="n">use_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;The code you provided for inpgen of FLEUR does not use the plugin fleur.inpgen&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_CODE_PROVIDED</span>
+
+        <span class="k">if</span> <span class="s1">&#39;fleur&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">test_and_get_codenode</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span><span class="p">,</span> <span class="s1">&#39;fleur.fleur&#39;</span><span class="p">,</span> <span class="n">use_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;The code you provided for FLEUR does not use the plugin fleur.fleur&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_CODE_PROVIDED</span>
+
+        <span class="c1"># check the mode in wf_dict</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;force&#39;</span><span class="p">,</span> <span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">]:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: Wrong mode of convergence&#39;</span> <span class="o">+</span> <span class="s2">&quot;: one of &#39;force&#39;, &#39;density&#39; or &#39;energy&#39; was expected.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_PARAM</span>
+
+        <span class="n">max_iters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;itmax_per_run&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_iters</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;ERROR: &#39;itmax_per_run&#39; should be equal at least 2&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_PARAM</span>
+
+        <span class="c1"># check format of inpxml_changes</span>
+        <span class="n">fchanges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inpxml_changes&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">fchanges</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">fchanges</span><span class="p">:</span>
+                <span class="c1"># somehow the tuple type gets destroyed on the way and becomes a list</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">change</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">change</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: Wrong Input inpxml_changes wrong format of&#39;</span>
+                             <span class="s1">&#39;: </span><span class="si">{}</span><span class="s1"> should be tuple of 2. I abort&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">change</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_PARAM</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.fleurinpgen_needed"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.fleurinpgen_needed">[docs]</a>    <span class="k">def</span> <span class="nf">fleurinpgen_needed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if inpgen calculation has to be submitted</span>
+<span class="sd">        before fleur calculations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">run_inpgen</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.run_fleurinpgen"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.run_fleurinpgen">[docs]</a>    <span class="k">def</span> <span class="nf">run_fleurinpgen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        run the inpgen</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">## prepare inputs for inpgen</span>
+        <span class="n">structure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">structure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">formula</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;scf: inpgen&#39;</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> inpgen on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">description_wf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">formula</span><span class="p">)</span>
+
+        <span class="n">inpgencode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">inpgen</span>
+
+        <span class="k">if</span> <span class="s1">&#39;calc_parameters&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">calc_parameters</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s1">&#39;settings_inpgen&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">settings_inpgen</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># If given kpt_dist has prio over given calc_parameters</span>
+        <span class="n">kpt_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kpoints_distance&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kpt_dist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cf_para_kpt</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+                <span class="nb">dict</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="n">kpt_dist</span><span class="p">,</span>
+                    <span class="s1">&#39;force_parity&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kpoints_force_parity&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                    <span class="s1">&#39;force_even&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kpoints_force_even&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                    <span class="s1">&#39;force_odd&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kpoints_force_odd&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="p">})</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;structure&#39;</span><span class="p">:</span> <span class="n">structure</span><span class="p">,</span>
+                <span class="s1">&#39;calc_parameters&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+                <span class="s1">&#39;cf_para&#39;</span><span class="p">:</span> <span class="n">cf_para_kpt</span><span class="p">,</span>
+                <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;call_link_label&#39;</span><span class="p">:</span> <span class="s1">&#39;create_kpoints_from_distance&#39;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">create_kpoints_from_distance_parameter</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">)),</span>
+            <span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resources&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;queue_name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="n">inputs_build</span> <span class="o">=</span> <span class="n">get_inputs_inpgen</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span>
+                                         <span class="n">inpgencode</span><span class="p">,</span>
+                                         <span class="n">options</span><span class="p">,</span>
+                                         <span class="n">label</span><span class="p">,</span>
+                                         <span class="n">description</span><span class="p">,</span>
+                                         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+                                         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="c1"># Launch inpgen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: run inpgen&#39;</span><span class="p">)</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">inputs_build</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ToContext</span><span class="p">(</span><span class="n">inpgen</span><span class="o">=</span><span class="n">future</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.change_fleurinp"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.change_fleurinp">[docs]</a>    <span class="k">def</span> <span class="nf">change_fleurinp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This routine sets somethings in the fleurinp file before running a fleur</span>
+<span class="sd">        calculation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: run change_fleurinp&#39;</span><span class="p">)</span>
+
+        <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span>
+
+        <span class="c1"># Has to never crash because corresponding check was done in validate function</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fleurinp</span><span class="p">:</span>  <span class="c1"># something was already changed</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="s1">&#39;fleurinp&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="n">fleurin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleurinp</span>
+        <span class="k">elif</span> <span class="s1">&#39;structure&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="s1">&#39;inpgen&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">is_finished_ok</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Inpgen calculation failed&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INPGEN_CALCULATION_FAILED</span>
+            <span class="n">fleurin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="s1">&#39;inpgen&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">fleurinpData</span>
+        <span class="k">elif</span> <span class="s1">&#39;remote_data&#39;</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="c1"># In this case only remote_data for input structure is given</span>
+            <span class="c1"># fleurinp data has to be generated from the remote inp.xml file to use change_fleurinp</span>
+            <span class="n">remote_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">remote_data</span>
+            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">remote_node</span><span class="o">.</span><span class="n">get_incoming</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="n">CalcJobNode</span><span class="p">):</span>
+                    <span class="n">parent_calc_node</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">node</span>
+            <span class="n">retrieved_node</span> <span class="o">=</span> <span class="n">parent_calc_node</span><span class="o">.</span><span class="n">get_outgoing</span><span class="p">()</span><span class="o">.</span><span class="n">get_node_by_label</span><span class="p">(</span><span class="s1">&#39;retrieved&#39;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="p">[</span><span class="s1">&#39;use_relax_xml&#39;</span><span class="p">]:</span>
+                    <span class="n">fleurin</span> <span class="o">=</span> <span class="n">FleurinpData</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;relax.xml&#39;</span><span class="p">],</span> <span class="n">node</span><span class="o">=</span><span class="n">retrieved_node</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: generated FleurinpData from inp.xml and relax.xml&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">fleurin</span> <span class="o">=</span> <span class="n">FleurinpData</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;inp.xml&#39;</span><span class="p">],</span> <span class="n">node</span><span class="o">=</span><span class="n">retrieved_node</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: generated FleurinpData from inp.xml&#39;</span><span class="p">)</span>
+            <span class="n">fleurin</span><span class="o">.</span><span class="n">store</span><span class="p">()</span>
+
+        <span class="n">wf_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span>
+        <span class="n">force_dict</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;force_dict&#39;</span><span class="p">)</span>
+        <span class="n">converge_mode</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">)</span>
+        <span class="n">fchanges</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inpxml_changes&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="n">fleurmode</span> <span class="o">=</span> <span class="n">FleurinpModifier</span><span class="p">(</span><span class="n">fleurin</span><span class="p">)</span>
+
+        <span class="c1"># set proper convergence parameters in inp.xml</span>
+        <span class="k">if</span> <span class="n">converge_mode</span> <span class="o">==</span> <span class="s1">&#39;density&#39;</span><span class="p">:</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;density_converged&#39;</span><span class="p">)</span>
+            <span class="n">fleurmode</span><span class="o">.</span><span class="n">set_inpchanges</span><span class="p">({</span><span class="s1">&#39;itmax&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">default_itmax</span><span class="p">,</span> <span class="s1">&#39;minDistance&#39;</span><span class="p">:</span> <span class="n">dist</span><span class="p">})</span>
+        <span class="k">elif</span> <span class="n">converge_mode</span> <span class="o">==</span> <span class="s1">&#39;force&#39;</span><span class="p">:</span>
+            <span class="n">force_converged</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;force_converged&#39;</span><span class="p">)</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;density_converged&#39;</span><span class="p">)</span>
+            <span class="n">fleurmode</span><span class="o">.</span><span class="n">set_inpchanges</span><span class="p">({</span>
+                <span class="s1">&#39;itmax&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">default_itmax</span><span class="p">,</span>
+                <span class="s1">&#39;minDistance&#39;</span><span class="p">:</span> <span class="n">dist</span><span class="p">,</span>
+                <span class="s1">&#39;force_converged&#39;</span><span class="p">:</span> <span class="n">force_converged</span><span class="p">,</span>
+                <span class="s1">&#39;l_f&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">&#39;qfix&#39;</span><span class="p">:</span> <span class="n">force_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;qfix&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;forcealpha&#39;</span><span class="p">:</span> <span class="n">force_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;forcealpha&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;forcemix&#39;</span><span class="p">:</span> <span class="n">force_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;forcemix&#39;</span><span class="p">)</span>
+            <span class="p">})</span>
+        <span class="k">elif</span> <span class="n">converge_mode</span> <span class="o">==</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">fleurmode</span><span class="o">.</span><span class="n">set_inpchanges</span><span class="p">({</span><span class="s1">&#39;itmax&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">default_itmax</span><span class="p">,</span> <span class="s1">&#39;minDistance&#39;</span><span class="p">:</span> <span class="n">dist</span><span class="p">})</span>
+
+        <span class="n">avail_ac_dict</span> <span class="o">=</span> <span class="n">fleurmode</span><span class="o">.</span><span class="n">get_avail_actions</span><span class="p">()</span>
+
+        <span class="c1"># apply further user dependend changes</span>
+        <span class="k">if</span> <span class="n">fchanges</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">fchanges</span><span class="p">:</span>
+                <span class="n">function</span> <span class="o">=</span> <span class="n">change</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">para</span> <span class="o">=</span> <span class="n">change</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">method</span> <span class="o">=</span> <span class="n">avail_ac_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">method</span><span class="p">:</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;ERROR: Input &#39;inpxml_changes&#39;, function </span><span class="si">{}</span><span class="s2"> &quot;</span>
+                             <span class="s1">&#39;is not known to fleurinpmodifier class, &#39;</span>
+                             <span class="s1">&#39;please check/test your input. I abort...&#39;</span>
+                             <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">function</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_CHANGING_FLEURINPUT_FAILED</span>
+
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># apply change</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">method</span><span class="p">(</span><span class="o">**</span><span class="n">para</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">vale</span><span class="p">:</span>
+                        <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: Changing the inp.xml file failed. Tried to apply </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                 <span class="s1">&#39;, which failed with </span><span class="si">{}</span><span class="s1">. I abort, good luck next time!&#39;</span>
+                                 <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">change</span><span class="p">,</span> <span class="n">vale</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_CHANGING_FLEURINPUT_FAILED</span>
+
+        <span class="c1"># validate?</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fleurmode</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">DocumentInvalid</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: input, user wanted inp.xml changes did not validate&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_INPUT_FILE</span>
+
+        <span class="c1"># apply</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">fleurmode</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fleurinp</span> <span class="o">=</span> <span class="n">out</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.run_fleur"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.run_fleur">[docs]</a>    <span class="k">def</span> <span class="nf">run_fleur</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        run a FLEUR calculation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: run FLEUR&#39;</span><span class="p">)</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">change_fleurinp</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">status</span>
+
+        <span class="n">fleurin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fleurinp</span>
+
+        <span class="k">if</span> <span class="s1">&#39;settings&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">settings</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="s1">&#39;last_base_wc&#39;</span><span class="p">]:</span>
+            <span class="c1"># will this fail if fleur before failed? try needed?</span>
+            <span class="n">remote</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">[</span><span class="s1">&#39;last_base_wc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">remote_folder</span>
+        <span class="k">elif</span> <span class="s1">&#39;remote_data&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">remote</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">remote_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">remote</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">formula</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;scf: fleur run </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> fleur run </span><span class="si">{}</span><span class="s1"> on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">description_wf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                                                         <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">formula</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;scf: fleur run </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> fleur run </span><span class="si">{}</span><span class="s1">, fleurinp given&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">description_wf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleur</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">inputs_builder</span> <span class="o">=</span> <span class="n">get_inputs_fleur</span><span class="p">(</span><span class="n">code</span><span class="p">,</span>
+                                          <span class="n">remote</span><span class="p">,</span>
+                                          <span class="n">fleurin</span><span class="p">,</span>
+                                          <span class="n">options</span><span class="p">,</span>
+                                          <span class="n">label</span><span class="p">,</span>
+                                          <span class="n">description</span><span class="p">,</span>
+                                          <span class="n">settings</span><span class="p">,</span>
+                                          <span class="n">serial</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">serial</span><span class="p">,</span>
+                                          <span class="n">only_even_MPI</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="p">[</span><span class="s1">&#39;only_even_MPI&#39;</span><span class="p">])</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">FleurBaseWorkChain</span><span class="p">,</span> <span class="o">**</span><span class="n">inputs_builder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: run FLEUR number: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">calcs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ToContext</span><span class="p">(</span><span class="n">last_base_wc</span><span class="o">=</span><span class="n">future</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.inspect_fleur"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.inspect_fleur">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_fleur</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analyse the results of the previous Calculation (Fleur or inpgen),</span>
+<span class="sd">        checking whether it finished successfully or if not, troubleshoot the</span>
+<span class="sd">        cause and adapt the input parameters accordingly before</span>
+<span class="sd">        restarting, or abort if unrecoverable error was found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: inspect FLEUR&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">base_wc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_base_wc</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">parse_last</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;ERROR: Something went wrong I do not have a last calculation&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_FLEUR_CALCULATION_FAILED</span>
+
+        <span class="n">exit_status</span> <span class="o">=</span> <span class="n">base_wc</span><span class="o">.</span><span class="n">exit_status</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">base_wc</span><span class="o">.</span><span class="n">is_finished_ok</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ERROR: Last Fleur calculation failed &#39;</span> <span class="s1">&#39;with exit status </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exit_status</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_FLEUR_CALCULATION_FAILED</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">parse_last</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.get_res"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.get_res">[docs]</a>    <span class="k">def</span> <span class="nf">get_res</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check how the last Fleur calculation went</span>
+<span class="sd">        Parse some results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: get results FLEUR&#39;</span><span class="p">)</span>
+
+        <span class="n">xpath_energy</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/scfLoop/iteration/totalEnergy/@value&#39;</span>
+        <span class="n">xpath_iter</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/scfLoop/iteration&#39;</span>
+        <span class="n">xpath_force</span> <span class="o">=</span> <span class="s1">&#39;totalForcesOnRepresentativeAtoms/forceTotal&#39;</span>
+
+        <span class="c1"># be aware of magnetism</span>
+        <span class="n">xpath_distance</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/scfLoop/iteration/densityConvergence/chargeDensity/@distance&#39;</span>
+        <span class="n">overallchargedensity_xpath</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;/fleurOutput/scfLoop/iteration/densityConvergence/&#39;</span>
+                                      <span class="s1">&#39;overallChargeDensity/@distance&#39;</span><span class="p">)</span>
+
+        <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">parse_last</span><span class="p">:</span>
+            <span class="n">last_base_wc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_base_wc</span>
+            <span class="n">fleur_calcjob</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">find_last_submitted_calcjob</span><span class="p">(</span><span class="n">last_base_wc</span><span class="p">))</span>
+            <span class="n">walltime</span> <span class="o">=</span> <span class="n">last_base_wc</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">output_parameters</span><span class="o">.</span><span class="n">dict</span><span class="o">.</span><span class="n">walltime</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">walltime</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_wall_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_wall_time</span> <span class="o">+</span> <span class="n">walltime</span>
+            <span class="k">with</span> <span class="n">fleur_calcjob</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">retrieved</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fleur_calcjob</span><span class="o">.</span><span class="n">process_class</span><span class="o">.</span><span class="n">_OUTXML_FILE_NAME</span><span class="p">,</span>
+                                                      <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outxmlfile_opened</span><span class="p">:</span>
+                <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">outxmlfile_opened</span><span class="p">)</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+            <span class="n">energies</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xpath_energy</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">energy</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_energy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">energy</span><span class="p">))</span>
+
+            <span class="n">overall_distances</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">overallchargedensity_xpath</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">overall_distances</span><span class="p">:</span>
+                <span class="n">distances</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xpath_distance</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">distance</span> <span class="ow">in</span> <span class="n">distances</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">distance</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">distance</span> <span class="ow">in</span> <span class="n">overall_distances</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">distance</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;force&#39;</span><span class="p">:</span>
+                <span class="n">iter_all</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xpath_iter</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="n">iter_all</span><span class="p">:</span>
+                    <span class="n">forces</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">xpath_force</span><span class="p">)</span>
+                    <span class="n">forces_in_iter</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="n">forces</span><span class="p">:</span>
+                        <span class="n">force_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="s1">&#39;F_x&#39;</span><span class="p">))</span>
+                        <span class="n">force_y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="s1">&#39;F_y&#39;</span><span class="p">))</span>
+                        <span class="n">force_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="s1">&#39;F_z&#39;</span><span class="p">))</span>
+
+                        <span class="n">forces_in_iter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">force_x</span><span class="p">)</span>
+                        <span class="n">forces_in_iter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">force_y</span><span class="p">)</span>
+                        <span class="n">forces_in_iter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">force_z</span><span class="p">)</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_forces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">forces_in_iter</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;ERROR: scf wc was not successful, check log for details&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_FLEUR_CALCULATION_FAILED</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">distance</span><span class="p">:</span>
+            <span class="c1"># if fleur relaxes an already converged crystal it stops directly</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;force&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: System already force converged, could not extract distance.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_charge_density</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;ERROR: did not manage to extract charge density from the calculation&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">control_end_wc</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_FLEUR_CALCULATION_FAILED</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_charge_density</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">distance</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.condition"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.condition">[docs]</a>    <span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        check convergence condition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;INFO: checking condition FLEUR&#39;</span><span class="p">)</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">)</span>
+
+        <span class="n">energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_energy</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energydiff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">energy</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;force&#39;</span><span class="p">:</span>
+            <span class="n">forces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_forces</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">forces</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">forcediff</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">forces</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">forces</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">forces</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">forcediff</span> <span class="o">=</span> <span class="s1">&#39;can not be determined&#39;</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;density&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;density_converged&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_charge_density</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;energy_converged&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energydiff</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;force&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_base_wc</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">relax_parameters</span>
+            <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">max_number_runs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">reached_conv</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.return_results"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.return_results">[docs]</a>    <span class="k">def</span> <span class="nf">return_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return the results of the calculations</span>
+<span class="sd">        This should run through and produce output nodes even if everything failed,</span>
+<span class="sd">        therefore it only uses results from context.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_base_wc</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">last_calc_uuid</span> <span class="o">=</span> <span class="n">find_last_submitted_calcjob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_base_wc</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+                <span class="n">last_calc_uuid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">last_calc_uuid</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>  <span class="c1"># if something failed, we still might be able to retrieve something</span>
+            <span class="n">last_calc_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_base_wc</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">output_parameters</span>
+            <span class="n">retrieved</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_base_wc</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">retrieved</span>
+            <span class="n">last_calc_out_dict</span> <span class="o">=</span> <span class="n">last_calc_out</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">NotExistent</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="n">last_calc_out</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">last_calc_out_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">retrieved</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">outputnode_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;workflow_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;workflow_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workflowversion</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;material&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">formula</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;conv_mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">wf_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">)</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;loop_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;iterations_total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_calc_out_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;number_of_iterations_total&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;distance_charge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">last_charge_density</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;distance_charge_all&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">distance</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;total_energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_calc_out_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;energy_hartree&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;total_energy_all&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_energy</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;force_diff_last&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">forcediff</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;force_largest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_calc_out_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;force_largest&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;distance_charge_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;me/bohr^3&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;total_energy_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Htr&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;last_calc_uuid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_calc_uuid</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;total_wall_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_wall_time</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;total_wall_time_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">info</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;warnings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">warnings</span>
+        <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">reached_conv</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_energy</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># then len(self.ctx.all_forces) &lt;= 1 too</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;STATUS: Done, the convergence criteria are reached.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                            <span class="s1">&#39;INFO: The charge density of the FLEUR calculation &#39;</span>
+                            <span class="s1">&#39;converged after </span><span class="si">{}</span><span class="s1"> FLEUR runs, </span><span class="si">{}</span><span class="s1"> iterations and </span><span class="si">{}</span><span class="s1"> sec &#39;</span>
+                            <span class="s1">&#39;walltime to </span><span class="si">{}</span><span class="s1"> &quot;me/bohr^3&quot; </span><span class="se">\n</span><span class="s1">&#39;</span>
+                            <span class="s1">&#39;INFO: Did not manage to get energy and largest force difference &#39;</span>
+                            <span class="s1">&#39;between two last iterations, probably converged in a single iteration&#39;</span>
+                            <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span><span class="p">,</span> <span class="n">last_calc_out_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;number_of_iterations_total&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_wall_time</span><span class="p">,</span> <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;distance_charge&#39;</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;STATUS: Done, the convergence criteria are reached.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                            <span class="s1">&#39;INFO: The charge density of the FLEUR calculation &#39;</span>
+                            <span class="s1">&#39;converged after </span><span class="si">{}</span><span class="s1"> FLEUR runs, </span><span class="si">{}</span><span class="s1"> iterations and </span><span class="si">{}</span><span class="s1"> sec &#39;</span>
+                            <span class="s1">&#39;walltime to </span><span class="si">{}</span><span class="s1"> &quot;me/bohr^3&quot; </span><span class="se">\n</span><span class="s1">&#39;</span>
+                            <span class="s1">&#39;INFO: The total energy difference of the last two iterations &#39;</span>
+                            <span class="s1">&#39;is </span><span class="si">{}</span><span class="s1"> Htr and largest force difference is </span><span class="si">{}</span><span class="s1"> Htr/bohr&#39;</span>
+                            <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span><span class="p">,</span> <span class="n">last_calc_out_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;number_of_iterations_total&#39;</span><span class="p">,</span>
+                                                                                  <span class="kc">None</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_wall_time</span><span class="p">,</span>
+                                      <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;distance_charge&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energydiff</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">forcediff</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">reached_conv</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_energy</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># then len(self.ctx.all_forces) &lt;= 1 too</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;STATUS/WARNING: Done, the maximum number of runs &#39;</span>
+                            <span class="s1">&#39;was reached.</span><span class="se">\n</span><span class="s1"> INFO: The &#39;</span>
+                            <span class="s1">&#39;charge density of the FLEUR calculation, &#39;</span>
+                            <span class="s1">&#39;after </span><span class="si">{}</span><span class="s1"> FLEUR runs, </span><span class="si">{}</span><span class="s1"> iterations and </span><span class="si">{}</span><span class="s1"> sec &#39;</span>
+                            <span class="s1">&#39;walltime is </span><span class="si">{}</span><span class="s1"> &quot;me/bohr^3&quot;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                            <span class="s1">&#39;INFO: can not extract energy and largest force difference between&#39;</span>
+                            <span class="s1">&#39; two last iterations, probably converged in a single iteration&#39;</span>
+                            <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span><span class="p">,</span> <span class="n">last_calc_out_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;number_of_iterations_total&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_wall_time</span><span class="p">,</span> <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;distance_charge&#39;</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;STATUS/WARNING: Done, the maximum number of runs &#39;</span>
+                            <span class="s1">&#39;was reached.</span><span class="se">\n</span><span class="s1"> INFO: The &#39;</span>
+                            <span class="s1">&#39;charge density of the FLEUR calculation, &#39;</span>
+                            <span class="s1">&#39;after </span><span class="si">{}</span><span class="s1"> FLEUR runs, </span><span class="si">{}</span><span class="s1"> iterations and </span><span class="si">{}</span><span class="s1"> sec &#39;</span>
+                            <span class="s1">&#39;walltime is </span><span class="si">{}</span><span class="s1"> &quot;me/bohr^3&quot;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                            <span class="s1">&#39;INFO: The total energy difference of the last two iterations &#39;</span>
+                            <span class="s1">&#39;is </span><span class="si">{}</span><span class="s1"> Htr and largest force difference is </span><span class="si">{}</span><span class="s1"> Htr/bohr</span><span class="se">\n</span><span class="s1">&#39;</span>
+                            <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">loop_count</span><span class="p">,</span> <span class="n">last_calc_out_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;number_of_iterations_total&#39;</span><span class="p">,</span>
+                                                                                  <span class="kc">None</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">total_wall_time</span><span class="p">,</span>
+                                      <span class="n">outputnode_dict</span><span class="p">[</span><span class="s1">&#39;distance_charge&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">energydiff</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">forcediff</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Termination ok, but not converged yet...</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">abort</span><span class="p">:</span>  <span class="c1"># some error occurred, do not use the output.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;STATUS/ERROR: I abort, see logs and &#39;</span> <span class="s1">&#39;errors/warning/hints in output_scf_wc_para&#39;</span><span class="p">)</span>
+
+        <span class="n">outputnode_t</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">outputnode_dict</span><span class="p">)</span>
+        <span class="c1"># this is unsafe so far, because last_calc_out could not exist...</span>
+        <span class="k">if</span> <span class="n">last_calc_out</span><span class="p">:</span>
+            <span class="n">outdict</span> <span class="o">=</span> <span class="n">create_scf_result_node</span><span class="p">(</span><span class="n">outpara</span><span class="o">=</span><span class="n">outputnode_t</span><span class="p">,</span>
+                                             <span class="n">last_calc_out</span><span class="o">=</span><span class="n">last_calc_out</span><span class="p">,</span>
+                                             <span class="n">last_calc_retrieved</span><span class="o">=</span><span class="n">retrieved</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">outdict</span> <span class="o">=</span> <span class="n">create_scf_result_node</span><span class="p">(</span><span class="n">outpara</span><span class="o">=</span><span class="n">outputnode_t</span><span class="p">)</span>
+
+        <span class="c1"># Now it always returns changed fleurinp that was actually used in the calculation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fleurinp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">outdict</span><span class="p">[</span><span class="s1">&#39;fleurinp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">fleurinp</span>
+
+        <span class="k">if</span> <span class="n">last_calc_out</span><span class="p">:</span>
+            <span class="n">outdict</span><span class="p">[</span><span class="s1">&#39;last_fleur_calc_output&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_calc_out</span>
+
+        <span class="c1">#outdict[&#39;output_scf_wc_para&#39;] = outputnode</span>
+        <span class="k">for</span> <span class="n">link_name</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">outdict</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="n">link_name</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">reached_conv</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_DID_NOT_CONVERGE</span></div>
+
+<div class="viewcode-block" id="FleurScfWorkChain.control_end_wc"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.FleurScfWorkChain.control_end_wc">[docs]</a>    <span class="k">def</span> <span class="nf">control_end_wc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errormsg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Controlled way to shutdown the workchain. will initialize the output nodes</span>
+<span class="sd">        The shutdown of the workchain will has to be done afterwards</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">successful</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">abort</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>  <span class="c1"># because return_results still fails somewhen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_results</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="create_scf_result_node"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.workflows.scf.create_scf_result_node">[docs]</a><span class="nd">@cf</span>
+<span class="k">def</span> <span class="nf">create_scf_result_node</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a pseudo wf, to create the right graph structure of AiiDA.</span>
+<span class="sd">    This wokfunction will create the output node in the database.</span>
+<span class="sd">    It also connects the output_node to all nodes the information commes from.</span>
+<span class="sd">    So far it is just also parsed in as argument, because so far we are to lazy</span>
+<span class="sd">    to put most of the code overworked from return_results in here.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;outpara&#39;</span><span class="p">:</span>  <span class="c1"># should be always there</span>
+            <span class="n">outpara</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="n">outdict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">outputnode</span> <span class="o">=</span> <span class="n">outpara</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="n">outputnode</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;output_scf_wc_para&#39;</span>
+    <span class="n">outputnode</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Contains self-consistency results and information of an fleur_scf_wc run.&#39;</span><span class="p">)</span>
+
+    <span class="n">outdict</span><span class="p">[</span><span class="s1">&#39;output_scf_wc_para&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outputnode</span>
+    <span class="c1"># copy, because we rather produce the same node twice then have a circle in the database for now</span>
+    <span class="c1">#output_para = args[0]</span>
+    <span class="c1"># return {&#39;output_eos_wc_para&#39;}</span>
+    <span class="k">return</span> <span class="n">outdict</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

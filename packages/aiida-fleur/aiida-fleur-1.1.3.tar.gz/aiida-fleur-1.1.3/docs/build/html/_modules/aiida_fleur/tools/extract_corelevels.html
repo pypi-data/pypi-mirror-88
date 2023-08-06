@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.tools.extract_corelevels &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.tools.extract_corelevels</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.tools.extract_corelevels</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">In this module you find methods to parse/extract corelevel shifts from an</span>
+<span class="sd">out.xml file of FLEUR.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># TODO clean up</span>
+<span class="c1"># TODO together with xml_util, parser info handling, has to be also a return value of everything</span>
+<span class="c1"># or rather throw exception on lowest level and catch at higher levels?</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>  <span class="c1">#, objectify</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">get_xml_attribute</span><span class="p">,</span> <span class="n">eval_xpath</span><span class="p">,</span> <span class="n">eval_xpath2</span>
+<span class="c1">#convert_to_float</span>
+
+<span class="c1">#import time</span>
+<span class="c1">#start_time = time.time()</span>
+
+<span class="c1">##</span>
+<span class="c1">#calculation to extract from:</span>
+<span class="c1"># either from list given here or system argument</span>
+
+<span class="c1">#calcs_pks = []</span>
+<span class="c1">#calcs_pks = [1464, 1462, 1399, 1403]#, 1059]#, 1414</span>
+<span class="c1">####</span>
+<span class="c1">#if not calcs_pks:</span>
+<span class="c1">#    try:</span>
+<span class="c1">#        for arg in sys.argv[1:]:</span>
+<span class="c1">#            calc_t = arg</span>
+<span class="c1">#            calcs_pks.append(int(calc_t))</span>
+<span class="c1">#    except:</span>
+<span class="c1">#        pass</span>
+<span class="c1">#####</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd"># check if calculation pks belong to successful fleur calculations</span>
+<span class="sd">for pk in calcs_pks:</span>
+<span class="sd">    calc = load_node(pk)</span>
+<span class="sd">    if (not isinstance(calc, FleurCalc)):</span>
+<span class="sd">        raise ValueError(&quot;Calculation with pk {} must be a FleurCalculation&quot;.format(pk))</span>
+<span class="sd">    if calc.get_state() != &#39;FINISHED&#39;:</span>
+<span class="sd">        raise ValueError(&quot;Calculation with pk {} must be in state FINISHED&quot;.format(pk))</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">extract_lo_energies</span><span class="p">(</span><span class="n">outxmlfile</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">pass</span>
+    <span class="c1">#TODO: how? out of DOS?</span>
+
+
+<div class="viewcode-block" id="extract_corelevels"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.extract_corelevels.extract_corelevels">[docs]</a><span class="k">def</span> <span class="nf">extract_corelevels</span><span class="p">(</span><span class="n">outxmlfile</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts corelevels out of out.xml files</span>
+
+<span class="sd">    :params outxmlfile: path to out.xml file</span>
+
+<span class="sd">    :param options: A dict: &#39;iteration&#39; : X/&#39;all&#39;</span>
+<span class="sd">    :returns corelevels: A list of the form:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">            [atomtypes][spin][dict={atomtype : &#39;&#39;, corestates : list_of_corestates}]</span>
+<span class="sd">            [atomtypeNumber][spin][&#39;corestates&#39;][corestate number][attribute]</span>
+<span class="sd">            get corelevel energy of first atomtype, spin1, corelevels[0][0][&#39;corestates&#39;][i][&#39;energy&#39;]</span>
+
+<span class="sd">    :example of output:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">                        [[{&#39;atomtype&#39;: &#39;     1&#39;,</span>
+<span class="sd">                        &#39;corestates&#39;: [{&#39;energy&#39;: -3.6489930627,</span>
+<span class="sd">                                        &#39;j&#39;: &#39; 0.5&#39;,</span>
+<span class="sd">                                        &#39;l&#39;: &#39; 0&#39;,</span>
+<span class="sd">                                        &#39;n&#39;: &#39; 1&#39;,</span>
+<span class="sd">                                        &#39;weight&#39;: 2.0}],</span>
+<span class="sd">                        &#39;eigenvalue_sum&#39;: &#39;     -7.2979861254&#39;,</span>
+<span class="sd">                        &#39;kin_energy&#39;: &#39;     13.4757066163&#39;,</span>
+<span class="sd">                        &#39;spin&#39;: &#39;1&#39;}],</span>
+<span class="sd">                        [{&#39;atomtype&#39;: &#39;     2&#39;,</span>
+<span class="sd">                        &#39;corestates&#39;: [{&#39;energy&#39;: -3.6489930627,</span>
+<span class="sd">                                        &#39;j&#39;: &#39; 0.5&#39;,</span>
+<span class="sd">                                        &#39;l&#39;: &#39; 0&#39;,</span>
+<span class="sd">                                        &#39;n&#39;: &#39; 1&#39;,</span>
+<span class="sd">                                        &#39;weight&#39;: 2.0}],</span>
+<span class="sd">                        &#39;eigenvalue_sum&#39;: &#39;     -7.2979861254&#39;,</span>
+<span class="sd">                        &#39;kin_energy&#39;: &#39;     13.4757066163&#39;,</span>
+<span class="sd">                        &#39;spin&#39;: &#39;1&#39;}]]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">##########################################</span>
+    <span class="c1">#1. read out.xml in etree</span>
+
+    <span class="c1">#2. get all species</span>
+    <span class="c1">#3. get number of atom types and their species</span>
+
+    <span class="c1">#4 get corelevel dimension from atoms types.</span>
+
+    <span class="c1">#5 init saving arrays:</span>
+    <span class="c1">#list length number of atom types, which contains dictionaries:</span>
+    <span class="c1"># in the form { &#39;species&#39; : species, &#39;coresetup&#39; : &#39;&#39;, &#39;atom&#39; : W , &#39;corelevels&#39; : []} lists of corelevels from last iteration (Do i want all iterations, optional?) Or do I even want a dictionaries of corelevels? (but coresetup is in atom type info</span>
+
+    <span class="c1">#6 parse corelevels:</span>
+    <span class="c1"># get last iteration</span>
+    <span class="c1"># fill corelevel list</span>
+    <span class="c1">#######################################</span>
+    <span class="c1">########################</span>
+    <span class="c1">#XPATHS to maintain</span>
+
+    <span class="n">species_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomSpecies&#39;</span>
+    <span class="n">iteration_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/scfLoop/iteration&#39;</span>
+    <span class="n">atomgroup_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomGroups&#39;</span>
+    <span class="n">coreconfig_xpath</span> <span class="o">=</span> <span class="s1">&#39;electronConfig/coreConfig/text()&#39;</span>
+    <span class="n">valenceconfig_xpath</span> <span class="o">=</span> <span class="s1">&#39;electronConfig/valenceConfig/text()&#39;</span>
+    <span class="n">state_occ_xpath</span> <span class="o">=</span> <span class="s1">&#39;electronConfig/stateOccupation&#39;</span>
+
+    <span class="n">relcoreStates_xpath</span> <span class="o">=</span> <span class="s1">&#39;coreStates&#39;</span>
+    <span class="n">relpos_xpath</span> <span class="o">=</span> <span class="s1">&#39;relPos&#39;</span>
+    <span class="n">abspos_xpath</span> <span class="o">=</span> <span class="s1">&#39;absPos&#39;</span>
+    <span class="n">filmpos_xpath</span> <span class="o">=</span> <span class="s1">&#39;filmPos&#39;</span>
+    <span class="c1">#TODO all the attribute names...</span>
+    <span class="c1">######################</span>
+
+    <span class="c1">#1. read out.xml in etree</span>
+    <span class="c1"># TODO this should be common, moved somewhere else and importet</span>
+    <span class="n">parsed_data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">outfile_broken</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">parse_xml</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">recover</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1">#, remove_blank_text=True)</span>
+    <span class="n">parser_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;unparsed&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">outxmlfile</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSyntaxError</span><span class="p">:</span>
+        <span class="n">outfile_broken</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1">#print &#39;broken xml&#39;</span>
+        <span class="n">parser_info</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;The out.xml file is broken I try to repair it.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">outfile_broken</span><span class="p">:</span>
+        <span class="c1">#repair xmlfile and try to parse what is possible.</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">recover</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#, remove_blank_text=True)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">outxmlfile</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSyntaxError</span><span class="p">:</span>
+            <span class="n">parser_info</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Skipping the parsing of the xml file. Repairing was not possible.&#39;</span><span class="p">)</span>
+            <span class="n">parse_xml</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#if parse_xml:</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+    <span class="c1"># 2. get all species from input</span>
+    <span class="c1"># get element, name, coreStates</span>
+    <span class="c1"># TODO why can this not be eval_xpath2?</span>
+    <span class="n">species_nodes</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">species_xpath</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+    <span class="n">species_atts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">species_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">species_nodes</span><span class="p">:</span>
+        <span class="n">species_name</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">species_corestates</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;coreStates&#39;</span><span class="p">)</span>
+        <span class="n">species_element</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;element&#39;</span><span class="p">)</span>
+        <span class="n">species_atomicnumber</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;atomicNumber&#39;</span><span class="p">)</span>
+        <span class="n">species_magMom</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;magMom&#39;</span><span class="p">)</span>
+        <span class="c1">#TODO sometimes not in inp.xml... what if it is not there</span>
+        <span class="n">coreconfig</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">coreconfig_xpath</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+        <span class="n">valenceconfig</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">valenceconfig_xpath</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+        <span class="n">state_occ</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">state_occ_xpath</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+
+        <span class="c1">#parse state occ</span>
+        <span class="n">state_results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">state_occ</span><span class="p">:</span>  <span class="c1">#always a list?</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">)</span>
+            <span class="n">spinUp</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;spinUp&#39;</span><span class="p">)</span>
+            <span class="n">spinDown</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;spinDown&#39;</span><span class="p">)</span>
+            <span class="n">state_results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">state</span><span class="p">:</span> <span class="p">[</span><span class="n">spinUp</span><span class="p">,</span> <span class="n">spinDown</span><span class="p">]})</span>
+
+        <span class="n">species_atts</span><span class="p">[</span><span class="n">species_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">species_name</span><span class="p">,</span>
+            <span class="s1">&#39;corestates&#39;</span><span class="p">:</span> <span class="n">species_corestates</span><span class="p">,</span>
+            <span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="n">species_element</span><span class="p">,</span>
+            <span class="s1">&#39;atomgroups&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s1">&#39;mag_mom&#39;</span><span class="p">:</span> <span class="n">species_magMom</span><span class="p">,</span>
+            <span class="s1">&#39;atomic_number&#39;</span><span class="p">:</span> <span class="n">species_atomicnumber</span><span class="p">,</span>
+            <span class="s1">&#39;coreconfig&#39;</span><span class="p">:</span> <span class="n">coreconfig</span><span class="p">,</span>
+            <span class="s1">&#39;valenceconfig&#39;</span><span class="p">:</span> <span class="n">valenceconfig</span><span class="p">,</span>
+            <span class="s1">&#39;stateOccupation&#39;</span><span class="p">:</span> <span class="n">state_results</span>
+        <span class="p">}</span>
+        <span class="n">species_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_name</span><span class="p">)</span>
+
+    <span class="c1">#3. get number of atom types and their species from input</span>
+    <span class="n">atomtypes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">atomgroup_nodes</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">atomgroup_xpath</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>  <span class="c1">#/fleurinp/</span>
+    <span class="c1"># always a list?</span>
+    <span class="k">for</span> <span class="n">atomgroup</span> <span class="ow">in</span> <span class="n">atomgroup_nodes</span><span class="p">:</span>
+        <span class="n">types_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">group_species</span> <span class="o">=</span> <span class="n">atomgroup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">group_species</span> <span class="ow">in</span> <span class="n">species_names</span><span class="p">:</span>
+            <span class="n">species_atts</span><span class="p">[</span><span class="n">group_species</span><span class="p">][</span><span class="s1">&#39;atomgroups&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atomgroup</span><span class="p">)</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">species_atts</span><span class="p">[</span><span class="n">group_species</span><span class="p">][</span><span class="s1">&#39;element&#39;</span><span class="p">]</span>
+            <span class="n">atomicnumber</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">species_atts</span><span class="p">[</span><span class="n">group_species</span><span class="p">][</span><span class="s1">&#39;atomic_number&#39;</span><span class="p">])</span>
+            <span class="n">coreconf</span> <span class="o">=</span> <span class="n">species_atts</span><span class="p">[</span><span class="n">group_species</span><span class="p">][</span><span class="s1">&#39;coreconfig&#39;</span><span class="p">]</span>
+            <span class="n">valenceconf</span> <span class="o">=</span> <span class="n">species_atts</span><span class="p">[</span><span class="n">group_species</span><span class="p">][</span><span class="s1">&#39;valenceconfig&#39;</span><span class="p">]</span>
+            <span class="n">stateocc</span> <span class="o">=</span> <span class="n">species_atts</span><span class="p">[</span><span class="n">group_species</span><span class="p">][</span><span class="s1">&#39;stateOccupation&#39;</span><span class="p">]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">atomgroup</span><span class="p">,</span> <span class="n">relpos_xpath</span><span class="p">,</span>
+                            <span class="n">parser_info</span><span class="p">)</span> <span class="o">+</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">atomgroup</span><span class="p">,</span> <span class="n">abspos_xpath</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span> <span class="o">+</span> <span class="n">eval_xpath2</span><span class="p">(</span>
+                                <span class="n">atomgroup</span><span class="p">,</span> <span class="n">filmpos_xpath</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>  <span class="c1"># always list</span>
+            <span class="n">natoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">types_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;species&#39;</span><span class="p">:</span> <span class="n">group_species</span><span class="p">,</span>
+                <span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="n">element</span><span class="p">,</span>
+                <span class="s1">&#39;atomic_number&#39;</span><span class="p">:</span> <span class="n">atomicnumber</span><span class="p">,</span>
+                <span class="s1">&#39;coreconfig&#39;</span><span class="p">:</span> <span class="n">coreconf</span><span class="p">,</span>
+                <span class="s1">&#39;valenceconfig&#39;</span><span class="p">:</span> <span class="n">valenceconf</span><span class="p">,</span>
+                <span class="s1">&#39;stateOccupation&#39;</span><span class="p">:</span> <span class="n">stateocc</span><span class="p">,</span>
+                <span class="s1">&#39;natoms&#39;</span><span class="p">:</span> <span class="n">natoms</span>
+            <span class="p">}</span>
+        <span class="n">atomtypes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">types_dict</span><span class="p">)</span>
+
+    <span class="c1">#natomgroup = len(atomgroup_nodes)</span>
+    <span class="c1">#print(natomgroup)</span>
+    <span class="n">corelevels</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">#4 get corelevel dimension from atoms types.</span>
+    <span class="c1">#5 init saving arrays:</span>
+    <span class="c1">#6 parse corelevels:</span>
+
+    <span class="n">iteration_nodes</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">iteration_xpath</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+    <span class="n">nIteration</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">iteration_nodes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nIteration</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">iteration_to_parse</span> <span class="o">=</span> <span class="n">iteration_nodes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1">#TODO:Optional all or other</span>
+        <span class="c1">#print iteration_to_parse</span>
+        <span class="n">corestatescards</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_to_parse</span><span class="p">,</span> <span class="n">relcoreStates_xpath</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+        <span class="c1"># maybe does not return a list...</span>
+        <span class="k">for</span> <span class="n">atype</span> <span class="ow">in</span> <span class="n">atomtypes</span><span class="p">:</span>  <span class="c1"># spin=2 is already in there</span>
+            <span class="n">corelevels</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+
+        <span class="k">for</span> <span class="n">corestatescard</span> <span class="ow">in</span> <span class="n">corestatescards</span><span class="p">:</span>
+            <span class="n">corelv</span> <span class="o">=</span> <span class="n">parse_state_card</span><span class="p">(</span><span class="n">corestatescard</span><span class="p">,</span> <span class="n">iteration_to_parse</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+            <span class="n">corelevels</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">corelv</span><span class="p">[</span><span class="s1">&#39;atomtype&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corelv</span><span class="p">)</span>  <span class="c1"># is corelv[&#39;atomtype&#39;] always an integer?</span>
+
+    <span class="c1">#print parser_info</span>
+    <span class="c1">#pprint(corelevels[0][1][&#39;corestates&#39;][2][&#39;energy&#39;])</span>
+    <span class="c1">#corelevels[atomtypeNumber][spin][&#39;corestates&#39;][corestate number][attribute]</span>
+    <span class="k">return</span> <span class="n">corelevels</span><span class="p">,</span> <span class="n">atomtypes</span></div>
+
+
+<div class="viewcode-block" id="parse_state_card"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.extract_corelevels.parse_state_card">[docs]</a><span class="k">def</span> <span class="nf">parse_state_card</span><span class="p">(</span><span class="n">corestateNode</span><span class="p">,</span> <span class="n">iteration_node</span><span class="p">,</span> <span class="n">parser_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses the ONE core state card</span>
+
+<span class="sd">    :params corestateNode: an etree element (node), of a fleur output corestate card</span>
+<span class="sd">    :params iteration_node: an etree element, iteration node</span>
+<span class="sd">    :params jspin: integer 1 or 2</span>
+
+<span class="sd">    :returns: a pythondict of type:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">            {&#39;eigenvalue_sum&#39; : eigenvalueSum,</span>
+<span class="sd">             &#39;corestates&#39;: states,</span>
+<span class="sd">             &#39;spin&#39; : spin,</span>
+<span class="sd">             &#39;kin_energy&#39; : kinEnergy,</span>
+<span class="sd">             &#39;atomtype&#39; : atomtype}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">##### all xpath of density convergence card (maintain) ########</span>
+    <span class="n">coreStates_xpath</span> <span class="o">=</span> <span class="s1">&#39;coreStates&#39;</span>
+    <span class="n">state_xpath</span> <span class="o">=</span> <span class="s1">&#39;state&#39;</span>
+
+    <span class="n">units_name</span> <span class="o">=</span> <span class="s1">&#39;units&#39;</span>
+    <span class="n">value_name</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="n">distance_name</span> <span class="o">=</span> <span class="s1">&#39;distance&#39;</span>
+
+    <span class="n">n_name</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+    <span class="n">j_name</span> <span class="o">=</span> <span class="s1">&#39;j&#39;</span>
+    <span class="n">l_name</span> <span class="o">=</span> <span class="s1">&#39;l&#39;</span>
+    <span class="n">energy_name</span> <span class="o">=</span> <span class="s1">&#39;energy&#39;</span>
+    <span class="n">weight_name</span> <span class="o">=</span> <span class="s1">&#39;weight&#39;</span>
+    <span class="n">spin_name</span> <span class="o">=</span> <span class="s1">&#39;spin&#39;</span>
+    <span class="n">kinEnergy_name</span> <span class="o">=</span> <span class="s1">&#39;kinEnergy&#39;</span>
+    <span class="n">eigenvalueSum_name</span> <span class="o">=</span> <span class="s1">&#39;eigValSum&#39;</span>
+    <span class="n">lostElectrons_name</span> <span class="o">=</span> <span class="s1">&#39;lostElectrons&#39;</span>
+    <span class="n">atomtype_name</span> <span class="o">=</span> <span class="s1">&#39;atomType&#39;</span>
+    <span class="c1">#######</span>
+    <span class="k">if</span> <span class="n">parser_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parser_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+    <span class="n">atomtype</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">corestateNode</span><span class="p">,</span> <span class="n">atomtype_name</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+
+    <span class="n">kinEnergy</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">corestateNode</span><span class="p">,</span> <span class="n">kinEnergy_name</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+    <span class="n">vE2</span><span class="p">,</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">kinEnergy</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+    <span class="n">eigenvalueSum</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">corestateNode</span><span class="p">,</span> <span class="n">eigenvalueSum_name</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+    <span class="n">vE2</span><span class="p">,</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">eigenvalueSum</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+
+    <span class="n">spin</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">corestateNode</span><span class="p">,</span> <span class="n">spin_name</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+    <span class="c1">#print(&#39;spin {}&#39;.format(spin))</span>
+    <span class="c1">#states = corestateNode.xpath(</span>
+    <span class="c1">#for state in states:</span>
+
+    <span class="c1"># get all corestate tags, (atomtypes * spin)</span>
+    <span class="c1">#corestateNodes = eval_xpath(iteration_node, coreStates_xpath, parser_info)</span>
+    <span class="c1"># for every corestate tag parse the attributes</span>
+
+    <span class="c1"># some only the first interation, then get all state tags of the corestate tag (atom depended)</span>
+    <span class="c1"># parse each core state #Attention to spin</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">corestates</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">corestateNode</span><span class="p">,</span> <span class="n">state_xpath</span><span class="p">)</span>  <span class="c1">#, parser_info)</span>
+
+    <span class="k">for</span> <span class="n">corestate</span> <span class="ow">in</span> <span class="n">corestates</span><span class="p">:</span>  <span class="c1"># be careful that corestates is a list</span>
+        <span class="n">state_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">n_state</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">corestate</span><span class="p">,</span> <span class="n">n_name</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+        <span class="n">l_state</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">corestate</span><span class="p">,</span> <span class="n">l_name</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+        <span class="n">j_state</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">corestate</span><span class="p">,</span> <span class="n">j_name</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">)</span>
+        <span class="n">energy</span><span class="p">,</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">corestate</span><span class="p">,</span> <span class="n">energy_name</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">),</span> <span class="n">parser_info</span><span class="p">)</span>
+        <span class="n">weight</span><span class="p">,</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">corestate</span><span class="p">,</span> <span class="n">weight_name</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">),</span> <span class="n">parser_info</span><span class="p">)</span>
+        <span class="n">state_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="n">n_state</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="n">l_state</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="n">j_state</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="n">energy</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="n">weight</span><span class="p">}</span>
+        <span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+
+    <span class="n">core_states</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;eigenvalue_sum&#39;</span><span class="p">:</span> <span class="n">eigenvalueSum</span><span class="p">,</span>
+        <span class="s1">&#39;corestates&#39;</span><span class="p">:</span> <span class="n">states</span><span class="p">,</span>
+        <span class="s1">&#39;spin&#39;</span><span class="p">:</span> <span class="n">spin</span><span class="p">,</span>
+        <span class="s1">&#39;kin_energy&#39;</span><span class="p">:</span> <span class="n">kinEnergy</span><span class="p">,</span>
+        <span class="s1">&#39;atomtype&#39;</span><span class="p">:</span> <span class="n">atomtype</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">core_states</span></div>
+
+
+<span class="c1"># TODO should be used from somewhere else, probably double</span>
+<div class="viewcode-block" id="convert_to_float"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.extract_corelevels.convert_to_float">[docs]</a><span class="k">def</span> <span class="nf">convert_to_float</span><span class="p">(</span><span class="n">value_string</span><span class="p">,</span> <span class="n">parser_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tries to make a float out of a string. If it can&#39;t it logs a warning</span>
+<span class="sd">    and returns True or False if convertion worked or not.</span>
+
+<span class="sd">    :param value_string: a string</span>
+<span class="sd">    :returns value: the new float or value_string: the string given</span>
+<span class="sd">    :retruns: True or False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">parser_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parser_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value_string</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="n">parser_info</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Could not convert: &quot;</span><span class="si">{}</span><span class="s1">&quot; to float, TypeError&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value_string</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">value_string</span><span class="p">,</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">parser_info</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Could not convert: &quot;</span><span class="si">{}</span><span class="s1">&quot; to float, ValueError&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value_string</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">value_string</span><span class="p">,</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="kc">True</span></div>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">### call</span>
+<span class="sd">test_outxmlfiles = [&#39;./out.xml&#39;, &#39;./test_outxml/outCuF.xml&#39;, &#39;./test_outxml/outFe.xml&#39;, &#39;./test_outxml/outHg.xml&#39;,  &#39;./test_outxml/outO.xml&#39;]</span>
+<span class="sd">outxmlfile = test_outxmlfiles[2]</span>
+
+<span class="sd">corelevels = extract_corelevels(outxmlfile)</span>
+<span class="sd">for i in range(0,len(corelevels[0][1][&#39;corestates&#39;])):</span>
+<span class="sd">    print corelevels[0][1][&#39;corestates&#39;][i][&#39;energy&#39;]</span>
+
+
+<span class="sd">for calc in calcs_pks:</span>
+<span class="sd">    pass</span>
+<span class="sd">    # get out.xml file of calculation</span>
+<span class="sd">    outxml = load_node(pk).out.retrieved.folder.get_abs_path(&#39;out.xml&#39;)</span>
+<span class="sd">    extract_corelevels(outxml)</span>
+
+
+<span class="sd">print(&quot;--- %s seconds ---&quot; % (time.time() - start_time))</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<span class="c1"># TODO this is prob doubled is also in init_cls wc</span>
+<div class="viewcode-block" id="clshifts_to_be"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.extract_corelevels.clshifts_to_be">[docs]</a><span class="k">def</span> <span class="nf">clshifts_to_be</span><span class="p">(</span><span class="n">coreleveldict</span><span class="p">,</span> <span class="n">reference_dict</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This methods converts corelevel shifts to binding energies, if a reference is given.</span>
+<span class="sd">    These can than be used for plotting.</span>
+
+<span class="sd">    :params reference_dict: An example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">           reference_dict = {&#39;W&#39; : {&#39;4f7/2&#39; : [124],</span>
+<span class="sd">                                    &#39;4f5/2&#39; : [102]},</span>
+<span class="sd">                             &#39;Be&#39; : {&#39;1s&#39;: [117]}}</span>
+
+<span class="sd">    :params coreleveldict: An example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">           coreleveldict = {&#39;W&#39; : {&#39;4f7/2&#39; : [0.4, 0.3, 0.4 ,0.1],</span>
+<span class="sd">                                   &#39;4f5/2&#39; : [0, 0.3, 0.4, 0.1]},</span>
+<span class="sd">                            &#39;Be&#39; : {&#39;1s&#39;: [0, 0.2, 0.4, 0.1, 0.3]}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># this block of comments was extracted from the docstring</span>
+    <span class="c1"># I did not understand where it belongs</span>
+    <span class="c1"># {&#39;Be&#39;: {&#39;1s&#39;: [117, 117.2, 117.4, 117.1, 117.3]},</span>
+    <span class="c1">#  &#39;W&#39;: {&#39;4f5/2&#39;: [102, 102.3, 102.4, 102.1],</span>
+    <span class="c1">#        &#39;4f7/2&#39;: [124.4, 124.3, 124.4, 124.1]}}</span>
+
+    <span class="n">return_corelevel_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">elem</span><span class="p">,</span> <span class="n">corelevel_dict</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">coreleveldict</span><span class="p">):</span>
+        <span class="n">ref_el</span> <span class="o">=</span> <span class="n">reference_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ref_el</span><span class="p">:</span>  <span class="c1"># no refernce for that element given</span>
+            <span class="k">if</span> <span class="n">warn</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;WARNING: Reference for element: &#39;</span><span class="si">{}</span><span class="s2">&#39; not given. &quot;</span> <span class="s1">&#39;I ignore these.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elem</span><span class="p">)))</span>
+            <span class="k">continue</span>
+
+        <span class="n">return_corelevel_dict</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">corelevel_name</span><span class="p">,</span> <span class="n">corelevel_list</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">corelevel_dict</span><span class="p">):</span>
+            <span class="n">ref_cl</span> <span class="o">=</span> <span class="n">ref_el</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">corelevel_name</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ref_cl</span><span class="p">:</span>  <span class="c1"># no reference corelevel given for that element</span>
+                <span class="k">if</span> <span class="n">warn</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;WARNING: Reference corelevel &#39;</span><span class="si">{}</span><span class="s2">&#39; for element: &#39;</span><span class="si">{}</span><span class="s2">&#39; &quot;</span>
+                           <span class="s1">&#39;not given. I ignore these.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">corelevel_name</span><span class="p">,</span> <span class="n">elem</span><span class="p">)))</span>
+                <span class="k">continue</span>
+            <span class="n">be_all</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">nref</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_cl</span><span class="p">)</span>
+            <span class="n">ncl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">corelevel_list</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">nref</span> <span class="o">==</span> <span class="n">ncl</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">corelevel</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">corelevel_list</span><span class="p">):</span>
+                    <span class="n">be</span> <span class="o">=</span> <span class="n">corelevel</span> <span class="o">+</span> <span class="n">ref_cl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">be_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">be</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">corelevel</span> <span class="ow">in</span> <span class="n">corelevel_list</span><span class="p">:</span>
+                    <span class="n">be</span> <span class="o">=</span> <span class="n">corelevel</span> <span class="o">+</span> <span class="n">ref_cl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">be_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">be</span><span class="p">)</span>
+            <span class="n">return_corelevel_dict</span><span class="p">[</span><span class="n">elem</span><span class="p">][</span><span class="n">corelevel_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">be_all</span>
+
+    <span class="k">return</span> <span class="n">return_corelevel_dict</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tutorials &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hints" href="../hints/hints_faq.html" />
+    <link rel="prev" title="Tools" href="../tools/tools_index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../ug_index.html">User’s guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/getting_started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workflows/wc_index.html">AiiDA-FLEUR WorkChains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-aiida-tutorials">Basic AiiDA tutorials:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-calculation-plugins-work">How calculation plugins work:</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#run-inpgen-calculation-tutorial">Run inpgen calculation tutorial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-fleur-calculation-tutorial">Run fleur calculation tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-workflows">Running workflows:</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#run-fleur-scf-tutorial">Run fleur SCF tutorial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-fleur-eos-tutorial">Run fleur eos tutorial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-fleur-bandstructure-dos-tutorial">Run fleur bandstructure/dos tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-extraction-and-evaluation">Data extraction and evaluation:</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general-calculation-workflow">General calculation, workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#total-database">Total database</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/hints_faq.html">Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../ug_index.html">User’s guide</a> &raquo;</li>
+        
+      <li>Tutorials</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorials">
+<h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h1>
+<p>sda</p>
+<div class="section" id="basic-aiida-tutorials">
+<h2>Basic AiiDA tutorials:<a class="headerlink" href="#basic-aiida-tutorials" title="Permalink to this headline">¶</a></h2>
+<p>If you are not familiar with the basics of AiiDA yet, you might want to checkout
+the <a class="reference external" href="https://www.youtube.com/channel/UC-NZvRRQ5VzT2wKE5DM1N3A/playlists">AiiDA youtube tutorials.</a>
+The jupyter notebooks from the tutorials you will find <a class="reference external" href="https://github.com/aiidateam/aiida_demos">here</a> on github,
+where you can also try them out in binder.
+Virtual machines for tutorials and tutorial manuals you find <a class="reference external" href="http://www.aiida.net/tutorials/">here</a>.</p>
+</div>
+<div class="section" id="how-calculation-plugins-work">
+<h2>How calculation plugins work:<a class="headerlink" href="#how-calculation-plugins-work" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="run-inpgen-calculation-tutorial">
+<h3>Run inpgen calculation tutorial<a class="headerlink" href="#run-inpgen-calculation-tutorial" title="Permalink to this headline">¶</a></h3>
+<p>sorry, not uploaded yet</p>
+</div>
+<div class="section" id="run-fleur-calculation-tutorial">
+<h3>Run fleur calculation tutorial<a class="headerlink" href="#run-fleur-calculation-tutorial" title="Permalink to this headline">¶</a></h3>
+<p>sorry, not uploaded yet</p>
+</div>
+</div>
+<div class="section" id="running-workflows">
+<h2>Running workflows:<a class="headerlink" href="#running-workflows" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="run-fleur-scf-tutorial">
+<h3>Run fleur SCF tutorial<a class="headerlink" href="#run-fleur-scf-tutorial" title="Permalink to this headline">¶</a></h3>
+<p>sorry, not uploaded yet</p>
+</div>
+<div class="section" id="run-fleur-eos-tutorial">
+<h3>Run fleur eos tutorial<a class="headerlink" href="#run-fleur-eos-tutorial" title="Permalink to this headline">¶</a></h3>
+<p>sorry, not uploaded yet</p>
+</div>
+<div class="section" id="run-fleur-bandstructure-dos-tutorial">
+<h3>Run fleur bandstructure/dos tutorial<a class="headerlink" href="#run-fleur-bandstructure-dos-tutorial" title="Permalink to this headline">¶</a></h3>
+<p>sorry, not uploaded yet</p>
+</div>
+</div>
+<div class="section" id="data-extraction-and-evaluation">
+<h2>Data extraction and evaluation:<a class="headerlink" href="#data-extraction-and-evaluation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="general-calculation-workflow">
+<h3>General calculation, workflow<a class="headerlink" href="#general-calculation-workflow" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="total-database">
+<h3>Total database<a class="headerlink" href="#total-database" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../hints/hints_faq.html" class="btn btn-neutral float-right" title="Hints" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../tools/tools_index.html" class="btn btn-neutral float-left" title="Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

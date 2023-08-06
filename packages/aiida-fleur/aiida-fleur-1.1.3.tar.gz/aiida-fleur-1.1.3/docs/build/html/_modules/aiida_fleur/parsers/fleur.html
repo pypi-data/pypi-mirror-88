@@ -1,0 +1,1419 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.parsers.fleur &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.parsers.fleur</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.parsers.fleur</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the parser for a FLEUR calculation and methods for parsing</span>
+<span class="sd">different files produced by FLEUR.</span>
+
+<span class="sd">Please implement file parsing routines that they can be executed from outside</span>
+<span class="sd">the parser. Makes testing and portability easier.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># TODO: move methods to utils, xml or other</span>
+<span class="c1"># TODO: warnings</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="kn">from</span> <span class="nn">aiida.parsers</span> <span class="kn">import</span> <span class="n">Parser</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">BandsData</span>
+<span class="kn">from</span> <span class="nn">aiida.common.exceptions</span> <span class="kn">import</span> <span class="n">NotExistent</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.common.constants</span> <span class="kn">import</span> <span class="n">HTR_TO_EV</span>
+
+
+<div class="viewcode-block" id="FleurParser"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur.FleurParser">[docs]</a><span class="k">class</span> <span class="nc">FleurParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is the implementation of the Parser class for FLEUR.</span>
+<span class="sd">    It parses the FLEUR output if the calculation was successful,</span>
+<span class="sd">    i.e checks if all files are there that should be and their condition.</span>
+<span class="sd">    Then it parses the out.xml file and returns a (simple) parameterData node</span>
+<span class="sd">    with the results of the last iteration.</span>
+<span class="sd">    Other files (DOS.x, bands.x, relax.xml, ...) are also parsed if they are retrieved.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_setting_key</span> <span class="o">=</span> <span class="s1">&#39;parser_options&#39;</span>
+
+<div class="viewcode-block" id="FleurParser.get_linkname_outparams_complex"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur.FleurParser.get_linkname_outparams_complex">[docs]</a>    <span class="k">def</span> <span class="nf">get_linkname_outparams_complex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the name of the link to the output_complex</span>
+<span class="sd">        Node contains the Fleur output in a rather complex dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;output_complex&#39;</span></div>
+
+<div class="viewcode-block" id="FleurParser.get_linkname_outparams"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur.FleurParser.get_linkname_outparams">[docs]</a>    <span class="k">def</span> <span class="nf">get_linkname_outparams</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the name of the link to the output_complex</span>
+<span class="sd">        Node contains the Fleur output in a rather complex dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;output_parameters&#39;</span></div>
+
+<div class="viewcode-block" id="FleurParser.parse"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur.FleurParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Receives in input a dictionary of retrieved nodes.</span>
+<span class="sd">        Does all the logic here. Checks presents of files.</span>
+<span class="sd">        Calls routines to parse them and returns parameter nodes and success.</span>
+
+<span class="sd">        :return successful: Bool, if overall parsing was successful or not</span>
+<span class="sd">        :return new_nodes_list: list of tuples of two (linkname, Dataobject),</span>
+<span class="sd">                                nodes to be stored by AiiDA</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">####### init some variables ######</span>
+
+        <span class="c1"># these files should be at least present after success of a Fleur run</span>
+        <span class="n">calc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span>
+        <span class="n">FleurCalculation</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">process_class</span>
+
+        <span class="c1"># this files should be retrieved</span>
+        <span class="n">should_retrieve</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;retrieve_list&#39;</span><span class="p">)</span>
+
+        <span class="n">has_xml_outfile</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">has_dos_file</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">has_bands_file</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">has_relax_file</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">invalid_mmpmat</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">dos_file</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">band_file</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">######### Check presence of files ######</span>
+
+        <span class="c1"># select the folder object</span>
+        <span class="c1"># Check that the retrieved folder is there</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">output_folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieved</span>
+        <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;No retrieved folder found&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_NO_RETRIEVED_FOLDER</span>
+
+        <span class="c1"># check what is inside the folder</span>
+        <span class="n">list_of_files</span> <span class="o">=</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">list_object_names</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;file list </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">list_of_files</span><span class="p">))</span>
+
+        <span class="c1"># has output xml file, otherwise error</span>
+        <span class="k">if</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_OUTXML_FILE_NAME</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;XML out not found &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_OUTXML_FILE_NAME</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_NO_OUTXML</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">has_xml_outfile</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># check if all files expected are there for the calculation</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">should_retrieve</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; file not found in retrived folder, it&quot;</span>
+                                    <span class="s1">&#39; was probably not created by fleur&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+
+        <span class="c1"># check if something was written to the error file</span>
+        <span class="k">if</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_ERROR_FILE_NAME</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+            <span class="n">errorfile</span> <span class="o">=</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_ERROR_FILE_NAME</span>
+            <span class="c1"># read</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">errorfile</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">efile</span><span class="p">:</span>
+                    <span class="n">error_file_lines</span> <span class="o">=</span> <span class="n">efile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>  <span class="c1"># Note: read(), not readlines()</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to open error file: </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errorfile</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_OPENING_OUTPUTS</span>
+
+            <span class="k">if</span> <span class="n">error_file_lines</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error_file_lines</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)):</span>
+                    <span class="n">error_file_lines</span> <span class="o">=</span> <span class="n">error_file_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">error_file_lines</span> <span class="o">=</span> <span class="n">error_file_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;Run finished successfully&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">error_file_lines</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;The following was written into std error and piped to </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                        <span class="s1">&#39; : </span><span class="se">\n</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errorfile</span><span class="p">,</span> <span class="n">error_file_lines</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;FLEUR calculation did not finish&#39;</span> <span class="s1">&#39; successfully.&#39;</span><span class="p">)</span>
+
+                    <span class="c1"># here we estimate how much memory was available and consumed</span>
+                    <span class="n">mpiprocs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;resources&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;num_mpiprocs_per_machine&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+                    <span class="n">kb_used</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="k">with</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_OUTXML_FILE_NAME</span><span class="p">,</span>
+                                            <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_file</span><span class="p">:</span>  <span class="c1"># lazy out.xml parsing</span>
+                        <span class="n">outlines</span> <span class="o">=</span> <span class="n">out_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">line_avail</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;mem memoryPerNode=&quot;\d+&#39;</span><span class="p">,</span> <span class="n">outlines</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="n">mem_kb_avail</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d+&#39;</span><span class="p">,</span> <span class="n">line_avail</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                            <span class="n">mem_kb_avail</span> <span class="o">=</span> <span class="mf">1.0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Did not manage to find memory available info.&#39;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">usage_json</span> <span class="o">=</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_USAGE_FILE_NAME</span>
+                            <span class="k">if</span> <span class="n">usage_json</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+                                <span class="k">with</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">usage_json</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">us_file</span><span class="p">:</span>
+                                    <span class="n">usage</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">us_file</span><span class="p">)</span>
+                                <span class="n">kb_used</span> <span class="o">=</span> <span class="n">usage</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;VmPeak&#39;</span><span class="p">]</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">try</span><span class="p">:</span>
+                                    <span class="n">line_used</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;used.+&#39;</span><span class="p">,</span> <span class="n">error_file_lines</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                                    <span class="n">kb_used</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d+&#39;</span><span class="p">,</span> <span class="n">line_used</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+                                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Did not manage to find memory usage info.&#39;</span><span class="p">)</span>
+
+                    <span class="c1"># here we estimate how much walltime was available and consumed</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">time_avail_sec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;last_job_info&#39;</span><span class="p">][</span><span class="s1">&#39;requested_wallclock_time_seconds&#39;</span><span class="p">]</span>
+                        <span class="n">time_calculated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;last_job_info&#39;</span><span class="p">][</span><span class="s1">&#39;wallclock_time_seconds&#39;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">time_avail_sec</span> <span class="o">&lt;</span> <span class="mf">1.01</span> <span class="o">*</span> <span class="n">time_calculated</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_TIME_LIMIT</span>
+                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                        <span class="k">pass</span>
+
+                    <span class="k">if</span> <span class="p">(</span><span class="n">kb_used</span> <span class="o">*</span> <span class="n">mpiprocs</span> <span class="o">/</span> <span class="n">mem_kb_avail</span> <span class="o">&gt;</span> <span class="mf">0.93</span> <span class="ow">or</span>
+                            <span class="s1">&#39;cgroup out-of-memory handler&#39;</span> <span class="ow">in</span> <span class="n">error_file_lines</span> <span class="ow">or</span> <span class="s1">&#39;Out Of Memory&#39;</span> <span class="ow">in</span> <span class="n">error_file_lines</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_NOT_ENOUGH_MEMORY</span>
+                    <span class="k">elif</span> <span class="s1">&#39;Atom spills out into vacuum during relaxation&#39;</span> <span class="ow">in</span> <span class="n">error_file_lines</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_VACUUM_SPILL_RELAX</span>
+                    <span class="k">elif</span> <span class="s1">&#39;Error checking M.T. radii&#39;</span> <span class="ow">in</span> <span class="n">error_file_lines</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_MT_RADII</span>
+                    <span class="k">elif</span> <span class="s1">&#39;Overlapping MT-spheres during relaxation: &#39;</span> <span class="ow">in</span> <span class="n">error_file_lines</span><span class="p">:</span>
+                        <span class="n">overlap_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\S+ +\S+ olap: +\S+&#39;</span><span class="p">,</span> <span class="n">error_file_lines</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="k">with</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;relax.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rlx</span><span class="p">:</span>
+                            <span class="n">relax_dict</span> <span class="o">=</span> <span class="n">parse_relax_file</span><span class="p">(</span><span class="n">rlx</span><span class="p">)</span>
+                            <span class="n">it_number</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">relax_dict</span><span class="p">[</span><span class="s1">&#39;energies&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># relax.xml was not updated</span>
+                        <span class="n">error_params</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s1">&#39;error_name&#39;</span><span class="p">:</span> <span class="s1">&#39;MT_OVERLAP_RELAX&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;This output node contains information&#39;</span>
+                                            <span class="s1">&#39;about FLEUR error&#39;</span><span class="p">),</span>
+                            <span class="s1">&#39;overlapped_indices&#39;</span><span class="p">:</span> <span class="n">overlap_line</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+                            <span class="s1">&#39;overlaping_value&#39;</span><span class="p">:</span> <span class="n">overlap_line</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                            <span class="s1">&#39;iteration_number&#39;</span><span class="p">:</span> <span class="n">it_number</span>
+                        <span class="p">}</span>
+                        <span class="n">link_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linkname_outparams</span><span class="p">()</span>
+                        <span class="n">error_params</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">error_params</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="s1">&#39;error_params&#39;</span><span class="p">,</span> <span class="n">error_params</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_MT_RADII_RELAX</span>
+                    <span class="k">elif</span> <span class="s1">&#39;Invalid elements in mmpmat&#39;</span> <span class="ow">in</span> <span class="n">error_file_lines</span><span class="p">:</span>
+                        <span class="n">invalid_mmpmat</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">elif</span> <span class="s1">&#39;parent_folder&#39;</span> <span class="ow">in</span> <span class="n">calc</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="s1">&#39;fleurinpdata&#39;</span> <span class="ow">in</span> <span class="n">calc</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="s1">&#39;relax.xml&#39;</span> <span class="ow">in</span> <span class="n">calc</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleurinpdata</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+                                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_DROP_CDN</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_FLEUR_CALC_FAILED</span>
+
+        <span class="k">if</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_DOS_FILE_NAME</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+            <span class="n">has_dos</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_BAND_FILE_NAME</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+            <span class="n">has_bands</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># if a relax.xml was retrieved</span>
+        <span class="k">if</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_RELAX_FILE_NAME</span> <span class="ow">in</span> <span class="n">list_of_files</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;relax.xml file found in retrieved folder&#39;</span><span class="p">)</span>
+            <span class="n">has_relax_file</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1">####### Parse the files ########</span>
+
+        <span class="k">if</span> <span class="n">has_xml_outfile</span><span class="p">:</span>
+            <span class="c1"># open output file</span>
+            <span class="k">with</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_OUTXML_FILE_NAME</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outxmlfile_opened</span><span class="p">:</span>
+                <span class="n">simpledata</span><span class="p">,</span> <span class="n">complexdata</span><span class="p">,</span> <span class="n">parser_info</span><span class="p">,</span> <span class="n">success</span> <span class="o">=</span> <span class="n">parse_xmlout_file</span><span class="p">(</span><span class="n">outxmlfile_opened</span><span class="p">)</span>
+
+            <span class="c1"># Call routines for output node creation</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Parsing of XML output file was not successfull.&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_XMLOUT_PARSING_FAILED</span>
+            <span class="k">elif</span> <span class="n">simpledata</span><span class="p">:</span>
+                <span class="n">outputdata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">simpledata</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">parser_info</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+                <span class="n">outxml_params</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">outputdata</span><span class="p">)</span>
+                <span class="n">link_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linkname_outparams</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="n">link_name</span><span class="p">,</span> <span class="n">outxml_params</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">complexdata</span><span class="p">:</span>
+                <span class="n">parameter_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">complexdata</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">parser_info</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+                <span class="n">outxml_params_complex</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">parameter_data</span><span class="p">)</span>
+                <span class="n">link_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linkname_outparams_complex</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="n">link_name</span><span class="p">,</span> <span class="n">outxml_params_complex</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Something went wrong, neither simpledata nor complexdata found&#39;</span><span class="p">)</span>
+                <span class="n">parameter_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">parser_info</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+                <span class="n">outxml_params</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">parameter_data</span><span class="p">)</span>
+                <span class="n">link_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linkname_outparams</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="n">link_name</span><span class="p">,</span> <span class="n">outxml_params</span><span class="p">)</span>
+
+        <span class="c1"># optional parse other files</span>
+        <span class="c1"># DOS</span>
+        <span class="k">if</span> <span class="n">has_dos_file</span><span class="p">:</span>
+            <span class="n">dos_file</span> <span class="o">=</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_DOS_FILE_NAME</span>
+            <span class="c1"># if dos_file is not None:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dos_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dosf</span><span class="p">:</span>
+                    <span class="n">dos_lines</span> <span class="o">=</span> <span class="n">dosf</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>  <span class="c1"># Note: read() and not readlines()</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to open DOS file: </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dos_file</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_OPENING_OUTPUTS</span>
+            <span class="n">dos_data</span> <span class="o">=</span> <span class="n">parse_dos_file</span><span class="p">(</span><span class="n">dos_lines</span><span class="p">)</span>  <span class="c1"># , number_of_atom_types)</span>
+
+        <span class="c1"># Bands</span>
+        <span class="k">if</span> <span class="n">has_bands_file</span><span class="p">:</span>
+            <span class="c1"># TODO: be carefull there might be two files.</span>
+            <span class="n">band_file</span> <span class="o">=</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_BAND_FILE_NAME</span>
+
+            <span class="c1"># if band_file is not None:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">band_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">bandf</span><span class="p">:</span>
+                    <span class="n">bands_lines</span> <span class="o">=</span> <span class="n">bandf</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>  <span class="c1"># Note: read() and not readlines()</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to open bandstructure file: </span><span class="si">{}</span><span class="s1">.&#39;</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">band_file</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_OPENING_OUTPUTS</span>
+            <span class="n">bands_data</span> <span class="o">=</span> <span class="n">parse_bands_file</span><span class="p">(</span><span class="n">bands_lines</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">has_relax_file</span><span class="p">:</span>
+            <span class="n">relax_name</span> <span class="o">=</span> <span class="n">FleurCalculation</span><span class="o">.</span><span class="n">_RELAX_FILE_NAME</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fleurinp</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">fleurinpdata</span>
+            <span class="k">except</span> <span class="n">NotExistent</span><span class="p">:</span>
+                <span class="n">old_relax_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">relax_name</span> <span class="ow">in</span> <span class="n">fleurinp</span><span class="o">.</span><span class="n">list_object_names</span><span class="p">():</span>
+                    <span class="k">with</span> <span class="n">fleurinp</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">relax_name</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rlx</span><span class="p">:</span>
+                        <span class="n">old_relax_text</span> <span class="o">=</span> <span class="n">rlx</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">old_relax_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+            <span class="c1"># dummy comparison between old and new relax</span>
+            <span class="k">with</span> <span class="n">output_folder</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">relax_name</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rlx</span><span class="p">:</span>
+                <span class="n">new_relax_text</span> <span class="o">=</span> <span class="n">rlx</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">new_relax_text</span> <span class="o">!=</span> <span class="n">old_relax_text</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">relax_dict</span> <span class="o">=</span> <span class="n">parse_relax_file</span><span class="p">(</span><span class="n">rlx</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSyntaxError</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_RELAX_PARSING_FAILED</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="s1">&#39;relax_parameters&#39;</span><span class="p">,</span> <span class="n">relax_dict</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">invalid_mmpmat</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_codes</span><span class="o">.</span><span class="n">ERROR_INVALID_ELEMENTS_MMPMAT</span></div></div>
+
+
+<div class="viewcode-block" id="parse_xmlout_file"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur.parse_xmlout_file">[docs]</a><span class="k">def</span> <span class="nf">parse_xmlout_file</span><span class="p">(</span><span class="n">outxmlfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses the out.xml file of a FLEUR calculation</span>
+<span class="sd">    Receives as input the absolute path to the xml output file</span>
+
+<span class="sd">    :param outxmlfile: path to out.xml file</span>
+
+<span class="sd">    :returns xml_data_dict: a simple dictionary (QE output like)</span>
+<span class="sd">                            with parsed data</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#from lxml import etree</span>
+
+    <span class="c1">#global parser_info_out</span>
+    <span class="c1"># FIXME: This is global, look for a different way to do this, python logging?</span>
+
+    <span class="n">parser_info_out</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;unparsed&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="n">parser_version</span> <span class="o">=</span> <span class="s1">&#39;0.3.2&#39;</span>
+    <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;AiiDA Fleur Parser v</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parser_version</span><span class="p">)</span>
+    <span class="c1">#parsed_data = {}</span>
+
+    <span class="n">successful</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">outfile_broken</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">parse_xml</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">recover</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">outxmlfile</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSyntaxError</span><span class="p">:</span>
+        <span class="n">outfile_broken</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;The out.xml file is broken I try to repair it.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">outfile_broken</span><span class="p">:</span>
+        <span class="c1"># repair xmlfile and try to parse what is possible.</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">recover</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">outxmlfile</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSyntaxError</span><span class="p">:</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Skipping the parsing of the xml file. &#39;</span>
+                                                      <span class="s1">&#39;Repairing was not possible.&#39;</span><span class="p">)</span>
+            <span class="n">parse_xml</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">successful</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">parse_simplexmlout_file</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">outfile_broken</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses the xml.out file of a Fleur calculation</span>
+<span class="sd">        Receives in input the root of an xmltree of the xml output file</span>
+
+<span class="sd">        :param root: root node of etree of out.xml file</span>
+<span class="sd">        :param outfile_broken: a boolen that indicates if an out.xml has a broken last iteration</span>
+<span class="sd">                               output</span>
+
+<span class="sd">        :returns xml_data_dict: a simple dictionary (QE output like)</span>
+<span class="sd">                                with parsed data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">### all xpath used. (maintain this) ###</span>
+        <span class="n">iteration_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/scfLoop/iteration&#39;</span>
+        <span class="n">magnetism_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/calculationSetup/magnetism&#39;</span>
+
+        <span class="n">relPos_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomGroups/atomGroup/relPos&#39;</span>
+        <span class="n">absPos_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomGroups/atomGroup/absPos&#39;</span>
+        <span class="n">filmPos_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomGroups/atomGroup/filmPos&#39;</span>
+
+        <span class="n">atomstypes_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomGroups/atomGroup&#39;</span>
+        <span class="n">symmetries_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/cell/symmetryOperations/symOp&#39;</span>
+        <span class="n">kpoints_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/calculationSetup/bzIntegration/kPointList/kPoint&#39;</span>
+        <span class="n">species_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomSpecies&#39;</span>
+
+        <span class="c1"># input parameters</span>
+        <span class="n">creator_name_xpath</span> <span class="o">=</span> <span class="s1">&#39;programVersion/@version&#39;</span>
+        <span class="n">output_version_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/@fleurOutputVersion&#39;</span>
+        <span class="n">creator_target_architecture_xpath</span> <span class="o">=</span> <span class="s1">&#39;programVersion/targetComputerArchitectures/text()&#39;</span>
+        <span class="n">creator_target_structure_xpath</span> <span class="o">=</span> <span class="s1">&#39;programVersion/targetStructureClass/text()&#39;</span>
+        <span class="n">precision_xpath</span> <span class="o">=</span> <span class="s1">&#39;programVersion/precision/@type&#39;</span>
+
+        <span class="n">title_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/comment/text()&#39;</span>
+        <span class="n">kmax_xpath</span> <span class="o">=</span> <span class="s1">&#39;calculationSetup/cutoffs&#39;</span>
+        <span class="n">gmax_xpath</span> <span class="o">=</span> <span class="s1">&#39;calculationSetup/cutoffs&#39;</span>
+        <span class="n">mixing_xpath</span> <span class="o">=</span> <span class="s1">&#39;calculationSetup/scfLoop&#39;</span>
+        <span class="n">number_of_bands_xpath</span> <span class="o">=</span> <span class="s1">&#39;calculationSetup/cutoffs&#39;</span>
+        <span class="n">spin_orbit_calculation</span> <span class="o">=</span> <span class="s1">&#39;calculationSetup/soc&#39;</span>
+        <span class="n">smearing_energy_xpath</span> <span class="o">=</span> <span class="s1">&#39;calculationSetup/bzIntegration/@fermiSmearingEnergy&#39;</span>
+        <span class="n">jspin_name</span> <span class="o">=</span> <span class="s1">&#39;jspins&#39;</span>
+        <span class="n">l_f_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/calculationSetup/geometryOptimization/@l_f&#39;</span>
+        <span class="n">ldau_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomSpecies/species/ldaU&#39;</span>
+
+        <span class="c1"># timing</span>
+        <span class="n">start_time_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/startDateAndTime/@time&#39;</span>
+        <span class="n">end_time_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/endDateAndTime/@time&#39;</span>
+        <span class="n">start_date_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/startDateAndTime/@date&#39;</span>
+        <span class="n">end_date_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/endDateAndTime/@date&#39;</span>
+
+        <span class="c1">###########</span>
+
+        <span class="c1"># get all iterations in out.xml file</span>
+        <span class="n">iteration_nodes</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">iteration_xpath</span><span class="p">)</span>
+        <span class="n">n_iters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">iteration_nodes</span><span class="p">)</span>
+        <span class="n">data_exists</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># parse only last stable interation</span>
+        <span class="c1"># (if modes (dos and co) maybe parse anyway if broken?)</span>
+        <span class="k">if</span> <span class="n">outfile_broken</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n_iters</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">iteration_to_parse</span> <span class="o">=</span> <span class="n">iteration_nodes</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;last_iteration_parsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_iters</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">outfile_broken</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n_iters</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">iteration_to_parse</span> <span class="o">=</span> <span class="n">iteration_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;last_iteration_parsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_iters</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">outfile_broken</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n_iters</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">iteration_to_parse</span> <span class="o">=</span> <span class="n">iteration_nodes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># there was no iteration found.</span>
+            <span class="c1"># only the starting charge density could be generated</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;There was no iteration found in the outfile, either just a &#39;</span>
+                                                      <span class="s1">&#39;starting density was generated or something went wrong.&#39;</span><span class="p">)</span>
+            <span class="n">data_exists</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">iteration_to_parse</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># for getting the fleur modes use fleurinp methods</span>
+        <span class="n">spin</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">magnetism_xpath</span><span class="p">),</span> <span class="n">jspin_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">spin</span><span class="p">:</span>
+            <span class="n">fleurmode</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jspin&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">spin</span><span class="p">)}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fleurmode</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jspin&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+        <span class="n">relax</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">l_f_xpath</span><span class="p">)</span>
+        <span class="n">fleurmode</span><span class="p">[</span><span class="s1">&#39;relax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">relax</span> <span class="o">==</span> <span class="s1">&#39;T&#39;</span>
+        <span class="n">fleurmode</span><span class="p">[</span><span class="s1">&#39;ldau&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">ldau_xpath</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">data_exists</span><span class="p">:</span>
+            <span class="n">simple_data</span> <span class="o">=</span> <span class="n">parse_simple_outnode</span><span class="p">(</span><span class="n">iteration_to_parse</span><span class="p">,</span> <span class="n">fleurmode</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">simple_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># TODO: in the future add here the warnings returned from parse_simple_outnode</span>
+        <span class="c1"># Currently Fleur warnings an errors are not written to the out.xml</span>
+        <span class="c1"># should they be lists or dicts?</span>
+        <span class="n">warnings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;number_of_atoms&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">relPos_xpath</span><span class="p">))</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">absPos_xpath</span><span class="p">))</span> <span class="o">+</span>
+                                          <span class="nb">len</span><span class="p">(</span><span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">filmPos_xpath</span><span class="p">)))</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;number_of_atom_types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">atomstypes_xpath</span><span class="p">))</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;number_of_iterations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_iters</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;number_of_symmetries&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">symmetries_xpath</span><span class="p">))</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;number_of_species&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">species_xpath</span><span class="p">))</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;number_of_kpoints&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">kpoints_xpath</span><span class="p">))</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;number_of_spin_components&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fleurmode</span><span class="p">[</span><span class="s1">&#39;jspin&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">fleurmode</span><span class="p">[</span><span class="s1">&#39;ldau&#39;</span><span class="p">]:</span>
+            <span class="n">ldaU_definitions</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">ldau_xpath</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ldaU</span> <span class="ow">in</span> <span class="n">ldaU_definitions</span><span class="p">:</span>
+                <span class="n">parent</span> <span class="o">=</span> <span class="n">ldaU</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+                <span class="n">element_name</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;element&#39;</span><span class="p">)</span>
+                <span class="n">species_name</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+                <span class="n">ldauKey</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">element_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">species_name</span><span class="si">}</span><span class="s1">&#39;</span>
+
+                <span class="k">if</span> <span class="n">ldauKey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">]:</span>
+                    <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">][</span><span class="n">ldauKey</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+                <span class="n">ldau_l</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">ldaU</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">)</span>
+                <span class="n">ldau_l</span><span class="p">,</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_int</span><span class="p">(</span><span class="n">ldau_l</span><span class="p">)</span>
+                <span class="n">ldau_l</span> <span class="o">=</span> <span class="s1">&#39;spdf&#39;</span><span class="p">[</span><span class="n">ldau_l</span><span class="p">]</span>
+                <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">][</span><span class="n">ldauKey</span><span class="p">][</span><span class="n">ldau_l</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+                <span class="n">ldau_u</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">ldaU</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">)</span>
+                <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">][</span><span class="n">ldauKey</span><span class="p">][</span><span class="n">ldau_l</span><span class="p">][</span><span class="s1">&#39;u&#39;</span><span class="p">],</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">ldau_u</span><span class="p">)</span>
+
+                <span class="n">ldau_j</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">ldaU</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">)</span>
+                <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">][</span><span class="n">ldauKey</span><span class="p">][</span><span class="n">ldau_l</span><span class="p">][</span><span class="s1">&#39;j&#39;</span><span class="p">],</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">ldau_j</span><span class="p">)</span>
+
+                <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">][</span><span class="n">ldauKey</span><span class="p">][</span><span class="n">ldau_l</span><span class="p">][</span><span class="s1">&#39;unit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;eV&#39;</span>
+
+                <span class="n">ldau_amf</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">ldaU</span><span class="p">,</span> <span class="s1">&#39;l_amf&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;T&#39;</span>
+                <span class="k">if</span> <span class="n">ldau_amf</span><span class="p">:</span>
+                    <span class="n">ldau_dc</span> <span class="o">=</span> <span class="s1">&#39;AMF&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ldau_dc</span> <span class="o">=</span> <span class="s1">&#39;FLL&#39;</span>
+                <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">][</span><span class="n">ldauKey</span><span class="p">][</span><span class="n">ldau_l</span><span class="p">][</span><span class="s1">&#39;double_counting&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ldau_dc</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">title_xpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">title</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;creator_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">creator_name_xpath</span><span class="p">)</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;creator_target_architecture&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">creator_target_architecture_xpath</span><span class="p">)</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;creator_target_structure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">creator_target_structure_xpath</span><span class="p">)</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;output_file_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">output_version_xpath</span><span class="p">)</span>
+
+        <span class="c1"># time</span>
+        <span class="c1"># Maybe change the behavior if things could not be parsed...</span>
+        <span class="c1"># Especially if file was broken, ie endtime it not there.</span>
+        <span class="n">starttime</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">start_time_xpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">starttime</span><span class="p">:</span>
+            <span class="n">starttimes</span> <span class="o">=</span> <span class="n">starttime</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">starttimes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Startime was unparsed, inp.xml prob not complete, do not believe the walltime!&#39;</span>
+            <span class="k">if</span> <span class="n">data_exists</span><span class="p">:</span>
+                <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">endtime</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">end_time_xpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">endtime</span><span class="p">:</span>
+            <span class="n">endtimes</span> <span class="o">=</span> <span class="n">endtime</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">endtimes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Endtime was unparsed, inp.xml prob not complete, do not believe the walltime!&#39;</span>
+            <span class="k">if</span> <span class="n">data_exists</span><span class="p">:</span>
+                <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">start_date_xpath</span><span class="p">)</span>
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">end_date_xpath</span><span class="p">)</span>
+
+        <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">start_date</span> <span class="o">!=</span> <span class="n">end_date</span><span class="p">:</span>
+            <span class="c1"># date=&quot;2018/01/15&quot;, Can this fail? what happens if not there</span>
+            <span class="k">if</span> <span class="n">start_date</span> <span class="ow">and</span> <span class="n">end_date</span><span class="p">:</span>
+                <span class="n">date_sl</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">ent</span><span class="p">)</span> <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="n">start_date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)]</span>
+                <span class="n">date_el</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">ent</span><span class="p">)</span> <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="n">end_date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)]</span>
+                <span class="n">date_s</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="o">*</span><span class="n">date_sl</span><span class="p">)</span>
+                <span class="n">date_e</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="o">*</span><span class="n">date_el</span><span class="p">)</span>
+                <span class="n">diff</span> <span class="o">=</span> <span class="n">date_e</span> <span class="o">-</span> <span class="n">date_s</span>
+                <span class="n">offset</span> <span class="o">=</span> <span class="n">diff</span><span class="o">.</span><span class="n">days</span> <span class="o">*</span> <span class="mi">86400</span>
+        <span class="c1"># ncores = 12 #TODO parse parallelization_Parameters</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">endtimes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">starttimes</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">endtimes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">starttimes</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">endtimes</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">starttimes</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;walltime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;walltime_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;seconds&#39;</span>
+        <span class="c1">#simple_data[&#39;core_hours&#39;] = time*ncores*1.0/3600</span>
+        <span class="c1">#simple_data[&#39;parallelization_Parameters&#39;] = {&#39;mpiPEs&#39; : ncores}</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;start_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">start_date</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">starttime</span><span class="p">}</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;end_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">endtime</span><span class="p">}</span>
+
+        <span class="n">warnings</span><span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># TODO</span>
+        <span class="n">warnings</span><span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># TODO</span>
+        <span class="n">warnings</span><span class="p">[</span><span class="s1">&#39;warning&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># TODO</span>
+        <span class="n">warnings</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># TODO</span>
+        <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;warnings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">warnings</span>
+
+        <span class="k">return</span> <span class="n">simple_data</span>
+
+    <span class="c1"># TODO find a way to import these from xml_util, but make the parser logger work...</span>
+    <span class="k">def</span> <span class="nf">eval_xpath</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">xpath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tries to evaluate an xpath expression. If it fails it logs it.</span>
+
+<span class="sd">        :param node: root node of an etree</span>
+<span class="sd">        :param xpath: xpath expression (relative, or absolute)</span>
+<span class="sd">        :returns: text, attribute or a node list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">return_value</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XPathEvalError</span><span class="p">:</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;There was a XpathEvalError on the xpath: </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> Either it does &#39;</span>
+                                                      <span class="s1">&#39;not exist, or something is wrong with the expression.&#39;</span>
+                                                      <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xpath</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># or rather None?</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">return_value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">return_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">return_value</span>
+
+    <span class="k">def</span> <span class="nf">eval_xpath2</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">xpath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tries to evaluate an xpath expression. If it fails it logs it.</span>
+<span class="sd">        It always return a list even if a single element was evaluated.</span>
+
+<span class="sd">        :param node: root node of an etree</span>
+<span class="sd">        :param xpath: xpath expression (relative, or absolute)</span>
+<span class="sd">        :returns: a node list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">return_value</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">XPathEvalError</span><span class="p">:</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;There was a XpathEvalError on the xpath: </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> Either it does &#39;</span>
+                                                      <span class="s1">&#39;not exist, or something is wrong with the expression.&#39;</span>
+                                                      <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xpath</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">return_value</span>
+
+    <span class="k">def</span> <span class="nf">get_xml_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attributename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get an attribute value from a node.</span>
+
+<span class="sd">        :param node: a node from etree</span>
+<span class="sd">        :param attributename: a string with the attribute name.</span>
+<span class="sd">        :returns: attributevalue or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">etree</span><span class="o">.</span><span class="n">iselement</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="n">attrib_value</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attributename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">attrib_value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">attrib_value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Tried to get attribute: &quot;</span><span class="si">{}</span><span class="s1">&quot; from element </span><span class="si">{}</span><span class="s1">.</span><span class="se">\n</span><span class="s1"> &#39;</span>
+                                                          <span class="s1">&#39;I received &quot;</span><span class="si">{}</span><span class="s1">&quot;, maybe the attribute does not exist&#39;</span>
+                                                          <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attributename</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">attrib_value</span><span class="p">))</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># something doesn&#39;t work here, some nodes get through here</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Can not get attributename: &quot;</span><span class="si">{}</span><span class="s1">&quot; from node &quot;</span><span class="si">{}</span><span class="s1">&quot;, &#39;</span>
+                                                      <span class="s1">&#39;because node is not an element of etree.&#39;</span>
+                                                      <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attributename</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">convert_to_float</span><span class="p">(</span><span class="n">value_string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tries to make a float out of a string. If it can&#39;t it logs a warning</span>
+<span class="sd">        and returns True or False if convertion worked or not.</span>
+
+<span class="sd">        :param value_string: a string</span>
+<span class="sd">        :returns value: the new float or value_string: the string given</span>
+<span class="sd">        :returns: True if convertation was successfull, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value_string</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Could not convert: &quot;</span><span class="si">{}</span><span class="s1">&quot; to float, TypeError&#39;</span>
+                                                      <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value_string</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">value_string</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Could not convert: &quot;</span><span class="si">{}</span><span class="s1">&quot; to float, ValueError&#39;</span>
+                                                      <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value_string</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">value_string</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">convert_to_int</span><span class="p">(</span><span class="n">value_string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tries to make a int out of a string. If it can&#39;t it logs a warning</span>
+<span class="sd">        and returns True or False if convertion worked or not.</span>
+
+<span class="sd">        :param value_string: a string</span>
+<span class="sd">        :returns value: the new int or value_string: the string given</span>
+<span class="sd">        :returns: True or False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value_string</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Could not convert: &quot;</span><span class="si">{}</span><span class="s1">&quot; to int, TypeError&#39;</span>
+                                                      <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value_string</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">value_string</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Could not convert: &quot;</span><span class="si">{}</span><span class="s1">&quot; to int, ValueError&#39;</span>
+                                                      <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value_string</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">value_string</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">convert_htr_to_ev</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Multiplies the value given with the Hartree factor (converts htr to eV)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#htr = 27.21138602</span>
+        <span class="n">suc</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">value_to_save</span><span class="p">,</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">suc</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value_to_save</span> <span class="o">*</span> <span class="n">HTR_TO_EV</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">parse_simple_outnode</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">fleurmode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses the data from the iteration given (usually last iteration)</span>
+<span class="sd">        and some other data for the &#39;simple&#39; output node.</span>
+
+<span class="sd">        :param iteration_node: etree node of an interation</span>
+<span class="sd">        :param Fleurmode: python dictionary, with all the modes,</span>
+<span class="sd">                          which influence the parsing</span>
+
+<span class="sd">        :returns simple_data: a python dictionary with all results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">###################################################</span>
+        <span class="c1">##########  all xpaths (maintain this) ############</span>
+        <span class="c1"># (specifies where to find things in the out.xml) #</span>
+
+        <span class="c1"># density</span>
+        <span class="n">densityconvergence_xpath</span> <span class="o">=</span> <span class="s1">&#39;densityConvergence&#39;</span>
+        <span class="n">chargedensity_xpath</span> <span class="o">=</span> <span class="s1">&#39;densityConvergence/chargeDensity&#39;</span>
+        <span class="n">overallchargedensity_xpath</span> <span class="o">=</span> <span class="s1">&#39;densityConvergence/overallChargeDensity&#39;</span>
+        <span class="n">spindensity_xpath</span> <span class="o">=</span> <span class="s1">&#39;densityConvergence/spinDensity&#39;</span>
+
+        <span class="n">bandgap_xpath</span> <span class="o">=</span> <span class="s1">&#39;bandgap&#39;</span>
+        <span class="n">fermi_energy_xpath</span> <span class="o">=</span> <span class="s1">&#39;FermiEnergy&#39;</span>
+
+        <span class="c1"># magnetic moments</span>
+        <span class="n">magnetic_moments_in_mtpheres_xpath</span> <span class="o">=</span> <span class="s1">&#39;magneticMomentsInMTSpheres&#39;</span>
+        <span class="n">magneticmoment_xpath</span> <span class="o">=</span> <span class="s1">&#39;magneticMomentsInMTSpheres/magneticMoment&#39;</span>
+
+        <span class="n">magneticmoments_xpath</span> <span class="o">=</span> <span class="s1">&#39;magneticMomentsInMTSpheres/magneticMoment/@moment&#39;</span>
+        <span class="n">magneticmoments_spinupcharge_xpath</span> <span class="o">=</span> <span class="s1">&#39;magneticMomentsInMTSpheres/magneticMoment/@spinUpCharge&#39;</span>
+        <span class="n">magneticmoments_spindowncharge_xpath</span> <span class="o">=</span> <span class="s1">&#39;magneticMomentsInMTSpheres/magneticMoment/@spinDownCharge&#39;</span>
+
+        <span class="n">orbmagnetic_moments_in_mtpheres_xpath</span> <span class="o">=</span> <span class="s1">&#39;orbitalMagneticMomentsInMTSpheres&#39;</span>
+        <span class="n">orbmagneticmoment_xpath</span> <span class="o">=</span> <span class="s1">&#39;orbitalMagneticMomentsInMTSpheres/orbMagMoment&#39;</span>
+
+        <span class="n">orbmagneticmoments_xpath</span> <span class="o">=</span> <span class="s1">&#39;orbitalMagneticMomentsInMTSpheres/orbMagMoment/@moment&#39;</span>
+        <span class="n">orbmagneticmoments_spinupcharge_xpath</span> <span class="o">=</span> <span class="s1">&#39;orbitalMagneticMomentsInMTSpheres/orbMagMoment/@spinUpCharge&#39;</span>
+        <span class="n">orbmagneticmoments_spindowncharge_xpath</span> <span class="o">=</span> <span class="s1">&#39;orbitalMagneticMomentsInMTSpheres/orbMagMoment/@spinDownCharge&#39;</span>
+
+        <span class="n">mae_force_theta_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_MAE/Angle/@theta&#39;</span>
+        <span class="n">mae_force_phi_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_MAE/Angle/@phi&#39;</span>
+        <span class="n">mae_force_evsum_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_MAE/Angle/@ev-sum&#39;</span>
+        <span class="n">mae_force_energ_units_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_Loop_MAE/sumValenceSingleParticleEnergies/@units&#39;</span>
+
+        <span class="n">spst_force_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_SSDISP/@qvectors&#39;</span>
+        <span class="n">spst_force_q_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_SSDISP/Entry/@q&#39;</span>
+        <span class="n">spst_force_evsum_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_SSDISP/Entry/@ev-sum&#39;</span>
+        <span class="n">spst_force_energ_units_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_Loop_SSDISP/sumValenceSingleParticleEnergies/@units&#39;</span>
+
+        <span class="n">dmi_force_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_DMI&#39;</span>
+        <span class="n">dmi_force_q_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_DMI/Entry/@q&#39;</span>
+        <span class="n">dmi_force_theta_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_DMI/Entry/@theta&#39;</span>
+        <span class="n">dmi_force_phi_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_DMI/Entry/@phi&#39;</span>
+        <span class="n">dmi_force_evsum_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_DMI/Entry/@ev-sum&#39;</span>
+        <span class="n">dmi_force_angles_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_DMI/@Angles&#39;</span>
+        <span class="n">dmi_force_qs_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_DMI/@qPoints&#39;</span>
+        <span class="n">dmi_force_energ_units_xpath</span> <span class="o">=</span> <span class="s1">&#39;Forcetheorem_Loop_DMI/sumValenceSingleParticleEnergies/@units&#39;</span>
+
+        <span class="n">spinupcharge_name</span> <span class="o">=</span> <span class="s1">&#39;spinUpCharge&#39;</span>
+        <span class="n">spindowncharge_name</span> <span class="o">=</span> <span class="s1">&#39;spinDownCharge&#39;</span>
+        <span class="n">moment_name</span> <span class="o">=</span> <span class="s1">&#39;moment&#39;</span>
+
+        <span class="c1"># All electron charges</span>
+        <span class="n">all_spin_charges_total_xpath</span> <span class="o">=</span> <span class="s1">&#39;allElectronCharges/spinDependentCharge/@total&#39;</span>
+        <span class="n">all_spin_charges_interstitial_xpath</span> <span class="o">=</span> <span class="s1">&#39;allElectronCharges/spinDependentCharge/@interstitial&#39;</span>
+        <span class="n">all_spin_charges_mt_spheres_xpath</span> <span class="o">=</span> <span class="s1">&#39;allElectronCharges/spinDependentCharge/@mtSpheres&#39;</span>
+        <span class="n">all_total_charge_xpath</span> <span class="o">=</span> <span class="s1">&#39;allElectronCharges/totalCharge/@value&#39;</span>
+
+        <span class="c1"># energy</span>
+        <span class="n">totalenergy_xpath</span> <span class="o">=</span> <span class="s1">&#39;totalEnergy&#39;</span>
+        <span class="n">sumofeigenvalues_xpath</span> <span class="o">=</span> <span class="s1">&#39;totalEnergy/sumOfEigenvalues&#39;</span>
+        <span class="n">core_electrons_xpath</span> <span class="o">=</span> <span class="s1">&#39;totalEnergy/sumOfEigenvalues/coreElectrons&#39;</span>
+        <span class="n">valence_electrons_xpath</span> <span class="o">=</span> <span class="s1">&#39;totalEnergy/sumOfEigenvalues/valenceElectrons&#39;</span>
+        <span class="n">chargeden_xc_den_integral_xpath</span> <span class="o">=</span> <span class="s1">&#39;totalEnergy/chargeDenXCDenIntegral&#39;</span>
+
+        <span class="c1">#free_energy_xpath = &#39;totalEnergy/freeEnergy&#39;</span>
+
+        <span class="c1"># forces</span>
+        <span class="n">forces_units_xpath</span> <span class="o">=</span> <span class="s1">&#39;totalForcesOnRepresentativeAtoms&#39;</span>
+        <span class="n">forces_total_xpath</span> <span class="o">=</span> <span class="s1">&#39;totalForcesOnRepresentativeAtoms/forceTotal&#39;</span>
+
+        <span class="c1">#ldau</span>
+        <span class="n">eldau_xpath</span> <span class="o">=</span> <span class="s1">&#39;totalEnergy/dftUCorrection/@value&#39;</span>
+        <span class="n">ldaudistances_xpath</span> <span class="o">=</span> <span class="s1">&#39;ldaUdensityMatrixConvergence/distance/&#39;</span>
+
+        <span class="c1">#</span>
+        <span class="n">iteration_xpath</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
+
+        <span class="n">units_name</span> <span class="o">=</span> <span class="s1">&#39;units&#39;</span>
+        <span class="n">value_name</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+        <span class="n">distance_name</span> <span class="o">=</span> <span class="s1">&#39;distance&#39;</span>
+
+        <span class="n">overall_number_name</span> <span class="o">=</span> <span class="s1">&#39;overallNumber&#39;</span>
+        <span class="n">atomtype_name</span> <span class="o">=</span> <span class="s1">&#39;atomType&#39;</span>
+
+        <span class="c1"># forces</span>
+        <span class="n">f_x_name</span> <span class="o">=</span> <span class="s1">&#39;F_x&#39;</span>
+        <span class="n">f_y_name</span> <span class="o">=</span> <span class="s1">&#39;F_y&#39;</span>
+        <span class="n">f_z_name</span> <span class="o">=</span> <span class="s1">&#39;F_z&#39;</span>
+        <span class="n">new_x_name</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span>
+        <span class="n">new_y_name</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
+        <span class="n">new_z_name</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span>
+
+        <span class="n">species_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomSpecies&#39;</span>
+        <span class="n">relPos_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomGroups/atomGroup/relPos&#39;</span>
+        <span class="n">absPos_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomGroups/atomGroup/absPos&#39;</span>
+        <span class="n">filmPos_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomGroups/atomGroup/filmPos&#39;</span>
+        <span class="n">atomstypes_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/atomGroups/atomGroup&#39;</span>
+
+        <span class="n">film_lat_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/cell/filmLattice/bravaisMatrix/&#39;</span>
+        <span class="n">bulk_lat_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/cell/bulkLattice/bravaisMatrix/&#39;</span>
+        <span class="n">kmax_xpath</span> <span class="o">=</span> <span class="s1">&#39;/fleurOutput/inputData/calculationSetup/cutoffs/@Kmax&#39;</span>
+
+        <span class="c1">###################################################</span>
+
+        <span class="n">jspin</span> <span class="o">=</span> <span class="n">fleurmode</span><span class="p">[</span><span class="s1">&#39;jspin&#39;</span><span class="p">]</span>
+        <span class="n">relax</span> <span class="o">=</span> <span class="n">fleurmode</span><span class="p">[</span><span class="s1">&#39;relax&#39;</span><span class="p">]</span>
+        <span class="n">ldaU</span> <span class="o">=</span> <span class="n">fleurmode</span><span class="p">[</span><span class="s1">&#39;ldau&#39;</span><span class="p">]</span>
+        <span class="n">simple_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">def</span> <span class="nf">write_simple_outnode</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value_type</span><span class="p">,</span> <span class="n">value_name</span><span class="p">,</span> <span class="n">dict_out</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Writes a value (int or float) in the simple data dict.</span>
+<span class="sd">            if path does not exit it initializes it!</span>
+
+<span class="sd">            If the value has not the type given,</span>
+<span class="sd">            it will be logged in parser info instead of writing.</span>
+
+<span class="sd">            :param value: value ti write</span>
+<span class="sd">            :param value_type: a type of a value: &#39;float&#39;, &#39;int&#39;, &#39;str&#39;, &#39;list&#39;, &#39;list_floats&#39;,</span>
+<span class="sd">                               &#39;list_ints&#39;, list_list_floats</span>
+<span class="sd">            :param value_name: a name of a value to be used in the dictionary</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="n">iteration_current_number_name</span> <span class="o">=</span> <span class="s1">&#39;numberForCurrentRun&#39;</span>
+            <span class="n">suc</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span><span class="p">:</span>
+                <span class="n">value_to_save</span><span class="p">,</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+                <span class="n">value_to_save</span><span class="p">,</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span>
+                <span class="n">suc</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">value_to_save</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="c1">#value_to_save, suc = convert_to_str(value)</span>
+            <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">:</span>
+                <span class="n">suc</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">value_to_save</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">:</span>
+                <span class="n">value_to_save</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="n">value_to_savet</span><span class="p">,</span> <span class="n">suct</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                    <span class="n">value_to_save</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value_to_savet</span><span class="p">)</span>
+                <span class="n">suc</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># TODO individual or common error message?</span>
+            <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;list_ints&#39;</span><span class="p">:</span>
+                <span class="n">value_to_save</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="n">value_to_savet</span><span class="p">,</span> <span class="n">suct</span> <span class="o">=</span> <span class="n">convert_to_int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                    <span class="n">value_to_save</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value_to_savet</span><span class="p">)</span>
+                <span class="n">suc</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;list_list_floats&#39;</span><span class="p">:</span>
+                <span class="n">value_to_save</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="n">value_to_savet</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">val1</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+                        <span class="n">value_to_savet1</span><span class="p">,</span> <span class="n">suct</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">val1</span><span class="p">)</span>
+                        <span class="n">value_to_savet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value_to_savet1</span><span class="p">)</span>
+                    <span class="n">value_to_save</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value_to_savet</span><span class="p">)</span>
+                <span class="n">suc</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># TODO individual or common error message?</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1">#self.logger.error(&#39;I dont know the type you gave me {}&#39;.format(type))</span>
+                <span class="k">pass</span>
+                <span class="c1"># TODO log error, self is not known here...</span>
+            <span class="k">if</span> <span class="n">suc</span><span class="p">:</span>
+                <span class="n">dict_out</span><span class="p">[</span><span class="n">value_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value_to_save</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;unparsed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="n">value_name</span><span class="p">:</span>
+                    <span class="n">value</span><span class="p">,</span>
+                    <span class="s1">&#39;iteration&#39;</span><span class="p">:</span>
+                    <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">iteration_current_number_name</span><span class="p">)</span>
+                <span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">mae_force_theta_xpath</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="c1"># extract MAE force theorem parameters</span>
+            <span class="n">mae_force_theta</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">mae_force_theta_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">mae_force_theta</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;mae_force_theta&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">mae_force_evsum</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">mae_force_evsum_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">mae_force_evsum</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;mae_force_evSum&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">mae_force_phi</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">mae_force_phi_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">mae_force_phi</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;mae_force_phi&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">units_e</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">mae_force_energ_units_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">units_e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">spst_force_xpath</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="c1"># extract Spin spiral dispersion force theorem parameters</span>
+            <span class="n">spst_force_q</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">spst_force_q_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">spst_force_q</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;spst_force_q&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">spst_force_evsum</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">spst_force_evsum_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">spst_force_evsum</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;spst_force_evSum&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">units_e</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">spst_force_energ_units_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">units_e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">dmi_force_xpath</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="c1"># extract DMI force theorem parameters</span>
+            <span class="n">dmi_force_q</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">dmi_force_q_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">dmi_force_q</span><span class="p">,</span> <span class="s1">&#39;list_ints&#39;</span><span class="p">,</span> <span class="s1">&#39;dmi_force_q&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">dmi_force_evsum</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">dmi_force_evsum_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">dmi_force_evsum</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;dmi_force_evSum&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">dmi_force_theta</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">dmi_force_theta_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">dmi_force_theta</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;dmi_force_theta&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">dmi_force_phi</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">dmi_force_phi_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">dmi_force_phi</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;dmi_force_phi&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">dmi_force_angles</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">dmi_force_angles_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">dmi_force_angles</span><span class="p">,</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="s1">&#39;dmi_force_angles&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">dmi_force_qs</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">dmi_force_qs_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">dmi_force_qs</span><span class="p">,</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="s1">&#39;dmi_force_qs&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">units_e</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">dmi_force_energ_units_xpath</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">units_e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># total energy</span>
+
+            <span class="n">kmax_used</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">kmax_xpath</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">kmax_used</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;kmax&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">units_e</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">totalenergy_xpath</span><span class="p">),</span> <span class="n">units_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">units_e</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_hartree_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">tE_htr</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">totalenergy_xpath</span><span class="p">),</span> <span class="n">value_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">tE_htr</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_hartree&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">convert_htr_to_ev</span><span class="p">(</span><span class="n">tE_htr</span><span class="p">),</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="s1">&#39;eV&#39;</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">sumofeigenvalues</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">sumofeigenvalues_xpath</span><span class="p">),</span> <span class="n">value_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">sumofeigenvalues</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;sum_of_eigenvalues&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">coreElectrons</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">core_electrons_xpath</span><span class="p">),</span> <span class="n">value_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">coreElectrons</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_core_electrons&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">valenceElectrons</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">valence_electrons_xpath</span><span class="p">),</span> <span class="n">value_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">valenceElectrons</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_valence_electrons&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">ch_d_xc_d_inte</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">chargeden_xc_den_integral_xpath</span><span class="p">),</span> <span class="n">value_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">ch_d_xc_d_inte</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;charge_den_xc_den_integral&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="c1"># bandgap</span>
+            <span class="n">units_bandgap</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">bandgap_xpath</span><span class="p">),</span> <span class="n">units_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">units_bandgap</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;bandgap_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">bandgap</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">bandgap_xpath</span><span class="p">),</span> <span class="n">value_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">bandgap</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;bandgap&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="c1"># fermi</span>
+            <span class="n">fermi_energy</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">fermi_energy_xpath</span><span class="p">),</span> <span class="n">value_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">fermi_energy</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;fermi_energy&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+            <span class="n">units_fermi_energy</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">fermi_energy_xpath</span><span class="p">),</span> <span class="n">units_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">units_fermi_energy</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;fermi_energy_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="c1"># density convergence</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">densityconvergence_xpath</span><span class="p">),</span> <span class="n">units_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">units</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;density_convergence_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">jspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">relax</span><span class="p">:</span>  <span class="c1"># there are no charge densities written if relax</span>
+                    <span class="n">charge_density</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">chargedensity_xpath</span><span class="p">),</span> <span class="n">distance_name</span><span class="p">)</span>
+                    <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">charge_density</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;charge_density&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">jspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">charge_densitys</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">chargedensity_xpath</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">relax</span><span class="p">:</span>  <span class="c1"># there are no charge densities written if relax</span>
+                    <span class="k">if</span> <span class="n">charge_densitys</span><span class="p">:</span>  <span class="c1"># otherwise we get a keyerror if calculation failed.</span>
+                        <span class="n">charge_density1</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">charge_densitys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">distance_name</span><span class="p">)</span>
+                        <span class="n">charge_density2</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">charge_densitys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">distance_name</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Is non a problem?</span>
+                        <span class="n">charge_density1</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="n">charge_density2</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">charge_density1</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;charge_density1&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+                    <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">charge_density2</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;charge_density2&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                    <span class="n">spin_density</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">spindensity_xpath</span><span class="p">),</span> <span class="n">distance_name</span><span class="p">)</span>
+                    <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">spin_density</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;spin_density&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                    <span class="n">overall_charge_density</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">overallchargedensity_xpath</span><span class="p">),</span>
+                                                               <span class="n">distance_name</span><span class="p">)</span>
+                    <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">overall_charge_density</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;overall_charge_density&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="c1"># magnetic moments</span>
+                <span class="n">m_units</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">magnetic_moments_in_mtpheres_xpath</span><span class="p">),</span> <span class="n">units_name</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">m_units</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetic_moment_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">m_units</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;orbital_magnetic_moment_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">moments</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">magneticmoments_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">moments</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetic_moments&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">spinup</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">magneticmoments_spinupcharge_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">spinup</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetic_spin_up_charges&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">spindown</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">magneticmoments_spindowncharge_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">spindown</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetic_spin_down_charges&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">spindown</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">magneticmoments_spindowncharge_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">spindown</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetic_spin_down_charges&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="c1"># Total charges, total magentic moment</span>
+
+                <span class="n">total_c</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">all_spin_charges_total_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">total_c</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;spin_dependent_charge_total&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">total_magentic_moment_cell</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">total_c</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">val</span><span class="p">,</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">total_c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">val2</span><span class="p">,</span> <span class="n">suc2</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">total_c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">total_magentic_moment_cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="n">val2</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">total_magentic_moment_cell</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;total_magnetic_moment_cell&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">total_c_i</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">all_spin_charges_interstitial_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">total_c_i</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;spin_dependent_charge_interstitial&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">total_c_mt</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">all_spin_charges_mt_spheres_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">total_c_mt</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;spin_dependent_charge_mt&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">total_c</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">all_total_charge_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">total_c</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;total_charge&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="c1"># orbital magnetic moments</span>
+                <span class="n">orbmoments</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">orbmagneticmoments_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">orbmoments</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;orbital_magnetic_moments&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">orbspinup</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">orbmagneticmoments_spinupcharge_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">orbspinup</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;orbital_magnetic_spin_up_charges&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">orbspindown</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">orbmagneticmoments_spindowncharge_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">orbspindown</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;orbital_magnetic_spin_down_charges&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">ldaU</span><span class="p">:</span>
+                <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">eldau</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">eldau_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">eldau</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;ldau_energy_correction&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">])</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">units_e</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">])</span>
+
+                <span class="n">ldau_distances</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">ldaudistances_xpath</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">ldau_distances</span><span class="p">,</span> <span class="s1">&#39;list_floats&#39;</span><span class="p">,</span> <span class="s1">&#39;density_matrix_distance&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">[</span><span class="s1">&#39;ldau_info&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">relax</span><span class="p">:</span>
+                <span class="c1"># check if it is a film or a bulk structure</span>
+                <span class="n">film</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">film_lat_xpath</span><span class="p">,</span> <span class="s1">&#39;row-1&#39;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">film</span><span class="p">:</span>
+                    <span class="n">lat_path</span> <span class="o">=</span> <span class="n">film_lat_xpath</span>
+                    <span class="n">pos_attr</span> <span class="o">=</span> <span class="s1">&#39;filmPos&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">lat_path</span> <span class="o">=</span> <span class="n">bulk_lat_xpath</span>
+                    <span class="n">pos_attr</span> <span class="o">=</span> <span class="s1">&#39;relPos&#39;</span>
+
+                <span class="n">v_1</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lat_path</span><span class="p">,</span> <span class="s1">&#39;row-1&#39;</span><span class="p">))</span>
+                <span class="n">v_1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_1</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+                <span class="n">v_2</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lat_path</span><span class="p">,</span> <span class="s1">&#39;row-2&#39;</span><span class="p">))</span>
+                <span class="n">v_2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_2</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+                <span class="n">v_3</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lat_path</span><span class="p">,</span> <span class="s1">&#39;row-3&#39;</span><span class="p">))</span>
+                <span class="n">v_3</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_3</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+                <span class="n">relax_brav_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">v_1</span><span class="p">,</span> <span class="n">v_2</span><span class="p">,</span> <span class="n">v_3</span><span class="p">]</span>
+
+                <span class="n">atom_positions</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">relax_atom_info</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="n">all_atoms</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">atomstypes_xpath</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">a_type</span> <span class="ow">in</span> <span class="n">all_atoms</span><span class="p">:</span>
+                    <span class="n">species</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">a_type</span><span class="p">,</span> <span class="s1">&#39;species&#39;</span><span class="p">)</span>
+                    <span class="n">full_xpath</span> <span class="o">=</span> <span class="n">species_xpath</span> <span class="o">+</span> <span class="s1">&#39;/species[@name = &quot;</span><span class="si">{}</span><span class="s1">&quot;]/@element&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+                    <span class="n">element</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">full_xpath</span><span class="p">)</span>
+                    <span class="n">type_positions</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">a_type</span><span class="p">,</span> <span class="n">pos_attr</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">type_positions</span><span class="p">:</span>
+                        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_frac</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pos</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+                        <span class="n">atom_positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+                        <span class="n">relax_atom_info</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">species</span><span class="p">,</span> <span class="n">element</span><span class="p">])</span>
+
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">relax_atom_info</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;relax_atomtype_info&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">relax_brav_vectors</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;relax_brav_vectors&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">atom_positions</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;relax_atom_positions&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">film</span><span class="p">)),</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;film&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="c1"># total iterations</span>
+            <span class="n">number_of_iterations_total</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">iteration_xpath</span><span class="p">),</span>
+                                                           <span class="n">overall_number_name</span><span class="p">)</span>
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">number_of_iterations_total</span><span class="p">,</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="s1">&#39;number_of_iterations_total&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="c1"># forces atomtype dependend</span>
+            <span class="n">forces</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">forces_total_xpath</span><span class="p">)</span>
+            <span class="c1"># length should be ntypes</span>
+            <span class="n">largest_force</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.0</span>
+            <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="n">forces</span><span class="p">:</span>
+                <span class="n">atomtype</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">convert_to_int</span><span class="p">(</span><span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">atomtype_name</span><span class="p">))</span>
+
+                <span class="n">forces_unit</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">iteration_node</span><span class="p">,</span> <span class="n">forces_units_xpath</span><span class="p">),</span> <span class="n">units_name</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">forces_unit</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;force_units&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">force_x</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">f_x_name</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">force_x</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;force_x_type</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atomtype</span><span class="p">),</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">force_y</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">f_y_name</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">force_y</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;force_y_type</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atomtype</span><span class="p">),</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">force_z</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">f_z_name</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">force_z</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;force_z_type</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atomtype</span><span class="p">),</span> <span class="n">simple_data</span><span class="p">)</span>
+
+                <span class="n">force_xf</span><span class="p">,</span> <span class="n">suc1</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">force_x</span><span class="p">)</span>
+                <span class="n">force_yf</span><span class="p">,</span> <span class="n">suc2</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">force_y</span><span class="p">)</span>
+                <span class="n">force_zf</span><span class="p">,</span> <span class="n">suc3</span> <span class="o">=</span> <span class="n">convert_to_float</span><span class="p">(</span><span class="n">force_z</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">suc1</span> <span class="ow">and</span> <span class="n">suc2</span> <span class="ow">and</span> <span class="n">suc3</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_xf</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">largest_force</span><span class="p">:</span>
+                        <span class="n">largest_force</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_xf</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_yf</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">largest_force</span><span class="p">:</span>
+                        <span class="n">largest_force</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_yf</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_zf</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">largest_force</span><span class="p">:</span>
+                        <span class="n">largest_force</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_zf</span><span class="p">)</span>
+
+                <span class="n">pos_x</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">new_x_name</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">pos_x</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;abspos_x_type</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atomtype</span><span class="p">),</span> <span class="n">simple_data</span><span class="p">)</span>
+                <span class="n">pos_y</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">new_y_name</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">pos_y</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;abspos_y_type</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atomtype</span><span class="p">),</span> <span class="n">simple_data</span><span class="p">)</span>
+                <span class="n">pos_z</span> <span class="o">=</span> <span class="n">get_xml_attribute</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">new_z_name</span><span class="p">)</span>
+                <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">pos_z</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;abspos_z_type</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atomtype</span><span class="p">),</span> <span class="n">simple_data</span><span class="p">)</span>
+
+            <span class="n">write_simple_outnode</span><span class="p">(</span><span class="n">largest_force</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;force_largest&#39;</span><span class="p">,</span> <span class="n">simple_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">simple_data</span>
+
+    <span class="k">if</span> <span class="n">parse_xml</span><span class="p">:</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parser_info_out</span><span class="p">[</span><span class="s1">&#39;parser_warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s1">&#39;Somehow the root from the xmltree is None, which it should not be, I skip the parsing.&#39;</span><span class="p">)</span>
+            <span class="n">successful</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="p">{},</span> <span class="p">{},</span> <span class="n">parser_info_out</span><span class="p">,</span> <span class="n">successful</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">simple_out</span> <span class="o">=</span> <span class="n">parse_simplexmlout_file</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">outfile_broken</span><span class="p">)</span>
+            <span class="c1">#simple_out[&#39;outputfile_path&#39;] = outxmlfile</span>
+            <span class="c1"># TODO: parse complex out</span>
+            <span class="n">complex_out</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># parse_xmlout_file(root)</span>
+            <span class="k">return</span> <span class="n">simple_out</span><span class="p">,</span> <span class="n">complex_out</span><span class="p">,</span> <span class="n">parser_info_out</span><span class="p">,</span> <span class="n">successful</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{},</span> <span class="p">{},</span> <span class="n">parser_info_out</span><span class="p">,</span> <span class="n">successful</span></div>
+
+
+<div class="viewcode-block" id="parse_dos_file"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur.parse_dos_file">[docs]</a><span class="k">def</span> <span class="nf">parse_dos_file</span><span class="p">(</span><span class="n">dos_lines</span><span class="p">):</span>  <span class="c1"># , number_of_atom_types):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses the returned DOS.X files.</span>
+<span class="sd">    Structure:</span>
+<span class="sd">    (100(1x,e10.3))   e,totdos,interstitial,vac1,vac2,</span>
+<span class="sd">    (at(i),i=1,ntype),((q(l,i),l=1,LMAX),i=1,ntype)</span>
+<span class="sd">    where e is the energy in eV (= 1/27.2 htr) at(i) is the local DOS of a</span>
+<span class="sd">    single atom of the i&#39;th atom-type and q(l,i) is the l-resolved DOS at</span>
+<span class="sd">    the i&#39;th atom but has to be multiplied by the number of atoms of this type.</span>
+
+<span class="sd">    :param dos_lines: string of the read in dos file</span>
+<span class="sd">    :param number_of_atom_types: integer, number of atom types</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pass</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="parse_bands_file"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur.parse_bands_file">[docs]</a><span class="k">def</span> <span class="nf">parse_bands_file</span><span class="p">(</span><span class="n">bands_lines</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Parses the returned bands.1 and bands.2 file and returns a complete</span>
+<span class="sd">    bandsData object. bands.1 has the form: k value, energy</span>
+
+<span class="sd">    :param bands_lines: string of the read in bands file</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># TODO: not finished</span>
+    <span class="c1"># read bands out of file:</span>
+    <span class="n">nrows</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># get number of rows (known form number of atom types</span>
+    <span class="n">bands_values</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># init an array of arrays nkpoint * ...</span>
+    <span class="n">bands_labels</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># label for each row.</span>
+
+    <span class="c1"># fill and correct fermi energy.</span>
+    <span class="n">bands_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># TODO: we need to get the cell from StructureData node</span>
+    <span class="c1"># and KpointsData node from inpxml</span>
+    <span class="n">fleur_bands</span> <span class="o">=</span> <span class="n">BandsData</span><span class="p">()</span>
+    <span class="c1"># fleur_bands.set_cell(cell)</span>
+    <span class="c1">#fleur_bands.set_kpoints(kpoints, cartesian=True)</span>
+    <span class="n">fleur_bands</span><span class="o">.</span><span class="n">set_bands</span><span class="p">(</span><span class="n">bands</span><span class="o">=</span><span class="n">bands_values</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;eV&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">bands_labels</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">bands_lines</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">fleur_bands</span></div>
+
+
+<div class="viewcode-block" id="parse_relax_file"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur.parse_relax_file">[docs]</a><span class="k">def</span> <span class="nf">parse_relax_file</span><span class="p">(</span><span class="n">rlx</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function parsers relax.xml output file and</span>
+<span class="sd">    returns a Dict containing all the data given there.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">aiida_fleur.tools.xml_util</span> <span class="kn">import</span> <span class="n">eval_xpath2</span>
+
+    <span class="n">rlx</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">rlx</span><span class="p">)</span>
+
+    <span class="n">xpath_disp</span> <span class="o">=</span> <span class="s1">&#39;/relaxation/displacements/displace&#39;</span>
+    <span class="n">xpath_energy</span> <span class="o">=</span> <span class="s1">&#39;/relaxation/relaxation-history/step/@energy&#39;</span>
+    <span class="n">xpath_steps</span> <span class="o">=</span> <span class="s1">&#39;/relaxation/relaxation-history/step&#39;</span>
+
+    <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+    <span class="n">displacements</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xpath_disp</span><span class="p">)</span>
+    <span class="n">float_displ</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">displacements</span><span class="p">:</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_frac</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">float_displ</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xpath_energy</span><span class="p">)</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">]</span>
+
+    <span class="n">float_posforces</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">iter_all</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xpath_steps</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">posf</span> <span class="ow">in</span> <span class="n">iter_all</span><span class="p">:</span>
+        <span class="n">posforces</span> <span class="o">=</span> <span class="n">eval_xpath2</span><span class="p">(</span><span class="n">posf</span><span class="p">,</span> <span class="s1">&#39;posforce&#39;</span><span class="p">)</span>
+        <span class="n">temp2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">posforces</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_frac</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+            <span class="n">temp2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="n">float_posforces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp2</span><span class="p">)</span>
+
+    <span class="n">out_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s1">&#39;displacements&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">float_displ</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s1">&#39;energies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">energies</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s1">&#39;posforces&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">float_posforces</span>
+
+    <span class="k">return</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">out_dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="convert_frac"><a class="viewcode-back" href="../../../module_guide/code.html#aiida_fleur.parsers.fleur.convert_frac">[docs]</a><span class="k">def</span> <span class="nf">convert_frac</span><span class="p">(</span><span class="n">ratio</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Converts ratio strings into float, e.g. 1.0/2.0 -&gt; 0.5 &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">num</span><span class="p">,</span> <span class="n">denom</span> <span class="o">=</span> <span class="n">ratio</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">denom</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

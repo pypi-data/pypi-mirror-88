@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fleur dos/band workflows &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Fleur initial core-level shifts workflow" href="initial_cls_wc.html" />
+    <link rel="prev" title="Fleur structure optimization workchain" href="relax_wc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../ug_index.html">User’s guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/getting_started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="wc_index.html">AiiDA-FLEUR WorkChains</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="wc_index.html#general-design">General design</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="wc_index.html#workchain-classification">Workchain classification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="wc_index.html#basic-technical-workchains">Basic (Technical) Workchains</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wc_index.html#more-advanced-scientific-workchains">More advanced (Scientific) Workchains</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/hints_faq.html">Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../ug_index.html">User’s guide</a> &raquo;</li>
+        
+          <li><a href="wc_index.html">AiiDA-FLEUR WorkChains</a> &raquo;</li>
+        
+      <li>Fleur dos/band workflows</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fleur-dos-band-workflows">
+<span id="dos-band-wc"></span><h1><a class="toc-backref" href="#id3">Fleur dos/band workflows</a><a class="headerlink" href="#fleur-dos-band-workflows" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>These workchains do not work with AiiDA &gt;1.0 version yet. They need to be updated.</p>
+</div>
+<p>These are two seperate workflows which are pretty similar so we treat them here together</p>
+<ul class="simple">
+<li><p><strong>Class</strong>: <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.dos.fleur_dos_wc" title="aiida_fleur.workflows.dos.fleur_dos_wc"><code class="xref py py-class docutils literal notranslate"><span class="pre">fleur_dos_wc</span></code></a> and  <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.workflows.banddos.FleurBandDosWorkChain" title="aiida_fleur.workflows.banddos.FleurBandDosWorkChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurBandDosWorkChain</span></code></a></p></li>
+<li><p><strong>String to pass to the</strong> <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.plugins.html#aiida.plugins.WorkflowFactory" title="(in AiiDA v1.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">WorkflowFactory()</span></code></a>: <code class="docutils literal notranslate"><span class="pre">fleur.dos</span></code>, <code class="docutils literal notranslate"><span class="pre">fleur.banddos</span></code></p></li>
+<li><p><strong>Workflow type</strong>:  Workflow (lv 1)</p></li>
+<li><p><strong>Aim</strong>: Calculate a density of states. Calculate a Band structure.</p></li>
+<li><p><strong>Compuational demand</strong>: 1 <code class="docutils literal notranslate"><span class="pre">Fleur</span> <span class="pre">Job</span> <span class="pre">calculation</span></code></p></li>
+<li><p><strong>Database footprint</strong>: Outputnode with information, full provenance, <code class="docutils literal notranslate"><span class="pre">~</span> <span class="pre">10</span></code> nodes</p></li>
+<li><p><strong>File repository footprint</strong>: The <code class="docutils literal notranslate"><span class="pre">JobCalculation</span></code> run, plus the DOS or Bandstructure files</p></li>
+<li><p><strong>Additional Info</strong>: Use alone.</p></li>
+</ul>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#fleur-dos-band-workflows" id="id3">Fleur dos/band workflows</a></p>
+<ul>
+<li><p><a class="reference internal" href="#description-purpose" id="id4">Description/Purpose</a></p></li>
+<li><p><a class="reference internal" href="#input-nodes" id="id5">Input nodes:</a></p></li>
+<li><p><a class="reference internal" href="#returns-nodes" id="id6">Returns nodes</a></p></li>
+<li><p><a class="reference internal" href="#layout" id="id7">Layout</a></p></li>
+<li><p><a class="reference internal" href="#database-node-graph" id="id8">Database Node graph</a></p></li>
+<li><p><a class="reference internal" href="#plot-fleur-visualization" id="id9">Plot_fleur visualization</a></p></li>
+<li><p><a class="reference internal" href="#example-usage" id="id10">Example usage</a></p></li>
+<li><p><a class="reference internal" href="#output-node-example" id="id11">Output node example</a></p></li>
+<li><p><a class="reference internal" href="#error-handling" id="id12">Error handling</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Import Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.workflows.dos</span> <span class="kn">import</span> <span class="n">fleur_dos_wc</span>
+<span class="c1">#or</span>
+<span class="n">WorkflowFactory</span><span class="p">(</span><span class="s1">&#39;fleur.dos&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">aiida_fleur.workflows.banddos</span> <span class="kn">import</span> <span class="n">FleurBandDosWorkChain</span>
+<span class="c1">#or</span>
+<span class="n">WorkflowFactory</span><span class="p">(</span><span class="s1">&#39;fleur.banddos&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="description-purpose">
+<h2><a class="toc-backref" href="#id4">Description/Purpose</a><a class="headerlink" href="#description-purpose" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>DOS:</p>
+<p>Calculates an Density of states (DOS) ontop of a given Fleur calculation (converged or not).</p>
+<p>BandDos:</p>
+<p>Calculates an electronic band structure ontop of a given Fleur calculation (converged or not).</p>
+<p>In the future we plan to add the possibility to converge a calculation before, and choose the kpaths automatic.
+This version should be able start simply from a crystal structure.</p>
+<p>Each of these workflows prepares/chances the Fleur input and manages one Fleur calculation.</p>
+</div></blockquote>
+</div>
+<div class="section" id="input-nodes">
+<h2><a class="toc-backref" href="#id5">Input nodes:</a><a class="headerlink" href="#input-nodes" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fleur</span></code> (<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Code" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Code</span></code></a>): Fleur code using the <code class="docutils literal notranslate"><span class="pre">fleur.fleur</span></code> plugin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code> (<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>, optional): Some settings of the workflow behavior (e.g. number of kpoints, path, energy sampling and smearing, …)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fleurinp</span></code> (<a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a>, path 2): Fleur input data object representing the fleur input files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remote_data</span></code> (<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.RemoteData" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteData</span></code></a>, optional): The remote folder of the (converged) calculation whose output density is used as input for the DOS, or band structure run.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">options</span></code>  (<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>, optional): All options available in AiiDA, i.e resource specification, queue name, extras scheduler commands, …</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">settings</span></code> (<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>, optional): special settings for Fleur calculations, will be given like it is through to calculationss.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="returns-nodes">
+<h2><a class="toc-backref" href="#id6">Returns nodes</a><a class="headerlink" href="#returns-nodes" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_dos_wc_para</span></code> (<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>): Information of the dos workflow results like success, last result node, list with convergence behavior</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_band_wc_para</span></code> (<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>): Information node from the band workflow</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">last_fleur_calc_output</span></code> (<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>) Output node of last Fleur calculation is returned.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="layout">
+<h2><a class="toc-backref" href="#id7">Layout</a><a class="headerlink" href="#layout" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/Workchain_charts_dos_wc.png"><img alt="../../_images/Workchain_charts_dos_wc.png" src="../../_images/Workchain_charts_dos_wc.png" style="width: 50%;" /></a>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="database-node-graph">
+<h2><a class="toc-backref" href="#id8">Database Node graph</a><a class="headerlink" href="#database-node-graph" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.tools.graph_fleur</span> <span class="kn">import</span> <span class="n">draw_graph</span>
+
+<span class="n">draw_graph</span><span class="p">(</span><span class="mi">76867</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/dos_76867.pdf"><img alt="../../_images/dos_76867.pdf" src="../../_images/dos_76867.pdf" style="width: 100%;" /></a>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="plot-fleur-visualization">
+<h2><a class="toc-backref" href="#id9">Plot_fleur visualization</a><a class="headerlink" href="#plot-fleur-visualization" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Single node</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.tools.plot</span> <span class="kn">import</span> <span class="n">plot_fleur</span>
+
+<span class="c1"># DOS calc</span>
+<span class="n">plot_fleur</span><span class="p">(</span><span class="mi">76867</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/dos_plot.png"><img alt="../../_images/dos_plot.png" src="../../_images/dos_plot.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-text">For the bandstructure visualization it depends on the File produced.
+Old bandstructure file:</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/bandstructure.png"><img alt="../../_images/bandstructure.png" src="../../_images/bandstructure.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-text">Bandstructure <code class="docutils literal notranslate"><span class="pre">`band_dos.hdf`</span></code> file with l-like charge information:
+Band resolved bandstructure and fat-bands for the different channels.
+Spin and combinded DOS plus band structure visualizations are in progress…</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/Bands_colored.png"><img alt="../../_images/Bands_colored.png" src="../../_images/Bands_colored.png" style="width: 60%;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/band_s_like.png"><img alt="../../_images/band_s_like.png" src="../../_images/band_s_like.png" style="width: 60%;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/band_p_like.png"><img alt="../../_images/band_p_like.png" src="../../_images/band_p_like.png" style="width: 60%;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/band_d_like.png"><img alt="../../_images/band_d_like.png" src="../../_images/band_d_like.png" style="width: 60%;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/band_f_like.png"><img alt="../../_images/band_f_like.png" src="../../_images/band_f_like.png" style="width: 60%;" /></a>
+</div>
+<p>Multi node just does a bunch of single plots for now.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.tools.plot</span> <span class="kn">import</span> <span class="n">plot_fleur</span>
+
+<span class="n">plot_fleur</span><span class="p">(</span><span class="n">dos_pk_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="example-usage">
+<h2><a class="toc-backref" href="#id10">Example usage</a><a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/broeder-j/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Here we run the fleur_dos_wc for a Fleur calculation which has been converged before</span>
+<span class="sd">Layout:</span>
+
+<span class="sd">1. Database env load, Import, create base classes</span>
+<span class="sd">2. Creation of  input nodes</span>
+<span class="sd">3. Lauch workchain</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#######################</span>
+<span class="c1"># 1. Load the database environment. Imports and base class creation</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">aiida</span> <span class="kn">import</span> <span class="n">load_dbenv</span><span class="p">,</span> <span class="n">is_dbenv_loaded</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">is_dbenv_loaded</span><span class="p">():</span>
+    <span class="n">load_dbenv</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span><span class="p">,</span> <span class="n">load_node</span>
+<span class="kn">from</span> <span class="nn">aiida.engine.launch</span> <span class="kn">import</span> <span class="n">submit</span><span class="p">,</span> <span class="n">run</span>
+<span class="kn">from</span> <span class="nn">aiida_fleur.workflows.dos</span> <span class="kn">import</span> <span class="n">fleur_dos_wc</span>
+
+<span class="n">ParameterData</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">)</span>
+<span class="n">StructureData</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s1">&#39;structure&#39;</span><span class="p">)</span>
+
+<span class="c1">#######################</span>
+<span class="c1"># 2. Creation/loding of input nodes</span>
+
+<span class="c1"># Load the codes, thwy have to be setup in your database.</span>
+<span class="n">fleur_label</span> <span class="o">=</span> <span class="s1">&#39;fleur@localhost&#39;</span>
+<span class="n">fleur_code</span> <span class="o">=</span> <span class="n">Code</span><span class="o">.</span><span class="n">get_from_string</span><span class="p">(</span><span class="n">fleur_label</span><span class="p">)</span>
+
+<span class="c1">### Create wf_parameters (optional) and options</span>
+<span class="n">wf_para</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fleur_runmax&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;density_criterion&#39;</span><span class="p">:</span> <span class="mf">0.000001</span><span class="p">,</span> <span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">})</span>
+
+<span class="c1"># load a fleurino data object from a scf_wc before</span>
+<span class="c1">################################</span>
+<span class="c1"># 3. submit the workchain with its inputs.</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;wf_parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf_para</span>
+<span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;fleurinp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fleurinp</span>
+<span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;fleur&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fleur_code</span>
+<span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;test fleur_dos_wc run on W&#39;</span>
+<span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dos test &#39;</span>
+<span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;options&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span>
+
+<span class="c1"># submit workchain to the daemon</span>
+<span class="c1"># Noice that the nodes we created before are not yet stored in the database,</span>
+<span class="c1"># but AiiDA will do so automaticly when we launch the workchain.</span>
+<span class="c1"># To reuse nodes it might be a good idea, to save them before by hand and then load them</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">fleur_dos_wc</span><span class="p">,</span> <span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+
+<span class="c1"># You can also run the workflow in the python interpreter as blocking</span>
+<span class="c1">#res = run(fleur_dos_wc, **inputs)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="output-node-example">
+<h2><a class="toc-backref" href="#id11">Output node example</a><a class="headerlink" href="#output-node-example" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div></div></blockquote>
+</div>
+<div class="section" id="error-handling">
+<h2><a class="toc-backref" href="#id12">Error handling</a><a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Still has to be documented</p>
+<p>Warning if parent calculation was not converged.</p>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="initial_cls_wc.html" class="btn btn-neutral float-right" title="Fleur initial core-level shifts workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="relax_wc.html" class="btn btn-neutral float-left" title="Fleur structure optimization workchain" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fleur initial core-level shifts workflow &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Fleur core-hole workflow" href="corehole_wc.html" />
+    <link rel="prev" title="Fleur dos/band workflows" href="dos_band_wc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../ug_index.html">User’s guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/getting_started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="wc_index.html">AiiDA-FLEUR WorkChains</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="wc_index.html#general-design">General design</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="wc_index.html#workchain-classification">Workchain classification</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="wc_index.html#basic-technical-workchains">Basic (Technical) Workchains</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="wc_index.html#more-advanced-scientific-workchains">More advanced (Scientific) Workchains</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/hints_faq.html">Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../ug_index.html">User’s guide</a> &raquo;</li>
+        
+          <li><a href="wc_index.html">AiiDA-FLEUR WorkChains</a> &raquo;</li>
+        
+      <li>Fleur initial core-level shifts workflow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <ul class="simple" id="init-cl-wc">
+<li><p><strong>Current version</strong>: 0.4.0</p></li>
+</ul>
+<div class="section" id="fleur-initial-core-level-shifts-workflow">
+<h1>Fleur initial core-level shifts workflow<a class="headerlink" href="#fleur-initial-core-level-shifts-workflow" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Class name, import from:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.workflows.initial_cls</span> <span class="kn">import</span> <span class="n">fleur_initial_cls_wc</span>
+<span class="c1">#or</span>
+<span class="n">WorkflowFactory</span><span class="p">(</span><span class="s1">&#39;fleur.init_cls&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="section" id="description-purpose">
+<h2>Description/Purpose<a class="headerlink" href="#description-purpose" title="Permalink to this headline">¶</a></h2>
+<p>The initial-state workflow <cite>fleur_initial_cls_wc</cite> calculates core-level shifts of a
+system with respect to the elemental references via normal SCF calculations.
+If required, the SCF calculations of the corresponding elemental references are also
+managed by the workflow. Furthermore, the workflow extracts the enthalpy of formation for
+the investigated compound from these SCF runs. The workflow calculates core-level shifts (CLS) as the
+difference of Kohn-Sham core-level energies with respect to the respected Fermi level.</p>
+<p>This workflow manages none to one inpgen calculation and one to several Fleur calculations.
+It is one of the most core workflows and often deployed as sub-workflow.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To minimize uncertainties on CLS it is important that the compound as well as the reference systems are
+calculated with the same atomic parameters (muffin-tin radius, radial grid points and spacing, radial basis cutoff).
+The workflow tests for this equality and tries to assure it, though it does not know
+what is a good parameter set nor if the present set works well for both systems.
+It is currently best practice to enforce the FLAPW parameters used within the workflow, i.e.,
+provide them as input for the system as for the references.
+For low high-throughput failure rates and smallest data footprint we advice to calculate
+the references first alone and parse a converged calculation as a reference,
+that way references are not rerun and produce less overhead.
+Otherwise one can also turn on <cite>caching</cite> in AiiDA which will save the recalculation of the references,
+but won’t decrease their data footprint.</p>
+</div>
+</div>
+<div class="section" id="layout">
+<h2>Layout<a class="headerlink" href="#layout" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/Workchain_charts_initial_state.png"><img alt="../../_images/Workchain_charts_initial_state.png" src="../../_images/Workchain_charts_initial_state.png" style="width: 50%;" /></a>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="input-nodes">
+<h2>Input nodes<a class="headerlink" href="#input-nodes" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 43%" />
+<col style="width: 34%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>description</p></th>
+<th class="head"><p>required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>inpgen</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Code" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Code</span></code></a></p></td>
+<td><p>Inpgen code</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>fleur</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Code" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Code</span></code></a></p></td>
+<td><p>Fleur code</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>wf_parameters</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a></p></td>
+<td><p>Settings of the workchain</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>fleurinp</p></td>
+<td><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a></p></td>
+<td><p><a class="reference internal" href="../data/fleurinp_data.html#fleurinp-data"><span class="std std-ref">FLEUR input</span></a></p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>structure</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.StructureData" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureData</span></code></a></p></td>
+<td><p>Crystal structure</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>calc_parameters</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a></p></td>
+<td><p>FLAPW parameters for given structure</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>options</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a></p></td>
+<td><p>AiiDA options (computational resources)</p></td>
+<td><p>no</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="simple">
+<dt>More details:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fleur</span></code> (<em>aiida.orm.Code</em>): Fleur code using the <code class="docutils literal notranslate"><span class="pre">fleur.fleur</span></code> plugin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inpgen</span></code> (<em>aiida.orm.Code</em>): Inpgen code using the <code class="docutils literal notranslate"><span class="pre">fleur.inpgen</span></code> plugin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code> (<em>Dict</em>, optional): Some settings of the workflow behavior</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">structure</span></code> (<em>StructureData</em>, path 1): Crystal structure data node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calc_parameters</span></code> (<em>Dict</em>, optional): Longer description of the workflow</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fleurinp</span></code> (<em>FleurinpData</em>, path 2): Label of the workflow</p></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="workchain-parameters-and-its-defaults">
+<h3>Workchain parameters and its defaults<a class="headerlink" href="#workchain-parameters-and-its-defaults" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="wf-parameters">
+<h4><code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code><a class="headerlink" href="#wf-parameters" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> - Settings of the workflow behavior. All possible
+keys and their defaults are listed below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="s1">&#39;relax&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>               <span class="c1"># Not implemented, relax the structure</span>
+<span class="s1">&#39;relax_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;Fleur&#39;</span><span class="p">,</span>       <span class="c1"># Not implemented, how to relax the structure</span>
+<span class="s1">&#39;relax_para&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>     <span class="c1"># Not implemented, parameter for the relaxation</span>
+<span class="s1">&#39;scf_para&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>       <span class="c1"># Use these parameters for the SCFs</span>
+<span class="s1">&#39;same_para&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>           <span class="c1"># enforce the same parameters</span>
+<span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>             <span class="c1"># Run everthing in serial</span>
+<span class="s1">&#39;references&#39;</span><span class="p">:</span> <span class="p">{}</span>             <span class="c1"># Dict to provide the elemental references</span>
+                             <span class="c1"># i.e { &#39;W&#39;: calc, outputnode of SCF workflow or fleurinp,</span>
+                             <span class="c1"># or structure data or (structure data + Parameter),</span>
+                             <span class="c1"># &#39;Be&#39; : ...}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="options">
+<h4><code class="docutils literal notranslate"><span class="pre">options</span></code><a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">options</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> - AiiDA options (computational resources).
+Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;num_machines&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;num_mpiprocs_per_machine&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span>
+<span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="s1">&#39;import_sys_environment&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="s1">&#39;environment_variables&#39;</span><span class="p">:</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="returns-nodes">
+<h2>Returns nodes<a class="headerlink" href="#returns-nodes" title="Permalink to this headline">¶</a></h2>
+<p>The table below shows all the possible output nodes of the fleur_initial_cls_wc workchain.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 39%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>comment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>output_initial_cls_wc_para</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a></p></td>
+<td><p>Link to last FleurCalculation output dict</p></td>
+</tr>
+</tbody>
+</table>
+<p>More details:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_initial_cls_wc_para</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> -  Main results of the workchain. Contains
+core-level shifts, band gaps, core-levels, atom-type information,
+errors, warnings, other information. An example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="p">{</span>
+    <span class="s1">&#39;atomtypes&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;atomic_number&#39;</span><span class="p">:</span> <span class="mi">74</span><span class="p">,</span>
+                <span class="s1">&#39;coreconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;[Kr] (5s1/2) (4d3/2) (4d5/2) (4f5/2) (4f7/2)&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;natoms&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s1">&#39;species&#39;</span><span class="p">:</span> <span class="s1">&#39;W-1&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;stateOccupation&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s1">&#39;(5d3/2)&#39;</span><span class="p">:</span> <span class="p">[</span>
+                            <span class="s1">&#39;2.00000000&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;.00000000&#39;</span>
+                        <span class="p">]</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s1">&#39;(5d5/2)&#39;</span><span class="p">:</span> <span class="p">[</span>
+                            <span class="s1">&#39;2.00000000&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;.00000000&#39;</span>
+                        <span class="p">]</span>
+                    <span class="p">}</span>
+                <span class="p">],</span>
+                <span class="s1">&#39;valenceconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;(5p1/2) (5p3/2) (6s1/2) (5d3/2) (5d5/2)&#39;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;bandgap&#39;</span><span class="p">:</span> <span class="mf">0.0074571775</span><span class="p">,</span>
+    <span class="s1">&#39;bandgap_units&#39;</span><span class="p">:</span> <span class="s1">&#39;htr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;binding_energy_convention&#39;</span><span class="p">:</span> <span class="s1">&#39;negativ&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;corelevel_energies&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="o">-</span><span class="mf">2550.2512204246</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">439.7260486989</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">420.4442892264</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">370.7259449483</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">101.1391871143</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">92.5627547497</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">81.8114542005</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">20.7351164096</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">67.3928879745</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">65.0551729884</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">17.1796863155</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">14.6884205438</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">2.7326665018</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">8.8548575156</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">8.3959093745</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">1.0995859461</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">1.0173114662</span>
+            <span class="p">]</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;corelevel_energies_units&#39;</span><span class="p">:</span> <span class="s1">&#39;htr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;corelevelshifts&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="mf">0.0</span><span class="p">,</span>
+                <span class="mf">0.0</span><span class="p">,</span>
+                <span class="mf">0.0</span><span class="p">,</span>
+                <span class="o">...</span>
+            <span class="p">]</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;corelevelshifts_units&#39;</span><span class="p">:</span> <span class="s1">&#39;htr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fermi_energy&#39;</span><span class="p">:</span> <span class="mf">0.6026436555</span><span class="p">,</span>
+    <span class="s1">&#39;fermi_energy_units&#39;</span><span class="p">:</span> <span class="s1">&#39;htr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;formation_energy&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mf">0.0</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;formation_energy_units&#39;</span><span class="p">:</span> <span class="s1">&#39;eV/atom&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;material&#39;</span><span class="p">:</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;reference_bandgaps&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mf">0.0074571775</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;reference_bandgaps_des&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;W&#39;</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;reference_corelevel_energies&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="o">-</span><span class="mf">2550.2512204246</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">439.7260486989</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">420.4442892264</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">370.7259449483</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">101.1391871143</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">92.5627547497</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">81.8114542005</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">20.7351164096</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">67.3928879745</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">65.0551729884</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">17.1796863155</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">14.6884205438</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">2.7326665018</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">8.8548575156</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">8.3959093745</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">1.0995859461</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">1.0173114662</span>
+            <span class="p">]</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;reference_corelevel_energies_units&#39;</span><span class="p">:</span> <span class="s1">&#39;htr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;reference_fermi_energy&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mf">0.6026436555</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;reference_fermi_energy_des&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;W&#39;</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;successful&#39;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s1">&#39;total_energy&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">439902.56049548</span><span class="p">,</span>
+    <span class="s1">&#39;total_energy_ref&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">-</span><span class="mf">439902.56049548</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;total_energy_ref_des&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;W&#39;</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;total_energy_units&#39;</span><span class="p">:</span> <span class="s1">&#39;eV&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;warnings&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;workflow_name&#39;</span><span class="p">:</span> <span class="s1">&#39;fleur_initial_cls_wc&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;workflow_version&#39;</span><span class="p">:</span> <span class="s1">&#39;0.4.0&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="plot-fleur-visualization">
+<h2>Plot_fleur visualization<a class="headerlink" href="#plot-fleur-visualization" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Single node</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.tools.plot</span> <span class="kn">import</span> <span class="n">plot_fleur</span>
+
+<span class="n">plot_fleur</span><span class="p">(</span><span class="mi">50816</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="example-usage">
+<h2>Example usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">load_node</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">WorkflowFactory</span>
+
+
+<span class="n">fleur_init_cls_wc</span> <span class="o">=</span> <span class="n">WorkflowFactory</span><span class="p">(</span><span class="s1">&#39;fleur.initial_cls&#39;</span><span class="p">)</span>
+<span class="n">struc</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">STRUCTURE_PK</span><span class="p">)</span>
+<span class="n">flapw_para</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">PARAMETERS_PK</span><span class="p">)</span>
+<span class="n">fleur_code</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">FLEUR_PK</span><span class="p">)</span>
+<span class="n">inpgen_code</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">INPGEN_PK</span><span class="p">)</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;num_mpiprocs_per_machine&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">},</span>
+                         <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span>  <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">})</span>
+
+<span class="n">wf_para_initial</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span>
+  <span class="s1">&#39;references&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;Be&#39;</span><span class="p">:</span> <span class="s1">&#39;257d8ae8-32b3-4c95-8891-d5f527b80008&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="s1">&#39;c12c999c-9a00-4866-b6ef-9bb5d28e7797&#39;</span><span class="p">},</span>
+  <span class="s1">&#39;scf_para&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;density_criterion&#39;</span><span class="p">:</span> <span class="mf">5e-06</span><span class="p">,</span> <span class="s1">&#39;fleur_runmax&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;itmax_per_run&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">}})</span>
+
+<span class="c1"># launch workflow</span>
+<span class="n">initial_res</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">fleur_init_cls_wc</span><span class="p">,</span> <span class="n">wf_parameters</span><span class="o">=</span><span class="n">wf_para_initial</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="n">struc</span><span class="p">,</span>
+             <span class="n">calc_parameters</span><span class="o">=</span><span class="n">flapw_para</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span> <span class="n">fleur</span><span class="o">=</span><span class="n">fleur</span><span class="p">,</span> <span class="n">inpgen</span><span class="o">=</span><span class="n">inpgen</span><span class="p">,</span>
+             <span class="n">label</span><span class="o">=</span><span class="s1">&#39;test initial cls&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;fleur_initial_cls test&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="error-handling">
+<h2>Error handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Still has to be documented.</p>
+<p>So far only the input is checked. All other errors are currently not handled.
+The SCF sub-workchain comes with its own error handling of course.</p>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="corehole_wc.html" class="btn btn-neutral float-right" title="Fleur core-hole workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dos_band_wc.html" class="btn btn-neutral float-left" title="Fleur dos/band workflows" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

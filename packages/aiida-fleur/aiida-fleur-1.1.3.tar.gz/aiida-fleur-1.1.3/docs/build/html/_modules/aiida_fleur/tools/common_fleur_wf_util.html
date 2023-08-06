@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiida_fleur.tools.common_fleur_wf_util &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/ug_index.html">User’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiida_fleur.tools.common_fleur_wf_util</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiida_fleur.tools.common_fleur_wf_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###############################################################################</span>
+<span class="c1"># Copyright (c), Forschungszentrum Jülich GmbH, IAS-1/PGI-1, Germany.         #</span>
+<span class="c1">#                All rights reserved.                                         #</span>
+<span class="c1"># This file is part of the AiiDA-FLEUR package.                               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1"># The code is hosted on GitHub at https://github.com/JuDFTteam/aiida-fleur    #</span>
+<span class="c1"># For further information on the license, see the LICENSE.txt file            #</span>
+<span class="c1"># For further information please visit http://www.flapw.de or                 #</span>
+<span class="c1"># http://aiida-fleur.readthedocs.io/en/develop/                               #</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">In here we put all things (methods) that are common to workflows AND DO NOT</span>
+<span class="sd">depend on AiiDA classes, therefore can be used without loading the dbenv.</span>
+<span class="sd">Util that does depend on AiiDA classes should go somewhere else.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gcd</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">Symbol</span>
+
+
+<div class="viewcode-block" id="convert_formula_to_formula_unit"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.convert_formula_to_formula_unit">[docs]</a><span class="k">def</span> <span class="nf">convert_formula_to_formula_unit</span><span class="p">(</span><span class="n">formula</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a formula to the smallest chemical formula unit</span>
+<span class="sd">    &#39;Be4W2&#39; -&gt; &#39;Be2W&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># get formula dict</span>
+    <span class="c1"># find greatest common divider of values</span>
+    <span class="c1"># form formula unit string</span>
+    <span class="n">element_count_dict</span> <span class="o">=</span> <span class="n">get_natoms_element</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+    <span class="n">nelements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">element_count_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nelements</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">a2</span> <span class="ow">in</span> <span class="n">nelements</span><span class="p">:</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a2</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">a2</span><span class="p">)</span>
+
+    <span class="n">formula_unit_string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">element_count_dict</span><span class="p">):</span>
+        <span class="n">new_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_val</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">new_val</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">formula_unit_string</span> <span class="o">=</span> <span class="n">formula_unit_string</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">new_val</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">formula_unit_string</span></div>
+
+
+<div class="viewcode-block" id="get_natoms_element"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.get_natoms_element">[docs]</a><span class="k">def</span> <span class="nf">get_natoms_element</span><span class="p">(</span><span class="n">formula</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts &#39;Be24W2&#39; to {&#39;Be&#39;: 24, &#39;W&#39; : 2}, also BeW to {&#39;Be&#39; : 1, &#39;W&#39; : 1}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">re</span>
+    <span class="n">elem_count_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">elements</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;[A-Z][^A-Z]*&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="p">)</span>
+    <span class="c1">#re.split(&#39;(\D+)&#39;, formula)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">elm</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">elements</span><span class="p">):</span>
+        <span class="n">elem_count</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\D+|\d+\.\d+|\d+&#39;</span><span class="p">,</span> <span class="n">elm</span><span class="p">)</span>
+        <span class="c1">#print(elem_count)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elem_count</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">elem_count_dict</span><span class="p">[</span><span class="n">elem_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">elem_count_dict</span><span class="p">[</span><span class="n">elem_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">elem_count</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">elem_count_dict</span></div>
+
+
+<span class="c1"># test</span>
+<span class="c1">#get_natoms_element(&#39;BeW&#39;)</span>
+<span class="c1">#get_natoms_element(&#39;Be2W&#39;)</span>
+
+
+<div class="viewcode-block" id="convert_frac_formula"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.convert_frac_formula">[docs]</a><span class="k">def</span> <span class="nf">convert_frac_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">max_digits</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a formula with fractions to a formula with integer factors only</span>
+
+<span class="sd">    Be0.5W0.5 -&gt; BeW</span>
+
+<span class="sd">    :param formula: str, crystal formula i.e. Be2W, Be0.2W0.7</span>
+<span class="sd">    :param max_digits: int default=3, number of digits after which fractions will be cut off</span>
+<span class="sd">    :returns: string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">form_dict</span> <span class="o">=</span> <span class="n">get_natoms_element</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+    <span class="n">formula_int</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">form_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">formula_int</span> <span class="o">=</span> <span class="n">formula_int</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="n">max_digits</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">convert_formula_to_formula_unit</span><span class="p">(</span><span class="n">formula_int</span><span class="p">)</span></div>
+
+
+<span class="c1">#test</span>
+<span class="c1">#convert_frac_formula(&#39;Be0.3W0.7&#39;) -&gt; Be3W7</span>
+<span class="c1">#convert_frac_formula(&#39;Be0.5W0.5&#39;) -&gt; BeW</span>
+<span class="c1">#convert_frac_formula(&#39;Be3W7&#39;) -&gt; Be3W7</span>
+
+
+<div class="viewcode-block" id="ucell_to_atompr"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.ucell_to_atompr">[docs]</a><span class="k">def</span> <span class="nf">ucell_to_atompr</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="n">formulas</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">error_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts unit cell ratios into atom ratios.</span>
+
+<span class="sd">    len(ratio) == len(formulas) (== len(error_ratio))</span>
+<span class="sd">    ucell_to_atompr([10, 1, 7], [&#39;Be12Ti&#39;, &#39;Be17Ti2&#39;, &#39;Be2&#39;], element=&#39;Be&#39;, [0.1, 0.1, 0.1])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="n">error_ratio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">error_ratio</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">atompro</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">atompro_err</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">formulas</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="n">n_atoms_formula</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_natoms_element</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+        <span class="n">n_atoms_formula</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="n">atompro</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_atoms_formula</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">atompro</span><span class="p">)</span>
+    <span class="n">atompro</span> <span class="o">=</span> <span class="n">atompro</span> <span class="o">/</span> <span class="n">total</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">error_ratio</span><span class="p">):</span>
+        <span class="n">atompro_err_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">error_ratio</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_atoms_formula</span><span class="p">)</span>
+        <span class="n">e_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">atompro_err_t</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">atompro_err</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">atompro_err_t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">atompro</span> <span class="o">*</span> <span class="n">e_sum</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">atompro</span><span class="p">,</span> <span class="n">atompro_err</span></div>
+
+
+<div class="viewcode-block" id="calc_stoi"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.calc_stoi">[docs]</a><span class="k">def</span> <span class="nf">calc_stoi</span><span class="p">(</span><span class="n">unitcellratios</span><span class="p">,</span> <span class="n">formulas</span><span class="p">,</span> <span class="n">error_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Stoichiometry with errors from a given unit cell ratio, formulas.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    calc_stoi([10, 1, 7], [&#39;Be12Ti&#39;, &#39;Be17Ti2&#39;, &#39;Be2&#39;], [0.1, 0.01, 0.1])</span>
+<span class="sd">    ({&#39;Be&#39;: 12.583333333333334, &#39;Ti&#39;: 1.0}, {&#39;Be&#39;: 0.12621369924887876, &#39;Ti&#39;: 0.0012256517540566825})</span>
+<span class="sd">    calc_stoi([10, 1, 7], [&#39;Be12Ti&#39;, &#39;Be17Ti2&#39;, &#39;Be2&#39;])</span>
+<span class="sd">    ({&#39;Be&#39;: 12.583333333333334, &#39;Ti&#39;: 1.0}, {})</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="n">error_ratio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">error_ratio</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">stoi</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unitcellratios</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">formulas</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="n">errors_stoi</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">formula</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">formulas</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_natoms_element</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">element</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+            <span class="n">stoi_elm</span> <span class="o">=</span> <span class="n">stoi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">stoi</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">stoi_elm</span> <span class="o">+</span> <span class="n">val</span> <span class="o">*</span> <span class="n">unitcellratios</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">error_ratio</span><span class="p">):</span>
+                <span class="n">errors</span> <span class="o">=</span> <span class="n">errors_stoi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">errors_stoi</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">errors</span> <span class="o">+</span> <span class="n">val</span> <span class="o">*</span> <span class="n">val</span> <span class="o">*</span> <span class="n">error_ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">error_ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1"># make smallest number always one.</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stoi</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">minv</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="n">keymin</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stoi</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">vals</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">minv</span><span class="p">)]</span>
+    <span class="n">norm_stoi</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">stoi</span><span class="p">):</span>
+        <span class="n">norm_stoi</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">stoi</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">/</span> <span class="n">minv</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">error_ratio</span><span class="p">):</span>
+            <span class="n">errors_stoi</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">stoi</span><span class="p">[</span><span class="n">keymin</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">errors_stoi</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">stoi</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">/</span> <span class="n">stoi</span><span class="p">[</span><span class="n">keymin</span><span class="p">]</span> <span class="o">*</span> <span class="n">errors_stoi</span><span class="p">[</span><span class="n">keymin</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">norm_stoi</span><span class="p">,</span> <span class="n">errors_stoi</span></div>
+
+
+<div class="viewcode-block" id="get_atomprocent"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.get_atomprocent">[docs]</a><span class="k">def</span> <span class="nf">get_atomprocent</span><span class="p">(</span><span class="n">formula</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This converts a formula to a dictionary with element : atomprocent</span>
+<span class="sd">    example converts &#39;Be24W2&#39; to {&#39;Be&#39;: 24/26, &#39;W&#39; : 2/26}, also BeW to {&#39;Be&#39; : 0.5, &#39;W&#39; : 0.5}</span>
+<span class="sd">    :params: formula: string</span>
+<span class="sd">    :returns: a dict, element : atomprocent</span>
+
+<span class="sd">    # Todo alternative with structuredata</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">form_dict_new</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">form_dict</span> <span class="o">=</span> <span class="n">get_natoms_element</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+    <span class="n">ntotal</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">form_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">form_dict</span><span class="p">):</span>
+        <span class="n">val_new</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntotal</span>
+        <span class="n">form_dict_new</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_new</span>
+    <span class="k">return</span> <span class="n">form_dict_new</span></div>
+
+
+<span class="c1"># test</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">def get_weight_procent(formula):</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    This converts a formula to a dictionary with element : weightprocent</span>
+<span class="sd">    example converts &#39;Be24W2&#39; to {&#39;Be&#39;: , &#39;W&#39; : }, also BeW to {&#39;Be&#39; : , &#39;W&#39; : }</span>
+<span class="sd">    :params: formula: string</span>
+<span class="sd">    :returns: a dict, element : weightprocent</span>
+
+<span class="sd">    # Todo alternative with structuredata</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="sd">    pass</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1">#def norm_total_energy_peratom(totalenergy, formula)</span>
+<span class="c1">#def norm_total_energy_perunitcell(totalenergy, )</span>
+
+
+<div class="viewcode-block" id="determine_formation_energy"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.determine_formation_energy">[docs]</a><span class="k">def</span> <span class="nf">determine_formation_energy</span><span class="p">(</span><span class="n">struc_te_dict</span><span class="p">,</span> <span class="n">ref_struc_te_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method determines the formation energy.</span>
+<span class="sd">    E_form =  E(A_xB_y) - x*E(A) - y*E(B)</span>
+
+<span class="sd">    :params struc_te_dict: python dictionary in the form of {&#39;formula&#39; : total_energy} for the compound(s)</span>
+<span class="sd">    :params ref_struc_te_dict: python dictionary in the form of {&#39;formula&#39; : total_energy per atom, or per unit cell} for the elements</span>
+<span class="sd">                               (if the formula of the elements contains a number the total energy is divided by that number)</span>
+<span class="sd">    :returns: list of floats, dict {formula : eform, ..} units energy/per atom, energies have some unit as energies given</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#eform_list = []</span>
+    <span class="n">eform_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1">#ref_el = ref_struc_te_dict.keys()</span>
+    <span class="n">ref_struc_te_dict_norm</span> <span class="o">=</span> <span class="n">ref_struc_te_dict</span>  <span class="c1">#{}</span>
+    <span class="c1"># assume reference to be normalized</span>
+
+    <span class="c1"># normalize reference</span>
+    <span class="c1">#for key, val in ref_struc_te_dict.iteritems():</span>
+    <span class="c1">##    elem_n = get_natoms_element(key)</span>
+    <span class="c1">#    ref_struc_te_dict_norm[elem_n.keys()[0]] = val / elem_n.values()[0]</span>
+    <span class="n">ref_el_norm</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ref_struc_te_dict_norm</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">formula</span><span class="p">,</span> <span class="n">tE</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">struc_te_dict</span><span class="p">):</span>
+        <span class="n">elements_count</span> <span class="o">=</span> <span class="n">get_natoms_element</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+        <span class="n">ntotal</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">elements_count</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ntotal</span><span class="p">)</span>
+        <span class="n">eform</span> <span class="o">=</span> <span class="n">tE</span>  <span class="c1">#abs(tE)</span>
+        <span class="k">for</span> <span class="n">elem</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">elements_count</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">ref_el_norm</span><span class="p">:</span>
+                <span class="n">eform</span> <span class="o">=</span> <span class="n">eform</span> <span class="o">-</span> <span class="n">count</span> <span class="o">*</span> <span class="n">ref_struc_te_dict_norm</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>  <span class="c1">#abs(ref_struc_te_dict.get(elem))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;Reference energy missing for element </span><span class="si">{}</span><span class="s1">. &#39;</span>
+                       <span class="s1">&#39;You need to provide reference energies for all elements in you compound.&#39;</span>
+                       <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elem</span><span class="p">)))</span>
+        <span class="n">eform_dict</span><span class="p">[</span><span class="n">formula</span><span class="p">]</span> <span class="o">=</span> <span class="n">eform</span> <span class="o">/</span> <span class="n">ntotal</span>
+        <span class="c1">#eform_list.append(eform/ntotal)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">eform_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">eform_dict</span></div>
+
+
+<span class="c1"># test</span>
+<span class="c1">#determine_formation_energy({&#39;BeW&#39; : 2, &#39;Be2W&#39; : 2.5}, {&#39;Be&#39; : 1, &#39;W&#39; : 1})</span>
+
+
+<div class="viewcode-block" id="determine_convex_hull"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.determine_convex_hull">[docs]</a><span class="k">def</span> <span class="nf">determine_convex_hull</span><span class="p">(</span><span class="n">formation_en_grid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wraps the pyhull packge implementing the qhull algo for our purposes.</span>
+<span class="sd">    For now only for 2D phase diagrams</span>
+<span class="sd">    Adds the points [1.0, 0.0] and [0.0, 1.0], because in material science these</span>
+<span class="sd">    are always there.</span>
+
+<span class="sd">    :params: formation_en_grid: list of points in phase space [[x, formation_energy]]</span>
+<span class="sd">    :returns: a hul datatype</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="c1">#from scipy.spatial import ConvexHull # Buggy in python 3... some ugly segfault</span>
+    <span class="kn">from</span> <span class="nn">pyhull.convex_hull</span> <span class="kn">import</span> <span class="n">ConvexHull</span>
+
+    <span class="c1"># TODO multi d</span>
+    <span class="c1"># check if endpoints are in</span>
+    <span class="k">if</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">formation_en_grid</span><span class="p">:</span>
+        <span class="n">formation_en_grid</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">formation_en_grid</span><span class="p">:</span>
+        <span class="n">formation_en_grid</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">formation_en_grid</span><span class="p">)</span>
+    <span class="n">hull</span> <span class="o">=</span> <span class="n">ConvexHull</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">hull</span></div>
+
+
+<div class="viewcode-block" id="inpgen_dict_set_mesh"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.inpgen_dict_set_mesh">[docs]</a><span class="k">def</span> <span class="nf">inpgen_dict_set_mesh</span><span class="p">(</span><span class="n">inpgendict</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    params: python dict, used for inpgen parameterdata node</span>
+<span class="sd">    params: mesh either as returned by kpointsdata or tuple of 3 integers</span>
+
+<span class="sd">    returns: python dict, used for inpgen parameterdata node</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">kmesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">kmesh</span> <span class="o">=</span> <span class="n">mesh</span>
+    <span class="n">kpt_dict</span> <span class="o">=</span> <span class="n">inpgendict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kpt&#39;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">kpt_dict</span><span class="p">[</span><span class="s1">&#39;div1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kmesh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">kpt_dict</span><span class="p">[</span><span class="s1">&#39;div2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kmesh</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">kpt_dict</span><span class="p">[</span><span class="s1">&#39;div3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kmesh</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">inpgendict_new</span> <span class="o">=</span> <span class="n">inpgendict</span>
+    <span class="n">inpgendict_new</span><span class="p">[</span><span class="s1">&#39;kpt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kpt_dict</span>
+
+    <span class="k">return</span> <span class="n">inpgendict_new</span></div>
+
+
+<span class="c1"># test</span>
+<span class="c1">#inpgen_dict_set_mesh(Be_para.get_dict(), mesh)</span>
+
+
+<div class="viewcode-block" id="powerset"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.powerset">[docs]</a><span class="k">def</span> <span class="nf">powerset</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs the power set, &#39;potenz Menge&#39; of a given list.</span>
+
+<span class="sd">    return list: of all possible subsets</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">itertools</span>
+    <span class="n">pset</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">sset</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">pset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pset</span></div>
+
+
+<span class="c1">#a = powerset([1, 2, 3, 4])</span>
+<span class="c1">#a = powerset([&#39;Be&#39;, &#39;Be2W&#39;, &#39;Be12W&#39;, &#39;Be22W&#39;, &#39;W&#39;])</span>
+<span class="c1">#print(a)</span>
+<span class="c1">#print(len(a))</span>
+
+
+<div class="viewcode-block" id="determine_reactions"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.determine_reactions">[docs]</a><span class="k">def</span> <span class="nf">determine_reactions</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">available_data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines and balances theoretical possible reaction.</span>
+<span class="sd">    Stoichiometry &#39;Be12W&#39;, [Be12W, Be2W, Be, W, Be22W] -&gt; [[Be22W+Be2W], [Be12W], [Be12+W],...]</span>
+
+<span class="sd">    :params formula: string, given educts (left side of equation)</span>
+<span class="sd">    :params available_data: list of strings of compounds (products),</span>
+<span class="sd">                            from which all possibilities will be constructed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># 1. for each compound try to balance equation</span>
+    <span class="c1"># 2. for each compound with any other compound in list, try to balance equation</span>
+    <span class="c1"># 3. for each compound with each two other compounds ... till other compounds</span>
+    <span class="n">reactions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">constructed_products</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pset_available_data</span> <span class="o">=</span> <span class="n">powerset</span><span class="p">(</span><span class="n">available_data</span><span class="p">)</span>  <span class="c1"># if len available_data to large cut off?</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pset_available_data</span><span class="p">):</span>
+        <span class="n">productstring</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+            <span class="n">productstring</span> <span class="o">=</span> <span class="n">productstring</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">+&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
+        <span class="n">productstring</span> <span class="o">=</span> <span class="n">productstring</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">constructed_products</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">productstring</span><span class="p">)</span>
+        <span class="n">pos_reaction</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">productstring</span><span class="p">)</span>
+        <span class="n">bal_reaction</span> <span class="o">=</span> <span class="n">balance_equation</span><span class="p">(</span><span class="n">pos_reaction</span><span class="p">,</span> <span class="n">allow_negativ</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eval_linear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># We do not allow zero coefficients of products, because the resulting equation should already be in our list.</span>
+        <span class="k">if</span> <span class="n">bal_reaction</span><span class="p">:</span>
+            <span class="c1"># TODO post process (i.e are remove 0 compounds)</span>
+            <span class="n">reactions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bal_reaction</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>
+    <span class="k">return</span> <span class="n">reactions</span></div>
+
+
+<span class="c1"># test</span>
+<span class="c1"># reac = determine_reactions(&#39;Be12W&#39;, [&#39;Be12W&#39;, &#39;Be2W&#39;, &#39;Be&#39;, &#39;W&#39;, &#39;Be22W&#39;])</span>
+<span class="c1">#print(reac [&#39;1*Be12W-&gt;1*Be12W&#39;, &#39;1*Be12W-&gt;1*Be2W+10*Be&#39;, &#39;2*Be12W-&gt;1*Be2W+1*Be22W&#39;,</span>
+<span class="c1">#             &#39;1*Be12W-&gt;12*Be+1*W&#39;, &#39;11*Be12W-&gt;5*W+6*Be22W&#39;])</span>
+<span class="c1">#reac = determine_reactions(&#39;Be12Ti&#39;, [&#39;Be12Ti&#39;, &#39;Be17Ti2&#39;, &#39;BeTi&#39;, &#39;Ti&#39;, &#39;Be&#39;, &#39;Be2Ti&#39;, &#39;Be8Ti4&#39;])</span>
+<span class="c1">#print(reac [&#39;1*Be12Ti-&gt;1*Be12Ti&#39;, &#39;2*Be12Ti-&gt;1*Be17Ti2+7*Be&#39;, &#39;1*Be12Ti-&gt;1*BeTi+11*Be&#39;,</span>
+<span class="c1">#             &#39;1*Be12Ti-&gt;1*Ti+12*Be&#39;, &#39;1*Be12Ti-&gt;10*Be+1*Be2Ti&#39;, &#39;4*Be12Ti-&gt;40*Be+1*Be8Ti4&#39;])</span>
+
+
+<div class="viewcode-block" id="convert_eq_to_dict"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.convert_eq_to_dict">[docs]</a><span class="k">def</span> <span class="nf">convert_eq_to_dict</span><span class="p">(</span><span class="n">equationstring</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts an equation string to a dictionary</span>
+<span class="sd">    convert_eq_to_dict(&#39;1*Be12Ti-&gt;10*Be+1*Be2Ti+5*Be&#39;) -&gt;</span>
+<span class="sd">    {&#39;products&#39;: {&#39;Be&#39;: 15, &#39;Be2Ti&#39;: 1}, &#39;educts&#39;: {&#39;Be12Ti&#39;: 1}}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">eq_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;products&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;educts&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="n">product_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">educt_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">eq_split</span> <span class="o">=</span> <span class="n">equationstring</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">)</span>
+    <span class="n">products</span> <span class="o">=</span> <span class="n">eq_split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)</span>
+    <span class="n">educts</span> <span class="o">=</span> <span class="n">eq_split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+        <span class="n">p_list</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+        <span class="n">product_dict</span><span class="p">[</span><span class="n">p_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">p_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">product_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">p_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">educt</span> <span class="ow">in</span> <span class="n">educts</span><span class="p">:</span>
+        <span class="n">e_list</span> <span class="o">=</span> <span class="n">educt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+        <span class="n">educt_dict</span><span class="p">[</span><span class="n">e_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">e_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">educt_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">e_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">eq_dict</span><span class="p">[</span><span class="s1">&#39;products&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product_dict</span>
+    <span class="n">eq_dict</span><span class="p">[</span><span class="s1">&#39;educts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">educt_dict</span>
+    <span class="k">return</span> <span class="n">eq_dict</span></div>
+
+
+<span class="c1"># test convert_eq_to_dict(&#39;1*Be12Ti-&gt;10*Be+1*Be2Ti+5*Be&#39;)</span>
+<span class="c1"># {&#39;products&#39;: {&#39;Be&#39;: 15, &#39;Be2Ti&#39;: 1}, &#39;educts&#39;: {&#39;Be12Ti&#39;: 1}}</span>
+
+
+<div class="viewcode-block" id="get_enhalpy_of_equation"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.get_enhalpy_of_equation">[docs]</a><span class="k">def</span> <span class="nf">get_enhalpy_of_equation</span><span class="p">(</span><span class="n">reaction</span><span class="p">,</span> <span class="n">formenergydict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculate the enthalpy per atom of a given reaction from the given data.</span>
+
+<span class="sd">    param reaction: string</span>
+<span class="sd">    param fromenergydict: dictionary that contains the {compound: formationenergy per atom}</span>
+
+<span class="sd">    # TODO check if physics is right</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">reac_dict</span> <span class="o">=</span> <span class="n">convert_eq_to_dict</span><span class="p">(</span><span class="n">reaction</span><span class="p">)</span>
+    <span class="n">educt_energy</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">product_energy</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">compound</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">reac_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;educts&#39;</span><span class="p">,</span> <span class="p">{})):</span>
+        <span class="n">compound_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">compound_e</span> <span class="o">=</span> <span class="n">formenergydict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">compound</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;Formation energy of compound </span><span class="si">{}</span><span class="s1"> not given in </span><span class="si">{}</span><span class="s1">.&#39;</span> <span class="s1">&#39;I abort...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">compound</span><span class="p">,</span> <span class="n">formenergydict</span><span class="p">)))</span>
+            <span class="n">compound_e</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># can be that educt side is not a real &#39;compound&#39; but just a stoichiometry</span>
+            <span class="c1"># so we give it 0</span>
+            <span class="c1">#return None</span>
+        <span class="n">educt_energy</span> <span class="o">=</span> <span class="n">educt_energy</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">compound_e</span>
+
+    <span class="k">for</span> <span class="n">compound</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">reac_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">,</span> <span class="p">{})):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">compound_e</span> <span class="o">=</span> <span class="n">formenergydict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">compound</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;Formation energy of compound </span><span class="si">{}</span><span class="s1"> not given in </span><span class="si">{}</span><span class="s1">.&#39;</span> <span class="s1">&#39;I abort...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">compound</span><span class="p">,</span> <span class="n">formenergydict</span><span class="p">)))</span>
+            <span class="n">compound_e</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">product_energy</span> <span class="o">=</span> <span class="n">product_energy</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">compound_e</span>
+
+    <span class="k">return</span> <span class="n">educt_energy</span> <span class="o">-</span> <span class="n">product_energy</span></div>
+
+
+<div class="viewcode-block" id="balance_equation"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.balance_equation">[docs]</a><span class="k">def</span> <span class="nf">balance_equation</span><span class="p">(</span><span class="n">equation_string</span><span class="p">,</span> <span class="n">allow_negativ</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eval_linear</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Method that balances a chemical equation.</span>
+
+<span class="sd">    param equation_string: string (with &#39;-&gt;&#39;)</span>
+<span class="sd">    param allow_negativ: bool, default False, allows for negative coefficients for the products.</span>
+
+<span class="sd">    return string: balanced equation</span>
+
+<span class="sd">    balance_equation(&quot;C7H16+O2 -&gt; CO2+H2O&quot;))</span>
+<span class="sd">    balance_equation(&quot;Be12W-&gt;Be22W+Be12W&quot;)</span>
+<span class="sd">    balance_equation(&quot;Be12W-&gt;Be12W&quot;)</span>
+
+<span class="sd">    have to be intergers everywhere in the equation, factors and formulas</span>
+
+<span class="sd">    1*C7H16+11*O2 -&gt;7* CO2+8*H2O</span>
+<span class="sd">    None</span>
+<span class="sd">    1*Be12W-&gt;1*Be12W</span>
+<span class="sd">    #TODO The solver better then what we need. Currently if system is over</span>
+<span class="sd">    #&quot;Be12W-&gt;Be2W+W+Be&quot; solves to {a: 24, b: -d/2 + 144, c: d/2 - 120}-&gt; FAIL-&gt; None</span>
+<span class="sd">    # The code fails in the later stage, but this solution should maybe be used.</span>
+
+<span class="sd">    code adapted from stack exchange (the messy part):</span>
+<span class="sd">    https://codegolf.stackexchange.com/questions/8728/balance-chemical-equations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">import</span> <span class="nn">re</span>
+    <span class="kn">from</span> <span class="nn">sympy.solvers</span> <span class="kn">import</span> <span class="n">solve</span>
+    <span class="kn">from</span> <span class="nn">sympy.core.numbers</span> <span class="kn">import</span> <span class="n">Rational</span><span class="p">,</span> <span class="n">Integer</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+    <span class="n">letters</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyz&#39;</span>
+    <span class="n">Ls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
+    <span class="n">eq</span> <span class="o">=</span> <span class="n">equation_string</span>
+    <span class="n">Ss</span><span class="p">,</span> <span class="n">Os</span><span class="p">,</span> <span class="n">Es</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">),</span> <span class="n">Ls</span><span class="p">[:],</span> <span class="p">[],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">eq</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">):</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">Ls</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;([A-Z][a-z]?)([0-9]*)&#39;</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+                <span class="n">a</span> <span class="o">*=</span> <span class="n">m</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">i</span><span class="p">]</span>
+                <span class="n">Ss</span><span class="p">[</span><span class="n">e</span><span class="p">][:</span><span class="mi">0</span><span class="p">],</span> <span class="n">Es</span><span class="p">[:</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">],</span> <span class="p">[[</span><span class="n">e</span><span class="p">,</span> <span class="n">d</span><span class="p">]]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">Ys</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># dict((s, eval(&#39;Symbol(&quot;&#39; + s + &#39;&quot;)&#39;)) for s in Os if s not in Ls)</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">Os</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Ls</span><span class="p">:</span>
+            <span class="n">Ys</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+    <span class="c1">#a = &#39;+&#39;.join(&#39;%d*%s&#39; % (c[1], c[0]) for c in Ss[s])</span>
+    <span class="c1">#print(a)</span>
+    <span class="n">Qs</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">eval</span><span class="p">(</span>  <span class="c1"># pylint: disable=eval-used</span>
+            <span class="s1">&#39;+&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">*</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">Ss</span><span class="p">[</span><span class="n">s</span><span class="p">]),</span> <span class="p">{},</span> <span class="n">Ys</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">Ss</span>
+    <span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">Ys</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">]</span>
+    <span class="c1"># FIXME</span>
+    <span class="c1">#Qs = []</span>
+    <span class="c1">#for s in Ss:</span>
+    <span class="c1">#   res1 = &#39;&#39;</span>
+    <span class="c1">#   for c in s:</span>
+    <span class="c1">#       prod = &#39;%d*%s&#39; % (c[1], c[0])</span>
+    <span class="c1">#       res1 = res1 + &#39;+&#39; + prod</span>
+    <span class="c1">#   Qs.append(res1)</span>
+    <span class="c1">#Qs + [Ys[&#39;a&#39;] - a]</span>
+
+    <span class="n">k</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">Qs</span><span class="p">,</span> <span class="o">*</span><span class="n">Ys</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">k</span><span class="p">:</span>  <span class="c1"># if a solution is found multiply by gcd</span>
+        <span class="c1"># TODO? check if solution has linear dependence: and evaluate</span>
+        <span class="c1">#for c in k.values():</span>
+        <span class="c1">#    for char in list(letters):</span>
+        <span class="c1">#        if char in str(c):</span>
+        <span class="c1">#             pass</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1">#[k[Ys[s]]for s in sorted(Ys)]</span>
+        <span class="n">rescale_N</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">denom_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">Ys</span><span class="p">):</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="n">Ys</span><span class="p">[</span><span class="n">s</span><span class="p">]]</span>
+            <span class="c1"># idea: check if char in n, then linear depended, then</span>
+            <span class="k">try</span><span class="p">:</span>  <span class="c1"># since solver gives also a linear depended solution if correct, but code fails then</span>
+                <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_negativ</span><span class="p">:</span>  <span class="c1"># We allow for 0 but might be an other case to think about</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># TODO Maybe other return value... maybe list of some values for</span>
+                <span class="c1"># linear dependencies, d,e,....? also choose them that the value is positive...?</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_zero</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="n">N</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+            <span class="c1"># Rationals are a problem in gcd, so we have to get rid of them</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">Rational</span><span class="p">):</span>
+                <span class="n">rescale_N</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">denom_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">as_numer_denom</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">rescale_N</span><span class="p">:</span>
+            <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">denom</span> <span class="ow">in</span> <span class="n">denom_list</span><span class="p">:</span>
+                <span class="n">multiplier</span> <span class="o">=</span> <span class="n">multiplier</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">denom</span><span class="p">)</span>
+            <span class="n">N</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">multiplier</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">N</span><span class="p">]</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">a2</span><span class="p">)</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">N</span><span class="p">]</span>
+        <span class="n">pM</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span>  <span class="c1"># if c!=1 else &#39;&#39;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39;-&gt;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pM</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">eq</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="check_eos_energies"><a class="viewcode-back" href="../../../module_guide/tools.html#aiida_fleur.tools.common_fleur_wf_util.check_eos_energies">[docs]</a><span class="k">def</span> <span class="nf">check_eos_energies</span><span class="p">(</span><span class="n">energylist</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if there is an abnormality in the total energies from the Equation of states.</span>
+<span class="sd">    i.e. if one point has a larger energy then its two neighbors</span>
+
+<span class="sd">    :param energylist: list of floats</span>
+<span class="sd">    :returns nnormalies: integer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: possible improvements look at all differences, and introduce a threshold</span>
+    <span class="c1"># Also look at several points...</span>
+    <span class="n">abnormalityindexlist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">abnormality</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">energylist</span><span class="p">,</span> <span class="n">energylist</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">energylist</span><span class="p">[</span><span class="mi">2</span><span class="p">:]):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">z</span><span class="p">:</span>
+            <span class="n">abnormality</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">abnormalityindexlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;annormly detected&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">abnormality</span><span class="p">,</span> <span class="n">abnormalityindexlist</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

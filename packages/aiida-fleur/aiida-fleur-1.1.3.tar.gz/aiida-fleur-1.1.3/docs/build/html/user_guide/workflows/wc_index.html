@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>AiiDA-FLEUR WorkChains &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Fleur base restart workchain" href="base_wc.html" />
+    <link rel="prev" title="FLEUR code plugin" href="../calculations/fleurcode_plugin.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../ug_index.html">User’s guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/getting_started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">AiiDA-FLEUR WorkChains</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-design">General design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inputs">Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#outputs">Outputs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#workchain-classification">Workchain classification</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#basic-technical-workchains">Basic (Technical) Workchains</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#more-advanced-scientific-workchains">More advanced (Scientific) Workchains</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/hints_faq.html">Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../ug_index.html">User’s guide</a> &raquo;</li>
+        
+      <li>AiiDA-FLEUR WorkChains</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="aiida-fleur-workchains">
+<h1>AiiDA-FLEUR WorkChains<a class="headerlink" href="#aiida-fleur-workchains" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="general-design">
+<h2>General design<a class="headerlink" href="#general-design" title="Permalink to this headline">¶</a></h2>
+<p>All of the WorkChains have a similar interface and they share several common input nodes.</p>
+<div class="section" id="inputs">
+<h3>Inputs<a class="headerlink" href="#inputs" title="Permalink to this headline">¶</a></h3>
+<p>There is always a <code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code>:
+<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> node for controlling the workflow behavior.
+It contains all the parameters related to physical aspects of the
+workchain and its content vary between different workchains.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">inpxml_changes</span></code> key of <code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code> exists for most of the workchains.
+This list can be used to apply any
+supported change to inp.xml that will be used in calculations. To add a required change,
+simply append a two-element tuple where the first element is the name of the
+registration method and the second is a dictionary of inputs for the registration method. For
+more information about possible registration methods and their inputs see <a class="reference internal" href="../data/fleurinp_modifier.html#fleurinp-mod"><span class="std std-ref">FleurinpModifier</span></a>.
+An example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inpxml_changes</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;set_inpchanges&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;change_dict&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;l_noco&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}})]</span>
+</pre></div>
+</div>
+</div>
+<p>The other common input is an <code class="docutils literal notranslate"><span class="pre">options</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> node
+where the technical parameters (AiiDA options) are specified i.e resources, queue name and so on.</p>
+<p>Regarding an input crystal structure, it can be set in two ways in the most of the workflows:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Provide a <code class="docutils literal notranslate"><span class="pre">structure</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.StructureData" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureData</span></code></a> node
+and an optional <code class="docutils literal notranslate"><span class="pre">calc_parameters</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>.
+It this case an inpgen code node is required. The workflow will call inpgen calculation and
+create a new FleurinpData that will be used in the workchain.</p></li>
+<li><p>Provide a <code class="docutils literal notranslate"><span class="pre">fleurinp</span></code>: <a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a> node
+which contains a complete input for a FLEUR calculation.</p></li>
+<li><p>Provide a <code class="docutils literal notranslate"><span class="pre">remote_data</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.RemoteData" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteData</span></code></a> and
+the last charge density and <code class="docutils literal notranslate"><span class="pre">inp.xml</span></code> from the previous
+calculation will be used.</p></li>
+</ol>
+</div></blockquote>
+<p>Input for the nested workchains has to be specified via a corresponding namespace. Please,
+refer to the documentation of a particular workchain to see the details.</p>
+</div>
+<div class="section" id="outputs">
+<h3>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h3>
+<p>Most of the workchains return a workflow specific <em>ParameterData</em>
+(<a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>) node named <code class="docutils literal notranslate"><span class="pre">output_name_wc_para</span></code> or simple <code class="docutils literal notranslate"><span class="pre">out</span></code>
+which contains the main results and some information about the workchain.</p>
+<p>There are additional workflow specific input and output nodes, please read the
+documentation of a particular workchain that you are interested in.</p>
+</div>
+</div>
+<div class="section" id="workchain-classification">
+<h2>Workchain classification<a class="headerlink" href="#workchain-classification" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="../../_images/workchains2.png"><img alt="../../_images/workchains2.png" class="align-center" src="../../_images/workchains2.png" style="width: 100%;" /></a>
+<p>All of the workchains are divided into the groups. First, we separate <em>technical</em> and
+<em>scientific</em> workflows. This separation is purely subjective: <em>technical</em> workchains tend to be
+less complex and represent basic routine tasks that people usually encounter. <em>Scientific</em>
+workflows are less general and aimed at certain tasks.</p>
+<p>There are the sub-group of the force theorem calculations
+and their self-consistent analogs in the scientific workchains group.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">plot_fleur</span></code> function provides a quick visualization for every workflow node or node list.
+Inputs are <em>uuid</em>, <em>pk</em>, <em>workchain</em> nodes or <em>ParameterData</em> (workchain output) nodes.</p>
+</div>
+<div class="section" id="basic-technical-workchains">
+<h3>Basic (Technical) Workchains<a class="headerlink" href="#basic-technical-workchains" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="base_wc.html">Fleur base restart workchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_wc.html#check-kpts-method"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_kpts()</span></code> method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_wc.html#errors">Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scf_wc.html">Fleur self-consistency field workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scf_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf_wc.html#returns-nodes">Returns nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf_wc.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf_wc.html#plot-fleur-visualization">Plot_fleur visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf_wc.html#database-node-graph">Database Node graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf_wc.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="eos_wc.html">Fleur equation of states (eos) workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#returns-nodes">Returns nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#database-node-graph">Database Node graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#plot-fleur-visualization">Plot_fleur visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#example-usage">Example usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#output-node-example">Output node example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eos_wc.html#exit-codes">Exit codes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base_relax_wc.html">Fleur structure optimization Base workchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base_relax_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_relax_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_relax_wc.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="relax_wc.html">Fleur structure optimization workchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="relax_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="relax_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="relax_wc.html#output-nodes">Output nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="relax_wc.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="relax_wc.html#id1">Output nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="relax_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="relax_wc.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dos_band_wc.html">Fleur dos/band workflows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dos_band_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos_band_wc.html#input-nodes">Input nodes:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos_band_wc.html#returns-nodes">Returns nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos_band_wc.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos_band_wc.html#database-node-graph">Database Node graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos_band_wc.html#plot-fleur-visualization">Plot_fleur visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos_band_wc.html#example-usage">Example usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos_band_wc.html#output-node-example">Output node example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos_band_wc.html#error-handling">Error handling</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="more-advanced-scientific-workchains">
+<h3>More advanced (Scientific) Workchains<a class="headerlink" href="#more-advanced-scientific-workchains" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="initial_cls_wc.html">Fleur initial core-level shifts workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="initial_cls_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="initial_cls_wc.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="initial_cls_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="initial_cls_wc.html#returns-nodes">Returns nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="initial_cls_wc.html#plot-fleur-visualization">Plot_fleur visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="initial_cls_wc.html#example-usage">Example usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="initial_cls_wc.html#error-handling">Error handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="corehole_wc.html">Fleur core-hole workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="corehole_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="corehole_wc.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="corehole_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="corehole_wc.html#returns-nodes">Returns nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="corehole_wc.html#database-node-graph">Database Node graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="corehole_wc.html#plot-fleur-visualization">Plot_fleur visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="corehole_wc.html#example-usage">Example usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="corehole_wc.html#error-handling">Error handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_magnetic_wc.html">Fleur Create Magnetic Film workchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_magnetic_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_magnetic_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_magnetic_wc.html#output-nodes">Output nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_magnetic_wc.html#supported-input-configurations">Supported input configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_magnetic_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_magnetic_wc.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="magnetic-workchains">
+<h4>Magnetic workchains<a class="headerlink" href="#magnetic-workchains" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="force-theorem-subgroup">
+<h5>Force-theorem subgroup<a class="headerlink" href="#force-theorem-subgroup" title="Permalink to this headline">¶</a></h5>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ssdisp_wc.html">Fleur Spin-Spiral Dispersion workchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_wc.html#output-nodes">Output nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_wc.html#supported-input-configurations">Supported input configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_wc.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dmi_wc.html">Fleur Dzyaloshinskii–Moriya Interaction energy workchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dmi_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dmi_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dmi_wc.html#output-nodes">Output nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dmi_wc.html#supported-input-configurations">Supported input configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dmi_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dmi_wc.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mae_wc.html">Fleur Magnetic Anisotropy Energy workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mae_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_wc.html#output-nodes">Output nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_wc.html#supported-input-configurations">Supported input configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_wc.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="self-consistent-sub-group">
+<h5>Self-consistent sub-group<a class="headerlink" href="#self-consistent-sub-group" title="Permalink to this headline">¶</a></h5>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ssdisp_conv_wc.html">Fleur Spin-Spiral Dispersion Converge workchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_conv_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_conv_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_conv_wc.html#output-nodes">Output nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_conv_wc.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_conv_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssdisp_conv_wc.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mae_conv_wc.html">Fleur Magnetic Anisotropy Energy Converge workchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mae_conv_wc.html#description-purpose">Description/Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_conv_wc.html#input-nodes">Input nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_conv_wc.html#output-nodes">Output nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_conv_wc.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_conv_wc.html#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mae_conv_wc.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="base_wc.html" class="btn btn-neutral float-right" title="Fleur base restart workchain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../calculations/fleurcode_plugin.html" class="btn btn-neutral float-left" title="FLEUR code plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

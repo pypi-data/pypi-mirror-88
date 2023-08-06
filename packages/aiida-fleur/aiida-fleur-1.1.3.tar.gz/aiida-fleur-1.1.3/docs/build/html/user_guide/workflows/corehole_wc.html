@@ -1,0 +1,483 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fleur core-hole workflow &mdash; AiiDA-FLEUR 1.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within AiiDA-FLEUR 1.1.3 documentation"
+          href="../../_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Fleur Create Magnetic Film workchain" href="create_magnetic_wc.html" />
+    <link rel="prev" title="Fleur initial core-level shifts workflow" href="initial_cls_wc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> AiiDA-FLEUR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../ug_index.html">User’s guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/getting_started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/fleur_data_plugins.html">AiiDA-FLEUR Data Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/fleur_calculation_plugins.html">AiiDA-FLEUR Calculations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="wc_index.html">AiiDA-FLEUR WorkChains</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="wc_index.html#general-design">General design</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="wc_index.html#workchain-classification">Workchain classification</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="wc_index.html#basic-technical-workchains">Basic (Technical) Workchains</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="wc_index.html#more-advanced-scientific-workchains">More advanced (Scientific) Workchains</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cmd/cmd_index.html">Verdi command line extentions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/tools_index.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/hints_faq.html">Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hints/exit_codes.html">Exit codes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devel_guide/dg_index.html">Developer’s guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_guide/mg_index.html">Source code Documentation (API reference)</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AiiDA-FLEUR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../ug_index.html">User’s guide</a> &raquo;</li>
+        
+          <li><a href="wc_index.html">AiiDA-FLEUR WorkChains</a> &raquo;</li>
+        
+      <li>Fleur core-hole workflow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fleur-core-hole-workflow">
+<span id="corehole-wc"></span><h1>Fleur core-hole workflow<a class="headerlink" href="#fleur-core-hole-workflow" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Class name, import from:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.workflows.corehole</span> <span class="kn">import</span> <span class="n">fleur_corehole_wc</span>
+<span class="c1">#or</span>
+<span class="n">WorkflowFactory</span><span class="p">(</span><span class="s1">&#39;fleur.corehole&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="section" id="description-purpose">
+<h2>Description/Purpose<a class="headerlink" href="#description-purpose" title="Permalink to this headline">¶</a></h2>
+<p>The core-hole workflow can be deployed to calculate absolute core-level binding energies.</p>
+<p>Such core-hole calculations are performed through a super-cell setup.
+The workflow allows for arbitrary corehole charges and of valence and charged type core-holes.
+From a computational cost perspective it may be cheaper to calculate all relative initial-state
+shifts of a structure and then launch one core-hole calculation on the structure to get an
+absolute reference energy instead of performing expensive core-hole calculations
+for all atom-types in the structure.
+The core-hole workflow implements the usual FLEUR workflow interface with a workflow
+control parameter node.</p>
+</div>
+<div class="section" id="layout">
+<h2>Layout<a class="headerlink" href="#layout" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/Workchain_charts_corehole_wc.png"><img alt="../../_images/Workchain_charts_corehole_wc.png" src="../../_images/Workchain_charts_corehole_wc.png" style="width: 50%;" /></a>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="input-nodes">
+<h2>Input nodes<a class="headerlink" href="#input-nodes" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 43%" />
+<col style="width: 34%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>description</p></th>
+<th class="head"><p>required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>inpgen</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Code" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Code</span></code></a></p></td>
+<td><p>Inpgen code</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>fleur</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Code" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Code</span></code></a></p></td>
+<td><p>Fleur code</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>wf_parameters</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a></p></td>
+<td><p>Settings of the workchain</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>fleurinp</p></td>
+<td><p><a class="reference internal" href="../../module_guide/code.html#aiida_fleur.data.fleurinp.FleurinpData" title="aiida_fleur.data.fleurinp.FleurinpData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FleurinpData</span></code></a></p></td>
+<td><p><a class="reference internal" href="../data/fleurinp_data.html#fleurinp-data"><span class="std std-ref">FLEUR input</span></a></p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>structure</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.StructureData" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureData</span></code></a></p></td>
+<td><p>Crystal structure</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>calc_parameters</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a></p></td>
+<td><p>FLAPW parameters for given structure</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>options</p></td>
+<td><p><a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a></p></td>
+<td><p>AiiDA options (computational resources)</p></td>
+<td><p>no</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="simple">
+<dt>More details:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fleur</span></code> (<em>aiida.orm.Code</em>): Fleur code using the <code class="docutils literal notranslate"><span class="pre">fleur.fleur</span></code> plugin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inpgen</span></code> (<em>aiida.orm.Code</em>): Inpgen code using the <code class="docutils literal notranslate"><span class="pre">fleur.inpgen</span></code> plugin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code> (<em>Dict</em>, optional): Some settings of the workflow behavior</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">structure</span></code> (<em>StructureData</em>, path 1): Crystal structure data node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calc_parameters</span></code> (<em>Dict</em>, optional): Longer description of the workflow</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fleurinp</span></code> (<em>FleurinpData</em>, path 2): Label of the workflow</p></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="workchain-parameters-and-its-defaults">
+<h3>Workchain parameters and its defaults<a class="headerlink" href="#workchain-parameters-and-its-defaults" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="wf-parameters">
+<h4><code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code><a class="headerlink" href="#wf-parameters" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">wf_parameters</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> - Settings of the workflow behavior. All possible
+keys and their defaults are listed below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="s1">&#39;method&#39;</span> <span class="p">:</span> <span class="s1">&#39;valence&#39;</span><span class="p">,</span>      <span class="c1"># what method to use, default for valence to highest open shell</span>
+<span class="s1">&#39;hole_charge&#39;</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>       <span class="c1"># what is the charge of the corehole? 0&lt;1.0</span>
+<span class="s1">&#39;atoms&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">],</span>         <span class="c1"># coreholes on what atoms, positions or index for list,</span>
+                           <span class="c1"># or element [&#39;Be&#39;, (0.0, 0.5, 0.334), 3]</span>
+<span class="s1">&#39;corelevel&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">],</span>      <span class="c1"># coreholes on which corelevels [ &#39;Be1s&#39;, &#39;W4f&#39;, &#39;Oall&#39;...]</span>
+<span class="s1">&#39;supercell_size&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="c1"># size of the supercell [nx,ny,nz]</span>
+<span class="s1">&#39;para_group&#39;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>       <span class="c1"># use parameter nodes from a parameter group</span>
+<span class="s1">&#39;relax&#39;</span> <span class="p">:</span> <span class="kc">False</span><span class="p">,</span>           <span class="c1"># relax the unit cell first?</span>
+<span class="s1">&#39;relax_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;Fleur&#39;</span><span class="p">,</span>     <span class="c1"># what releaxation do you want</span>
+<span class="s1">&#39;relax_para&#39;</span> <span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>  <span class="c1"># parameter dict for the relaxation</span>
+<span class="s1">&#39;scf_para&#39;</span> <span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>    <span class="c1"># wf parameter dict for the scfs</span>
+<span class="s1">&#39;same_para&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>        <span class="c1"># enforce the same atom parameter/cutoffs on the corehole calc and ref</span>
+<span class="s1">&#39;serial&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>           <span class="c1"># run fleur in serial, or parallel?</span>
+<span class="s1">&#39;magnetic&#39;</span> <span class="p">:</span> <span class="kc">True</span>          <span class="c1"># jspins=2, makes a difference for coreholes</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="options">
+<h4><code class="docutils literal notranslate"><span class="pre">options</span></code><a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">options</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> - AiiDA options (computational resources).
+Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;num_machines&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;num_mpiprocs_per_machine&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span>
+<span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="s1">&#39;import_sys_environment&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="s1">&#39;environment_variables&#39;</span><span class="p">:</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="returns-nodes">
+<h2>Returns nodes<a class="headerlink" href="#returns-nodes" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_corehole_wc_para</span></code> (<em>Dict</em>): Information of workchain results</p></li>
+</ul>
+</div></blockquote>
+<p>More details:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_corehole_wc_para</span></code>: <a class="reference external" href="https://aiida-core.readthedocs.io/en/latest/reference/apidoc/aiida.orm.html#aiida.orm.Dict" title="(in AiiDA v1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a> -  Main results of the workchain. Contains
+Binding energies, band gaps, core-levels, atom-type information,
+errors, warnings, other information. An example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="p">{</span><span class="s1">&#39;atomtypes&#39;</span><span class="p">:</span> <span class="p">[[</span>
+  <span class="p">{</span><span class="s1">&#39;atomic_number&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;coreconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;(1s1/2)&#39;</span><span class="p">,</span> <span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="s1">&#39;Be&#39;</span><span class="p">,</span> <span class="s1">&#39;natoms&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+   <span class="s1">&#39;species&#39;</span><span class="p">:</span> <span class="s1">&#39;Be_corehole1&#39;</span><span class="p">,</span> <span class="s1">&#39;stateOccupation&#39;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span><span class="s1">&#39;(1s1/2)&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1.00000000&#39;</span><span class="p">,</span> <span class="s1">&#39;.50000000&#39;</span><span class="p">]},</span>
+      <span class="p">{</span><span class="s1">&#39;(2p1/2)&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;.50000000&#39;</span><span class="p">,</span> <span class="s1">&#39;.00000000&#39;</span><span class="p">]}],</span> <span class="s1">&#39;valenceconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;(2s1/2) (2p1/2)&#39;</span><span class="p">},</span>
+  <span class="p">{</span><span class="s1">&#39;atomic_number&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;coreconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;[He]&#39;</span><span class="p">,</span> <span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="s1">&#39;Be&#39;</span><span class="p">,</span> <span class="s1">&#39;natoms&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+   <span class="s1">&#39;species&#39;</span><span class="p">:</span> <span class="s1">&#39;Be-2&#39;</span><span class="p">,</span> <span class="s1">&#39;stateOccupation&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;(2p1/2)&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;.00000000&#39;</span><span class="p">,</span> <span class="s1">&#39;.00000000&#39;</span><span class="p">]}],</span>
+   <span class="s1">&#39;valenceconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;(2s1/2) (2p1/2)&#39;</span><span class="p">},</span>
+  <span class="p">{</span><span class="s1">&#39;atomic_number&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;coreconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;[He]&#39;</span><span class="p">,</span> <span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="s1">&#39;Be&#39;</span><span class="p">,</span> <span class="s1">&#39;natoms&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+   <span class="s1">&#39;species&#39;</span><span class="p">:</span> <span class="s1">&#39;Be-2&#39;</span><span class="p">,</span> <span class="s1">&#39;stateOccupation&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;(2p1/2)&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;.00000000&#39;</span><span class="p">,</span> <span class="s1">&#39;.00000000&#39;</span><span class="p">]}],</span>
+   <span class="s1">&#39;valenceconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;(2s1/2) (2p1/2)&#39;</span><span class="p">},</span>
+  <span class="p">{</span><span class="s1">&#39;atomic_number&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;coreconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;[He]&#39;</span><span class="p">,</span> <span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="s1">&#39;Be&#39;</span><span class="p">,</span> <span class="s1">&#39;natoms&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+   <span class="s1">&#39;species&#39;</span><span class="p">:</span> <span class="s1">&#39;Be-2&#39;</span><span class="p">,</span> <span class="s1">&#39;stateOccupation&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;(2p1/2)&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;.00000000&#39;</span><span class="p">,</span> <span class="s1">&#39;.00000000&#39;</span><span class="p">]}],</span>
+   <span class="s1">&#39;valenceconfig&#39;</span><span class="p">:</span> <span class="s1">&#39;(2s1/2) (2p1/2)&#39;</span><span class="p">}]],</span> <span class="s1">&#39;bandgap&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0004425914</span><span class="p">],</span>
+  <span class="s1">&#39;bandgap_units&#39;</span><span class="p">:</span><span class="s1">&#39;eV&#39;</span><span class="p">,</span> <span class="s1">&#39;binding_energy&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">53.57027767044</span><span class="p">],</span> <span class="s1">&#39;corehole_type&#39;</span><span class="p">:</span> <span class="s1">&#39;valence&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;binding_energy_units&#39;</span><span class="p">:</span> <span class="s1">&#39;eV&#39;</span><span class="p">,</span> <span class="s1">&#39;binding_energy_convention&#39;</span><span class="p">:</span> <span class="s1">&#39;negativ&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;coreholes_calculated&#39;</span><span class="p">:</span> <span class="s1">&#39;Be1s&#39;</span><span class="p">,</span> <span class="s1">&#39;coreholes_calculated_details&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;coresetup&#39;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;fermi_energy&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3138075709</span><span class="p">],</span> <span class="s1">&#39;fermi_energy_unit&#39;</span><span class="p">:</span> <span class="s1">&#39;eV&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;reference_bandgaps&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0225936434</span><span class="p">],</span> <span class="s1">&#39;reference_coresetup&#39;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s1">&#39;successful&#39;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="s1">&#39;total_energy_all&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">1554.08485250996</span><span class="p">],</span>
+  <span class="s1">&#39;total_energy_all_units&#39;</span><span class="p">:</span> <span class="s1">&#39;eV&#39;</span><span class="p">,</span> <span class="s1">&#39;total_energy_ref&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">1607.6551301804</span><span class="p">],</span>
+  <span class="s1">&#39;total_energy_ref_units&#39;</span><span class="p">:</span> <span class="s1">&#39;eV&#39;</span><span class="p">,</span> <span class="s1">&#39;warnings&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;hints&#39;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s1">&#39;weighted_binding_energy&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">107.14055534088</span><span class="p">],</span> <span class="s1">&#39;weighted_binding_energy_units&#39;</span><span class="p">:</span> <span class="s1">&#39;eV&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;workflow_name&#39;</span><span class="p">:</span> <span class="s1">&#39;fleur_corehole_wc&#39;</span><span class="p">,</span> <span class="s1">&#39;workflow_version&#39;</span><span class="p">:</span> <span class="s1">&#39;0.3.2&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="database-node-graph">
+<h2>Database Node graph<a class="headerlink" href="#database-node-graph" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiida_fleur.tools.graph_fleur</span> <span class="kn">import</span> <span class="n">draw_graph</span>
+
+<span class="n">draw_graph</span><span class="p">(</span><span class="mi">30528</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/corehole_si_30528.pdf"><img alt="../../_images/corehole_si_30528.pdf" src="../../_images/corehole_si_30528.pdf" style="width: 100%;" /></a>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="plot-fleur-visualization">
+<h2>Plot_fleur visualization<a class="headerlink" href="#plot-fleur-visualization" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Currently there is no visualization directly implemented for plot fleur.
+Through there in masci-tools there are methods to visualize spectra and binding energies</p>
+</div></blockquote>
+</div>
+<div class="section" id="example-usage">
+<h2>Example usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">load_node</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">WorkflowFactory</span>
+
+
+<span class="n">fleur_corehole_wc</span> <span class="o">=</span> <span class="n">WorkflowFactory</span><span class="p">(</span><span class="s1">&#39;fleur.corehole&#39;</span><span class="p">)</span>
+<span class="n">struc</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">STRUCTURE_PK</span><span class="p">)</span>
+<span class="n">flapw_para</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">PARAMETERS_PK</span><span class="p">)</span>
+<span class="n">fleur_code</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">FLEUR_PK</span><span class="p">)</span>
+<span class="n">inpgen_code</span> <span class="o">=</span> <span class="n">load_node</span><span class="p">(</span><span class="n">INPGEN_PK</span><span class="p">)</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;num_machines&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;num_mpiprocs_per_machine&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">},</span>
+                         <span class="s1">&#39;queue_name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;custom_scheduler_commands&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;max_wallclock_seconds&#39;</span><span class="p">:</span>  <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">})</span>
+
+<span class="n">wf_para_corehole</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;atoms&#39;</span><span class="p">:</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Be&#39;</span><span class="p">],</span> <span class="c1">#[u&#39;all&#39;],</span>
+  <span class="sa">u</span><span class="s1">&#39;supercell_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="sa">u</span><span class="s1">&#39;corelevel&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1s&#39;</span><span class="p">],</span> <span class="c1">#[u&#39;all&#39;],</span>
+  <span class="sa">u</span><span class="s1">&#39;hole_charge&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;magnetic&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;valence&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+
+<span class="c1"># launch workflow</span>
+<span class="n">dos</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">fleur_corehole_wc</span><span class="p">,</span> <span class="n">wf_parameters</span><span class="o">=</span><span class="n">wf_para_corehole</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="n">struc</span><span class="p">,</span>
+             <span class="n">calc_parameters</span><span class="o">=</span><span class="n">flapw_para</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+             <span class="n">fleur</span><span class="o">=</span><span class="n">fleur</span><span class="p">,</span> <span class="n">inpgen</span><span class="o">=</span><span class="n">inpgen</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;test core hole wc&#39;</span><span class="p">,</span>
+             <span class="n">description</span><span class="o">=</span><span class="s1">&#39;fleur_corehole test&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="error-handling">
+<h2>Error handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Still has to be documented</p>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="create_magnetic_wc.html" class="btn btn-neutral float-right" title="Fleur Create Magnetic Film workchain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="initial_cls_wc.html" class="btn btn-neutral float-left" title="Fleur initial core-level shifts workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016-2020, FZ Jülich GmbH, Germany. All rights reserved
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
