@@ -1,0 +1,22 @@
+---
+
+model:
+  name: hello_R
+  language: R
+  args: ./src/hello.R  # Runs the R script using the R interpreter
+
+  inputs:
+    - name: inFile
+      default_file: ./Input/input.txt
+    - helloQueueIn
+  outputs:
+    - helloQueueOut
+    - name: outFile
+      default_file:
+        name: output_hello.txt
+        in_temp: True
+
+connections:
+  - input: helloQueueOut
+    output: helloQueueIn
+    onexit: printStatus
