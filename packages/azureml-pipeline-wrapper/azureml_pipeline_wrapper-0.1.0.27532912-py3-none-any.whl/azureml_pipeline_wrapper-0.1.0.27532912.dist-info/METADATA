@@ -1,0 +1,37 @@
+Metadata-Version: 2.0
+Name: azureml-pipeline-wrapper
+Version: 0.1.0.27532912
+Summary: UNKNOWN
+Home-page: https://docs.microsoft.com/en-us/azure/machine-learning/service/
+Author: Microsoft Corp
+License: https://aka.ms/azureml-sdk-license
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX :: Linux
+Description-Content-Type: text/x-rst
+Provides-Extra: notebooks
+Requires-Dist: azure-ml-component (~=0.1.0.27532912)
+Requires-Dist: psutil
+Provides-Extra: notebooks
+Requires-Dist: ipywidgets; extra == 'notebooks'
+Requires-Dist: packaging; extra == 'notebooks'
+Requires-Dist: azure-storage-blob; extra == 'notebooks'
+Requires-Dist: nbconvert (<6); extra == 'notebooks'
+Requires-Dist: papermill (<2); extra == 'notebooks'
+Requires-Dist: nteract-scrapbook; extra == 'notebooks'
+
+The azureml-pipeline-wrapper package contains functionality for:
+* authoring and managing Azure Machine Learning modules
+* authoring and submiting pipelines using modules
+
+
+
