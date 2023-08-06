@@ -1,0 +1,21 @@
+{
+    "loggerPath": "/home/pi/logger",
+    "loggerInterval": "15sec",
+    "loggerCronjob": "disabled",
+    "loggerBackends": {
+        "json": {
+            "enabled": true
+        },
+        "sqlite": {
+            "enabled": false
+        }
+    },
+    "sensorBackends": {
+        "ds18b20": {
+            "enabled": true,
+            "_all_": {
+                "in_soil": false
+            }
+        }
+    }
+}
