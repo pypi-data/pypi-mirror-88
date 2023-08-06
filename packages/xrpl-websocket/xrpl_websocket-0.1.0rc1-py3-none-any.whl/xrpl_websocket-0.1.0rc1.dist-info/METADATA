@@ -1,0 +1,125 @@
+Metadata-Version: 2.1
+Name: xrpl-websocket
+Version: 0.1.0rc1
+Summary: XRL Websocket Client
+Home-page: https://github.com/N3TC4T/python-xrpl-websocket
+Author: N3TC4T
+Author-email: netcat.av@gmail.com
+License: Apache2
+Keywords: xrp,ledger,ripple,websocket
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Topic :: Internet
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Intended Audience :: Developers
+Requires-Python: >=2.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*
+Requires-Dist: websocket-client (==0.56.0)
+Requires-Dist: wsaccel
+
+
+XRPL Websocket
+==============
+
+.. image:: https://readthedocs.org/projects/xrpl-websocket/badge/?version=latest
+    :target: https://xrpl-websocket.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+.. image:: https://badge.fury.io/py/xrpl-websocket.svg
+    :target: https://badge.fury.io/py/xrpl-websocket
+
+================
+
+Websocket client for rippled with reconnecting feature, support both python 2 and 3
+
+Installation
+============
+
+Via pip:
+
+.. code-block:: bash
+
+    pip install xrpl_websocket
+
+Examples
+========
+
+Short-lived connection
+----------------------
+Simple example to send a payload and wait for response
+
+.. code:: python
+
+    import json
+
+    from xrpl_websocket import Client
+
+    if __name__ == "__main__":
+        # create instance
+        client = Client()
+
+        # connect to the websocket
+        client.connect(nowait=False)
+
+        # send server info command
+        resp = client.send(command='server_info')
+
+        print("Server Info:")
+        print(json.dumps(resp, indent = 4))
+
+        # close the connection
+        client.disconnect()
+
+More advanced: Custom class
+---------------------------
+You can also write your own class for the connection, if you want to handle the nitty-gritty details yourself.
+
+.. code:: python
+
+    class Example(Client):
+        def __init__(self):
+            super(self.__class__, self).__init__(
+                log_level=logging.ERROR,
+                server="wss://rippled.xrptipbot.com"
+            )
+
+            # connect to the websocket
+            self.connect()
+
+        def on_transaction(self, data):
+            print(json.dumps(data, indent = 4))
+
+        def on_ledger(self,data):
+            print('on_ledger')
+
+        def on_open(self):
+            print("Connection is open")
+
+            print("Subscribe to ledger transactions")
+            self.subscribe_transactions()
+
+
+        def on_close(self):
+            print("on_close")
+
+        def subscribe_transactions(self):
+            self.send({
+                'command': 'subscribe',
+                'streams': ['transactions']
+            })
+
+
+
+
