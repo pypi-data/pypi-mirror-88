@@ -1,0 +1,63 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter
+      provides=".conflict.IConflictManager"
+      for="redturtle.prenotazioni.content.prenotazioni_folder.IPrenotazioniFolder"
+      factory=".conflict.ConflictManager"
+  />
+
+  <adapter
+      provides=".booker.IBooker"
+      for="redturtle.prenotazioni.content.prenotazioni_folder.IPrenotazioniFolder"
+      factory=".booker.Booker"
+  />
+
+  <adapter for="redturtle.prenotazioni.content.prenotazione.IPrenotazione *"
+           name="plone.contentmenu.actions"
+           factory=".prenotazione_menu.PrenotazioneActionsSubMenuItem"
+           provides="plone.app.contentmenu.interfaces.IContentMenuItem" />
+
+  <adapter
+      provides=".slot.ISlot"
+      for="redturtle.prenotazioni.content.prenotazione.IPrenotazione"
+      factory=".slot.Slot"
+  />
+
+  <!-- stringinterp -->
+  <adapter
+    for="*"
+    provides="plone.stringinterp.interfaces.IStringSubstitution"
+    factory=".stringinterp.GateSubstitution"
+    name="booking_gate"
+    />
+   <adapter
+    for="*"
+    provides="plone.stringinterp.interfaces.IStringSubstitution"
+    factory=".stringinterp.BookingDateSubstitution"
+    name="booking_date"
+    />
+    <adapter
+        for="*"
+        provides="plone.stringinterp.interfaces.IStringSubstitution"
+        factory=".stringinterp.BookingTimeSubstitution"
+        name="booking_time"
+    />
+    <adapter
+        for="*"
+        provides="plone.stringinterp.interfaces.IStringSubstitution"
+        factory=".stringinterp.BookingTypeSubstitution"
+        name="booking_type"
+    />
+    <adapter
+        for="*"
+        provides="plone.stringinterp.interfaces.IStringSubstitution"
+        factory=".stringinterp.BookingUrlSubstitution"
+        name="booking_print_url"
+    />
+    <adapter
+    for="*"
+    provides="plone.stringinterp.interfaces.IStringSubstitution"
+    factory=".stringinterp.BookingCodeSubstitution"
+    name="booking_code"
+    />
+</configure>
