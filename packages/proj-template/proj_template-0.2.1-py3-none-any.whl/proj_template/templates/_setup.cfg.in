@@ -1,0 +1,146 @@
+[metadata]
+name = {project[name]}
+version = attr: {project[name]}.__version__
+author = {author[name]}
+author-email = {author[email]}
+home-page = https://github.com/{author[githubuser]}/{project[name]}
+url = https://github.com/{author[githubuser]}/{project[name]}
+description = {project[description]}
+long-description = file: README.md
+long_description_content_type = text/markdown
+license = {project[license]}
+license-file = COPYING
+platform = any
+keywords = {project[keywords]}
+classifiers =
+    Development Status :: 3 - Alpha
+    Intended Audience :: Developers
+    Operating System :: OS Independent
+    Programming Language :: Python
+    Programming Language :: Python :: 3.7
+    Programming Language :: Python :: 3.8
+    Programming Language :: Python :: 3.9
+    {license_classifier}
+project_urls =
+    Bug Tracker = https://github.com/{author[githubuser]}/{project[name]}/issues
+    Changelog = https://github.com/{author[githubuser]}/{project[name]}/blob/master/CHANGELOG.md
+
+[options]
+zip_safe = False
+include_package_data = True
+python_requires = >= 3.7
+packages = find:
+test_suite = tests
+setup_requires =
+    setuptools >= 50.0
+    wheel
+install_requires =
+  {requires[install]}
+
+# [options.package_data]
+
+[options.entry_points]
+console_scripts =
+  {project[name]} = {project[name]}.__main__:main
+
+[options.extras_require]
+dev = {requires[dev]}
+    %(test)s
+    {requires[install]}
+test = {requires[test]}
+    %(lint)s
+lint = {requires[lint]}
+
+[bdist_wheel]
+universal = true
+
+[check]
+metadata = true
+strict = true
+
+[sdist]
+formats = gztar
+
+# Tools
+
+[coverage:run]
+omit =
+    .tox/*
+    .venv/*
+    /usr/*
+    tests/*
+    features/*
+    */.local/*
+
+[coverage:report]
+show_missing = true
+skip_covered = true
+skip_empty = true
+exclude_lines =
+    pragma: no cover
+    if False
+    # @abc.abstractmethod
+    # @abc.abstractproperty
+    # raise NotImplementedError
+    # return NotImplemented
+    # except ImportError
+    # raise MemoryError
+    # if __name__ == .__main__.:
+    # if typing.TYPE_CHECKING:
+
+[pydocstyle]
+match-dir = (?!tests)(?!resources)(?!docs)[^\.].*
+match = (?!test)(?!setup)[^\._].*\.py
+inherit = false
+ignore = D203, D212
+
+[flake8]
+max-line-length = {extra[line-length]}
+doctests = True
+max-complexity = {extra[max-complexity]}
+ignore = D, E203, W503
+exclude =
+    .tox
+    .venv
+    .git
+    .eggs
+    __pycache__
+    docs
+    build
+    dist
+
+[pylint]
+max-nested-blocks = 5
+ignored-modules = behave
+max-line-length = {extra[line-length]}
+load-plugins = pylint.extensions.mccabe
+max-complexity = {extra[max-complexity]}
+
+[behave]
+stop = true
+stdout_capture = true
+stderr_capture = true
+junit = false
+
+[gh-actions]
+python=
+    3.7: py37
+    3.8: py38
+    3.9: py39
+
+[tox:tox]
+envlist= py37, py38, py39
+skipsdist = True
+
+[testenv]
+commands =
+    python3 -m pip install pip --upgrade
+    python3 -m pip install -e .[lint]
+    black -l {extra[line-length]} --check .
+    python3 -m flake8 .
+    python3 -m pydocstyle .
+    python3 -m pylint {project[name]} features setup.py
+    python3 -m pip install -e .[test]
+    python3 -m coverage run -m behave
+    python3 -m coverage run -m pytest
+    python3 -m coverage report

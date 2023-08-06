@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: proj-template
+Version: 0.2.1
+Summary: Create a minimal Python project directory.
+Home-page: https://github.com/rafasgj/proj-template
+Author: Rafael Guterres Jeffman
+Author-email: rafasgj@gmail.com
+License: MIT
+Project-URL: Bug Tracker, https://github.com/rafasgj/proj-template/issues
+Project-URL: Changelog, https://github.com/rafasgj/proj-template/blob/master/CHANGELOG.md
+Keywords: ['CLI','Development Tool']
+Platform: any
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Description-Content-Type: text/markdown
+Requires-Dist: pyyaml (>=5.3.0)
+Requires-Dist: setuptools (>=50.0.0)
+
+proj-template
+=============
+
+`proj-template` is a CLI tool to generate a basic structure for Python
+projects that use `setuptools` for build and distribution.
+
+
+Installation
+------------
+
+Install through pip:
+
+```
+python3 -m pip install proj-template
+```
+
+
+Usage
+-----
+
+Create a [project description](config_example.yml) and execute:
+
+```
+proj_template <filename>
+```
+
+You may pipe the project description through the program:
+
+```
+cat <filename> | proj_template
+```
+
+
+
