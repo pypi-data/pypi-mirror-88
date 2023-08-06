@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: standup_host
+Version: 0.0.1
+Summary: Host an effective standup.
+Home-page: https://github.com/agrana/standup_host/
+Author: agrana
+Author-email: alfonso.grana@gmail.com
+License: MIT
+Description: # Standup host.
+        
+        Given a list of individuals participating in a standup meeting.
+        I want to randomly pick one and ask him about Yesterday, Today and what is Blocking.
+        I want to messure the time in seconds that the individual took to update.
+        Then send the response to a channell.
+        Keep getting names from the list till is finished.
+        
+        Configuration:
+        
+            - config.py configuration file imported in all the modules of the package.
+            - team_names = list containing strings with the names of the team members.
+            - teams_webhook = webhook to send notification to MS Teams.
+        
+        Requirements:
+        
+            - random
+            - pymsteams
+            - time
+        
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
