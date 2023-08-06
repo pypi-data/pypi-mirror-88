@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: os-scrapy-spage
+Version: 0.0.6
+Summary: Spage library for Scrapy
+Home-page: UNKNOWN
+License: MIT License
+Description: # os-scrapy-spage
+        
+        [![Build Status](https://www.travis-ci.org/cfhamlet/os-scrapy-spage.svg?branch=master)](https://www.travis-ci.org/cfhamlet/os-scrapy-spage)
+        [![codecov](https://codecov.io/gh/cfhamlet/os-scrapy-spage/branch/master/graph/badge.svg)](https://codecov.io/gh/cfhamlet/os-scrapy-spage)
+        [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/os-scrapy-spage.svg)](https://pypi.python.org/pypi/os-scrapy-spage)
+        [![PyPI](https://img.shields.io/pypi/v/os-scrapy-spage.svg)](https://pypi.python.org/pypi/os-scrapy-spage)
+        
+        
+        This project provide [spage](https://github.com/cfhamlet/os-spage) utilities for Scrapy.
+        
+        
+        ## Install
+        
+        ```
+        pip install os-scrapy-spage
+        ```
+        
+        ## Usage
+        
+        ```
+        from os_scrapy_spage.utils import spage
+        
+        spage_bytes = spage(response_or_failure)
+        ```
+        
+        ## Unit Tests
+        
+        ```
+        sh scripts/test.sh
+        ```
+        
+        ## License
+        
+        MIT licensed.
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
