@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: snraspi-lib
+Version: 1.0.1
+Summary: Convenience utilities for Raspberry Pi
+Home-page: https://github.com/signag/snraspi-lib
+Author: signag
+Author-email: siegfried.nagel@t-online.de
+License: UNKNOWN
+Project-URL: Source, https://github.com/signag/snraspi-lib/
+Keywords: Raspberry Pi sensors
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: adafruit-blinka (==5.9.1)
+Requires-Dist: adafruit-circuitpython-bme280 (==2.5.1)
+Requires-Dist: adafruit-circuitpython-busdevice (==5.0.1)
+Requires-Dist: adafruit-circuitpython-dht (==3.5.1)
+Requires-Dist: logging-plus (==1.0.0)
+Requires-Dist: pyserial (==3.5)
+Requires-Dist: pyusb (==1.1.0)
+Requires-Dist: rpi.gpio (==0.7.0)
+Requires-Dist: adafruit-platformdetect (==2.23.0) ; python_version >= "3.5"
+Requires-Dist: adafruit-pureio (==1.1.8) ; python_version >= "3.5"
+Requires-Dist: pyftdi (==0.52.0) ; python_version >= "3.5"
+Provides-Extra: dev
+
+# snraspi-lib
+
+This Package includes convenience functions for Raspberry Pi
+
+## Package 'sensors'
+
+- [Environment Sensors](https://github.com/signag/snraspi-lib/blob/main/docs/EnvironmentSensors.md)
+
+
