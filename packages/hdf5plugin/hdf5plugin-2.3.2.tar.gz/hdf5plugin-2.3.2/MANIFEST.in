@@ -1,0 +1,17 @@
+include .travis.yml
+include appveyor.yml
+include build-deb.sh
+include CHANGELOG.rst
+include copyright
+include cpuinfo.py
+include LICENSE
+include MANIFEST.in
+include README.rst
+include setup.py
+include version.py
+recursive-include ci *.py *.sh
+recursive-include doc *
+recursive-include hdf5plugin *.py
+recursive-include src *
+recursive-include test *.py *.h5
+recursive-include package *
