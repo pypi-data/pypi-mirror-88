@@ -1,0 +1,1 @@
+This is Amazon and Flipkart product detail finder
