@@ -1,0 +1,9 @@
+[console_scripts]
+generate_json = vppapigen.generate_json:cli
+vppapigen = vppapigen.vppapigen:cli
+
+[vppapigen.emitters]
+C = vppapigen.vppapigen_c
+CRC = vppapigen.vppapigen_crc
+JSON = vppapigen.vppapigen_json
+

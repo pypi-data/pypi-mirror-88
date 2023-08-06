@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: vppapigen
+Version: 0.0.1
+Summary: VPP API file parser/generator
+Home-page: https://wiki.fd.io/view/VPP
+License: Apache-2.0
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Telecommunications Industry
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+Requires-Dist: ply (>=3.11)
+
+# VPPAPIGEN
+
+VPPAPIGEN is a Python library for processing the FD.io VPP API grammar.  This is a **FORK** of vppapigen of the FDIO VPP project. 
+
+
+## Differences
+1. Cisco decided to redefine the [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check) value of each api method to a manifest identifier.  To make matters worse, they include no sort of signal to indicate that the value is [tainted](https://en.wikipedia.org/wiki/Taint). They mark this within the api as **[backward_compatible]** for enum flags, since the size of a flag value does not actually change.  However, they are applying [backward_compatible] to true enums. 
+2. [Cisco decided](https://github.com/FDio/vpp/commit/9f84e70c6dba7b7e9b532af40bdbf688d416862a) to introduce a flag day event without providing a signal of any sort as to whether it is a pre or post flag day value.
+   ``` 
+    # keep the CRCs of the existing types of messages compatible with the
+    # old "erroneous" way of calculating the CRC. For that - make a pointed
+    # adjustment of the CRC function.
+    # This is the purpose of the first element of the per-message dictionary.
+    # The second element is there to avoid weakening the duplicate-detecting
+    # properties of crc32. This way, if the new way of calculating the CRC
+    # happens to collide with the old (buggy) way - we will still get
+    # a different result and fail the comparison.
+
+    fixup_crc_dict = {
+            "abf_policy_add_del": {0xc6131197: 0xee66f93e},
+            "abf_policy_details": {0xb7487fa4: 0x6769e504},
+            "acl_add_replace": {0xee5c2f18: 0x1cabdeab},
+            "acl_details": {0x95babae0: 0x7a97f21c},
+            "macip_acl_add": {0xce6fbad0: 0xd648fd0a},
+            ...
+   ```
+3. This is a python package. [Cisco prefers to not make changes](https://lists.fd.io/g/vpp-dev/topic/78548158#18173) to the build system.  See how to install it below.
+4. This version adds the version of the generator and the plugin.
+5. This version adds a vendor tag so that a client can determine whether the crc information is true. 
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install vppapigen.
+
+```bash
+python3 -m pip [--user] install vppapigen
+```
+
+To build VPP with true api definitions, see example:
+```bash
+# which vppapigen
+/home/pvinci/.local/bin/vppapigen
+# ln -s ln -s /home/pvinci/.local/bin/vppapigen /vpp/src/tools/vppapigen/vppapigen
+
+# cd /vpp
+# make test
+```
+
+## Usage
+
+The stock version of vppapigen is called by cmake for each .api file in the source tree.  This version can be directly imported in a python runner.
+
+
+vppapigen can be loaded directly from within python. The basic gist is as follows:
+
+```python
+import vppapigen
+
+args.output = open(file=p, mode='w', encoding='UTF-8')
+args.output_module = 'JSON'
+vppapigen.main(args)
+
+```
+
+## Contributing
+
+It is my goal for all code be made part of VPP.  These changes were submitted to Gerrit and it is my hope that Cisco integrates these changes into VPP.
+
+Contributions are welcome.  VPP code is maintained using gerrit at https://gerrit.fd.io/r/c/vpp
+My preference is for contributions to be provided to VPP.  Once it is clear that it is their intention to block your submission, let me know
+
+Please make sure to update tests as appropriate.
+
+## License
+[Apache 2](https://choosealicense.com/licenses/apache-2.0/)
+
+
