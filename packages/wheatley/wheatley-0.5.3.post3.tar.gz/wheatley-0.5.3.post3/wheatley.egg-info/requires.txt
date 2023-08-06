@@ -1,0 +1,10 @@
+requests
+python-socketio<5
+python-engineio<4
+websocket-client
+
+[:platform_system != "Windows"]
+numpy
+
+[:platform_system == "Windows"]
+numpy<=1.19.3
