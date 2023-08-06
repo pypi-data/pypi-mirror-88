@@ -1,0 +1,279 @@
+"""UniFi devices are network infrastructure.
+
+Access points, Gateways, Switches.
+"""
+
+import logging
+
+from .api import APIItem, APIItems
+
+LOGGER = logging.getLogger(__name__)
+
+URL = "/stat/device"
+
+
+class Devices(APIItems):
+    """Represents network devices."""
+
+    KEY = "mac"
+
+    def __init__(self, raw: list, request):
+        super().__init__(raw, request, URL, Device)
+
+
+class Device(APIItem):
+    """Represents a network device."""
+
+    def __init__(self, raw: dict, request):
+        super().__init__(raw, request)
+        self.ports = Ports(raw.get("port_table", []))
+
+    def update(self, raw: dict = None, event=None) -> None:
+        if raw:
+            self.ports.update(raw.get("port_table", []))
+        super().update(raw, event)
+
+    @property
+    def board_rev(self) -> int:
+        return self.raw["board_rev"]
+
+    @property
+    def considered_lost_at(self) -> int:
+        return self.raw["considered_lost_at"]
+
+    @property
+    def disabled(self) -> bool:
+        return self.raw.get("disabled", False)
+
+    @property
+    def id(self) -> str:
+        return self.raw["device_id"]
+
+    @property
+    def ip(self) -> str:
+        return self.raw["ip"]
+
+    @property
+    def fan_level(self) -> int:
+        return self.raw.get("fan_level")
+
+    @property
+    def has_fan(self) -> bool:
+        return self.raw.get("has_fan", False)
+
+    @property
+    def last_seen(self) -> int:
+        return self.raw.get("last_seen")
+
+    @property
+    def mac(self) -> str:
+        return self.raw["mac"]
+
+    @property
+    def model(self) -> str:
+        return self.raw["model"]
+
+    @property
+    def name(self) -> str:
+        return self.raw.get("name")
+
+    @property
+    def next_heartbeat_at(self) -> int:
+        """Next heart beat full UNIX time."""
+        return self.raw.get("next_heartbeat_at")
+
+    @property
+    def next_interval(self) -> int:
+        """Next heart beat in seconds."""
+        return self.raw.get("next_interval", 30)
+
+    @property
+    def overheating(self) -> bool:
+        return self.raw.get("overheating", False)
+
+    @property
+    def port_overrides(self) -> list:
+        return self.raw.get("port_overrides", [])
+
+    @property
+    def port_table(self) -> list:
+        return self.raw.get("port_table", [])
+
+    @property
+    def state(self) -> int:
+        return self.raw["state"]
+
+    @property
+    def sys_stats(self) -> dict:
+        """Output from top."""
+        return self.raw["sys_stats"]
+
+    @property
+    def type(self) -> str:
+        return self.raw["type"]
+
+    @property
+    def version(self) -> str:
+        """Firmware version."""
+        return self.raw["version"]
+
+    @property
+    def upgradable(self) -> bool:
+        """New firmware available."""
+        return self.raw.get("upgradable", False)
+
+    @property
+    def upgrade_to_firmware(self) -> str:
+        """Firmware version to update to."""
+        return self.raw.get("upgrade_to_firmware", "")
+
+    @property
+    def uplink_depth(self) -> int:
+        """Hops to gateway."""
+        return self.raw.get("uplink_depth")
+
+    @property
+    def user_num_sta(self) -> int:
+        """Amount of connected clients."""
+        return self.raw["user-num_sta"]
+
+    @property
+    def wlan_overrides(self) -> list:
+        """Wlan configuration override."""
+        return self.raw.get("wlan_overrides", [])
+
+    async def async_set_port_poe_mode(self, port_idx, mode) -> None:
+        """Set port poe mode.
+
+        Auto, 24v, passthrough, off.
+        Make sure to not overwrite any existing configs.
+        """
+        LOGGER.debug("Override port %d with mode %s", port_idx, mode)
+
+        no_existing_config = True
+        for port_override in self.port_overrides:
+            if port_idx == port_override["port_idx"]:
+                port_override["poe_mode"] = mode
+                no_existing_config = False
+                break
+
+        if no_existing_config:
+            self.port_overrides.append(
+                {
+                    "port_idx": port_idx,
+                    "portconf_id": self.ports[port_idx].portconf_id,
+                    "poe_mode": mode,
+                }
+            )
+
+        url = f"/rest/device/{self.id}"
+        data = {"port_overrides": self.port_overrides}
+
+        await self._request("put", url, json=data)
+
+    def __repr__(self) -> str:
+        """Return the representation."""
+        return f"<Device {self.name}: {self.mac}>"
+
+
+class Ports:
+    """Represents ports on a device."""
+
+    def __init__(self, raw_list):
+        self.ports = {}
+        for raw in raw_list:
+            port = Port(raw)
+            index = None
+
+            if port.port_idx is not None:
+                index = port.port_idx
+
+            elif port.ifname is not None:
+                index = port.ifname
+
+            if index is not None:
+                self.ports[index] = port
+
+    def update(self, raw_list):
+        for raw in raw_list:
+            index = None
+
+            if "port_idx" in raw:
+                index = raw["port_idx"]
+
+            elif "ifname" in raw:
+                index = raw["ifname"]
+
+            if index in self.ports:
+                self.ports[index].raw = raw
+
+    def values(self):
+        return self.ports.values()
+
+    def __getitem__(self, obj_id):
+        return self.ports[obj_id]
+
+    def __iter__(self):
+        return iter(self.ports)
+
+
+class Port:
+    """Represents a network port."""
+
+    def __init__(self, raw):
+        self.raw = raw
+
+    @property
+    def ifname(self):
+        """Used by USG."""
+        return self.raw.get("ifname")
+
+    @property
+    def media(self):
+        return self.raw.get("media")
+
+    @property
+    def name(self):
+        return self.raw["name"]
+
+    @property
+    def port_idx(self):
+        return self.raw.get("port_idx")
+
+    @property
+    def poe_class(self):
+        return self.raw.get("poe_class")
+
+    @property
+    def poe_enable(self):
+        """Indicates if Poe is supported/requested by client."""
+        return self.raw.get("poe_enable")
+
+    @property
+    def poe_mode(self):
+        """Indicates if Poe is auto, pasv24, passthrough, off or None"""
+        return self.raw.get("poe_mode")
+
+    @property
+    def poe_power(self):
+        return self.raw.get("poe_power")
+
+    @property
+    def poe_voltage(self):
+        return self.raw.get("poe_voltage")
+
+    @property
+    def portconf_id(self):
+        return self.raw.get("portconf_id")
+
+    @property
+    def port_poe(self):
+        return self.raw.get("port_poe") is True
+
+    @property
+    def up(self):
+        return self.raw.get("up")
+
+    def __repr__(self):
+        """Return the representation."""
+        return f"<{self.name}: Poe {self.poe_enable}>"
