@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "blacked"
+version = "0.1.0-a.4"
+description = ""
+readme = "readme.md"
+homepage = "https://github.com/MrMrRobat/blacked"
+repository = "https://github.com/MrMrRobat/blacked"
+authors = ["MrMrRobat <appkiller16@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+black = ">=18.4a0"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+blacked = "blacked.__main__:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
