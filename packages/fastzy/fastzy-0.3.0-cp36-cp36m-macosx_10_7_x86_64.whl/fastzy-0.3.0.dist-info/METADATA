@@ -1,0 +1,104 @@
+Metadata-Version: 2.1
+Name: fastzy
+Version: 0.3.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Rust
+Summary: Python library for fast fuzzy search over a big file written in Rust
+Keywords: fuzzy levenshtein rust
+Home-Page: https://github.com/intsights/fastzy
+Author: Gal Ben David <gal@intsights.com>
+Author-Email: Gal Ben David <gal@intsights.com>
+License: MIT
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+
+<p align="center">
+    <a href="https://github.com/Intsights/fastzy">
+        <img src="https://raw.githubusercontent.com/Intsights/fastzy/master/images/logo.png" alt="Logo">
+    </a>
+    <h3 align="center">
+        Python library for fast fuzzy search over a big file written in Rust
+    </h3>
+</p>
+
+![license](https://img.shields.io/badge/MIT-License-blue)
+![Python](https://img.shields.io/badge/Python-3.6%20%7C%203.7%20%7C%203.8%20%7C%20pypy3-blue)
+![Build](https://github.com/Intsights/fastzy/workflows/Build/badge.svg)
+[![PyPi](https://img.shields.io/pypi/v/fastzy.svg)](https://pypi.org/project/fastzy/)
+
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+  - [Performance](#performance)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+- [Contact](#contact)
+
+
+## About The Project
+
+Fastzy is a library written in Rust used for searching over a file for a text based on its distance (levenshtein). The library uses mbleven algorithm for a k-bounded levenshtein distance measurement. When the max distance requested is above 3, where mbleven is slower, the distance algorithm is replaced with Wagner–Fischer. The library loads the whole file into memory, and create a lightweight index, based on the lengths of the lines. It helps to narrow down the amount of lookups to only potential lines.
+
+
+### Built With
+
+* [mbleven](https://github.com/fujimotos/mbleven)
+* [Pyo3](https://github.com/PyO3/pyo3)
+
+
+### Performance
+
+| Library  | Text Size | Function | Time |
+| ------------- | ------------- | ------------- | ------------- |
+| [python-Levenshtein](https://github.com/ztane/python-Levenshtein) | 500mb | Levenshtein.distance('text') | 13.93s |
+| [fastzy](https://github.com/Intsights/fastzy) | 500mb | fastzy.search('text) | 0.023s |
+
+
+### Installation
+
+```sh
+pip3 install fastzy
+```
+
+
+## Usage
+
+```python
+import fastzy
+
+# open a file and index it in memory
+searcher = fastzy.Searcher(
+    file_path='input_text_file.txt',
+    separator='',
+)
+
+# search for the input text 'text' with the distance of 1
+searcher.search(
+    pattern='text',
+    max_distance=1,
+)
+['test', 'texts', 'next']
+```
+
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+
+## Contact
+
+Gal Ben David - gal@intsights.com
+
+Project Link: [https://github.com/Intsights/fastzy](https://github.com/Intsights/fastzy)
+
