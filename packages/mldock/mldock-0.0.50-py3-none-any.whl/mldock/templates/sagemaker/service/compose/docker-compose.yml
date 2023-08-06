@@ -1,0 +1,16 @@
+version: '3'
+services:
+  train:
+    image: example-container-ml-cpu-py38
+    volumes:
+      - ../src/container/local_test/test_dir:/opt/ml
+    command: train # passing train as first argument after entrypoint
+    entrypoint: ["container/executor.sh"]
+  deploy:
+    image: example-container-ml-cpu-py38
+    volumes:
+      - ../src/container/local_test/test_dir:/opt/ml
+    command: deploy # passing deploy as first argument after entrypoint
+    entrypoint: ["container/executor.sh"]
+    ports:
+      - "8080:8080"
