@@ -1,0 +1,1 @@
+from procuret.tests.cases.instalment_link import ExerciseInstalmentLink
