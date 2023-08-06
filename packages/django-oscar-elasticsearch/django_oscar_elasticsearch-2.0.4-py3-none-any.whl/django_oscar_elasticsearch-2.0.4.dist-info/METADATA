@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: django-oscar-elasticsearch
+Version: 2.0.4
+Summary: Search app for oscar using elasticsearch
+Home-page: https://github.com/specialunderwear/django-oscar-elasticsearch
+Author: Lars van de Kerkhof
+Author-email: specialunderwear@gmail.com
+License: GPL
+Platform: UNKNOWN
+Requires-Dist: django (<3.1,>=1.11)
+Requires-Dist: setuptools
+Requires-Dist: django-oscar (>=1.6)
+Requires-Dist: wagtail (>=2)
+Requires-Dist: purl
+Requires-Dist: elasticsearch (<7.0.0,>=6.0.0)
+Requires-Dist: uwsgidecorators-fallback
+Requires-Dist: wagtail-extendedsearch
+Provides-Extra: test
+Requires-Dist: mock ; extra == 'test'
+
+Blablabla ... nothing ... Search app for oscar using elasticsearch
+
+
