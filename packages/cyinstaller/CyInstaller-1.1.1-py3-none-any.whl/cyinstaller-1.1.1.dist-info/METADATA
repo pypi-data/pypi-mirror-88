@@ -1,0 +1,139 @@
+Metadata-Version: 2.1
+Name: cyinstaller
+Version: 1.1.1
+Summary: A cli tool to package application with Cython & PyInstaller.
+Home-page: https://github.com/SolardiaX/CyInstaller
+License: GPL-3.0-or-later
+Author: SolardiaX
+Author-email: solardiax@hotmail.com
+Maintainer: SolardiaX
+Maintainer-email: solardiax@hotmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Compilers
+Classifier: Topic :: Software Development :: Interpreters
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Installation/Setup
+Classifier: Topic :: System :: Software Distribution
+Classifier: Topic :: Utilities
+Requires-Dist: Cython (>=0.29.21,<0.30.0)
+Requires-Dist: PyYAML (>=5.3.1,<6.0.0)
+Requires-Dist: click (>=7.1.2,<8.0.0)
+Requires-Dist: pyinstaller (>=4.1,<5.0)
+Project-URL: Repository, https://github.com/SolardiaX/CyInstaller
+Description-Content-Type: text/x-rst
+
+CyInstaller
+===========
+
+CyInstaller is a lightweight CLI tools to compile and package your application
+to a single executable file with related distribution files.
+
+CyInstaller use `Cython`_ to compile application's source codes, then package
+files with `PyInstaller`_.
+
+Installing
+----------
+
+Install and update using `pip`_:
+
+.. code-block:: text
+
+    pip install -U CyInstaller
+
+Quickstart
+----------
+
+Add a `setup.yml` in your project, then execute the `CyInstaller` cli command:
+
+.. code-block:: text
+
+    CyInstaller
+
+CyInstaller default use `setup.yml` as the config file. If use another file,
+just execute the `CyInstaller` command with it as a parameter.
+
+.. code-block:: text
+
+    CyInstaller 'path/to/the/file'
+
+Configuration
+-------------
+
+A yaml configration may looks like:
+
+.. code-block:: yaml
+
+    setup:
+      app: CyInstallerApp
+      root: .
+      modules:
+        - base: Common
+          package: common
+          package_from_base: false
+          compiles:
+            - ...
+          packages:
+            - ...
+          binaries:
+            - ...
+          datas:
+            - ...
+          relates:
+        - base: Backend
+          ...
+      compiles:
+          - ...
+      packages:
+          - ...
+      datas:
+        - ...
+      relates:
+        - ...
+      cython_binaries: true/false
+      hiddenimports:
+        - ...
+      auto_hiddenimports: true/false
+      entrypoint: app.py
+
+      stage:
+        path: _build
+        debug: true/false
+        cython:
+          path: cython
+          path_tmp: compile
+          options:
+            ...
+        pyinstaller:
+          path: package
+          template: setup.spec
+
+      dist: target
+
+Detail for each options see the `configration guidelines`_.
+
+.. _configration guidelines: https://github.com/solardiax/cyinstaller/blob/master/docs/configuration.rst
+
+Links
+-----
+
+* Releases: https://pypi.org/project/CyInstaller/
+* Code: https://github.com/solardiax/cyinstaller
+* Issue tracker: https://github.com/solardiax/cyinstaller/issues
+
+.. _Cython: https://cython.org/
+.. _PyInstaller: https://www.pyinstaller.org/
+.. _pip: https://pip.pypa.io/en/stable/quickstart/
+
