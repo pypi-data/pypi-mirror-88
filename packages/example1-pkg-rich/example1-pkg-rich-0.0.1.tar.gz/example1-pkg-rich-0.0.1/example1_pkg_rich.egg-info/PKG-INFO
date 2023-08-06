@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: example1-pkg-rich
+Version: 0.0.1
+Summary: A small example package
+Home-page: https://github.com/RicardoLR/demo-pip-sample
+Author: Rich
+Author-email: rich@test.com
+License: UNKNOWN
+Description: # demo-pip-sample
+        
+        # Upload
+        
+        ```
+        python3 setup.py sdist bdist_wheel
+        python -m twine upload dist/*
+        ```
+        
+        # install
+        ```
+        pip3 install example1-pkg-rich
+        ```
+        
+        # call
+        >>> from clientTest import utils
+        >>> utils.utilsFechaOfClient()
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
