@@ -1,0 +1,32 @@
+[aiida.calculations]
+fleur.fleur = aiida_fleur.calculation.fleur:FleurCalculation
+fleur.inpgen = aiida_fleur.calculation.fleurinputgen:FleurinputgenCalculation
+
+[aiida.data]
+fleur.fleurinp = aiida_fleur.data.fleurinp:FleurinpData
+fleur.fleurinpmodifier = aiida_fleur.data.fleurinpmodifier:FleurinpModifier
+
+[aiida.parsers]
+fleur.fleurinpgenparser = aiida_fleur.parsers.fleur_inputgen:Fleur_inputgenParser
+fleur.fleurparser = aiida_fleur.parsers.fleur:FleurParser
+
+[aiida.workflows]
+fleur.banddos = aiida_fleur.workflows.banddos:FleurBandDosWorkChain
+fleur.base = aiida_fleur.workflows.base_fleur:FleurBaseWorkChain
+fleur.base_relax = aiida_fleur.workflows.base_relax:FleurBaseRelaxWorkChain
+fleur.corehole = aiida_fleur.workflows.corehole:fleur_corehole_wc
+fleur.create_magnetic = aiida_fleur.workflows.create_magnetic_film:FleurCreateMagneticWorkChain
+fleur.dmi = aiida_fleur.workflows.dmi:FleurDMIWorkChain
+fleur.dos = aiida_fleur.workflows.dos:fleur_dos_wc
+fleur.eos = aiida_fleur.workflows.eos:FleurEosWorkChain
+fleur.init_cls = aiida_fleur.workflows.initial_cls:fleur_initial_cls_wc
+fleur.mae = aiida_fleur.workflows.mae:FleurMaeWorkChain
+fleur.mae_conv = aiida_fleur.workflows.mae_conv:FleurMaeConvWorkChain
+fleur.relax = aiida_fleur.workflows.relax:FleurRelaxWorkChain
+fleur.scf = aiida_fleur.workflows.scf:FleurScfWorkChain
+fleur.ssdisp = aiida_fleur.workflows.ssdisp:FleurSSDispWorkChain
+fleur.ssdisp_conv = aiida_fleur.workflows.ssdisp_conv:FleurSSDispConvWorkChain
+
+[console_scripts]
+aiida-fleur = aiida_fleur.cmdline:cmd_root
+
