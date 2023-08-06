@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: nnabla-converter
+Version: 1.14.0
+Summary: Converter between NNabla and Tensorflow.
+Home-page: https://github.com/sony/nnabla
+Author: Takuya Narihira, Sony Corporation
+Author-email: nnabla@googlegroups.com
+License: Apache License 2.0
+Keywords: Converter between NNabla and Tensorflow
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.6, <3.8
+Requires-Dist: ply
+Requires-Dist: tensorflow (==1.15.0)
+Requires-Dist: onnx-tf (==1.5.0)
+Requires-Dist: tf2onnx (==1.6.1)
+
+UNKNOWN
+
+
