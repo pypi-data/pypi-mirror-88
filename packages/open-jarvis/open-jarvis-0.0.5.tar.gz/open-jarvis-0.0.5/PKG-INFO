@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: open-jarvis
+Version: 0.0.5
+Summary: Helper classes for Jarvis applications
+Home-page: https://github.com/open-jarvis
+Author: Philipp Scheer
+Author-email: scheer28philipp@gmail.com
+License: UNKNOWN
+Description: This package contains helper classes for [open-jarvis](https://github.com/open-jarvis) applications.
+        
+        
+        
+        ## Classes included:
+        
+        - Jarvis
+        	- wrapper for the Jarvis web api
+        - Logger
+        	- a logger class which provides uniform logging
+        - MQTT
+        	- easy-to-use mqtt wrapper
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
