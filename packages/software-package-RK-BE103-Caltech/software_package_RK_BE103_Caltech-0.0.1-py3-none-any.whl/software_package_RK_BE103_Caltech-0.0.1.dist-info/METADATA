@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: software-package-RK-BE103-Caltech
+Version: 0.0.1
+Summary: Package created for extra-credit assignment be103a team 18 to analyze microtubule catastrophe.
+Home-page: UNKNOWN
+Author: Rohit Kantipudi
+Author-email: rohitk@caltech.edu
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: bokeh (>=1.4.0)
+
+numpy
+scipy
+pandas
+bokeh>=1.4.0
+
