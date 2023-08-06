@@ -1,0 +1,211 @@
+Metadata-Version: 2.1
+Name: Open-Weather-API
+Version: 1.0
+Summary: This API will provide latest information of current weather
+Home-page: https://apimatic.io
+Author: APIMatic SDK Generator
+Author-email: support@apimatic.io
+License: UNKNOWN
+Description: # Getting started
+        
+        This API will provide latest information of current weather
+        
+        ## How to Build
+        
+        
+        You must have Python ```2 >=2.7.9``` or Python ```3 >=3.4``` installed on your system to install and run this SDK. This SDK package depends on other Python packages like nose, jsonpickle etc. 
+        These dependencies are defined in the ```requirements.txt``` file that comes with the SDK.
+        To resolve these dependencies, you can use the PIP Dependency manager. Install it by following steps at [https://pip.pypa.io/en/stable/installing/](https://pip.pypa.io/en/stable/installing/).
+        
+        Python and PIP executables should be defined in your PATH. Open command prompt and type ```pip --version```.
+        This should display the version of the PIP Dependency Manager installed if your installation was successful and the paths are properly defined.
+        
+        * Using command line, navigate to the directory containing the generated files (including ```requirements.txt```) for the SDK.
+        * Run the command ```pip install -r requirements.txt```. This should install all the required dependencies.
+        
+        ![Building SDK - Step 1](https://apidocs.io/illustration/python?step=installDependencies&workspaceFolder=Weather%20API-Python)
+        
+        
+        ## How to Use
+        
+        The following section explains how to use the OpenWeatherApi SDK package in a new project.
+        
+        ### 1. Open Project in an IDE
+        
+        Open up a Python IDE like PyCharm. The basic workflow presented here is also applicable if you prefer using a different editor or IDE.
+        
+        ![Open project in PyCharm - Step 1](https://apidocs.io/illustration/python?step=pyCharm)
+        
+        Click on ```Open``` in PyCharm to browse to your generated SDK directory and then click ```OK```.
+        
+        ![Open project in PyCharm - Step 2](https://apidocs.io/illustration/python?step=openProject0&workspaceFolder=Weather%20API-Python)     
+        
+        The project files will be displayed in the side bar as follows:
+        
+        ![Open project in PyCharm - Step 3](https://apidocs.io/illustration/python?step=openProject1&workspaceFolder=Weather%20API-Python&projectName=open_weather_api)     
+        
+        ### 2. Add a new Test Project
+        
+        Create a new directory by right clicking on the solution name as shown below:
+        
+        ![Add a new project in PyCharm - Step 1](https://apidocs.io/illustration/python?step=createDirectory&workspaceFolder=Weather%20API-Python&projectName=open_weather_api)
+        
+        Name the directory as "test"
+        
+        ![Add a new project in PyCharm - Step 2](https://apidocs.io/illustration/python?step=nameDirectory)
+           
+        Add a python file to this project with the name "testsdk"
+        
+        ![Add a new project in PyCharm - Step 3](https://apidocs.io/illustration/python?step=createFile&workspaceFolder=Weather%20API-Python&projectName=open_weather_api)
+        
+        Name it "testsdk"
+        
+        ![Add a new project in PyCharm - Step 4](https://apidocs.io/illustration/python?step=nameFile)
+        
+        In your python file you will be required to import the generated python library using the following code lines
+        
+        ```Python
+        from open_weather_api.open_weather_api_client import OpenWeatherApiClient
+        ```
+        
+        ![Add a new project in PyCharm - Step 4](https://apidocs.io/illustration/python?step=projectFiles&workspaceFolder=Weather%20API-Python&libraryName=open_weather_api.open_weather_api_client&projectName=open_weather_api&className=OpenWeatherApiClient)
+        
+        After this you can write code to instantiate an API client object, get a controller object and  make API calls. Sample code is given in the subsequent sections.
+        
+        ### 3. Run the Test Project
+        
+        To run the file within your test project, right click on your Python file inside your Test project and click on ```Run```
+        
+        ![Run Test Project - Step 1](https://apidocs.io/illustration/python?step=runProject&workspaceFolder=Weather%20API-Python&libraryName=open_weather_api.open_weather_api_client&projectName=open_weather_api&className=OpenWeatherApiClient)
+        
+        
+        ## How to Test
+        
+        You can test the generated SDK and the server with automatically generated test
+        cases. unittest is used as the testing framework and nose is used as the test
+        runner. You can run the tests as follows:
+        
+          1. From terminal/cmd navigate to the root directory of the SDK.
+          2. Invoke ```pip install -r test-requirements.txt```
+          3. Invoke ```nosetests```
+        
+        ## Initialization
+        
+        ### Authentication
+        In order to setup authentication and initialization of the API client, you need the following information.
+        
+        | Parameter | Description |
+        |-----------|-------------|
+        | appid | App key for authentication |
+        
+        
+        
+        API client can be initialized as following.
+        
+        ```python
+        # Configuration parameters and credentials
+        appid = '178db63aed00f6e4daaa06009b04438b' # App key for authentication
+        
+        client = OpenWeatherApiClient(appid)
+        ```
+        
+        
+        
+        # Class Reference
+        
+        ## <a name="list_of_controllers"></a>List of Controllers
+        
+        * [WeatherAPIsController](#weather_ap_is_controller)
+        
+        ## <a name="weather_ap_is_controller"></a>![Class: ](https://apidocs.io/img/class.png ".WeatherAPIsController") WeatherAPIsController
+        
+        ### Get controller instance
+        
+        An instance of the ``` WeatherAPIsController ``` class can be accessed from the API Client.
+        
+        ```python
+         weather_ap_is_controller = client.weather_ap_is
+        ```
+        
+        ### <a name="get_weather_by_city_name"></a>![Method: ](https://apidocs.io/img/method.png ".WeatherAPIsController.get_weather_by_city_name") get_weather_by_city_name
+        
+        > This is a weather API endpoint which returns the current weather of a location by city name.
+        
+        ```python
+        def get_weather_by_city_name(self,
+                                         q,
+                                         mode=None,
+                                         units=None,
+                                         lang=None)
+        ```
+        
+        #### Parameters
+        
+        | Parameter | Tags | Description |
+        |-----------|------|-------------|
+        | q |  ``` Required ```  ``` DefaultValue ```  | City name, state code and country code divided by comma, use ISO 3166 country codes. |
+        | mode |  ``` Optional ```  | Response format. Possible values are xml and html. If you don't use the mode parameter format is JSON by default. |
+        | units |  ``` Optional ```  | Units of measurement. standard, metric and imperial units are available. If you do not use the units parameter, standard units will be applied by default. |
+        | lang |  ``` Optional ```  | You can use this parameter to get the output in your language. |
+        
+        
+        
+        #### Example Usage
+        
+        ```python
+        q = 'London,uk'
+        mode = MODEEnum.XML
+        units = UNITSEnum.STANDARD
+        lang = LANGEnum.AF
+        
+        result = weather_ap_is_controller.get_weather_by_city_name(q, mode, units, lang)
+        
+        ```
+        
+        
+        ### <a name="get_weather_by_latitude_and_longitude"></a>![Method: ](https://apidocs.io/img/method.png ".WeatherAPIsController.get_weather_by_latitude_and_longitude") get_weather_by_latitude_and_longitude
+        
+        > This is a weather API endpoint which returns the current weather of a location by latitude and longitude.
+        
+        ```python
+        def get_weather_by_latitude_and_longitude(self,
+                                                      lat,
+                                                      lon,
+                                                      mode=None,
+                                                      units=None,
+                                                      lang=None)
+        ```
+        
+        #### Parameters
+        
+        | Parameter | Tags | Description |
+        |-----------|------|-------------|
+        | lat |  ``` Required ```  | This field will contain the latitude of city |
+        | lon |  ``` Required ```  | This field will contain the longitude of city |
+        | mode |  ``` Optional ```  | Response format. Possible values are xml and html. If you don't use the mode parameter format is JSON by default. |
+        | units |  ``` Optional ```  | Units of measurement. standard, metric and imperial units are available. If you do not use the units parameter, standard units will be applied by default. |
+        | lang |  ``` Optional ```  | You can use this parameter to get the output in your language. |
+        
+        
+        
+        #### Example Usage
+        
+        ```python
+        lat = 153.954397139118
+        lon = 153.954397139118
+        mode = MODEEnum.XML
+        units = UNITSEnum.STANDARD
+        lang = 'lang'
+        
+        result = weather_ap_is_controller.get_weather_by_latitude_and_longitude(lat, lon, mode, units, lang)
+        
+        ```
+        
+        
+        [Back to List of Controllers](#list_of_controllers)
+        
+        
+        
+        
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
