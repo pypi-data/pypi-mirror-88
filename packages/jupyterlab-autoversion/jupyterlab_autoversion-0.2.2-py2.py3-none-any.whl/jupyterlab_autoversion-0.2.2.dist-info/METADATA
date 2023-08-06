@@ -1,0 +1,65 @@
+Metadata-Version: 2.1
+Name: jupyterlab-autoversion
+Version: 0.2.2
+Summary: Automatically version jupyter notebooks on save
+Home-page: https://github.com/timkpaine/jupyterlab_autoversion
+Author: Tim Paine
+Author-email: t.paine154@gmail.com
+License: Apache 2.0
+Keywords: jupyter jupyterlab
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Framework :: Jupyter
+Description-Content-Type: text/markdown
+Requires-Dist: GitPython (>=2.1.11)
+Requires-Dist: jupyterlab (>=2.0.0)
+Provides-Extra: dev
+Requires-Dist: GitPython (>=2.1.11) ; extra == 'dev'
+Requires-Dist: jupyterlab (>=2.0.0) ; extra == 'dev'
+Requires-Dist: bump2version ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: autopep8 ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov (>=2.6.1) ; extra == 'dev'
+Requires-Dist: mock ; extra == 'dev'
+
+# jupyterlab_autoversion
+Automatically version jupyter notebooks in JupyterLab
+
+[![Build Status](https://dev.azure.com/tpaine154/jupyter/_apis/build/status/timkpaine.jupyterlab_autoversion?branchName=main)](https://dev.azure.com/tpaine154/jupyter/_build/latest?definitionId=16&branchName=main)
+[![Coverage](https://img.shields.io/azure-devops/coverage/tpaine154/jupyter/16/main)](https://dev.azure.com/tpaine154/jupyter/_build?definitionId=16&_a=summary)
+[![GitHub issues](https://img.shields.io/github/issues/timkpaine/jupyterlab_autoversion.svg)]()
+[![PyPI](https://img.shields.io/pypi/l/jupyterlab_autoversion.svg)](https://pypi.python.org/pypi/jupyterlab_autoversion)
+[![PyPI](https://img.shields.io/pypi/v/jupyterlab_autoversion.svg)](https://pypi.python.org/pypi/jupyterlab_autoversion)
+[![npm](https://img.shields.io/npm/v/jupyterlab_autoversion.svg)](https://www.npmjs.com/package/jupyterlab_autoversion)
+
+
+## Save every notebook revision
+Enhanced checkpoints, versioned and persistent between restarts on every save
+
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_autoversion/main/docs/example.gif)
+
+
+## Install
+
+```bash
+pip install jupyterlab_autoversion
+jupyter lab build
+```
+
+
+## Development
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+
+
+## License
+
+This software is licensed under the Apache 2.0 license. See the
+[LICENSE](LICENSE) file for details.
+
+
