@@ -1,0 +1,117 @@
+# Generated via https://github.com/mozilla/bigquery-etl/blob/master/bigquery_etl/query_scheduling/generate_airflow_dags.py
+
+from airflow import DAG
+from airflow.operators.sensors import ExternalTaskSensor
+import datetime
+from utils.gcp import bigquery_etl_query, gke_command
+
+default_args = {{ 
+    default_args.to_dict() | 
+    format_attr("start_date", "format_date") |
+    format_attr("end_date", "format_date") |
+    format_attr("retry_delay", "format_timedelta") 
+}}
+
+with DAG('{{ name }}', default_args=default_args{%+ if schedule_interval != None -%}, schedule_interval={{ schedule_interval | format_timedelta | format_schedule_interval }}{%+ endif -%}) as dag:
+{% for task in tasks | sort(attribute='task_name') %}
+    {% if task.is_python_script -%}
+        {{ task.task_name }} = gke_command(
+            task_id='{{ task.task_name }}',
+            command=[
+                'python',
+                'sql/{{ task.project }}/{{ task.dataset }}/{{ task.table }}_{{ task.version }}/query.py',
+            ] + {{ task.arguments }},
+            docker_image='mozilla/bigquery-etl:latest',
+            owner='{{ task.owner }}',
+            email={{ task.email | sort }},
+        )
+    {%+ else -%}
+        {{ task.task_name }} = bigquery_etl_query(
+            task_id='{{ task.task_name }}',
+            destination_table={%+ if task.destination_table -%}'{{ task.destination_table }}'
+                            {%+ else -%}None
+                            {%+ endif -%},
+            dataset_id='{{ task.dataset }}',
+            project_id='{{ task.project }}',
+            owner='{{ task.owner }}',
+            {%+ if task.email | length > 0 -%}
+            email={{ task.email | sort }},
+            {%+ endif -%}
+            {%+ if task.start_date -%}
+            start_date={{ task.start_date | format_date | format_repr }},
+            {%+ endif -%}
+            {%+ if task.date_partition_parameter == None or task.date_partition_parameter is string -%}
+            date_partition_parameter={{ task.date_partition_parameter | format_optional_string }},
+            {%+ endif -%}
+            depends_on_past={{ task.depends_on_past }},
+            {%+ if task.arguments | length > 0 -%}
+            arguments={{ task.arguments }},
+            {%+ endif -%}
+            {%+ if task.parameters | length > 0 -%}
+            parameters={{ task.parameters }},
+            {%+ endif -%}
+            {%+ if task.multipart -%}
+            multipart={{ task.multipart }},
+            {%+ endif -%}
+            {%+ if task.query_file_path -%}
+            sql_file_path={{ task.query_file_path | format_repr }},
+            {%+ endif -%}
+            {%+ if task.priority -%}
+            priority_weight={{ task.priority }},
+            {%+ endif -%}
+            {%+ if task.allow_field_addition_on_date -%}
+            allow_field_addition_on_date={{ task.allow_field_addition_on_date | format_repr }},
+            {%+ endif -%}
+            dag=dag,
+        )
+    {% endif -%}
+{% endfor -%}
+
+{% set wait_for_seen = [] -%}
+{% for task in tasks | sort(attribute='task_name') %}
+    {% for dependency in task.dependencies | sort(attribute='task_id') -%}
+    {% if dependency.dag_name == name -%}
+    {% if dependency.task_id != task.task_name %}
+    {{ task.task_name }}.set_upstream({{ dependency.task_id }})
+    {% endif -%}
+    {% else -%}
+    {% if (dependency.dag_name, dependency.task_id) not in wait_for_seen -%}
+    wait_for_{{ dependency.task_id }} = ExternalTaskSensor(
+        task_id='wait_for_{{ dependency.task_id }}',
+        external_dag_id='{{ dependency.dag_name }}',
+        external_task_id='{{ dependency.task_id }}',
+        {% if dependency.execution_delta -%}
+        execution_delta={{ dependency.execution_delta | format_timedelta | format_repr }},
+        {% endif -%}
+        check_existence=True,
+        mode='reschedule',
+        pool='DATA_ENG_EXTERNALTASKSENSOR',
+    )
+    {{ wait_for_seen.append((dependency.dag_name, dependency.task_id)) or "" }}
+    {% endif -%}
+
+    {{ task.task_name }}.set_upstream(wait_for_{{ dependency.task_id }})
+    {% endif -%}
+    {% endfor -%}
+
+    
+    {% for task_ref in task.depends_on | sort(attribute='task_id') -%}
+    {% if (task_ref.dag_name, task_ref.task_id) not in wait_for_seen -%}
+    wait_for_{{ task_ref.dag_name }}_{{ task_ref.task_id }} = ExternalTaskSensor(
+        task_id="wait_for_{{ task_ref.dag_name }}_{{ task_ref.task_id }}",
+        external_dag_id="{{ task_ref.dag_name }}",
+        external_task_id="{{ task_ref.task_id }}",
+        {% if task_ref.execution_delta -%}
+        execution_delta={{ task_ref.execution_delta | format_timedelta | format_repr }},
+        {% endif -%}
+        check_existence=True,
+        mode='reschedule',
+        pool='DATA_ENG_EXTERNALTASKSENSOR',
+        dag=dag,
+    )
+    {{ wait_for_seen.append((task_ref.dag_name, task_ref.task_id)) or "" }}
+    {%+ endif -%}
+
+    {{ task.task_name }}.set_upstream(wait_for_{{ task_ref.dag_name }}_{{ task_ref.task_id }})
+    {%+ endfor -%}
+{% endfor -%}
