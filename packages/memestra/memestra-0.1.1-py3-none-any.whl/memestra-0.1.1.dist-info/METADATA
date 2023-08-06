@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: memestra
+Version: 0.1.1
+Summary: Memestra checks code for places where deprecated functions are called
+Home-page: https://github.com/QuantStack/memestra
+Author: serge-sans-paille
+Author-email: serge.guelton@telecom-bretagne.eu
+License: BSD 3-Clause
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Requires-Python: >=3.4
+Requires-Dist: gast
+Requires-Dist: beniget
+Requires-Dist: nbformat
+Requires-Dist: nbconvert
+Requires-Dist: pyyaml
+Provides-Extra: dev
+Requires-Dist: pytest ; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+
+
+A linter that tracks reference to deprecated functions.
+
+Memestra walks through your code base and tracks reference to function marks
+with a given decorator.
+
