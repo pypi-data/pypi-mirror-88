@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: DiscordRandomStuff
+Version: 0.0.1
+Summary: It has random thing, it like a start up for you discord bot
+Home-page: UNKNOWN
+License: MIT
+Description: This is discordRandomStuff it can be a startup for you discord bot or a fun thing for it.
+        
+        
+        Welcome example
+        ```
+        Not in cogs
+        
+        from discordRandomStuff.welcome import Welcome
+        from discord.ext import commands
+        prefix  = "t!"
+        bot = commands.Bot(command_prefix=prefix)
+        
+        @bot.event
+        async def on_member_join(self, member):
+            Welcome(channel=735826080153337898) #Replace those numbers a channel id
+            Welcome.start() #This will start it
+            print("DRS welcome module is loaded") #If this shows up in your conosle logs, that means it is loaded
+        
+        
+        In cogs
+        
+        from discordRandomStuff.welcome import Welcome
+        from discord.ext import commands
+        class Welcome(commands.Cog):
+            def __init__(self, bot):
+                self.bot = bot
+                
+            @commands.Cog.listener()  # Event module
+            async def on_member_join(self, member):  # defining it
+                Welcome(channel=735826080153337898) #Replace those numbers a channel id
+                Welcome.start() #This will start it
+                print("DRS welcome module is loaded") #If this shows up in your conosle logs, that means it is loaded
+                
+        def setup(bot):
+            bot.add_cog(Welcome(bot))
+        
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
