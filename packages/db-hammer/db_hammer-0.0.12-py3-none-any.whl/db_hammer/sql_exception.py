@@ -1,0 +1,6 @@
+
+
+class SqlException(Exception):
+    pass
+
+
