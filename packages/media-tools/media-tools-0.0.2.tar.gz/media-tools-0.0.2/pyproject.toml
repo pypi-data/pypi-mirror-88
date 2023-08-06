@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "media-tools"
+version = "0.0.2"
+description = "Creating and managing playlists, and managing the filenames and directory structure for large numbers of music files."
+authors = ["Lene Preuss <lene.preuss@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://gitlab.com/lilacashes/music-library-tools"
+repository = "https://gitlab.com/lilacashes/music-library-tools.git"
+keywords = ["music", "audio"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+lxml = "^4.6.2"
+tinytag = "^1.5.0"
+pydub = "^0.24.1"
+requests = "^2.25.0"
+pylast = "^4.0.0"
+
+[tool.poetry.dev-dependencies]
+nose = "^1.3.7"
+mypy = "^0.790"
+flake8 = "^3.8.4"
+coverage = "^5.3"
+pylint = "^2.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+mixcloud_upload = "media_tools.mixcloud_upload:main"
+buy_most_played = "media_tools.buy_most_played:main"
+backup_lastfm_data = "media_tools.backup_lastfm_data:main"
+clean_filenames = "media_tools.clean_filenames:main"
+copy_from_playlist = "media_tools.copy_from_playlist:main"
