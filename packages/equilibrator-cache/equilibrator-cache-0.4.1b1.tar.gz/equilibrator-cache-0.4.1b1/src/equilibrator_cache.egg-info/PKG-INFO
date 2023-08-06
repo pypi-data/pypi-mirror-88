@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: equilibrator-cache
+Version: 0.4.1b1
+Summary: Cache application for compounds, reactions, and enzymes
+Home-page: https://gitlab.com/equilibrator/equilibrator-cache
+Author: Elad Noor, Moritz E. Beber
+Author-email: eladn@weizmann.ac.il, midnighter@posteo.net
+License: MIT
+Download-URL: https://pypi.org/project/equilibrator-cache/
+Project-URL: Source Code, https://gitlab.com/equilibrator/equilibrator-cache
+Project-URL: Bug Tracker, https://gitlab.com/equilibrator/equilibrator-cache/-/issues
+Description: equilibrator-cache
+        ==================
+        
+        [![pipeline status](https://gitlab.com/elad.noor/equilibrator-cache/badges/develop/pipeline.svg)](https://gitlab.com/elad.noor/equilibrator-cache/commits/develop)
+        
+        [![coverage report](https://gitlab.com/elad.noor/equilibrator-cache/badges/develop/coverage.svg)](https://gitlab.com/elad.noor/equilibrator-cache/commits/develop)
+        
+        [![Join the chat at https://gitter.im/equilibrator-devs/equilibrator-api](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/equilibrator-devs/equilibrator-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+        
+        A database application for caching data used by eQuilibrator and related projects.
+        Stored data includes compound names, structures, protonation state information,
+        reaction and enzyme info, and cross-references to other databases.
+        All compounds stored in equilibrator-cache are cross-referenced using
+        [InChIKey](https://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey).
+        
+        ## Supported Chemical Databases:
+        
+        * [MetaNetX](https://www.metanetx.org/)
+        * [KEGG](https://www.kegg.jp/)
+        * [ChEBI](https://www.ebi.ac.uk/chebi/)
+        
+        
+Keywords: component contribution,Gibbs energy,biochemical reaction,eQuilibrator,cache
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: test
+Provides-Extra: development
+Provides-Extra: deployment
