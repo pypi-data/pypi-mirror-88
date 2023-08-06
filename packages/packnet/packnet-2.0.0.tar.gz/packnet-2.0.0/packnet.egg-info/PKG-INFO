@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: packnet
+Version: 2.0.0
+Summary: Python3 package for low-level networking
+Home-page: https://github.com/c0mplh4cks/packnet
+Author: c0mplh4cks
+License: MIT
+Description: # PACKNET by c0mplh4cks
+        
+        Python3 Package for low-level networking
+        
+        ### Installation from PyPi
+        
+        install package by using pip
+        ```
+        pip3 install packnet
+        ```
+        or
+        ```
+        pip install packnet
+        ```
+        
+        
+        ### Installation from Github
+        
+        clone the repository
+        ```
+        git clone https://github.com/c0mplh4cks/packnet
+        ```
+        
+        move inside the directory
+        ```
+        cd packnet
+        ```
+        
+        install the library by running the following command
+        ```
+        pip3 install .
+        ```
+        
+        
+        ### Check installation
+        
+        check if the library is installed by opening python
+        ```
+        python3
+        ```
+        
+        and importing the library
+        ```
+        import packnet
+        ```
+        
+Platform: UNKNOWN
+Requires-Python: >=3
+Description-Content-Type: text/markdown
