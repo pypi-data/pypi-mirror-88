@@ -1,0 +1,55 @@
+0.25.0
+------
+- Fix ;-separated package; marker handling.
+- Automatically add `editable` target, building a special wheel that redirects
+  imports for your modules to the source code.
+
+0.23.0
+------
+- Add support for `scons develop` for editable installs, automatically builds
+  required metadata if missing. Requires change to `SConstruct` compared to
+  previous `setup.py` emulation.
+
+0.22
+----
+- Improved ABI3 support for Windows by vendoring `packaging.tags`
+
+0.21.0
+------
+- New functions for C extensions:
+  `enscons.cpyext.extension_filename(modname, abi3=False)` and
+  `enscons.get_abi3_tag()`
+
+0.20.0
+------
+- Changes to allow multiple wheels with env.Clone(), for `nonstdlib` project
+- Add target parameter to WhlFile
+
+0.13.0
+------
+- Generate .tar.gz with zip-friendly post-1980 timestamps. Still need to set
+  timestamps of zip for .whl instead of having zipfile read them from the
+  filesystem.
+
+0.10.0
+------
+- Remove dependency on wheel reference implementation (upstream is removing
+  its API)
+
+0.6.0
+-----
+- Tolerate missing optional metadata (written as 'UNKNOWN')
+- Support src_root for sources in ./src/ etc.
+
+0.5.0
+-----
+- Update enscons.setup2toml
+- Support --dist-dir as needed by tox (write sdist to given directory)
+- Improve documentation
+
+0.4.0
+-----
+- Introduce env.Whl() to gather wheel members and env.WhlFile() to
+  finish the archive
+- Add env.SDist(source=...) to automatically name source archives.
+
