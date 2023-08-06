@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: pcfg
+Version: 0.1.4
+Summary: Generate sentences from a probabilistic context-free grammar.
+Home-page: https://github.com/thomasbreydo/pcfg
+License: MIT
+Author: Thomas Breydo
+Author-email: tbreydo@gmail.com
+Requires-Python: >=3.6,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: importlib-metadata (>=3.1.1,<4.0.0)
+Requires-Dist: nltk (>=3.5,<4.0)
+Project-URL: Repository, https://github.com/thomasbreydo/pcfg
+Description-Content-Type: text/markdown
+
+pcfg
+====
+[![Documentation Status](https://readthedocs.org/projects/pcfg/badge/?version=latest)](https://pcfg.readthedocs.io/en/latest/?badge=latest)
+
+
+Description
+-----------
+
+Implement the ``generate()`` method for NLTK's [probabilistic context-free grammar](https://www.nltk.org/api/nltk.html#nltk.grammar.PCFG) to probabilistically generate valid sentences. (NLTK stands for Natural Language Toolkit.)
+
+Installation
+------------
+
+```zsh
+pip install pcfg
+```
+
+Documentation
+-------------
+
+Read the latest documentation for **pcfg** [here](https://pcfg.readthedocs.io/).
+
+
+Example usage
+-------------
+
+A ``PCFG`` can be initialized in the same way that an NLTK [probabilistic context-free grammar](https://www.nltk.org/api/nltk.html#nltk.grammar.PCFG) is initialized:
+
+```python3
+>>> from pcfg import PCFG
+>>> grammar = PCFG.fromstring("""
+... S -> Subject Action [1.0]
+... Subject -> "a cow" [0.7] | "some guy" [0.1] | "the woman" [0.2]
+... Action -> "eats lunch" [0.5] | "was here" [0.5]
+... """)
+```
+
+To generate sentences, simply use the ``generate()`` method:
+
+```python3
+>> > for sentence in grammar.generate(3):
+    ...
+print(sentence)
+```
+
+The output could be the following:
+
+```text
+the woman eats lunch
+the woman was here
+a cow was here
+```
+
+Of course, your output may be different because the sentences are generated probabilistically.
+
+License
+-------
+[MIT](https://github.com/thomasbreydo/pcfg/blob/master/LICENSE)
+
