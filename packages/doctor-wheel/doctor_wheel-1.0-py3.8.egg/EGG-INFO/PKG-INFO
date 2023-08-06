@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: doctor-wheel
+Version: 1.0
+Summary: A utility to strip and reduce the size of your wheels
+Home-page: https://github.com/smok-serwis/doctor-wheel
+Author: Piotr Maślanka
+Author-email: pmaslanka@smok.co
+License: UNKNOWN
+Project-URL: Code, https://github.com/smok-serwis/doctor-wheel
+Project-URL: Issue tracker, https://github.com/smok-serwis/doctor-wheel/issues
+Description: doctor_wheel
+        ============
+        
+        [![PyPI](https://img.shields.io/pypi/pyversions/doctor-wheel.svg)](https://pypi.python.org/pypi/doctor-wheel)
+        [![PyPI version](https://badge.fury.io/py/doctor-wheel.svg)](https://badge.fury.io/py/doctor-wheel)
+        [![PyPI](https://img.shields.io/pypi/implementation/doctor-wheel.svg)](https://pypi.python.org/pypi/doctor-wheel)
+        [![Maintainability](https://api.codeclimate.com/v1/badges/657b03d115f6e001633c/maintainability)](https://codeclimate.com/github/smok-serwis/doctor-wheel/maintainability)
+        [![Build status](https://circleci.com/gh/smok-serwis/doctor-wheel.svg?style=shield)](https://app.circleci.com/pipelines/github/smok-serwis/doctor-wheel)
+        
+        `doctor-wheel` is an utility to reduce the size of your binary wheels
+        by stripping their .so extensions.
+        
+        It requires GNU strip to be available.
+        
+        It will alter your file in-place.
+        
+        Usage:
+        
+        ```
+        doctor-wheel name-of-your-wheel-file.whl name-of-second-wheel-file.whl ...
+        ```
+        
+Keywords: wheel,strip,size,reduction
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: System :: Software Distribution
+Requires-Python: !=2.7.*,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*
+Description-Content-Type: text/markdown; charset=UTF-8
