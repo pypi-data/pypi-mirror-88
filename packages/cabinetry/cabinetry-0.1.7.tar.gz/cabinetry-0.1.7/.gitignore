@@ -1,0 +1,36 @@
+__pycache__
+*.pyc
+
+# code coverage
+.coverage
+htmlcov
+coverage.xml
+
+# packaging
+*.egg-info
+dist
+build
+
+# typing
+.pytype
+
+# editors
+.vscode
+*.swp
+
+# files produced by running cabinetry
+*.root
+*.png
+*.pdf
+*.npy
+*.npz
+*.json
+
+# sphinx
+docs/_build
+
+# json schemas
+!src/cabinetry/schemas/*json
+
+# reference for tests
+!tests/contrib/reference/*pdf
