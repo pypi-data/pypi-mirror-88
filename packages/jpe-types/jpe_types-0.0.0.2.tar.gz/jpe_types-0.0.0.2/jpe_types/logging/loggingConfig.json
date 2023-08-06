@@ -1,0 +1,52 @@
+{
+    "stdLogger": {
+        "Format": "in thread %(threadName)s %(levelname)s: %(message)s",
+        "logLevel": 10,
+        "handler": "fileHandler",
+        "startupConfig": ["===============================================",
+                          "============== Started thread =================",
+                          "==============================================="],
+        "errorLogMessage": ["===================================\n"],
+        "trackBack": false
+    },
+    "mainLogger": {
+        "Format": "in thread %(threadName)s %(levelname)s: %(message)s",
+        "logLevel": 10,
+        "handler": "fileHandler",
+        "startupConfig": ["===============================================",
+                          "============== started execution ==============",
+                          "==============================================="],
+        "errorLogMessage": ["===================================\n"],
+        "trackBack": false
+    },
+    "threadLogger": {
+        "Format": "at %(asctime)s %(levelname)s: %(message)s",
+        "logLevel": 10,
+        "handler": "fileHandler",
+        "startupConfig": ["===============================================",
+                          "============== Started thread =================",
+                          "==============================================="],
+        "logErrors": 1,
+        "additionalLoggers": [],
+        "errorLogMessage": ["thread Exectuion ended due to error",
+                            "===================================\n"],
+        "trackBack": true
+    },
+    "ErrorLoger": {
+        "Format": "at %(asctime)s in Thread %(threadName)s got Error %(filename)s %(levelno)s : %(message)s",
+        "logLevel": 10,
+        "handler": "fileHandler",
+        "startupConfig": ["===============================================",
+                          "============== Started thread =================",
+                          "==============================================="],
+        "errorLogMessage": ["===================================\n"],
+        "trackBack": false
+    },
+    "logZeroFill": "4",
+    "logErors": ["error_Logger"],
+
+    "logTranslator":{"main_Logger": "mainLogger",
+                     "error_Logger": "ErrorLoger"},
+    
+    "logDirName": "run from the %d.%m.%Y at %H_%M_%S"
+}
