@@ -1,0 +1,188 @@
+# csv-etl
+
+A rules based approach to performing ETL operations on csv files.
+
+## Installation
+
+Requires Python 3
+
+### Using pip
+
+```bash
+pip install csv-etl
+```
+
+### Building from source
+
+```bash
+git clone https://github.com/winslowdibona/csv_etl.git
+cd csv_etl
+pip install -r requirements.txt
+python setup.py bdist_wheel
+pip install dist/csv_etl-0.0.1-py3-none-any.whl
+```
+
+## Quick Introduction
+
+The goal of this project is to provide a re-usable way to perform ETL operations on csv files. This implementation takes a given row of data from a csv file and applies a set of rules to generate a new format of the data.
+A rule knows three things
+
+ - Where the original data is coming from (`source`)
+ - Where the new data is going to (`target`)
+ - The data type the new data is expected to conform to (`output_type`)
+	 - `output_type` can be the following options and will result in the correlating python types
+		 - `Integer` : `int`
+		 - `Decimal` : `decimal.Decimal`
+		 - `String` : `str`
+		 - `Date` : `datetime.datetime`
+ - Operations to perform on the retrieved data (`operations`)
+	 - The `operations` is a list of python operations to perform on the data
+	 - Each operation will run through a python `eval` statement to derive the calculated value
+	 - The values are passed into the `eval` statement as a list under the variable name `s`
+	 - Example
+		 - values = `[2, 3]`
+		 - operations = `["s[0] * s[1]"]`
+		 - We would get a value of 6
+
+The root `Rule` class in this library contains those three properties.
+
+The `Rule` class is subclassed, and the subclasses are where the logic for extracting/modifying the data takes place.
+
+The current `Rule` subclasses are
+
+ - `StaticRule`
+	 - Use Case: Static value for every row
+ - `SingleSourceRule`
+	 - Use Case: Extract value from source column, place in new target column
+ - `DateRule`
+	 - Use Case: Gather date part values from multiple columns, generate date value
+ - `CalculationRule`
+	 - Use Case: Perform arithmetic calculations with values from columns
+
+## Usage
+
+### With a config file
+```python
+from csv_etl.rules import load_rules_from_yaml
+from csv_etl import CSVConverter
+
+rules = load_rules_from_yaml("path/to/config/file")
+csv_converter = CSVConverter(rules)
+result = csv_converter.convert("path/to/csv/file")
+```
+
+Configuration examples [can be found here](https://github.com/winslowdibona/csv_converter/blob/master/examples/config)
+
+The basic structure of the configuration file is:
+
+```yaml
+rules:
+  -
+    target: The new key
+    operation: extract || static
+    to_type: Integer || String || Decimal || Date
+    source: Where to pull data from
+    operations: list of python operations to perform
+```
+
+
+
+### Creating rules programmatically
+
+```python
+from csv_etl.rules import (
+  StaticRule,
+  SingleSourceRule,
+  DateRule,
+  OutputType
+)
+from csv_etl import CSVConverter
+
+rules = [
+  StaticRule(
+  		source='kg',
+  		target='Unit',
+  		output_type=OutputType.String
+  ),
+  SingleSourceRule(
+  		source='Order Number',
+  		target='OrderId',
+  		output_type=OutputType.Integer
+  ),
+  DateRule(
+		source={'day': 'Day', 'month': 'Month', 'year': 'Year'},
+		target='OrderDate',
+		output_type=OutputType.Date
+  ),
+  CalculationRule(
+		source=['num1', 'num2'],
+		target='Target',
+		output_type=OutputType.Decimal,
+		operations=['s[0] * s[1]']
+    )
+]
+csv_converter = CSVConverter(rules)
+result = csv_converter.convert("path/to/csv_file")
+
+# By default, the result is a json array. But you can receive is back as a csv string
+result = csv_converter.convert("path/to/csv/file", to='csv')
+
+# You can also write the result to a specified file
+result = csv_converter.convert("path/to/csv/file", to='csv', outfile="path/to/outfile")
+```
+
+
+## Example Use Case
+
+A more detailed use case of this library [can be found here](https://github.com/winslowdibona/csv_etl/blob/master/examples/OrderDataExample.md)
+
+
+## Helpful Make Commands
+
+### Generating Documentation
+
+```bash
+make docs
+open html/csv_etl/index.html
+```
+
+### Running Tests
+
+```bash
+make pytest
+```
+
+### Getting Test Coverage
+
+```bash
+make test-cov
+open cov_html/index.html
+```
+
+### Docker Playground
+
+If you have [Docker](https://www.docker.com/) installed you can run
+
+```bash
+make play
+```
+
+to get a python 3 terminal running with the contents of the directory copied over. This can be useful for doing some quick testing.
+
+## What Next?
+
+### Expand on Date Rule
+
+The current implementation of the `DateRule` is fairly rigid. It only covers the use case of there being day/month/year columns in the given csv. It also assumes the data values are numbers and not string representations of the months like `March`
+
+This could be expanded upon to
+
+ - Handle month strings
+ - Handle different date formats
+	 - YYYY-mm-dd
+	 - mm-dd-YYYY
+	 - dd-mm-YYYY
+
+### Better error handling
+
+Currently the errors are just printed to the console. Might be nice to have an option to gather them and have them represented in the resulting data set somehow.
