@@ -1,0 +1,10 @@
+protobuf
+requests
+zepben.protobuf==0.9.0
+python-jose-cryptodome
+dataclassy
+
+[test]
+pytest
+pytest-asyncio
+hypothesis<6
