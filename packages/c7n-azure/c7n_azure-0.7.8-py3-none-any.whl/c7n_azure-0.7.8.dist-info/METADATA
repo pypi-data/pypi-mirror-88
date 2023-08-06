@@ -1,0 +1,191 @@
+Metadata-Version: 2.1
+Name: c7n-azure
+Version: 0.7.8
+Summary: Cloud Custodian - Azure Support
+Home-page: https://cloudcustodian.io
+Author: Cloud Custodian Project
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=3.6,<4.0
+Description-Content-Type: text/markdown
+Requires-Dist: adal (==1.2.5)
+Requires-Dist: applicationinsights (==0.11.9)
+Requires-Dist: apscheduler (==3.6.3)
+Requires-Dist: argcomplete (==1.12.2)
+Requires-Dist: attrs (==20.3.0)
+Requires-Dist: azure-cli-telemetry (==1.0.6)
+Requires-Dist: azure-common (==1.1.26)
+Requires-Dist: azure-core (==1.9.0)
+Requires-Dist: azure-cosmos (==3.2.0)
+Requires-Dist: azure-cosmosdb-nspkg (==2.0.2)
+Requires-Dist: azure-cosmosdb-table (==1.0.6)
+Requires-Dist: azure-functions (==1.5.0)
+Requires-Dist: azure-graphrbac (==0.61.1)
+Requires-Dist: azure-keyvault (==1.1.0)
+Requires-Dist: azure-mgmt-apimanagement (==0.1.0)
+Requires-Dist: azure-mgmt-applicationinsights (==0.2.0)
+Requires-Dist: azure-mgmt-authorization (==0.60.0)
+Requires-Dist: azure-mgmt-batch (==7.0.0)
+Requires-Dist: azure-mgmt-cdn (==4.0.0)
+Requires-Dist: azure-mgmt-cognitiveservices (==5.0.0)
+Requires-Dist: azure-mgmt-compute (==10.0.0)
+Requires-Dist: azure-mgmt-containerinstance (==1.5.0)
+Requires-Dist: azure-mgmt-containerregistry (==2.8.0)
+Requires-Dist: azure-mgmt-containerservice (==8.3.0)
+Requires-Dist: azure-mgmt-core (==1.2.1)
+Requires-Dist: azure-mgmt-cosmosdb (==0.11.0)
+Requires-Dist: azure-mgmt-costmanagement (==0.1.0)
+Requires-Dist: azure-mgmt-databricks (==0.1.0)
+Requires-Dist: azure-mgmt-datafactory (==0.8.0)
+Requires-Dist: azure-mgmt-datalake-nspkg (==3.0.1)
+Requires-Dist: azure-mgmt-datalake-store (==0.5.0)
+Requires-Dist: azure-mgmt-dns (==3.0.0)
+Requires-Dist: azure-mgmt-eventgrid (==2.2.0)
+Requires-Dist: azure-mgmt-eventhub (==3.1.0)
+Requires-Dist: azure-mgmt-hdinsight (==1.7.0)
+Requires-Dist: azure-mgmt-iothub (==0.10.0)
+Requires-Dist: azure-mgmt-keyvault (==1.1.0)
+Requires-Dist: azure-mgmt-logic (==3.0.0)
+Requires-Dist: azure-mgmt-managementgroups (==0.2.0)
+Requires-Dist: azure-mgmt-monitor (==0.7.0)
+Requires-Dist: azure-mgmt-network (==9.0.0)
+Requires-Dist: azure-mgmt-nspkg (==3.0.2)
+Requires-Dist: azure-mgmt-policyinsights (==0.4.0)
+Requires-Dist: azure-mgmt-rdbms (==1.9.0)
+Requires-Dist: azure-mgmt-redis (==6.0.0)
+Requires-Dist: azure-mgmt-resource (==6.0.0)
+Requires-Dist: azure-mgmt-resourcegraph (==2.0.0)
+Requires-Dist: azure-mgmt-search (==2.1.0)
+Requires-Dist: azure-mgmt-sql (==0.16.0)
+Requires-Dist: azure-mgmt-storage (==7.2.0)
+Requires-Dist: azure-mgmt-subscription (==0.5.0)
+Requires-Dist: azure-mgmt-web (==0.44.0)
+Requires-Dist: azure-nspkg (==3.0.2)
+Requires-Dist: azure-storage-blob (==2.1.0)
+Requires-Dist: azure-storage-common (==2.1.0)
+Requires-Dist: azure-storage-file (==2.1.0)
+Requires-Dist: azure-storage-queue (==2.1.0)
+Requires-Dist: boto3 (==1.16.32)
+Requires-Dist: botocore (==1.19.32)
+Requires-Dist: c7n (==0.9.8)
+Requires-Dist: certifi (==2020.12.5)
+Requires-Dist: cffi (==1.14.4)
+Requires-Dist: chardet (==3.0.4)
+Requires-Dist: distlib (==0.3.1)
+Requires-Dist: importlib-metadata (==1.7.0)
+Requires-Dist: isodate (==0.6.0)
+Requires-Dist: jmespath (==0.10.0)
+Requires-Dist: jsonpickle (==1.3)
+Requires-Dist: jsonschema (==3.2.0)
+Requires-Dist: knack (==0.7.2)
+Requires-Dist: msal-extensions (==0.1.3)
+Requires-Dist: msal (==1.0.0)
+Requires-Dist: msrest (==0.6.19)
+Requires-Dist: msrestazure (==0.6.4)
+Requires-Dist: netaddr (==0.7.20)
+Requires-Dist: paramiko (==2.7.2)
+Requires-Dist: pkginfo (==1.6.1)
+Requires-Dist: portalocker (==1.7.1)
+Requires-Dist: pyjwt (==1.7.1)
+Requires-Dist: pyreadline (==2.1)
+Requires-Dist: pyrsistent (==0.17.3)
+Requires-Dist: python-dateutil (==2.8.1)
+Requires-Dist: pytz (==2020.4)
+Requires-Dist: pywin32 (==300)
+Requires-Dist: pyyaml (==5.3.1)
+Requires-Dist: s3transfer (==0.3.3)
+Requires-Dist: six (==1.15.0)
+Requires-Dist: tabulate (==0.8.7)
+Requires-Dist: tzlocal (==2.1)
+Requires-Dist: urllib3 (==1.26.2)
+Requires-Dist: zipp (==3.4.0)
+Requires-Dist: azure-cli-core (==2.16.0) ; python_full_version >= "3.6.0"
+Requires-Dist: jmespath (==0.10.0) ; python_version >= "2.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
+Requires-Dist: python-dateutil (==2.8.1) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
+Requires-Dist: six (==1.15.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
+Requires-Dist: idna (==2.10) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: oauthlib (==3.1.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: pycparser (==2.20) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: pynacl (==1.4.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: requests-oauthlib (==1.3.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+Requires-Dist: click (==7.1.2) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+Requires-Dist: colorama (==0.4.4) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+Requires-Dist: humanfriendly (==8.2) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+Requires-Dist: importlib-metadata (==1.7.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+Requires-Dist: pyopenssl (==20.0.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+Requires-Dist: pyyaml (==5.3.1) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+Requires-Dist: requests (==2.25.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+Requires-Dist: urllib3 (==1.26.2) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version < "4"
+Requires-Dist: cryptography (==3.3) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
+Requires-Dist: importlib-resources (==3.3.0) ; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
+Requires-Dist: pygments (==2.7.3) ; python_version >= "3.5"
+Requires-Dist: bcrypt (==3.2.0) ; python_version >= "3.6"
+Requires-Dist: zipp (==3.4.0) ; python_version >= "3.6"
+
+
+# Cloud Custodian - Azure Support
+
+This a plugin to Cloud Custodian that adds Azure support.
+
+## Install Cloud Custodian and Azure Plugin
+
+The Azure provider must be installed as a separate package in addition to c7n. 
+
+    $ git clone https://github.com/cloud-custodian/cloud-custodian.git
+    $ virtualenv custodian
+    $ source custodian/bin/activate
+    (custodian) $ pip install -e cloud-custodian/.
+    (custodian) $ pip install -e cloud-custodian/tools/c7n_azure/.
+
+
+## Write your first policy
+
+A policy specifies the following items:
+
+- The type of resource to run the policy against
+- Filters to narrow down the set of resources
+- Actions to take on the filtered set of resources
+
+For this tutorial we will add a tag to all virtual machines with the name "Hello" and the value "World".
+
+Create a file named ``custodian.yml`` with this content:
+
+    policies:
+        - name: my-first-policy
+          description: |
+            Adds a tag to all virtual machines
+          resource: azure.vm
+          actions:
+            - type: tag
+              tag: Hello
+              value: World
+
+## Run your policy
+
+First, choose one of the supported authentication mechanisms and either log in to Azure CLI or set
+environment variables as documented in [Authentication](https://cloudcustodian.io/docs/azure/authentication.html#azure-authentication).
+
+    custodian run --output-dir=. custodian.yml
+
+
+If successful, you should see output similar to the following on the command line
+
+    2016-12-20 08:35:06,133: custodian.policy:INFO Running policy my-first-policy resource: azure.vm
+    2016-12-20 08:35:07,514: custodian.policy:INFO policy: my-first-policy resource:azure.vm has count:1 time:1.38
+    2016-12-20 08:35:08,188: custodian.policy:INFO policy: my-first-policy action: tag: 1 execution_time: 0.67
+
+
+You should also find a new ``my-first-policy`` directory with a log and other
+files (subsequent runs will append to the log by default rather than
+overwriting it). 
+
+## Links
+- [Getting Started](https://cloudcustodian.io/docs/azure/gettingstarted.html)
+- [Example Scenarios](https://cloudcustodian.io/docs/azure/examples/index.html)
+- [Example Policies](https://cloudcustodian.io/docs/azure/policy/index.html)
+
+
+
+
+
+
