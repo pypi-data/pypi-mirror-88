@@ -1,0 +1,74 @@
+Metadata-Version: 2.1
+Name: oscovida
+Version: 0.2.4
+Summary: Coronavirus-2020
+Home-page: https://github.com/oscovida/oscovida
+Author: European XFEL GmbH
+Author-email: da-support@xfel.eu
+Maintainer: Hans Fangohr
+License: BSD-3-Clause
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: joblib
+Requires-Dist: pandas
+Requires-Dist: seaborn
+Requires-Dist: matplotlib (<3.3)
+Requires-Dist: markdown
+Requires-Dist: openpyxl
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: voila
+Requires-Dist: pelican
+Requires-Dist: pelican-jupyter
+Requires-Dist: tabulate
+Requires-Dist: tqdm
+Requires-Dist: ipywidgets
+Requires-Dist: ipynb-py-convert
+Requires-Dist: click
+Requires-Dist: pytest-tornasync
+Requires-Dist: nbconvert (<6,==5.*)
+Requires-Dist: plotly
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: coverage ; extra == 'test'
+Requires-Dist: nbval ; extra == 'test'
+Requires-Dist: testpath ; extra == 'test'
+Requires-Dist: pycodestyle ; extra == 'test'
+
+Most content has moved to the temporary website https://oscovida.github.io
+
+The remaining content here is only for developers.
+
+![tests](https://github.com/oscovida/oscovida/workflows/tests/badge.svg)
+![Generate Webpage](https://github.com/oscovida/oscovida/workflows/Generate%20Webpage/badge.svg)
+[![codecov](https://codecov.io/gh/oscovida/oscovida/branch/master/graph/badge.svg)](https://codecov.io/gh/oscovida/oscovida)
+[![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://oscovida.zulipchat.com)
+
+--------------------------------
+
+
+# Disclaimer
+
+The plots and code here has been put together by volunteers who have no training
+in epidemiology. THere are likely to be errors in the processing. You are welcome
+to use the material at your own risk. The [license is available](LICENSE).
+
+
+# Acknowledgements
+
+- Johns Hopkins University provides data for countries
+- Robert Koch Institute provides data for within Germany
+- Open source and scientific computing community for the data tools
+- Github for hosting repository and html files
+- Project Jupyter for the Notebook and Binder service
+- The H2020 project Photon and Neutron Open Science Cloud ([PaNOSC](https://www.panosc.eu/))
+
+
