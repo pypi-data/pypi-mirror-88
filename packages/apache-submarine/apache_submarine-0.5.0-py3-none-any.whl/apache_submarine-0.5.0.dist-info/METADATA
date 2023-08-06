@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: apache-submarine
+Version: 0.5.0
+Summary: A python SDK for submarine
+Home-page: https://github.com/apache/submarine
+Maintainer: Apache Submarine Community
+Maintainer-email: dev@submarine.apache.org
+License: Apache License, Version 2.0
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
+Requires-Dist: six (>=1.10.0)
+Requires-Dist: numpy (==1.18.5)
+Requires-Dist: pandas
+Requires-Dist: sqlalchemy
+Requires-Dist: sqlparse
+Requires-Dist: pymysql
+Requires-Dist: tensorflow (<2.0.0,>=1.14.0)
+Requires-Dist: requests
+Requires-Dist: urllib3 (>=1.15.1)
+Requires-Dist: certifi (>=14.05.14)
+Requires-Dist: python-dateutil (>=2.5.3)
+Requires-Dist: pyarrow (==0.17.0)
+Requires-Dist: torch (>=1.5.0)
+
+<!---
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+# PySubmarine
+PySubmarine is aiming to ease the ML engineer's life by providing a set of libraries.
+
+It includes a high-level out-of-box ML library like deepFM, FM, etc.
+low-level library to interact with submarine like creating experiment,
+tracking experiment metrics, parameters.
+
+
+## Package setup
+- Install latest version of pysubmarine
+```bash
+git clone https://github.com/apache/submarine.git
+cd submarine/submarine-sdk/pysubmarine
+pip install .
+```
+- Install package from pypi
+```bash
+pip install apache-submarine
+```
+
+## Easy-to-use model trainers
+- [FM](https://github.com/apache/submarine/tree/master/submarine-sdk/pysubmarine/example/tensorflow/fm)
+- [DeepFM](https://github.com/apache/submarine/tree/master/submarine-sdk/pysubmarine/example/tensorflow/deepfm)
+
+## Submarine experiment management
+Makes it easy to run distributed or non-distributed TensorFlow, PyTorch experiments on Kubernetes.
+- [mnist example](https://github.com/apache/submarine/tree/master/submarine-sdk/pysubmarine/example/submarine_experiment_sdk.ipynb)
+
+## Development
+See [Python Development](https://github.com/apache/submarine/tree/master/docs/submarine-sdk/pysubmarine/development.md) in the documentation subproject.
+
+
+
