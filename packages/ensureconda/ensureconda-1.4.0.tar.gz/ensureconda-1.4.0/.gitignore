@@ -1,0 +1,21 @@
+*.log
+*.pyc
+.cache/
+.coverage
+.idea/
+.mypy_cache/
+.vscode/
+*.egg-info/
+.tox/
+build/
+dist/
+docs/build/
+venv/
+wheelhouse/
+pip-wheel-metadata/
+# Rever
+rever/
+src/golang/ensureconda*
+# binaries
+ensureconda
+ensureconda.exe
