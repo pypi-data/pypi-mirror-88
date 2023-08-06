@@ -1,0 +1,10 @@
+from marshmallow import Schema, fields
+
+
+def create_schema(application):
+    class ConfigSchema(Schema):
+        scriveHost = fields.Str(default="https://lime.scrive.com")
+        scriveHostD = fields.Str(default="https://lime.scrive.com")
+        scriveHostM = fields.Str(missing="https://lime.scrive.com")
+
+    return ConfigSchema()
