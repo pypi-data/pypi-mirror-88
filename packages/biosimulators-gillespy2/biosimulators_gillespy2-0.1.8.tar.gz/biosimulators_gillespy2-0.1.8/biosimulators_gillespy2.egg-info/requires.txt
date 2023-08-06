@@ -1,0 +1,15 @@
+biosimulators_utils>=0.1.7
+gillespy2
+lxml
+numpy
+python_libsbml
+
+[all]
+biosimulators_utils[docker]
+python_dateutil
+
+[docs]
+
+[tests]
+biosimulators_utils[docker]
+python_dateutil
