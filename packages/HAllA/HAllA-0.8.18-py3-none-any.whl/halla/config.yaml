@@ -1,0 +1,24 @@
+preprocess:
+  max_freq_thresh: 1 # for filtering out features where the % of the most occurrence > threshold, disabled if None
+  transform_funcs: ~ # a list of functions: 'zscore', 'rank', 'quantile', 'sqrt', other numpy attributes
+  discretize_bypass_if_possible: True # bypass discretization if all features are continuous and pdist_metric not nmi
+  discretize_func: ~ # None, 'quantile', 'uniform', 'kmeans', 'jenks'
+  discretize_num_bins: ~
+association:
+  pdist_metric: 'spearman' # pairwise distance metric
+hierarchy:
+  sim2dist_set_abs: True
+  sim2dist_func: ~
+  linkage_method: 'average' # https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
+permute:
+  iters: 1000
+  func: 'gpd' # 'ecdf' or 'gpd'
+  speedup: True # whether to stop permutation early if not significant
+stats:
+  fdr_alpha: 0.05
+  fdr_method: 'fdr_bh'
+  fnr_thresh: 0.2
+  rank_cluster: 'best' # 'best' or 'average' p-values
+output:
+  dir: 'output'
+  verbose: True
