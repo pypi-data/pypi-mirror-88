@@ -1,0 +1,12 @@
+datasets==1.1.3
+transformers==4.1.1
+wandb>=0.10.12
+torch==1.7.0
+sklearn
+bert_score
+
+[test]
+pytest
+flake8
+flake8-mypy
+black
