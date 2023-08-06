@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "screenman"
+version = "0.1.0"
+description = "Simple, light, modern tool for screenshooting."
+authors = ["Hugo Osvaldo Barrera <hugo@barrera.io>"]
+license = "ISC"
+
+[tool.poetry.dependencies]
+python = "~3.9"
+pyside6 = {version = "^6.0.0"}
+
+[tool.poetry.dev-dependencies]
+ipdb = "^0.13.4"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
