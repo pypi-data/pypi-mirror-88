@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: ocdskingfishercolab
+Version: 0.3.0
+Summary: A set of utility functions for Google Colaboratory notebooks using OCDS data
+Home-page: https://github.com/open-contracting/kingfisher-colab
+Author: Open Contracting Partnership
+Author-email: data@open-contracting.org
+License: BSD
+Description: |PyPI Version| |Build Status| |Coverage Status| |Python Version|
+        
+        A set of utility functions for `Google Colaboratory <https://colab.research.google.com/notebooks/intro.ipynb>`__ notebooks using OCDS data.
+        
+        If you are viewing this on GitHub, open the `full documentation <https://kingfisher-colab.readthedocs.io/>`__ for additional details.
+        
+        .. |PyPI Version| image:: https://img.shields.io/pypi/v/ocdskingfishercolab.svg
+           :target: https://pypi.org/project/ocdskingfishercolab/
+        .. |Build Status| image:: https://github.com/open-contracting/kingfisher-colab/workflows/CI/badge.svg
+        .. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/kingfisher-colab/badge.svg?branch=master
+           :target: https://coveralls.io/github/open-contracting/kingfisher-colab?branch=master
+        .. |Python Version| image:: https://img.shields.io/pypi/pyversions/ocdskingfishercolab.svg
+           :target: https://pypi.org/project/ocdskingfishercolab/
+        
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.6
+Provides-Extra: test
+Provides-Extra: docs
