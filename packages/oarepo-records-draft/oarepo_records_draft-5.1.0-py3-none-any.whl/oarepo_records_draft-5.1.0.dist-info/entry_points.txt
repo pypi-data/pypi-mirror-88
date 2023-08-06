@@ -1,0 +1,15 @@
+[flask.commands]
+oarepo:draft = oarepo_records_draft.cli:drafts
+
+[invenio_base.api_apps]
+oarepo_records_draft = oarepo_records_draft.ext:RecordsDraft
+
+[invenio_base.apps]
+oarepo_records_draft = oarepo_records_draft.ext:RecordsDraft
+
+[invenio_config.module]
+oarepo_records_draft = oarepo_records_draft.config
+
+[invenio_i18n.translations]
+oarepo_records_draft = oarepo_records_draft
+
