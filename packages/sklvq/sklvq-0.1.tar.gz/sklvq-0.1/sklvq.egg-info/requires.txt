@@ -1,0 +1,17 @@
+numpy>=1.14.0
+scipy>=1.1.0
+scikit-learn>=0.23.2
+
+[docs]
+sphinx
+sphinx-gallery
+sphinx_rtd_theme
+numpydoc
+matplotlib
+pillow
+
+[tests]
+pytest
+pytest-cov
+coverage
+pandas
